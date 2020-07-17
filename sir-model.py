@@ -4,10 +4,6 @@ S (Susceptible) --> I (Infected) --> R (Removed)
 N (population), R_0 (basic reproductive number), gamma (recovery rate)
 """
 
-import numpy as np
-from scipy.integrate import odeint
-import matplotlib.pyplot as plt
-
 # hyperparameters
 N = 1000000
 R_0 = 2.5
