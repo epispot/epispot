@@ -1,4 +1,4 @@
-def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100):
+def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
 
     """
     :param t_steps: array of times to evaluate f at and compare with y
@@ -8,6 +8,7 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100):
     :param mu: learning rate (for gradient descent algorithm)
     :param grad_step: (=1e-3) step size when calculating gradients
     :param epochs: (=100) epochs to run for optimization
+    :param print_cost: (=False) to append cost to output
     :return: optimal `k`
     """
 
@@ -18,10 +19,11 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100):
     print('This will take about %s iterations' % (epochs * len(t_steps) * len(k)))
     for _ in range(epochs):
         for time in t_steps:
-            for arg in range(0, len(k)):
 
-                # plain cost
-                cost_1 = cost(f(time, k), y(time))
+            cost_1 = cost(f(time, k), y(time))  # plain cost
+            grads = []  # gradient accumulation array
+
+            for arg in range(0, len(k)):
 
                 # revised cost
                 k_delta = k
@@ -29,8 +31,16 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100):
                 cost_2 = cost(f(time, k_delta), y(time))
 
                 # gradient calculation
-                grad = (cost_2 - cost_1) / grad_step
-                k[arg] -= mu * grad
+                grads.append((cost_2 - cost_1) / grad_step)
+            for arg in range(0, len(k)):
+                k[arg] -= mu * grads[arg]
 
     print('Data fit complete.')
-    return k
+    if print_cost:
+        total_cost = 0.0
+        for time in t_steps:
+            total_cost += cost(f(time, k), y(time))
+
+        return [k, total_cost]
+    else:
+        return k
