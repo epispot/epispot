@@ -1,4 +1,4 @@
-def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
+def gradient_descent(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
 
     """
     :param t_steps: array of times to evaluate f at and compare with y
@@ -8,7 +8,7 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
     :param mu: learning rate (for gradient descent algorithm)
     :param grad_step: (=1e-3) step size when calculating gradients
     :param epochs: (=100) epochs to run for optimization
-    :param print_cost: (=False) to append cost to output
+    :param print_cost: (=False) to print cost
     :return: optimal `k`
     """
 
@@ -20,7 +20,7 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
     for _ in range(epochs):
         for time in t_steps:
 
-            cost_1 = cost(f(time, k), y(time))  # plain cost
+            cost_1 = cost(f(time), y(time))  # plain cost
             grads = []  # gradient accumulation array
 
             for arg in range(0, len(k)):
@@ -41,6 +41,5 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
         for time in t_steps:
             total_cost += cost(f(time, k), y(time))
 
-        return [k, total_cost]
-    else:
-        return k
+        print('Total Squared Error Cost Achieved: %s' % (total_cost))
+    return k
