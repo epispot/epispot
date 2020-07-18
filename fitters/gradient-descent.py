@@ -1,9 +1,9 @@
-def gradient_descent(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100):
+def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100):
 
     """
     :param t_steps: array of times to evaluate f at and compare with y
-    :param f: function to fit --> f(timestep, argument array (`k`))
-    :param y: real data --> y(timestep)
+    :param f: function to fit --> f(timestep, argument array (`k`)), return [outputs]
+    :param y: real data --> y(timestep), return [outputs]
     :param k: arguments of f
     :param mu: learning rate (for gradient descent algorithm)
     :param grad_step: (=1e-3) step size when calculating gradients
@@ -12,7 +12,7 @@ def gradient_descent(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100):
     """
 
     def cost(a, b):
-        return (a - b)**2
+        return np.sum(np.square(np.subtract(a, b)))
 
     print('Fitting data ...')
     print('This will take about %s iterations' % (epochs * len(t_steps) * len(k)))
