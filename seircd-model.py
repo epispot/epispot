@@ -1,3 +1,13 @@
+"""
+SEIRCD Model
+S (Susceptible) --> E (Exposed) --> I (Infected) --> R (Recovered)
+                                                 --> C (Critical) --> D (Dead)
+ - N (population), R_0 (basic reproductive number), gamma (recovery rate)
+ - delta (infection delay), rho (death delay), alpha (death rate)
+ - alpha_opt (plain death rate -not accounting for hospital capacity), s (capacity constraint)
+CURRENT: Model of California
+"""
+
 # hyperparameters
 
 N = 39510000
