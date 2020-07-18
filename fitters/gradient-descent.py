@@ -1,4 +1,4 @@
-def gradient_descent(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
+def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
 
     """
     :param t_steps: array of times to evaluate f at and compare with y
@@ -20,7 +20,7 @@ def gradient_descent(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cos
     for _ in range(epochs):
         for time in t_steps:
 
-            cost_1 = cost(f(time), y(time))  # plain cost
+            cost_1 = cost(f(time, k), y(time))  # plain cost
             grads = []  # gradient accumulation array
 
             for arg in range(0, len(k)):
