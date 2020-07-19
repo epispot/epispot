@@ -1,4 +1,4 @@
-def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=100, print_cost=False):
+def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=10, print_cost=False):
 
     """
     :param t_steps: array of times to evaluate f at and compare with y
