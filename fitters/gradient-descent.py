@@ -17,7 +17,9 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=10, print_cost=False):
 
     print('Fitting data ...')
     print('This will take about %s iterations' % (epochs * len(t_steps) * len(k)))
-    for _ in range(epochs):
+    for e in range(epochs):
+        
+        print('Epoch %s completed' % (e))
         for time in t_steps:
 
             cost_1 = cost(f(time, k), y(time))  # plain cost
