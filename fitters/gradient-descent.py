@@ -1,7 +1,7 @@
 def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=10, print_cost=False):
     """
     :param t_steps: array of times to evaluate f at and compare with y
-    :param f: function to fit --> f(timestep, argument array (`k`)), return [outputs]
+    :param f: function to fit --> f(argument array (`k`)), return func(timestep) --> return pred
     :param y: real data --> y(timestep), return [outputs]
     :param k: arguments of f
     :param mu: learning rate (for gradient descent algorithm)
@@ -16,8 +16,10 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=10, print_cost=False):
 
     def cost(param):
         total_cost = 0.0
+        to_fit = f(param)
+
         for time in t_steps:
-            total_cost += cost_function(f(time, param), y(time))
+            total_cost += cost_function(to_fit(time), y(time))
 
         return total_cost
 
