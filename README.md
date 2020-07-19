@@ -4,6 +4,10 @@ A tool for creating and testing epidemiological models faster than ever for the 
  - SIR Model
  - Graphic Visualizations
  - SEIR Model
+ - SEIRCD Model
+     - ICU Capcity Modelling
+ - Model Fitters
+     - Gradient Descent
 
 ## Fit your model at the speed of light
 ### and get insights that match
