@@ -1,6 +1,10 @@
 # epi-spot
 A tool for creating and testing epidemiological models faster than ever for the mathematical modelling of infectious diseases. Based off of https://github.com/henrifroese/infectious_disease_modelling
 
+ - SIR Model
+ - Graphic Visualizations
+ - SEIR Model
+
 ## Fit your model at the speed of light
 ### and get insights that match
 ![Image from a Mico Medium blog post of coronavirus spreading through Yerevan](https://miro.medium.com/max/700/1*dNmma8N-FA6SDD92gmq9TQ.jpeg)
