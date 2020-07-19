@@ -1,5 +1,4 @@
 def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=10, print_cost=False):
-
     """
     :param t_steps: array of times to evaluate f at and compare with y
     :param f: function to fit --> f(timestep, argument array (`k`)), return [outputs]
@@ -12,36 +11,39 @@ def fitting(t_steps, f, y, k, mu, grad_step=1e-3, epochs=10, print_cost=False):
     :return: optimal `k`
     """
 
-    def cost(a, b):
+    def cost_function(a, b):
         return np.sum(np.square(np.subtract(a, b)))
 
-    print('Fitting data ...')
-    print('This will take about %s iterations' % (epochs * len(t_steps) * len(k)))
-    for e in range(epochs):
-        
-        print('Epoch %s completed' % (e))
-        for time in t_steps:
-
-            cost_1 = cost(f(time, k), y(time))  # plain cost
-            grads = []  # gradient accumulation array
-
-            for arg in range(0, len(k)):
-
-                # revised cost
-                k_delta = k
-                k_delta[arg] += grad_step
-                cost_2 = cost(f(time, k_delta), y(time))
-
-                # gradient calculation
-                grads.append((cost_2 - cost_1) / grad_step)
-            for arg in range(0, len(k)):
-                k[arg] -= mu * grads[arg]
-
-    print('Data fit complete.')
-    if print_cost:
+    def cost(param):
         total_cost = 0.0
         for time in t_steps:
-            total_cost += cost(f(time, k), y(time))
+            total_cost += cost_function(f(time, param), y(time))
 
-        print('Total Squared Error Cost Achieved: %s' % (total_cost))
+        return total_cost
+
+    print('Fitting data ...')
+    print('This will take about %s iterations \n\n' % (epochs * len(t_steps) * len(k)))
+    for e in range(epochs):
+        cost_1 = cost(k)
+        if print_cost:
+            print('Cost @ %s' % cost_1)
+
+        grads = []  # gradient accumulation array
+
+        for arg in range(0, len(k)):
+            # revised cost
+            k_delta = k
+            k_delta[arg] += grad_step
+            cost_2 = cost(k_delta)
+
+            # gradient calculation
+            grads.append((cost_2 - cost_1) / grad_step)
+        for arg in range(0, len(k)):
+            k[arg] -= mu * grads[arg]
+
+        print('Epoch %s completed \n' % (e + 1))
+
+    print('\nData fit complete.')
+    if print_cost:
+        print('Final cost: %s' % (cost(k)))
     return k
