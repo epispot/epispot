@@ -1,6 +1,0 @@
-"""
-Necessary for fitters.
-For models, see `sir-model-imports.py`
-"""
-
-import numpy as np
