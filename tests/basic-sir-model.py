@@ -1,4 +1,4 @@
-import epispot as epi
+from epispot import epispot as epi
 
 
 def R_0(t):

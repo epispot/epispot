@@ -8,6 +8,10 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 Install via `pip install epispot` <br>
 As a shorthand, use as `import epispot as epi`
 
+## Screenshots
+
+![epidemic-graph](https://i.ibb.co/K9wrhhs/temp.png)
+
 ## Features
 
  - SIR-based models
