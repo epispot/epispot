@@ -1,0 +1,10 @@
+README.md
+setup.py
+epispot/__init__.py
+epispot/comps.py
+epispot/models.py
+epispot/plots.py
+epispot.egg-info/PKG-INFO
+epispot.egg-info/SOURCES.txt
+epispot.egg-info/dependency_links.txt
+epispot.egg-info/top_level.txt
