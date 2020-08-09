@@ -6,6 +6,7 @@ STRUCTURE:
     - Susceptible(object)
     - Infected(object)
     - Recovered(object)
+    - Exposed(object)
 """
 
 from . import warnings
@@ -34,11 +35,11 @@ class Susceptible(object):
                     implemented as a function R_0(t):
                         - t: time
                         - return: R_0 value
-        :param gamma: the recovery rate
-                      1 / average time it takes one infected to recover
+        :param gamma: the infectious period
+                      1 / average duration of infectious period
                       implemented as a function gamma(t):
                         - t: time
-                        - return: recovery rate
+                        - return: infectious period
         :param N: the total population
                   implemented as a function N(t):
                         - t: time
@@ -120,7 +121,7 @@ class Susceptible(object):
 
         derivative = - self.gamma(time) * self.R_0(time) * system[self.layer_index] * \
                         total_infecteds / self.N(time)
-        # breakpoint()
+
         if self.first_layer:
             return derivative
 
@@ -157,15 +158,15 @@ class Infected(object):
                         - t: time
                         - return: total population
         :param R_0: =None, the basic reproductive number (only applicable if previous layer is Susceptible)
-                    this is the average number of susceptibles infected by one infected
+                    this is the average number of Susceptibles infected by one Infected
                     implemented as a function R_0(t):
                         - t: time
                         - return: R_0 value
-        :param gamma: =None, the recovery rate (only applicable if previous layer is Susceptible)
-                      1 / average time it takes one infected to recover
+        :param gamma: =None, the infectious period (only applicable if previous layer is Susceptible)
+                      1 / average duration of infectious period
                       implemented as a function gamma(t):
                         - t: time
-                        - return: recovery rate
+                        - return: infectious period
         :param delta: =None, the incubation period (only applicable if previous layer is Exposed)
                       implemented as a function delta(t)--in most cases this should stay constant
                         - t: time
@@ -443,3 +444,117 @@ class Recovered(object):
             derivative -= self.p_resusceptibility(time) * self.s_rate(time) * system[self.layer_index]
 
         return derivative
+
+
+class Exposed(object):
+    """
+    The Exposed class represents the incubation period of the disease.
+    This portion of individuals cannot spread the disease but are bound to become infected after some period of time.
+    Susceptible --> Exposed --> Infected
+    STRUCTURE:
+        - __init__
+        - get_layer_index
+        - test
+        - get_deriv
+    """
+
+    def __init__(self, layer_index, R_0, gamma, N, delta):
+        """
+        Initialize the Exposed class
+
+        :param layer_index: index of layer in `layers`
+        :param R_0: the basic reproductive number
+                    this is the average number of Susceptibles infected by one Infected
+                    implemented as a function R_0(t):
+                        - t: time
+                        - return: R_0 value
+        :param gamma: the infectious period
+                      1 / average duration of infectious period
+                      implemented as a function gamma(t):
+                        - t: time
+                        - return: infectious period
+        :param N: the total population
+                  implemented as a function N(t):
+                        - t: time
+                        - return: total population
+        :param delta: the incubation period (only applicable if previous layer is Exposed)
+                      implemented as a function delta(t)--in most cases this should stay constant
+                        - t: time
+                        - return: incubation period
+        """
+
+        self.layer_index = layer_index
+        self.R_0 = R_0
+        self.gamma = gamma
+        self.N = N
+        self.delta = delta
+
+        self.prev_layer_indices = []
+        self.infected_category_indices = []
+
+    def get_layer_index(self):
+        return self.layer_index
+
+    def test(self, layer_map, layer_names):
+        """
+        Test of the `get_deriv` method
+        Used to setup commonly used variables and raise common errors
+
+        :param layer_map: next layers (as classes) for every layer in Model
+        :param layer_names: layer names in system
+        :return: derivative
+        """
+
+        # setup
+        for layer_no in range(len(layer_map)):
+            for next_layer in layer_map[layer_no]:
+
+                if next_layer.get_layer_index() == self.layer_index and \
+                        layer_names[layer_no] == 'Susceptible':
+                    self.prev_layer_indices.append(layer_no)
+
+                # warning
+                elif next_layer.get_layer_index() == self.layer_index:
+                    warnings.warn('It seems like you want to connect the layer at %s to the Exposed layer at %s. '
+                                  'However, only Susceptible layers can be fed into an Exposed layer. '
+                                  'Consider creating a custom layer to handle this or remove the connection.' %
+                                  (layer_no, self.layer_index))
+
+        for next_layer_index in range(len(layer_map[self.layer_index])):
+
+            if layer_names[layer_map[self.layer_index][next_layer_index].get_layer_index()] == 'Infected':
+                self.infected_category_indices.append(layer_map[self.layer_index][next_layer_index].
+                                                      get_layer_index())
+
+            # warnings
+            else:
+                warnings.warn('It seems like you want to connect Exposed layer at %s to the layer at %s. '
+                              'However, only Infected layers can be placed in front of Exposed layers. '
+                              'Consider creating a custom layer to handle this or remove the connection.' %
+                              (self.layer_index, next_layer_index))
+
+        # warnings
+        if len(self.prev_layer_indices) == 0:
+            warnings.warn('It seems that the Exposed layer at %s is not in use. Please find a Susceptible '
+                          'layer to route through this layer or remove this layer altogether.' %
+                          self.layer_index)
+
+    def get_deriv(self, time, system):
+        """
+        Derivative of the Exposed compartment
+
+        :param time: time to take derivative at
+        :param system: system of all states
+        :return: derivative
+        """
+
+        total_susceptibles = 0
+        for prev_layer_index in self.prev_layer_indices:
+            total_susceptibles += system[prev_layer_index]
+
+        total_infecteds = 0
+        for infected_index in self.infected_category_indices:
+            total_infecteds += system[infected_index]
+
+        return self.gamma(time) * self.R_0(time) * total_susceptibles * \
+               total_infecteds / self.N(time) - self.delta(time) * system[self.layer_index]
