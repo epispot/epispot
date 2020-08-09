@@ -15,4 +15,4 @@ from . import models
 from . import plots
 
 # version info
-__version__ = '0.0.1'
+__version__ = 'v0.1.2-beta'
