@@ -628,6 +628,6 @@ class Idiom(object):
 
         # warn on no setup
         warnings.warn("The Idiom layer at %s has not been set up yet. Please replace the `get_deriv` method by \n"
-                      "adding IDIOM_LAYER_NAME.get_deriv = SOME_FUNCTION(self, time, system). Please see this function's \n"
-                      "documentation for more info" % self.layer_index)
+                      "adding IDIOM_LAYER_NAME.get_deriv = SOME_FUNCTION(self, time, system). Please see this \n"
+                      "function's documentation for more info" % self.layer_index)
         return None
