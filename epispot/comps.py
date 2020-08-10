@@ -7,6 +7,7 @@ STRUCTURE:
     - Infected(object)
     - Recovered(object)
     - Exposed(object)
+    - Idiom(object)
 """
 
 from . import warnings
@@ -558,3 +559,75 @@ class Exposed(object):
 
         return self.gamma(time) * self.R_0(time) * total_susceptibles * \
                total_infecteds / self.N(time) - self.delta(time) * system[self.layer_index]
+
+
+class Idiom(object):
+    """
+    An idiom used to create custom classes. Feed this into `Model.add_layer
+    Can be used with any class. Make sure to change `get_deriv` file.
+    If you wish, you can change all the other methods as well.
+    Pass all parameters as an array in `param_list`
+
+    STRUCTURE:
+        - __init__
+        - get_layer_index
+        - test
+        - get_deriv
+    """
+
+    def __init__(self, layer_index, param_list=[]):
+        """
+        Initialize the class
+
+        :param layer_index: index of layer in `layers`
+        :param param_list: =[], list of parameters, passed in array format
+        """
+
+        self.layer_index = layer_index
+        self.param_list = param_list
+
+        self.prev_layer_indices = []
+        self.prev_layer_types = []
+        self.next_layer_indices = []
+        self.next_layer_types = []
+        self.test_info = []  # use this to store any test information to be passed on to get_deriv
+
+    def get_layer_index(self):
+        return self.layer_index
+
+    def test(self, layer_map, layer_names):
+        """
+        Test of the `get_deriv` method
+        Used to setup commonly used variables and raise common errors
+
+        :param layer_map: next layers (as classes) for every layer in Model
+        :param layer_names: layer names in system
+        :return: derivative
+        """
+
+        # setup
+        for layer_no in range(len(layer_map)):
+            for next_layer in layer_map[layer_no]:
+                if next_layer.get_layer_index() == self.layer_index:
+                    self.prev_layer_indices.append(layer_no)
+                    self.prev_layer_types.append(layer_names[layer_no])
+
+        for next_layer_no in range(len(layer_map[self.layer_index])):
+            self.next_layer_indices.append(layer_map[self.layer_index][next_layer_no].get_layer_index())
+            self.next_layer_types.append(layer_names[layer_map[self.layer_index][next_layer_no].
+                                         get_layer_index()])
+
+    def get_deriv(self, time, system):
+        """
+        Derivative of this compartment
+
+        :param time: time to take derivative at
+        :param system: system of all states
+        :return: derivative
+        """
+
+        # warn on no setup
+        warnings.warn("The Idiom layer at %s has not been set up yet. Please replace the `get_deriv` method by \n"
+                      "adding IDIOM_LAYER_NAME.get_deriv = SOME_FUNCTION(self, time, system). Please see this function's \n"
+                      "documentation for more info" % self.layer_index)
+        return None
