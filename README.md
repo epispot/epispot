@@ -1,4 +1,5 @@
 # ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
+![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success)
 
 A tool for creating and testing epidemiological models faster than ever for the mathematical modelling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
