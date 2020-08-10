@@ -94,14 +94,14 @@ class Susceptible(object):
 
         # tests
         if not self.first_layer and not self.s_rate:
-            warnings.warn('The Susceptible layer at %s is not the first layer and there does not seem '
-                          'to be any specified susceptibility rate. You can specify this '
+            warnings.warn('The Susceptible layer at %s is not the first layer and there does not seem \n'
+                          'to be any specified susceptibility rate. You can specify this \n'
                           'by passing `s_rate=Value` into this layer.' % self.layer_index)
 
         for prev_layer_index in self.prev_layer_indices:
             if layer_names[prev_layer_index] != 'Removed' and layer_names[prev_layer_index] != 'Recovered':
-                warnings.warn('Previous layer at %s to the Susceptible layer at %s is neither Removed or '
-                              'Recovered. If you want to create a layer which does this, add a custom '
+                warnings.warn('Previous layer at %s to the Susceptible layer at %s is neither Removed or \n'
+                              'Recovered. If you want to create a layer which does this, add a custom \n'
                               'layer through `add_layer`. If not, fix the `layer_map`.' % (prev_layer_index,
                                                                                            self.layer_index))
 
@@ -251,29 +251,29 @@ class Infected(object):
                 # warning if there are different input layer types
                 if self.prev_layer_type is not None and next_layer.get_layer_index() == self.layer_index and \
                 layer_names[layer_map_no] != self.prev_layer_type:
-                    warnings.warn('Not all input layers to the Infected layer at %s are the same.'
-                                  'Input layers to the Infected layer should either all be Susceptible'
-                                  'or Exposed. Consider changing the `layer_map`' %
+                    warnings.warn('Not all input layers to the Infected layer at %s are the same. \n'
+                                  'Input layers to the Infected layer should either all be Susceptible \n'
+                                  'or Exposed. Consider changing the `layer_map`.' %
                                   self.layer_index)
 
         # warnings
         # undefined parameters
         if self.prev_layer_type == 'Susceptible' and not self.R_0:
-            warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the '
-                          'basic reproductive number is not defined. Please define as `R_0=Value`' %
+            warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the \n'
+                          'basic reproductive number is not defined. Please define as `R_0=Value`.' %
                           self.layer_index)
         if self.prev_layer_type == 'Susceptible' and not self.gamma:
-            warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the '
-                          'recovery rate is not defined. Please define as `gamma=Value`' % self.layer_index)
+            warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the \n'
+                          'recovery rate is not defined. Please define as `gamma=Value.`' % self.layer_index)
 
         if self.prev_layer_type == 'Exposed' and not self.delta:
-            warnings.warn('The previous layer type to the Infected layer at %s is Exposed and the '
-                          'incubation period is not defined. Please define as `delta=Value`' % self.layer_index)
+            warnings.warn('The previous layer type to the Infected layer at %s is Exposed and the \n'
+                          'incubation period is not defined. Please define as `delta=Value`.' % self.layer_index)
 
         # layer structures
         if self.prev_layer_type != 'Susceptible' and self.prev_layer_type != 'Exposed':
-            warnings.warn('Input layer types to the Infected layer at %s must be either '
-                          'Susceptible or Exposed. Consider changing the Input layers in `layer_map` '
+            warnings.warn('Input layer types to the Infected layer at %s must be either \n'
+                          'Susceptible or Exposed. Consider changing the Input layers in `layer_map` \n'
                           'or creating a custom Infected layer using `add_layer`.' % self.layer_index)
 
     def get_deriv(self, time, system):
@@ -402,15 +402,15 @@ class Recovered(object):
                     elif layer_names[layer_no] == 'Hospitalized':
                         self.prev_layer_indices_by_type[2].append(layer_no)
                     else:
-                        warnings.warn('Previous layer at %s to Recovered layer at %s is not Infected, Critical, or '
-                                      'Hospitalized. Consider either correcting the `layer_map` if this is not '
-                                      'supposed to happen, or accomodating for this setup by using a custom '
+                        warnings.warn('Previous layer at %s to Recovered layer at %s is not Infected, Critical, or \n'
+                                      'Hospitalized. Consider either correcting the `layer_map` if this is not \n'
+                                      'supposed to happen, or accomodating for this setup by using a custom \n'
                                       'Recovered layer.' % (layer_no, self.layer_index))
 
         # warnings
         for next_layer_index in range(len(layer_map[self.layer_index])):
             if layer_names[next_layer_index] != 'Susceptible':
-                warnings.warn('The next layer to the Recovered layer at %s must be a Susceptible layer. '
+                warnings.warn('The next layer to the Recovered layer at %s must be a Susceptible layer. \n'
                               'Change the `layer_map` to avoid this complication or use a custom layer.'
                               % self.layer_index)
 
@@ -515,8 +515,8 @@ class Exposed(object):
 
                 # warning
                 elif next_layer.get_layer_index() == self.layer_index:
-                    warnings.warn('It seems like you want to connect the layer at %s to the Exposed layer at %s. '
-                                  'However, only Susceptible layers can be fed into an Exposed layer. '
+                    warnings.warn('It seems like you want to connect the layer at %s to the Exposed layer at %s. \n'
+                                  'However, only Susceptible layers can be fed into an Exposed layer. \n'
                                   'Consider creating a custom layer to handle this or remove the connection.' %
                                   (layer_no, self.layer_index))
 
@@ -528,14 +528,14 @@ class Exposed(object):
 
             # warnings
             else:
-                warnings.warn('It seems like you want to connect Exposed layer at %s to the layer at %s. '
-                              'However, only Infected layers can be placed in front of Exposed layers. '
+                warnings.warn('It seems like you want to connect Exposed layer at %s to the layer at %s. \n'
+                              'However, only Infected layers can be placed in front of Exposed layers. \n'
                               'Consider creating a custom layer to handle this or remove the connection.' %
                               (self.layer_index, next_layer_index))
 
         # warnings
         if len(self.prev_layer_indices) == 0:
-            warnings.warn('It seems that the Exposed layer at %s is not in use. Please find a Susceptible '
+            warnings.warn('It seems that the Exposed layer at %s is not in use. Please find a Susceptible \n'
                           'layer to route through this layer or remove this layer altogether.' %
                           self.layer_index)
 
