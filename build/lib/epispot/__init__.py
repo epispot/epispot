@@ -7,7 +7,9 @@ Additionally, all files will have a 'STRUCTURE' label.
 
 # imports
 import warnings
+import random
 from matplotlib import pyplot as plt
+from matplotlib import colors
 
 # local
 from . import comps
@@ -15,4 +17,4 @@ from . import models
 from . import plots
 
 # version info
-__version__ = 'v0.1.2-beta'
+__version__ = 'v0.1.3-beta'
