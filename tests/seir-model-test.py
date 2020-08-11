@@ -7,7 +7,7 @@ from epispot import epispot as epi  # load the epi-spot package
 # basic reproductive number
 def R_0(t):
     # we use a simple logistic function to model R_0 in this example
-    return 2 - (2 / (1 + 2 ** (-t + 60)))  # these functions can be time-dependent
+    return 3.5 - (3.5 / (1 + 2 ** (-t + 60)))  # these functions can be time-dependent
 
 
 # all other variables are not time dependent (this is not required)
@@ -15,7 +15,7 @@ def R_0(t):
 
 # recovery rate
 def gamma(t):
-    return 0.2
+    return 0.25 - t / 500
 
 
 # total population
@@ -29,7 +29,7 @@ def p_recovery(t):
 
 
 def delta(t):
-    return 0.25
+    return 0.17
 
 
 # layers
@@ -45,5 +45,5 @@ Model = epi.models.Model(N(0), layers=[Susceptible, Exposed, Infected, Recovered
                                     [Infected], [Recovered], []])  # compile the model out of the layers defined above
 
 # the `plot_comp_nums` method automatically integrates the model and plots the result
-epi.plots.plot_comp_nums(Model, range(0, 100, 1), starting_state=[98000, 667, 1334, 0])
+epi.plots.plot_comp_nums(Model, range(0, 100, 1), starting_state=[98000, 667, 1334, 0], seed=50)
 print('stability: passing')

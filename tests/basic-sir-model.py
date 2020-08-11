@@ -40,4 +40,4 @@ Model = epi.models.Model(N(0), layers=[Susceptible, Infected, Recovered], layer_
                                     [Recovered], []])  # compile the model out of the layers defined above
 
 # the `plot_comp_nums` method automatically integrates the model and plots the result
-epi.plots.plot_comp_nums(Model, range(0, 150, 1))
+epi.plots.plot_comp_nums(Model, range(0, 150, 1), seed=12)
