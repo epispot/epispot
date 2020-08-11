@@ -7,6 +7,7 @@ STRUCTURE:
     - Infected(object)
     - Recovered(object)
     - Exposed(object)
+    - Dead(object)
     - Idiom(object)
 """
 
@@ -559,6 +560,138 @@ class Exposed(object):
 
         return self.gamma(time) * self.R_0(time) * total_susceptibles * \
                total_infecteds / self.N(time) - self.delta(time) * system[self.layer_index]
+
+
+class Dead(object):
+    """
+    The Dead class is a terminal state
+    As is convention with the SIR Model, we assume that this portion of individuals does not significantly
+    change the original population structure, and therefore, the total population will remain the same
+    regardless of how many people have been classified as Dead.
+    Infected, Critical, Hospitalized --> Dead (TERMINAL)
+    STRUCTURE:
+        - __init__
+        - get_layer_index
+        - test
+        - get_deriv
+    """
+
+    def __init__(self, layer_index, rho_inf=None, alpha_inf=None, rho_hos=None, alpha_hos=None, rho_cri=None,
+                 alpha_cri=None):
+        """
+        Initialize the Dead class
+
+        :param layer_index: index of layer in `layers`
+        :param rho_inf: =None, 1 / time until death from Infected (only applicable if previous layer is Infected)
+                        implemented as a function rho_inf(t)
+                                - t: time
+                                - return: death rate
+        :param alpha_inf: =None, probability of death from Infected (only applicable if previous layer is Infected)
+                          implemented as a function alpha_inf(t)
+                                - t: time
+                                - return: probability of death
+        :param rho_hos: =None, 1 / time until death from Hospitalized (only applicable if previous layer is
+                        Hospitalized)
+                        implemented as a function rho_hos(t)
+                                - t: time
+                                - return: death rate
+        :param alpha_hos: =None, probability of death from Hospitalized (only applicable if previous layer is
+                          Hospitalized)
+                          implemented as a function alpha_hos(t)
+                                - t: time
+                                - return: probability of death
+        :param rho_cri: =None, 1 / time until death from Critical (only applicable if previous layer is Critical)
+                        implemented as a function rho_cri(t)
+                                - t: time
+                                - return: death rate
+        :param alpha_cri: =None, probability of death from Critical (only applicable if previous layer is Critical)
+                          implemented as a function alpha_cri(t)
+                                - t: time
+                                - return: probability of death
+        """
+
+        self.layer_index = layer_index
+        self.rho_inf = rho_inf
+        self.alpha_inf = alpha_inf
+        self.rho_hos = rho_hos
+        self.alpha_hos = alpha_hos
+        self.rho_cri = rho_cri
+        self.alpha_cri = alpha_cri
+
+        self.infected_category_indices = []
+        self.hospitalized_category_indices = []
+        self.critical_category_indices = []
+
+    def get_layer_index(self):
+        return self.layer_index
+
+    def test(self, layer_map, layer_names):
+        """
+        Test of the `get_deriv` method
+        Used to setup commonly used variables and raise common errors
+
+        :param layer_map: next layers (as classes) for every layer in Model
+        :param layer_names: layer names in system
+        :return: derivative
+        """
+
+        # setup
+        for layer_no in range(len(layer_map)):
+            for next_layer in layer_map[layer_no]:
+
+                if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
+                    self.infected_category_indices.append(layer_no)
+                elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Hospitalized':
+                    self.infected_category_indices.append(layer_no)
+                elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Critical':
+                    self.infected_category_indices.append(layer_no)
+
+                # warnings
+                elif next_layer.get_layer_index() == self.layer_index:
+                    warnings.warn('You are trying to connect an incorrect layer type at %s to the Dead layer at %s. \n'
+                                  'Previous layers to the Dead layer must be of the Infected, Critical, or \n'
+                                  'Hospitalized type.' % (layer_no, self.layer_index))
+
+        # warnings
+        if not self.rho_inf and len(self.infected_category_indices) > 0:
+            warnings.warn('You have connected an Infected layer to the Dead layer at %s but \n'
+                          'you have not specified a death rate for that layer. Please do this by \n'
+                          'passing in parameters `rho_inf=Float` and `alpha_inf=Float` when \n'
+                          'the Dead layer is initialized.' % self.layer_index)
+
+        if not self.rho_hos and len(self.hospitalized_category_indices) > 0:
+            warnings.warn('You have connected a Hospitalized layer to the Dead layer at %s but \n'
+                          'you have not specified a death rate for that layer. Please do this by \n'
+                          'passing in parameters `rho_hos=Float` and `alpha_hos=Float` when \n'
+                          'the Dead layer is initialized.' % self.layer_index)
+
+        if not self.rho_cri and len(self.critical_category_indices) > 0:
+            warnings.warn('You have connected a Critical layer to the Dead layer at %s but \n'
+                          'you have not specified a death rate for that layer. Please do this by \n'
+                          'passing in parameters `rho_cri=Float` and `alpha_cri=Float` when \n'
+                          'the Dead layer is initialized.' % self.layer_index)
+
+    def get_deriv(self, time, system):
+        """
+        Derivative of the Dead compartment
+
+        :param time: time to take derivative at
+        :param system: system of all states
+        :return: derivative
+        """
+
+        derivative = 0
+
+        for infected_category_index in self.infected_category_indices:
+            derivative += self.rho_inf(time) * self.alpha_inf(time) * system[infected_category_index]
+
+        for hospitalized_category_index in self.hospitalized_category_indices:
+            derivative += self.rho_hos(time) * self.alpha_hos(time) * system[hospitalized_category_index]
+
+        for critical_category_index in self.critical_category_indices:
+            derivative += self.rho_cri(time) * self.alpha_cri(time) * system[critical_category_index]
+
+        return derivative
 
 
 class Idiom(object):
