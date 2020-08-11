@@ -7,7 +7,9 @@ Additionally, all files will have a 'STRUCTURE' label.
 
 # imports
 import warnings
+import random
 from matplotlib import pyplot as plt
+from matplotlib import colors
 
 # local
 from . import comps
