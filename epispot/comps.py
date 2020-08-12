@@ -8,6 +8,7 @@ STRUCTURE:
     - Recovered(object)
     - Exposed(object)
     - Dead(object)
+    - Hospitalized(object)
     - Idiom(object)
 """
 
