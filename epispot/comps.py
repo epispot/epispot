@@ -313,7 +313,7 @@ class Infected(object):
 
 class Recovered(object):
     """
-    The Recovered class is commonly confused with the 'R' of the 'SIR' Model.
+    The Recovered class can act like the 'R' of the 'SIR' Model if the recovery and death rates are the same.
     This class actually consists of individuals who have had the disease and recovered
     (i.e. did not die).
     This class can be used as a terminal state.
