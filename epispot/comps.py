@@ -642,9 +642,9 @@ class Dead(object):
                 if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
                     self.infected_category_indices.append(layer_no)
                 elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Hospitalized':
-                    self.infected_category_indices.append(layer_no)
+                    self.hospitalized_category_indices.append(layer_no)
                 elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Critical':
-                    self.infected_category_indices.append(layer_no)
+                    self.critical_category_indices.append(layer_no)
 
                 # warnings
                 elif next_layer.get_layer_index() == self.layer_index:
@@ -690,6 +690,132 @@ class Dead(object):
 
         for critical_category_index in self.critical_category_indices:
             derivative += self.rho_cri(time) * self.alpha_cri(time) * system[critical_category_index]
+
+        return derivative
+
+
+class Hospitalized(object):
+    """
+    The Hospitalized class represents the portion of individuals currently taking up space in the available
+    hospitals. However, this is a distinct category from the Critical portion of individuals, who require
+    more resources (ICU beds, etc.). This layer supports triage.
+    Infected --> Hospitalized --> Critical, Dead
+    STRUCTURE:
+        - __init__
+        - get_layer_index
+        - test
+        - get_deriv
+    """
+
+    def __init__(self, layer_index, hos_rate, p_hos, cri_rate=None, p_cri=None, recovery_rate=None,
+                 p_recovery=None, rho=None, alpha=None, maxCap=None, dump_to_layer=None):
+        """
+        Initialize the Hospitalized class
+
+        :param layer_index: index of layer in `layers`
+        :param hos_rate: 1 / time until hospitalization
+                        implemented as a function hos_rate(t)
+                                - t: time
+                                - return: hospitalization rate
+        :param p_hos: probability of hospitalization
+                        implemented as a function p_hos(t)
+                                - t: time
+                                - return: probability of hospitalization
+        :param cri_rate: 1 / time until a patient becomes Critical
+                        implemented as a function cri_rate(t)
+                                - t: time
+                                - return: critical rate
+        :param p_cri: probability of becoming a Critical patient
+                        implemented as a function p_cri(t)
+                                - t: time
+                                - return: probability of becoming Critical
+        :param recovery_rate: 1 / time to recover
+                        implemented as a function recovery_rate(t)
+                                - t: time
+                                - return: recovery rate
+        :param p_recovery: probability of recovery
+                        implemented as a function p_recovery(t)
+                                - t: time
+                                - return: probability of recovery
+        :param rho: 1 / time in hospital until death
+                        implemented as a function rho(t)
+                                - t: time
+                                - return: death rate
+        :param alpha: probability of death
+                        implemented as a function alpha(t)
+                                - t: time
+                                - return: probability of death
+        :param maxCap: maximum hospital capacity to implement triage
+                        implemented as a function maxCap(t)
+                                - t: time
+                                - return: maximum capacity
+        :param dump_to_layer: index of the layer to dump patients which do not make the triage
+                              should be of type int()
+        """
+
+        self.layer_index = layer_index
+        self.hos_rate = hos_rate
+        self.p_hos = p_hos
+        self.cri_rate = cri_rate
+        self.p_cri = p_cri
+        self.recovery_rate = recovery_rate
+        self.p_recovery = p_recovery
+        self.rho = rho
+        self.alpha = alpha
+        self.maxCap = maxCap
+        self.dump_to_layer = dump_to_layer
+
+        self.prev_layer_indices = []
+
+    def get_layer_index(self):
+        return self.layer_index
+
+    def test(self, layer_map, layer_names):
+        """
+        Test of the `get_deriv` method
+        Used to setup commonly used variables and raise common errors
+
+        :param layer_map: next layers (as classes) for every layer in Model
+        :param layer_names: layer names in system
+        :return: derivative
+        """
+
+        # setup
+        for layer_no in range(len(layer_map)):
+            for next_layer in layer_map[layer_no]:
+                if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
+                    self.prev_layer_indices.append(layer_no)
+                # warnings
+                elif next_layer.get_layer_index() == self.layer_index:
+                    warnings.warn('An layer of an unsupported type at %s is being connected to the Infected \n'
+                                  'layer at %s. If this is a mistake, remove the connection. Otherwise, try \n'
+                                  'using a custom layer to do this.' % (layer_no, self.layer_index))
+
+    def get_deriv(self, time, system):
+        """
+        Derivative of this compartment
+
+        :param time: time to take derivative at
+        :param system: system of all states
+        :return: derivative
+        """
+
+        derivative = 0
+
+        for prev_layer_index in self.prev_layer_indices:
+            derivative += self.hos_rate(time) * self.p_hos(time) * system[prev_layer_index]
+
+        if self.p_cri:
+            derivative -= self.p_cri(time) * self.cri_rate(time) * system[self.layer_index]
+        if self.p_recovery:
+            derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
+        if self.alpha:
+            derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
+
+        # implement triage
+        if self.maxCap:
+            if system[self.layer_index] > self.maxCap(time):
+                derivative -= system[self.layer_index] - self.maxCap(time)
 
         return derivative
 
