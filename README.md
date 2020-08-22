@@ -15,7 +15,7 @@ As a shorthand, use as `import epispot as epi`
 
 ## Screenshots
 
-![epidemic-graph](https://i.ibb.co/K9wrhhs/temp.png)
+![line-graph](tests/examples/line-graph.png)
 
 ## Features
 

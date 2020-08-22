@@ -9,6 +9,7 @@ STRUCTURE:
     - Exposed(object)
     - Dead(object)
     - Hospitalized(object)
+    - Critical(object)
     - Idiom(object)
 """
 
@@ -210,7 +211,7 @@ class Infected(object):
                         - t: time
                         - return: death probability
         :param death_rate: =None, 1 / rate of death (only applicable if next layer is Dead)
-                      implemented as a function death_rate(t)
+                      implemented as a function death_rate(t)--in most cases this should stay constant
                         - t: time
                         - return: death rate
         """
@@ -584,7 +585,7 @@ class Dead(object):
 
         :param layer_index: index of layer in `layers`
         :param rho_inf: =None, 1 / time until death from Infected (only applicable if previous layer is Infected)
-                        implemented as a function rho_inf(t)
+                        implemented as a function rho_inf(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
         :param alpha_inf: =None, probability of death from Infected (only applicable if previous layer is Infected)
@@ -593,7 +594,7 @@ class Dead(object):
                                 - return: probability of death
         :param rho_hos: =None, 1 / time until death from Hospitalized (only applicable if previous layer is
                         Hospitalized)
-                        implemented as a function rho_hos(t)
+                        implemented as a function rho_hos(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
         :param alpha_hos: =None, probability of death from Hospitalized (only applicable if previous layer is
@@ -602,7 +603,7 @@ class Dead(object):
                                 - t: time
                                 - return: probability of death
         :param rho_cri: =None, 1 / time until death from Critical (only applicable if previous layer is Critical)
-                        implemented as a function rho_cri(t)
+                        implemented as a function rho_cri(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
         :param alpha_cri: =None, probability of death from Critical (only applicable if previous layer is Critical)
@@ -699,7 +700,7 @@ class Hospitalized(object):
     """
     The Hospitalized class represents the portion of individuals currently taking up space in the available
     hospitals. However, this is a distinct category from the Critical portion of individuals, who require
-    more resources (ICU beds, etc.). This layer supports triage.
+    more resources (ICU beds, ventilators, etc.). This layer supports triage.
     Infected --> Hospitalized --> Critical, Dead
     STRUCTURE:
         - __init__
@@ -722,35 +723,35 @@ class Hospitalized(object):
                         implemented as a function p_hos(t)
                                 - t: time
                                 - return: probability of hospitalization
-        :param cri_rate: 1 / time until a patient becomes Critical
+        :param cri_rate: =None, 1 / time until a patient becomes Critical (only applicable if next layer is Critical)
                         implemented as a function cri_rate(t)
                                 - t: time
                                 - return: critical rate
-        :param p_cri: probability of becoming a Critical patient
+        :param p_cri: =None, probability of becoming a Critical patient (only applicable if next layer is Critical)
                         implemented as a function p_cri(t)
                                 - t: time
                                 - return: probability of becoming Critical
-        :param recovery_rate: 1 / time to recover
+        :param recovery_rate: =None, 1 / time to recover (only applicable if next layer is Recovered)
                         implemented as a function recovery_rate(t)
                                 - t: time
                                 - return: recovery rate
-        :param p_recovery: probability of recovery
+        :param p_recovery: =None, probability of recovery (only applicable if next layer is Recovered)
                         implemented as a function p_recovery(t)
                                 - t: time
                                 - return: probability of recovery
-        :param rho: 1 / time in hospital until death
-                        implemented as a function rho(t)
+        :param rho: =None, 1 / time in hospital until death (only applicable if next layer is Dead)
+                        implemented as a function rho(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
-        :param alpha: probability of death
+        :param alpha: =None, probability of death (only applicable if next layer is Dead)
                         implemented as a function alpha(t)
                                 - t: time
                                 - return: probability of death
-        :param maxCap: maximum hospital capacity to implement triage
+        :param maxCap: =None, maximum hospital capacity to implement triage
                         implemented as a function maxCap(t)
                                 - t: time
                                 - return: maximum capacity
-        :param dump_to_layer: index of the layer to dump patients which do not make the triage
+        :param dump_to_layer: =None, index of the layer to dump patients which do not make the triage
                               should be of type int()
         """
 
@@ -794,7 +795,7 @@ class Hospitalized(object):
 
     def get_deriv(self, time, system):
         """
-        Derivative of this compartment
+        Derivative of the Hospitalized compartment
 
         :param time: time to take derivative at
         :param system: system of all states
@@ -821,13 +822,157 @@ class Hospitalized(object):
         return derivative
 
 
+class Critical(object):
+    """
+    The Critical class represents the portion of individuals currently taking up space in the available
+    hospitals *and* using limited resources. However, this is a distinct category from the Hospitalized portion of
+    individuals, who don't require extra resources (ICU beds, ventilators, etc.). This layer supports triage.
+    Hospitalized, Infected --> Critical --> Dead, Recovered
+    STRUCTURE:
+        - __init__
+        - get_layer_index
+        - test
+        - get_deriv
+    """
+
+    def __init__(self, layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None, alpha=None,
+                 p_recovery=None, recovery_rate=None, maxCap=None, dump_to_layer=None):
+        """
+        Initialize the Critical class
+
+        :param layer_index: index of layer in `layers`
+        :param p_from_hos: =None, probability of becoming a Critical patient from Hospitalized
+                           (only applicable if previous layer is Hospitalized)
+                           implemented as a function p_from_hos(t)
+                                - t: time
+                                - return: Critical probability
+        :param from_hos_rate: =None, 1 / time to Critical condition from Hospitalized
+                           (only applicable if previous layer is Hospitalized)
+                           implemented as a function from_hos_rate(t)
+                                - t: time
+                                - return: Critical rate
+        :param p_from_inf: =None, probability of becoming a Critical patient from Infected
+                           (only applicable if previous layer is Infected)
+                           implemented as a function p_from_inf(t)
+                                - t: time
+                                - return: Critical probability
+        :param from_inf_rate: =None, 1 / time to Critical condition from Infected
+                           (only applicable if previous layer is Infected)
+                           implemented as a function from_inf_rate(t)
+                                - t: time
+                                - return: Critical rate
+        :param alpha: =None, probability of death (only applicable if next layer is Dead)
+                           implemented as a function alpha(t)
+                                - t: time
+                                - return: probability of death
+        :param rho: =None, 1 / time until death from Critical (only applicable if next layer is Dead)
+                           implemented as a function rho(t)--in most cases this should stay constant
+                                - t: time
+                                - return: death rate
+        :param p_recovery: =None, probability of recovery (only applicable if next layer is Recovered)
+                           implemented as a function p_recovery(t)
+                                - t: time
+                                - return: probability of recovery
+        :param recovery_rate: =None, 1 / time to recover (only applicable if next layer is Recovered)
+                           implemented as a function recovery_rate(t)
+                                - t: time
+                                - return: recovery rate
+        :param maxCap: =None, maximum hospital capacity to implement triage
+                        implemented as a function maxCap(t)
+                                - t: time
+                                - return: maximum capacity
+        :param dump_to_layer: =None, index of the layer to dump patients which do not make the triage
+                              should be of type int()
+        """
+
+        self.layer_index = layer_index
+        self.p_from_hos = p_from_hos
+        self.from_hos_rate = from_hos_rate
+        self.p_from_inf = p_from_inf
+        self.from_inf_rate = from_inf_rate
+        self.alpha = alpha
+        self.rho = rho
+        self.p_recovery = p_recovery
+        self.recovery_rate = recovery_rate
+        self.maxCap = maxCap
+        self.dump_to_layer = dump_to_layer
+
+        self.hospitalized_category_indices = []
+        self.infected_category_indices = []
+
+    def get_layer_index(self):
+        return self.layer_index
+
+    def test(self, layer_map, layer_names):
+        """
+        Test of the `get_deriv` method
+        Used to setup commonly used variables and raise common errors
+
+        :param layer_map: next layers (as classes) for every layer in Model
+        :param layer_names: layer names in system
+        :return: derivative
+        """
+
+        # setup
+        for layer_no in range(len(layer_map)):
+            for next_layer in layer_map[layer_no]:
+                if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Hospitalized':
+                    self.hospitalized_category_indices.append(layer_no)
+                elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
+                    self.infected_category_indices.append(layer_no)
+                # warnings
+                elif next_layer.get_layer_index() == self.layer_index:
+                    warnings.warn('You are trying to connect a layer to the Critical layer at %s that is neither \n'
+                                  'of the Hospitalized or Infected type. Please remove this connection or use a \n'
+                                  'custom layer instead of this one.' % self.layer_index)
+
+        # warnings
+        if not self.p_from_hos and len(self.hospitalized_category_indices) > 0:
+            warnings.warn("You have connected a Hospitalized layer to the Critical layer at %s but \n"
+                          "haven't specified a Critical probability. Please do this by writing \n"
+                          "`p_from_hos=FLOAT` AND `from_hos_rate=FLOAT` so this can be used.")
+
+        if not self.p_from_inf and len(self.infected_category_indices) > 0:
+            warnings.warn("You have connected a Infected layer to the Critical layer at %s but \n"
+                          "haven't specified a Critical probability. Please do this by writing \n"
+                          "`p_from_inf=FLOAT` AND `from_inf_rate=FLOAT` so this can be used.")
+
+    def get_deriv(self, time, system):
+        """
+        Derivative of the Critical compartment
+
+        :param time: time to take derivative at
+        :param system: system of all states
+        :return: derivative
+        """
+
+        derivative = 0
+
+        for hospitalized_category_index in self.hospitalized_category_indices:
+            derivative += self.p_from_hos(time) * self.from_hos_rate(time) * system[hospitalized_category_index]
+
+        for infected_category_index in self.infected_category_indices:
+            derivative += self.p_from_inf(time) * self.from_inf_rate(time) * system[infected_category_index]
+
+        if self.alpha:
+            derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
+        if self.p_recovery:
+            derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
+
+        # implement triage
+        if self.maxCap:
+            if system[self.layer_index] > self.maxCap(time):
+                derivative -= system[self.layer_index] - self.maxCap(time)
+
+        return derivative
+
+
 class Idiom(object):
     """
     An idiom used to create custom classes. Feed this into `Model.add_layer
     Can be used with any class. Make sure to change `get_deriv` file.
     If you wish, you can change all the other methods as well.
     Pass all parameters as an array in `param_list`
-
     STRUCTURE:
         - __init__
         - get_layer_index

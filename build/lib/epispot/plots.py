@@ -10,7 +10,7 @@ from . import random
 from . import colors
 
 
-def plot_comp_nums(Model, timesteps, starting_state=None, seed=1):
+def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     """
     This is meant for plotting the number of people in each compartment over a period of time
 

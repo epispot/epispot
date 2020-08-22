@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: epispot
-Version: 0.1.3b0
+Version: 1.0.0
 Summary: A tool for modelling infectious diseases.
 Home-page: https://quantum9innovation.github.io/epispot
 Author: quantum9innovation
@@ -11,6 +11,10 @@ Description: # ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
         A tool for creating and testing epidemiological models faster than ever for the mathematical modelling of infectious 
         diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
         
+        <br><br><br>
+        
+        ![epi-spot social image](https://i.ibb.co/0KLfTm5/epi-spot-social.png)
+        
         ## Installation
         
         Install via `pip install epispot` <br>
@@ -18,7 +22,7 @@ Description: # ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
         
         ## Screenshots
         
-        ![epidemic-graph](https://i.ibb.co/K9wrhhs/temp.png)
+        ![line-graph](tests/examples/line-graph.png)
         
         ## Features
         
@@ -51,5 +55,5 @@ Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3.7
 Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3
+Requires-Python: >=3.7
 Description-Content-Type: text/markdown
