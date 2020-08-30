@@ -8,7 +8,7 @@ STRUCTURE:
 from . import np
 
 
-def grad_des(get_model_pred, real_data, model_params, mu, epochs, delta=0.01):
+def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, delta=0.0001):
     """
     The gradient descent fitter. This is not stochastic.
     For long timespans, this may take a long time to converge.
@@ -23,7 +23,9 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, delta=0.01):
     :param mu: the learning rate (adjust so that loss decreases after every epoch)
     :param epochs: number of training sessions to run
                    (more epochs = more accuracy + more time running)
-    :param delta: use small values for more precision--increase if gradients are 0
+    :param N: the total population
+    :param samples: array of timestamps to use for training
+    :param delta: =0.0001, use small values for more precision--increase if gradients are 0
     :return: optimized `model_params`
     """
 
@@ -33,7 +35,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, delta=0.01):
 
     # quadratic cost
     def cost(pred, real):
-        return np.sum((np.array(pred)[-1] - np.array(real)[-1]) ** 2)
+        return np.sum(((np.array(pred)[-1][1] / N - np.array(real)[-1][1] / N)) ** 2)
 
     data = [file[l].split(',') for l in range(1, len(file))]
     for line in range(len(data)):
@@ -61,6 +63,11 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, delta=0.01):
 
             model_params[param] -= delta
 
-        model_params -= mu * np.array(gradients)
+        print(gradients)
+        print(model_params)
+        model_params = model_params - mu * np.array(gradients)
+        print(model_params)
+        predictions = get_model_pred(model_params)
+        print(cost(predictions, data[1:]))
 
     return model_params
