@@ -52,7 +52,7 @@ def get_model_predictions(params):
 
 parameters = [1.5, 1.5, 1.5, 0.0714, 0]
 new_params = epi.fitters.grad_des(get_model_predictions, open('data/sf-total-cases.csv'), parameters,
-                                  1.3, 3, 883305, range(10, 110, 10))
+                                  3.0, 3, 883305, range(10, 110, 10))
 print('\n')
 print(new_params)
 
@@ -109,6 +109,4 @@ for char in range(len(data[0])):
     data[0][char] = int(data[0][char])
 
 print(abs(get_model_predictions(new_params)[-1][1] - data[-1][1]))
-# breakpoint()
-
-epi.plots.plot_comp_nums(Model, range(0, 200), starting_state=[883225, 80 - start_rec, start_rec])
+epi.plots.plot_comp_nums(Model, range(0, 500), starting_state=[883225, 80 - start_rec, start_rec])

@@ -34,8 +34,17 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
     layers_to_opt = [int(char) for char in file[0].split(',')]
 
     # quadratic cost
+
     def cost(pred, real):
-        return np.sum(((np.array(pred)[-1][1] / N - np.array(real)[-1][1] / N)) ** 2)
+
+        p_samp = []
+        r_samp = []
+
+        for sample in samples:
+            p_samp.append(pred[sample][1] / N)
+            r_samp.append(real[sample][1] / N)
+
+        return np.sum((np.array(p_samp) - np.array(r_samp)) ** 2)
 
     data = [file[l].split(',') for l in range(1, len(file))]
     for line in range(len(data)):
@@ -63,11 +72,11 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
             model_params[param] -= delta
 
-        print(gradients)
-        print(model_params)
+        # print(gradients)
+        # print(model_params)
         model_params = model_params - mu * np.array(gradients)
-        print(model_params)
-        predictions = get_model_pred(model_params)
-        print(cost(predictions, data[1:]))
+        # print(model_params)
+        # predictions = get_model_pred(model_params)
+        # print(cost(predictions, data[1:]))
 
     return model_params
