@@ -2,6 +2,7 @@ README.md
 setup.py
 epispot/__init__.py
 epispot/comps.py
+epispot/fitters.py
 epispot/models.py
 epispot/plots.py
 epispot.egg-info/PKG-INFO

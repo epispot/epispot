@@ -8,6 +8,7 @@ Additionally, all files will have a 'STRUCTURE' label.
 # imports
 import warnings
 import random
+import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import colors
 
@@ -15,6 +16,7 @@ from matplotlib import colors
 from . import comps
 from . import models
 from . import plots
+from . import fitters
 
 # version info
-__version__ = 'v1.0.0'
+__version__ = 'v1.1.0'

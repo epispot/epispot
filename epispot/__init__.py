@@ -19,4 +19,4 @@ from . import plots
 from . import fitters
 
 # version info
-__version__ = 'v1.0.0'
+__version__ = 'v1.1.0'
