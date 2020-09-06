@@ -46,4 +46,6 @@ Documentation can easily be accessed from function, class, and file docstrings.
 Doc strings provide additional documentation on a certain function.
 They can be accessed by the built-in Python `help()` command.
 These strings are formatted in Github-flavored markdown.
-Additionally, all files will have a 'STRUCTURE' label.
+Additionally, all files will have a 'STRUCTURE' label. Tutorials can be found
+in the `tests/tutorials` folder. All tutorials will have a `.md` file
+followed by a corresponding code file.
