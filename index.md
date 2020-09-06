@@ -19,7 +19,7 @@ As a shorthand, use as `import epispot as epi`
 
 ## Screenshots
 
-![line-graph](epispot/tests/examples/line-graph.png)
+![line-graph](https://raw.githubusercontent.com/quantum9Innovation/epispot/master/tests/examples/line-graph.png)
 
 ## Features
 
