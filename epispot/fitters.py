@@ -8,7 +8,7 @@ STRUCTURE:
 from . import np
 
 
-def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, delta=0.0001):
+def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, delta=0.0001, verbose=False):
     """
     The gradient descent fitter. This is not stochastic.
     For long timespans, this may take a long time to converge.
@@ -26,6 +26,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
     :param N: the total population
     :param samples: array of timestamps to use for training
     :param delta: =0.0001, use small values for more precision--increase if gradients are 0
+    :param verbose: =False, use to debug and get gradient information
     :return: optimized `model_params`
     """
 
@@ -43,6 +44,12 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
         for sample in samples:
             p_samp.append(pred[sample][1] / N)
             r_samp.append(real[sample][1] / N)
+
+        if verbose:
+            print('predicted, data: ')
+            print(p_samp)
+            print(r_samp)
+            print('\n')
 
         return np.sum((np.array(p_samp) - np.array(r_samp)) ** 2)
 
@@ -72,11 +79,11 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
             model_params[param] -= delta
 
-        # print(gradients)
-        # print(model_params)
+        if verbose:
+            print('Gradients: ')
+            print(gradients)
+            print('\n')
+
         model_params = model_params - mu * np.array(gradients)
-        # print(model_params)
-        # predictions = get_model_pred(model_params)
-        # print(cost(predictions, data[1:]))
 
     return model_params
