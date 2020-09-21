@@ -3,6 +3,7 @@ The 'plots' module contains all plotting functions for visualizing models.
 These functions require the installation of matplotlib for graphics.
 STRUCTURE:
     - plot_comp_nums
+    - compare
 """
 
 from . import plt
@@ -17,7 +18,7 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     :param Model: an instance of the `Model` class
     :param timesteps: timesteps to plot as range(beg_time, end_time, day_length)
     :param starting_state: initial conditions vector: [comp_1_start, comp_2_start, ...]
-    :param seed: =1, for generating new random colors
+    :param seed: =100, for generating new random colors
     :return: matplotlib plot
     """
 
@@ -37,6 +38,42 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
         color = (random.random(), random.random(), random.random())
         ax.plot(timesteps, compartments[layer], colors.to_hex(color), linewidth=2,
                 label=Model.layer_names[layer])
+
+    legend = ax.legend()
+    legend.get_frame().set_alpha(0.5)
+
+    ax.set_xlabel('Time (days)')
+    ax.set_ylabel('People')
+    ax.yaxis.set_tick_params(length=0)
+    ax.xaxis.set_tick_params(length=0)
+
+    for spine in ('top', 'right', 'bottom', 'left'):
+        ax.spines[spine].set_visible(False)
+
+    plt.show()
+
+
+def compare(ranges, seed=200):
+    """
+    This function is used to compare multiple predictions which can range across time ranges.
+    Often, this is used to compare real data with model predictions or to show the predictions after
+    the real data in one window.
+
+    :param ranges: A list of items to plot. Follow the idiom below:
+                    [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
+                    label (in str() format), ... ]
+    :param seed: =200, for generating new random colors
+    :return: matplotlib plot (log scale)
+    """
+
+    f, ax = plt.subplots(1, 1, figsize=(10, 4))
+    plt.yscale('log')
+
+    random.seed(a=seed)
+    for r in ranges:
+        color = (random.random(), random.random(), random.random())
+        ax.plot(r[0], r[1], colors.to_hex(color), linewidth=2,
+                label=r[2])
 
     legend = ax.legend()
     legend.get_frame().set_alpha(0.5)
