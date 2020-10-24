@@ -1,4 +1,4 @@
-from epispot import epispot as epi  # load the epi-spot package
+import epispot as epi  # load the epi-spot package
 
 
 # variables (used when defining layers)

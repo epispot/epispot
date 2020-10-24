@@ -1,4 +1,4 @@
-from epispot import epispot as epi  # load the epi-spot package
+import epispot as epi  # load the epi-spot package
 
 
 def get_model_predictions(params, return_model=False):
