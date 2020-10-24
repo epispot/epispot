@@ -17,6 +17,15 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 Install via `pip install epispot` <br>
 As a shorthand, use as `import epispot as epi`
 
+## Getting Started
+
+Check the guides and tutorials found
+in the `tests/tutorials` folder. All tutorials will have a `.md` file
+followed by a corresponding code file. If you get stuck, don't understand 
+something, or just need to reference the documentation, per-class 
+documentation can be found in the `docs/epispot` folder. You may also find 
+it helpful to see the examples in the `tests/examples` folder.
+
 ## Screenshots
 
 ![line-graph](tests/examples/line-graph.png)
@@ -46,6 +55,4 @@ Documentation can easily be accessed from function, class, and file docstrings.
 Doc strings provide additional documentation on a certain function.
 They can be accessed by the built-in Python `help()` command.
 These strings are formatted in Github-flavored markdown.
-Additionally, all files will have a 'STRUCTURE' label. Tutorials can be found
-in the `tests/tutorials` folder. All tutorials will have a `.md` file
-followed by a corresponding code file.
+Additionally, all files will have a 'STRUCTURE' label.
