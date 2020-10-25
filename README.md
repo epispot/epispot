@@ -10,7 +10,7 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 
 <br>
 
-![epi-spot social image](https://i.ibb.co/0KLfTm5/epi-spot-social.png)
+![epi-spot social image](https://docs.google.com/drawings/d/e/2PACX-1vT6zazkjjnz8UMZz7mxPFXjnvC1Q1HgBLGcNwt0DEqla5N10kC_LPcdbuWae2VBWgCL7kynE8vCTzru/pub?w=1440&h=1080)
 
 ## Installation
 
@@ -28,6 +28,7 @@ it helpful to see the examples in the `tests/examples` folder.
 
 ## Screenshots
 
+![sf-case-study](tests/examples/compare-function.png)
 ![line-graph](tests/examples/line-graph.png)
 
 ## Features
