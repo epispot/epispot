@@ -53,7 +53,7 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     plt.show()
 
 
-def compare(ranges, seed=200):
+def compare(ranges, title="", subtitle="", markers=[], seed=200):
     """
     This function is used to compare multiple predictions which can range across time ranges.
     Often, this is used to compare real data with model predictions or to show the predictions after
@@ -62,6 +62,15 @@ def compare(ranges, seed=200):
     :param ranges: A list of items to plot. Follow the idiom below:
                     [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
                     label (in str() format), ... ]
+    :param title: ="", (str) the title of the plot
+    :param subtitle: ="", (str) the subtitle of the plot
+    :param markers: =[], a list of sequenced markers in the format:
+                         ['marker name', [...marker parameters]]
+                         'marker name' can be any of:
+                            - line, param: [y, x1, x2, label]
+                            - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
+                            - point, param: [label, x, y]
+                            - arrow, param: [x, y, dx, dy]
     :param seed: =200, for generating new random colors
     :return: matplotlib plot (log scale)
     """
@@ -75,6 +84,21 @@ def compare(ranges, seed=200):
         ax.plot(r[0], r[1], colors.to_hex(color), linewidth=2,
                 label=r[2])
 
+    for marker in markers:
+
+        if marker[0] == 'line':
+            plt.hlines(marker[1][0], marker[1][1], marker[1][2], label=marker[1][3])
+
+        if marker[0] == 'highlighted-box':
+            plt.axvspan(marker[1][0], marker[1][1], ymin=marker[1][2], ymax=marker[1][3], facecolor='y', alpha=0.25)
+
+        if marker[0] == 'point':
+            plt.plot(marker[1][1], marker[1][2], 'ko')
+            plt.annotate(marker[1][0], (marker[1][1] + 1, marker[1][2] + 1))
+
+        if marker[0] == 'arrow':
+            plt.arrow(marker[1][0], marker[1][1], marker[1][2], marker[1][3])
+
     legend = ax.legend()
     legend.get_frame().set_alpha(0.5)
 
@@ -86,4 +110,5 @@ def compare(ranges, seed=200):
     for spine in ('top', 'right', 'bottom', 'left'):
         ax.spines[spine].set_visible(False)
 
+    plt.title(title+': '+subtitle)
     plt.show()

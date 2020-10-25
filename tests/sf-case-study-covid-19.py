@@ -1,4 +1,5 @@
 import epispot as epi  # load the epi-spot package
+from copy import deepcopy
 
 
 def get_model_predictions(params, return_model=False):
@@ -85,6 +86,7 @@ epi.plots.compare([[data_timerange, data1, 'Susceptibles (from data)'], [data_ti
                                                                          'Infecteds (from data)']])
 
 print('Plotting estimated coronavirus cases after restrictions are removed ↗')
+print('Estimated cases will be plotted against actual figures after window is closed.')
 
 p_r_0 = new_params[0]
 p_delta = new_params[1]
@@ -144,4 +146,22 @@ San_Francisco_Model = epi.models.Model(N(116), layers=[Susceptible, Exposed, Inf
 
 # assumes best-case scenario: 0 exposed, 0 recovered
 # plotting until 12/31/20
-epi.plots.plot_comp_nums(San_Francisco_Model, range(0, 58), starting_state=[878875, 0, 4430, 0, 50], seed=400)
+# epi.plots.plot_comp_nums(San_Francisco_Model, range(0, 58), starting_state=[878875, 0, 4430, 0, 50], seed=400)
+
+print('Plotting comparison ↗')
+
+system_integral = San_Francisco_Model.integrate(range(0, 30), starting_state=[878875, 0, 4430, 0, 50])
+predicted_infecteds = []
+
+for timestep in system_integral:
+    predicted_infecteds.append(deepcopy(timestep[2]))
+
+range_container = [[data_timerange, data1, 'Susceptibles (from data)'], [data_timerange, data2,
+'Infecteds (from data)'], [range(116, 146), predicted_infecteds, 'Predicted Infecteds']]
+
+epi.plots.compare(range_container, title='Real Coronavirus Data', subtitle="From San Francisco County Statistics",
+markers=[['line', [1897, 0, 115, 'Hospital Capacity']], ['highlighted-box', [50, 80, 0.25, 0.5]],
+['point', ['Critical Point', 50, 1897]], ['arrow', [80, 3000, 10, 200]]])
+
+print('Process finished. Restart and select `save` on the matplotlib windows to save plot images.')
+print('Made with epispot.')
