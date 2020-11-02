@@ -74,19 +74,19 @@ new_params[-1] = 0.01
 print('Optimized parameters found at:')
 print(new_params)
 
-print('\nPlotting current coronavirus data in San Francisco (on log scale) ↗')
-print('Estimated coronavirus cases will be plotted after window is closed.')
+# print('\nPlotting current coronavirus data in San Francisco (on log scale) ↗')
+# print('Estimated coronavirus cases will be plotted after window is closed.')
 
 data_timerange = range(0, 115)
 file = open('data/sf-total-cases.csv').readlines()
 data1 = [float(x.split(',')[0]) for x in file[1:]]
 data2 = [float(x.split(',')[1]) for x in file[1:]]
 
-epi.plots.compare([[data_timerange, data1, 'Susceptibles (from data)'], [data_timerange, data2,
-                                                                         'Infecteds (from data)']])
+# epi.plots.compare([[data_timerange, data1, 'Susceptibles (from data)'], [data_timerange, data2,
+#                                                                          'Infecteds (from data)']])
 
-print('Plotting estimated coronavirus cases after restrictions are removed ↗')
-print('Estimated cases will be plotted against actual figures after window is closed.')
+# print('Plotting estimated coronavirus cases after restrictions are removed ↗')
+# print('Estimated cases will be plotted against actual figures after window is closed.')
 
 p_r_0 = new_params[0]
 p_delta = new_params[1]
@@ -129,6 +129,7 @@ def alpha(t):
 
 """
 MODEL STARTS FROM DAY #116--DATE: 7/12/20
+MODEL END DATE: 8/10/20
 PARAMETERS ARE TAKEN FROM THE OPTIMIZATION PROCESS ABOVE
 """
 
@@ -156,12 +157,23 @@ predicted_infecteds = []
 for timestep in system_integral:
     predicted_infecteds.append(deepcopy(timestep[2]))
 
-range_container = [[data_timerange, data1, 'Susceptibles (from data)'], [data_timerange, data2,
-'Infecteds (from data)'], [range(116, 146), predicted_infecteds, 'Predicted Infecteds']]
+data2_hos = deepcopy(data2)
+predicted_infecteds_hos = deepcopy(predicted_infecteds)
 
-epi.plots.compare(range_container, title='Real Coronavirus Data', subtitle="From San Francisco County Statistics",
-markers=[['line', [1897, 0, 115, 'Hospital Capacity']], ['highlighted-box', [50, 80, 0.25, 0.5]],
-['point', ['Critical Point', 50, 1897]], ['arrow', [80, 3000, 10, 200]]])
+for i in range(len(data2_hos)):
+    data2_hos[i] *= 0.052
+
+for i in range(len(predicted_infecteds_hos)):
+    predicted_infecteds_hos[i] *= 0.052
+
+range_container = [[data_timerange, data1, 'Susceptibles (from data)'], [data_timerange, data2,
+'Infecteds (from data)'], [data_timerange, data2_hos, 'Estimated Hospitalized (from data)'],
+[range(116, 146), predicted_infecteds, 'Predicted Infecteds'],
+[range(116, 146), predicted_infecteds_hos, 'Predicted Hospitalized']]
+
+epi.plots.compare(range_container, title='Coronavirus Data', subtitle="San Francisco (3/19-8/10)",
+markers=[['line', [1897, 0, 146, 'Hospital Capacity']], ['highlighted-box', [122, 135, 0.5, 1]],
+['point', [' Triage Required', 122, 1897]]], seed=310)
 
 print('Process finished. Restart and select `save` on the matplotlib windows to save plot images.')
 print('Made with epispot.')
