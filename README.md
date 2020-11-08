@@ -3,7 +3,7 @@
 [![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/context:python)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/alerts/)
-![Test](https://github.com/epispot/epispot/workflows/Test/badge.svg)
+[![Test](https://github.com/epispot/epispot/workflows/Test/badge.svg)](https://github.com/epispot/epispot/actions?query=workflow%3ATest)
 <br><br>
 
 A tool for creating and testing epidemiological models faster than ever for the mathematical modelling of infectious 
