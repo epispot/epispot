@@ -67,7 +67,7 @@ def get_model_predictions(params, return_model=False):
 
 
 parameters = [2.5, 0.5, 0.2, 0.01]  # R_0, delta, gamma, alpha
-new_params = epi.fitters.grad_des(get_model_predictions, open('data/diamond-princess.csv'), parameters,
+new_params = epi.fitters.grad_des(get_model_predictions, open('../data/diamond-princess.csv'), parameters,
                                   10.0, 2, 3711, [0, 26], verbose=False)
 new_params[-1] = 0.01
 
@@ -78,7 +78,7 @@ print(new_params)
 # print('Estimated coronavirus cases will be plotted after window is closed.')
 
 data_timerange = range(0, 115)
-file = open('data/sf-total-cases.csv').readlines()
+file = open('../data/sf-total-cases.csv').readlines()
 data1 = [float(x.split(',')[0]) for x in file[1:]]
 data2 = [float(x.split(',')[1]) for x in file[1:]]
 
