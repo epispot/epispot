@@ -18,7 +18,7 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 Install via `pip install epispot` <br>
 As a shorthand, use as `import epispot as epi`
 
-Using anaconda? Don't worry, it'll soon be avaliable in anaconda!
+Using Anaconda? Don't worry, it'll soon be avaliable in anaconda!
 
 ## Getting Started
 
