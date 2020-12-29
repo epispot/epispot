@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: epispot
-Version: 2.0.0
+Version: 2.0.1
 Summary: A tool for modelling infectious diseases.
 Home-page: https://quantum9innovation.github.io/epispot
 Author: quantum9innovation
@@ -10,6 +10,7 @@ Description: # ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
         [![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
         [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/context:python)
         [![Total alerts](https://img.shields.io/lgtm/alerts/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/alerts/)
+        [![Test](https://github.com/epispot/epispot/workflows/Test/badge.svg)](https://github.com/epispot/epispot/actions?query=workflow%3ATest)
         <br><br>
         
         A tool for creating and testing epidemiological models faster than ever for the mathematical modelling of infectious 
@@ -23,6 +24,8 @@ Description: # ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
         
         Install via `pip install epispot` <br>
         As a shorthand, use as `import epispot as epi`
+        
+        Using Anaconda? Don't worry, it'll soon be avaliable in anaconda!
         
         ## Getting Started
         
