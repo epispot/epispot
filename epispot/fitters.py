@@ -42,8 +42,8 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
         r_samp = []
 
         for sample in samples:
-            p_samp.append(pred[sample][1] / N)
-            r_samp.append(real[sample][1] / N)
+            p_samp.append(pred[sample][0] / N)
+            r_samp.append(real[sample][0] / N)
 
         if verbose:
             print('predicted, data: ')
@@ -51,7 +51,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
             print(r_samp)
             print('\n')
 
-        return np.sum((np.array(p_samp) - np.array(r_samp)) ** 2)
+        return np.sum(np.abs(np.array(p_samp) - np.array(r_samp)))
 
     data = [file[l].split(',') for l in range(1, len(file))]
     for line in range(len(data)):
@@ -85,5 +85,62 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
             print('\n')
 
         model_params = model_params - mu * np.array(gradients)
+    return model_params
+
+def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False):
+    """
+    Note: This is an experimental fitter
+    """
+
+    # get real data
+    file = real_data.readlines()
+    layers_to_opt = [int(char) for char in file[0].split(',')]
+
+    # quadratic cost
+
+    def cost(pred, real):
+
+        p_samp = []
+        r_samp = []
+
+        for sample in samples:
+            p_samp.append(pred[sample][0] / N)
+            r_samp.append(real[sample][0] / N)
+
+        return np.sum(np.abs(np.array(p_samp) - np.array(r_samp)))
+
+    data = [file[l].split(',') for l in range(1, len(file))]
+    for line in range(len(data)):
+        for char in range(len(data[line])):
+            data[line][char] = float(data[line][char])
+    for char in range(len(data[0])):
+        data[0][char] = int(data[0][char])
+
+    for epoch in range(epochs):
+
+        predictions = get_model_pred(model_params)
+        base_cost = cost(predictions, data[1:])
+        print('Epoch %s: Loss at %s' % (epoch, base_cost))
+
+        for param in range(len(model_params)):
+
+            cost_per_value = []
+
+            for value in param_ranges[param]:
+
+                model_params[param] = value
+                new_predictions = get_model_pred(model_params)
+                new_cost = cost(new_predictions, data[1:])
+                cost_per_value.append((value, new_cost))
+
+            best_pair = (0, 1e8)
+            for pair in cost_per_value:
+                if pair[1] < best_pair[1]:
+                    best_pair = pair
+
+            if verbose:
+                print(cost_per_value)
+
+            model_params[param] = best_pair[0]
 
     return model_params
