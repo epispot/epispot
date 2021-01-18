@@ -31,7 +31,6 @@ jobs:
     - name: Test code for errors
       run: |
         python tests/models/basic-sir-model.py
-        python tests/models/fitting-test.py
         python tests/models/seihrd-model-test.py
         python tests/models/seir-model-test.py
         python tests/models/seird-model-test.py
