@@ -51,7 +51,7 @@ def get_model_predictions(params):
 
 
 parameters = [1.5, 1.5, 1.5, 0.0714, 0]
-new_params = epi.fitters.grad_des(get_model_predictions, open('./data/sf-total-cases.csv'), parameters,
+new_params = epi.fitters.grad_des(get_model_predictions, open('data/sf-total-cases.csv'), parameters,
                                   3.0, 3, 883305, range(10, 110, 10))
 print('\n')
 print(new_params)
