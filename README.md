@@ -6,7 +6,7 @@
 [![Test](https://github.com/epispot/epispot/workflows/Test/badge.svg)](https://github.com/epispot/epispot/actions?query=workflow%3ATest)
 <br><br>
 
-A tool for creating and testing epidemiological models faster than ever for the mathematical modelling of infectious 
+A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
 <br>
