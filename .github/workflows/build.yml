@@ -34,4 +34,3 @@ jobs:
         python tests/models/seihrd-model-test.py
         python tests/models/seir-model-test.py
         python tests/models/seird-model-test.py
-        python tests/models/env-test.py
