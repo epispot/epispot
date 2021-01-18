@@ -3,10 +3,10 @@
 [![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/context:python)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/alerts/)
-[![Test](https://github.com/epispot/epispot/workflows/Test/badge.svg)](https://github.com/epispot/epispot/actions?query=workflow%3ATest)
+![build](https://github.com/epispot/epispot/workflows/build/badge.svg)
 <br><br>
 
-A tool for creating and testing epidemiological models faster than ever for the mathematical modelling of infectious 
+A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
 <br>
