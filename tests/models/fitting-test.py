@@ -51,7 +51,7 @@ def get_model_predictions(params):
 
 
 parameters = [1.5, 1.5, 1.5, 0.0714, 0]
-new_params = epi.fitters.grad_des(get_model_predictions, open('../data/sf-total-cases.csv'), parameters,
+new_params = epi.fitters.grad_des(get_model_predictions, open('data/sf-total-cases.csv'), parameters,
                                   3.0, 3, 883305, range(10, 110, 10))
 print('\n')
 print(new_params)
@@ -100,7 +100,7 @@ Model = epi.models.Model(N(0), layers=[Susceptible, Infected, Recovered], layer_
                          layer_map=[[Infected],
                                     [Recovered], []])  # compile the model out of the layers defined above
 
-file = open('../data/sf-total-cases.csv').readlines()
+file = open('data/sf-total-cases.csv').readlines()
 data = [file[l].split(',') for l in range(1, len(file))]
 for line in range(len(data)):
     for char in range(len(data[line])):
