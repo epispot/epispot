@@ -15,10 +15,18 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 
 ## Installation
 
-Install via `pip install epispot` <br>
-As a shorthand, use as `import epispot as epi`
+epispot is avaliable in both anaconda and through pip.
+Use:
+```
+pip install epispot
+```
+For anaconda, use:
+```
+conda config --add channels conda-forge
+conda install epispot
+```
 
-Using Anaconda? Don't worry, it'll soon be avaliable in anaconda!
+As a shorthand, use `import epispot as epi` in your python programs.
 
 ## Getting Started
 
