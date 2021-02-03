@@ -61,6 +61,11 @@ it helpful to see the examples in the `tests/examples` folder.
     - Plot model predictions interactively
     - Compare different model predictions
 
+# Stats
+![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
+PyPI Downloads - ![Downloads](https://pepy.tech/badge/epispot)
+Anaconda Downloads - ![Anaconda Donwloads](https://shields.io/conda/dn/conda-forge/epispot)
+
 ## Compile your model at the speed of light
 ### and get insights that match
 Documentation can easily be accessed from function, class, and file docstrings.
