@@ -1,5 +1,6 @@
 # ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
 ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success)
+![conda](https://anaconda.org/conda-forge/epispot/badges/installer/conda.svg)
 [![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/context:python)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/alerts/)
@@ -15,18 +16,18 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 
 ## Installation
 
-epispot is avaliable in both anaconda and through pip.
-Use:
+Epispot can be installed via pip or via Anaconda.
+If using pip, install with:
 ```
 pip install epispot
 ```
-For anaconda, use:
+For Anaconda, use:
 ```
 conda config --add channels conda-forge
-conda install epispot
+conda install -c conda-forge epispot
 ```
 
-As a shorthand, use `import epispot as epi` in your python programs.
+As a shorthand, use `import epispot as epi`.
 
 ## Getting Started
 
@@ -34,7 +35,7 @@ Check the guides and tutorials found
 in the `tests/tutorials` folder. All tutorials will have a `.md` file
 followed by a corresponding code file. If you get stuck, don't understand 
 something, or just need to reference the documentation, per-class 
-documentation can be found in the `docs/epispot` folder. You may also find 
+documentation can be found at https://epispot.github.io/epispot. You may also find 
 it helpful to see the examples in the `tests/examples` folder.
 
 ## Screenshots
@@ -62,9 +63,9 @@ it helpful to see the examples in the `tests/examples` folder.
     - Compare different model predictions
 
 # Stats
-![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
-PyPI Downloads - ![Downloads](https://pepy.tech/badge/epispot)
-Anaconda Downloads - ![Anaconda Donwloads](https://shields.io/conda/dn/conda-forge/epispot)
+**GitHub Tests:** ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
+<br>**PyPi:** ![Downloads](https://pepy.tech/badge/epispot)
+<br>**Anaconda:** ![Anaconda Donwloads](https://shields.io/conda/dn/conda-forge/epispot)
 
 ## Compile your model at the speed of light
 ### and get insights that match
