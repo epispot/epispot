@@ -40,8 +40,8 @@ it helpful to see the examples in the `tests/examples` folder.
 
 ## Screenshots
 
-![sf-case-study](tests/examples/compare-function.png)
-![line-graph](tests/examples/line-graph.png)
+![sf-case-study](tests/assets/compare-function.png)
+![line-graph](tests/assets/line-graph.png)
 
 ## Features
 
