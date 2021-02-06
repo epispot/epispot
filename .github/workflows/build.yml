@@ -20,7 +20,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8
-        pip install epispot==2.0.1
+        pip install setup.py
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
@@ -30,7 +30,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test code for errors
       run: |
-        python tests/models/basic-sir-model.py
-        python tests/models/seihrd-model-test.py
-        python tests/models/seir-model-test.py
-        python tests/models/seird-model-test.py
+        python tests/CI/sir.py
+        python tests/CI/seir.py
+        python tests/CI/sird.py
+        python tests/CI/sihrd.py
