@@ -41,10 +41,10 @@ jobs:
         python setup.py sdist bdist_wheel
         twine upload dist/*
     - name: Configure Git
-        run: |
-          git config user.name ${{ secrets.GIT_USERNAME }}
-          git config user.email ${{ secrets.GIT_EMAIL }}
+      run: |
+        git config user.name ${{ secrets.GIT_USERNAME }}
+        git config user.email ${{ secrets.GIT_EMAIL }}
     - name: Commit Changes
-        run: |
-          git commit -m "Change setup.py and __init__.py version number"
-          git push origin nightly
+      run: |
+        git commit -m "Change setup.py and __init__.py version number"
+        git push origin nightly
