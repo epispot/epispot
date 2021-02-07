@@ -47,5 +47,5 @@ jobs:
     - name: Commit Changes
       run: |
         git add .
-        git commit -m "Change setup.py and __init__.py version number"
+        git commit -m "New Release"
         git push origin nightly
