@@ -42,8 +42,8 @@ jobs:
         twine upload dist/*
     - name: Configure Git
       run: |
-        git config user.name ${{ secrets.GIT_USERNAME }}
-        git config user.email ${{ secrets.GIT_EMAIL }}
+        git config user.name github-actions
+        git config user.email github-actions@github.com
     - name: Commit Changes
       run: |
         git commit -m "Change setup.py and __init__.py version number"
