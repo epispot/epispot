@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: epispot-nightly
-Version: 2.0.1.11
+Version: 2.0.1.12
 Summary: The nightly version of the epispot package.
 Home-page: https://epispot.github.io/
 Author: quantum9innovation
@@ -12,11 +12,12 @@ Description: # ![epi-spot](https://i.ibb.co/m9yS1yh/epispot-nightly.jpg)
         ![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
         <br><br>
         
-        **This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.\
-        Additionally, code within this branch may be deprecated at any time.**
-        
         A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
         diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
+        
+        **This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.\
+        Additionally, code within this branch may be deprecated at any time.\
+        See the official stable build and all its features [here](https://pypi.org/project/epispot/)**
         
         **Epispot Nightly Build**
         <br>
