@@ -4,6 +4,8 @@ on:
   push:
     branches: 
       - nightly
+    paths:
+      - setup.py
 
 jobs:
   deploy:
