@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="epispot-nightly",
-    version="v2.0.1.9",
+    version="v2.0.1.10",
     author="quantum9innovation",
     description="The nightly version of the epispot package.",
     long_description=long_description,
