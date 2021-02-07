@@ -1,0 +1,13 @@
+README.md
+setup.py
+epispot/__init__.py
+epispot/comps.py
+epispot/fitters.py
+epispot/models.py
+epispot/plots.py
+epispot/pre.py
+epispot_nightly.egg-info/PKG-INFO
+epispot_nightly.egg-info/SOURCES.txt
+epispot_nightly.egg-info/dependency_links.txt
+epispot_nightly.egg-info/requires.txt
+epispot_nightly.egg-info/top_level.txt

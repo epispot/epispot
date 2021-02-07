@@ -15,8 +15,11 @@ from matplotlib import colors
 # local
 from . import comps
 from . import models
+from . import pre
 from . import plots
 from . import fitters
 
 # version info
-__version__ = 'v2.0.0'
+__version__ = "v2.0.1.8"  # version (v#.#.#)
+__stable__ = True  # True --> stable release, False --> unstable release
+__repo_data_url__ = 'https://www.github.com/epispot/epispot'  # source repo
