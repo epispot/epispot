@@ -1,74 +1,43 @@
-# ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
-![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success)
-![conda](https://anaconda.org/conda-forge/epispot/badges/installer/conda.svg)
-[![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/context:python)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/alerts/)
-![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
+# ![epi-spot](https://i.ibb.co/m9yS1yh/epispot-nightly.jpg)
+![build](https://img.shields.io/badge/build-nightly-black)
+![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) **change badge after new package is created**
+[![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot) **change badge after new package is created**
+![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
 <br><br>
 
 A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
-<br>
+**Nightly Build**
 
-![epi-spot social image](https://docs.google.com/drawings/d/e/2PACX-1vT6zazkjjnz8UMZz7mxPFXjnvC1Q1HgBLGcNwt0DEqla5N10kC_LPcdbuWae2VBWgCL7kynE8vCTzru/pub?w=1440&h=1080)
+<br>
 
 ## Installation
 
-Epispot can be installed via pip or via Anaconda.
-If using pip, install with:
+Epispot nightly can _only_ be installed on pip at this time.
+Install with:
 ```
-pip install epispot
+pip install epispot-nightly
 ```
-For Anaconda, use:
-```
-conda config --add channels conda-forge
-conda install -c conda-forge epispot
-```
-
-As a shorthand, use `import epispot as epi`.
+As a shorthand, use `import epinightly as epi`.
+Epispot nightly should be imported as `epinightly` to avoid confusion with the `epispot` package.
+This means both packages can be used in the same program, though this is not recommended.
 
 ## Getting Started
 
-Check the guides and tutorials found
-in the `tests/tutorials` folder. All tutorials will have a `.md` file
-followed by a corresponding code file. If you get stuck, don't understand 
-something, or just need to reference the documentation, per-class 
-documentation can be found at https://epispot.github.io/epispot. You may also find 
-it helpful to see the examples in the `tests/examples` folder.
+Make sure you are already familiar with epispot. Each release of epispot nightly will have detailed release notes and additional documentation. 
+These can be found **here--change after docs are created**
 
-## Screenshots
+## Latest Release Notes
 
-![sf-case-study](tests/examples/compare-function.png)
-![line-graph](tests/examples/line-graph.png)
-
-## Features
-
- - SIR-based models
-    - Susceptible
-    - Infected
-    - Recovered
-    - Exposed
-    - Dead
-    - Critical
-    - Hospitalized
-    
- - Custom-defined compartmental models
-    - Create custom models using the `Model` class
- 
- - Graphing Capabilities
-    - Plot real data from a `.csv` file
-    - Plot model predictions interactively
-    - Compare different model predictions
+None
 
 # Stats
-**GitHub Tests:** ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
-<br>**PyPi:** ![Downloads](https://pepy.tech/badge/epispot)
-<br>**Anaconda:** ![Anaconda Donwloads](https://shields.io/conda/dn/conda-forge/epispot)
+**GitHub Tests:** ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master) **new workflow for this branch**
+<br>**PyPi:** ![Downloads](https://pepy.tech/badge/epispot) **change badge after new package is released**
 
-## Compile your model at the speed of light
-### and get insights that match
+## Stay one step ahead
+### And preview the latest features
 Documentation can easily be accessed from function, class, and file docstrings.
 Doc strings provide additional documentation on a certain function.
 They can be accessed by the built-in Python `help()` command.
