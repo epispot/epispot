@@ -5,12 +5,12 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="epispot-nightly",
-    version="v2.0.1.6",
+    version="v2.0.1.7",
     author="quantum9innovation",
     description="The nightly version of the epispot package.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://quantum9innovation.github.io/epispot",
+    url="https://epispot.github.io/",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
