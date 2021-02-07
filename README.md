@@ -1,14 +1,14 @@
 # ![epi-spot](https://i.ibb.co/m9yS1yh/epispot-nightly.jpg)
 ![build](https://img.shields.io/badge/build-nightly-black)
 ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success)
-[![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot-nightly)
+[![Downloads](https://pepy.tech/badge/epispot-nightly)](https://pepy.tech/project/epispot-nightly)
 ![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
 <br><br>
 
 A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
-**Nightly Build**
+**Epispot Nightly Build**
 
 <br>
 
