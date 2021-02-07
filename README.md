@@ -5,11 +5,17 @@
 ![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
 <br><br>
 
+**This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.
+Additionally, code within this branch may be deprecated at any time.**
+
 A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
+<<<<<<< HEAD
 **Epispot Nightly Build**
 
+=======
+>>>>>>> 76733939778b972f3eb0308df79e79bebd375ca8
 <br>
 
 ## Installation
