@@ -5,6 +5,7 @@
 ![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
 <br><br>
 
+Status: Waiting for PePy addition at 5:00 PST
 **This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.
 Additionally, code within this branch may be deprecated at any time.**
 
