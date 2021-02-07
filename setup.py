@@ -4,10 +4,10 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="epispot",
-    version="v2.0.1",
+    name="epispot-nightly",
+    version="v2.0.1.1",
     author="quantum9innovation",
-    description="A tool for modelling infectious diseases.",
+    description="The nightly version of the epispot package.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://quantum9innovation.github.io/epispot",
