@@ -21,9 +21,8 @@ Install with:
 ```
 pip install epispot-nightly
 ```
-As a shorthand, use `import epinightly as epi`.
-Epispot nightly should be imported as `epinightly` to avoid confusion with the `epispot` package.
-This means both packages can be used in the same program, though this is not recommended.
+As a shorthand, use `import epispot as epi`.
+Both packages cannot be used at the same time in the same file.
 
 ## Getting Started
 
