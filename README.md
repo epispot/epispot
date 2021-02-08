@@ -29,6 +29,12 @@ conda install -c conda-forge epispot
 
 As a shorthand, use `import epispot as epi`.
 
+You can also install the `epispot-nightly` package from pip:
+``` bash
+pip install epispot-nightly
+```
+You can import it the same as `import epispot as epi`. Both packages cannot be used at the same time.
+
 ## Getting Started
 
 Check the guides and tutorials found
