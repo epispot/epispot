@@ -4,7 +4,10 @@ on:
   push:
     branches: 
       - nightly
-
+    paths:
+      - setup.py
+      - epispot/*
+      - README.md
 jobs:
   deploy:
 
