@@ -4,6 +4,8 @@
 [![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/context:python)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/alerts/)
+![lines of code](https://img.shields.io/tokei/lines/github/epispot/epispot?color=orange)
+![open-issues](https://img.shields.io/github/issues-raw/epispot/epispot?color=orange)
 ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
 <br><br>
 
