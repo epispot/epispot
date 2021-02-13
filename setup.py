@@ -10,7 +10,7 @@ setuptools.setup(
     description="The nightly version of the epispot package.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://epispot.github.io/",
+    url="https://www.github.com/epispot/epispot/tree/nightly",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
