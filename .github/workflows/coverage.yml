@@ -1,6 +1,11 @@
 name: coverage
 
-on: [push, pull_request]
+on:
+  push:
+    branches: 
+      - master
+    paths:
+      - tests/CI/*
 
 jobs:
   build:
