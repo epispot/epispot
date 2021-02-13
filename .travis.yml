@@ -1,5 +1,8 @@
 before_install:
-  - chmod +x build.sh
+  - chmod +x tests/CI/sir.py
+  - chmod +x tests/CI/seir.py
+  - chmod +x tests/CI/sird.py
+  - chmod +x tests/CI/sihrd.py
 language: python
 python:
   - "3.6"      # current default Python on Travis CI
