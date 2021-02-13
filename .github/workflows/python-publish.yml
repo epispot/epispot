@@ -51,6 +51,6 @@ jobs:
         git commit -m "New Release"
         git push origin nightly
     - name: Build & Publish Package as 'epispot-nightly'
-    - run: |
+      run: |
         python setup.py sdist bdist_wheel
         twine upload dist/*
