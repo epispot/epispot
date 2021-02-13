@@ -12,7 +12,10 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 Additionally, code within this branch may be deprecated at any time.\
 See the official stable build and all its features [here](https://pypi.org/project/epispot/)**
 
-**Epispot Nightly Build**
+To ensure that you are using the latest version, run the following command regularly*:\
+`pip install epispot-nightly --upgrade` \
+*updates are published after every commit (~1/day)
+
 <br>
 
 ## Installation
@@ -23,11 +26,12 @@ Install with:
 pip install epispot-nightly
 ```
 As a shorthand, use `import epispot as epi`.
-Both packages cannot be used at the same time in the same file.
+Both nightly and stable packages cannot be used at the same time in the same file.
 
 ## Getting Started
 
 Make sure you are already familiar with epispot. You can view the new functions and changes by using the built in python `help()` command.
+Epispot docs are located [here](https://epispot.github.io/epispot).
 
 ## Latest Release Notes
 
