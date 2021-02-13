@@ -63,7 +63,6 @@ venv.bak/
 /.idea/vcs.xml
 
 # Additional Files
-build
-epispot.egg-info
-epispot_nightly.egg-info
 /build/
+/epispot.egg-info/
+/epispot_nightly.egg-info/
