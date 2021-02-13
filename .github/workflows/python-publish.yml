@@ -35,14 +35,12 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Build and publish to PyPI package 'epispot-nightly'
+    - name: Change version info
       env:
         TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
       run: | 
         python release.py
-        python setup.py sdist bdist_wheel
-        twine upload dist/*
     - name: Configure Git
       run: |
         git config user.name github-actions
@@ -52,3 +50,7 @@ jobs:
         git add .
         git commit -m "New Release"
         git push origin nightly
+    - name: Build & Publish Package as 'epispot-nightly'
+    - run: |
+        python setup.py sdist bdist_wheel
+        twine upload dist/*
