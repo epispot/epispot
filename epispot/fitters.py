@@ -32,7 +32,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(',')]
+    # layers_to_opt = [int(char) for char in file[0].split(',')] - for specific layer optimizations
 
     # quadratic cost
 
@@ -86,6 +86,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
         model_params = model_params - mu * np.array(gradients)
     return model_params
+
 
 def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False):
     """
