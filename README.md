@@ -2,6 +2,7 @@
 ![build](https://img.shields.io/badge/build-nightly-black)
 ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success)
 [![Downloads](https://pepy.tech/badge/epispot-nightly)](https://pepy.tech/project/epispot-nightly)
+![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=nightly)
 ![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
 <br><br>
 
@@ -35,11 +36,8 @@ Epispot docs are located [here](https://epispot.github.io/epispot).
 
 ## Latest Release Notes
 
-None
-
-# Stats
-**GitHub Tests:** ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=nightly)
-<br>**PyPi:** ![Downloads](https://pepy.tech/badge/epispot-nightly)
+ - 2/12/21: Stability Improvements
+    - Allows for faster bug and issue tracking
 
 ## Stay one step ahead
 ### And preview the latest features
