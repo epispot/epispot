@@ -124,7 +124,7 @@ class Susceptible(object):
             total_infecteds += system[infected_category_index]
 
         derivative = - self.gamma(time) * self.R_0(time) * system[self.layer_index] * \
-                        total_infecteds / self.N(time)
+                       total_infecteds / self.N(time)
 
         if self.first_layer:
             return derivative
