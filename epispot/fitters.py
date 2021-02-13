@@ -95,7 +95,7 @@ def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(',')]
+    # layers_to_opt = [int(char) for char in file[0].split(',')] - use for specific layer optimizations
 
     # quadratic cost
 

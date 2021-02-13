@@ -254,7 +254,7 @@ class Infected(object):
                     self.prev_layer_indices.append(layer_map_no)
                 # warning if there are different input layer types
                 if self.prev_layer_type is not None and next_layer.get_layer_index() == self.layer_index and \
-                layer_names[layer_map_no] != self.prev_layer_type:
+                   layer_names[layer_map_no] != self.prev_layer_type:
                     warnings.warn('Not all input layers to the Infected layer at %s are the same. \n'
                                   'Input layers to the Infected layer should either all be Susceptible \n'
                                   'or Exposed. Consider changing the `layer_map`.' %
@@ -835,8 +835,8 @@ class Critical(object):
         - get_deriv
     """
 
-    def __init__(self, layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None, alpha=None,
-                 p_recovery=None, recovery_rate=None, maxCap=None, dump_to_layer=None):
+    def __init__(self, layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None,
+                 alpha=None, p_recovery=None, recovery_rate=None, maxCap=None, dump_to_layer=None):
         """
         Initialize the Critical class
 
@@ -980,7 +980,7 @@ class Idiom(object):
         - get_deriv
     """
 
-    def __init__(self, layer_index, param_list=[]):
+    def __init__(self, layer_index, param_list=None):
         """
         Initialize the class
 
@@ -1022,13 +1022,14 @@ class Idiom(object):
             self.next_layer_types.append(layer_names[layer_map[self.layer_index][next_layer_no].
                                          get_layer_index()])
 
-    def get_deriv(self, time, system):
+    def get_deriv(self):
         """
         Derivative of this compartment
+        Setup by changing the function--create a new method with parameters time & system:
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        time: time to take derivative at
+        system: system of all states
+        return: derivative
         """
 
         # warn on no setup

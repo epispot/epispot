@@ -12,13 +12,6 @@ STRUCTURE:
 
 from . import comps
 from . import models
-from . import warnings
-
-# ROADMAP
-# TODO: Add function checks for incorrect parameters
-# TODO: Add the SIHCRD Model
-# TODO: Test all model types and replace their corresponding testing files
-# TODO: Update CI on epispot/epispot to test with new files
 
 
 def SIR(R_0, gamma, N, p_recovery, recovery_rate):

@@ -15,7 +15,7 @@ class Model(object):
         - __init__()
     """
 
-    def __init__(self, init_pop, layers=[], layer_names=[], layer_map=[]):
+    def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
         """
         Initialize the `Model` class
 
@@ -39,8 +39,6 @@ class Model(object):
                               layer succeeds the last layer.
         """
 
-        if layer_map is None:
-            layer_map = []
         self.init_pop = init_pop
         self.layers = layers
         self.layer_names = layer_names
@@ -138,6 +136,17 @@ class Model(object):
                               layer succeeds the last layer.
         """
 
-        self.layers.append(layer)
-        self.layer_names.append(layer_name)
-        self.layer_map.append(layer_map)
+        if self.layers is None:
+            self.layers = [layer]
+        else:
+            self.layers.append(layer)
+
+        if self.layer_names is None:
+            self.layer_names = [layer_name]
+        else:
+            self.layer_names.append(layer_name)
+
+        if self.layer_map is None:
+            self.layer_map = [layer_map]
+        else:
+            self.layer_map.append(layer_map)
