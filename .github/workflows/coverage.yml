@@ -1,11 +1,6 @@
 name: coverage
 
-on:
-  push:
-    branches: 
-      - codecov
-    paths:
-      - tests/CI/*
+on: [push, pull_request]
 
 jobs:
   build:
