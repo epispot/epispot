@@ -7,6 +7,8 @@ python: 2.7
 # Install the codecov pip dependency
 install:
   - pip install coverage
+  - pip install matplotlib
+  - pip install numpy
   
 scripts:
   - coverage run -m pytest tests/CI/sir.py
