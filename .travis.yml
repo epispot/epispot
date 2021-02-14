@@ -5,7 +5,7 @@ python: 3.7
 
 # Install the codecov pip dependency
 install:
-  - pip install coverage
+  - pip install codecov
   - pip install matplotlib
   - pip install numpy
   - pip install coverage
