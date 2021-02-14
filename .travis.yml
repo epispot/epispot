@@ -14,13 +14,13 @@ install:
 # Run the unit test
 script:
   - cd tests/CI
-  - coverage run sir.py	
-  - coverage run seir.py	
-  - coverage run sird.py	
-  - coverage run sihrd.py	
-  - coverage run fit.py	
-  - coverage run tree.py
-  - coverage report --omit='tests/*'
+  - coverage run test/CI/sir.py	
+  - coverage run test/CI/seir.py	
+  - coverage run test/CI/sird.py	
+  - coverage run test/CI/sihrd.py	
+  - coverage run test/CI/fit.py	
+  - coverage run test/CI/tree.py
+  - coverage report --source=epispot/*
 
 # Push the results back to codecov
 after_success:
