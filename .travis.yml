@@ -7,13 +7,14 @@ python: 2.7
 # Install the codecov pip dependency
 install:
   - pip install codecov
+  - pip install coverage
 
 # Run the unit test
 script:
-  - coverage tests/CI/sir.py
-  - coverage tests/CI/seir.py
-  - coverage tests/CI/sird.py
-  - coverage tests/CI/sihrd.py
+  - python coverage tests/CI/sir.py
+  - python coverage tests/CI/seir.py
+  - python coverage tests/CI/sird.py
+  - python coverage tests/CI/sihrd.py
 
 # Push the results back to codecov
 after_success:
