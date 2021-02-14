@@ -20,7 +20,7 @@ script:
   - coverage run test/CI/sihrd.py	
   - coverage run test/CI/fit.py	
   - coverage run test/CI/tree.py
-  - coverage report --source=epispot/*
+  - coverage report
 
 # Push the results back to codecov
 after_success:
