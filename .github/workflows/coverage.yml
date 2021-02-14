@@ -1,6 +1,10 @@
 name: coverage
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - codecov
 
 jobs:
   build:
