@@ -7,28 +7,21 @@ STRUCTURE:
     - SEIR()
     - SIRD()
     - SIHRD()
-    - SIHCRD()
 """
 
 from . import comps
 from . import models
 
 
-def SIR(R_0, gamma, N, p_recovery, recovery_rate):
+def SIR(R_0, N, p_recovery, recovery_rate):
     """
     The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases\
     Susceptible --> Infected --> Removed <br><br>
-
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
             - t: time
             - return: R_0 value
-    gamma: the infectious period--
-           1 / average duration of infectious period\
-           implemented as a function gamma(t):
-            - t: time
-            - return: infectious period
     N: the total population\
        implemented as a function N(t):
             - t: time
@@ -44,6 +37,9 @@ def SIR(R_0, gamma, N, p_recovery, recovery_rate):
                         - return: recovery rate
     """
 
+    def gamma(t):
+        return p_recovery(t) * recovery_rate(t)
+
     # compile compartments
     Susceptible = comps.Susceptible(0, R_0, gamma, N)
     Infected = comps.Infected(1, N, R_0=R_0, gamma=gamma, p_recovery=p_recovery, recovery_rate=recovery_rate)
@@ -58,22 +54,16 @@ def SIR(R_0, gamma, N, p_recovery, recovery_rate):
     return SIR_Model
 
 
-def SEIR(R_0, gamma, N, p_recovery, recovery_rate, delta):
+def SEIR(R_0, N, p_recovery, recovery_rate, delta):
     """
     The SEIR Model; a variant of the SIR Model that investigates people who have been *exposed* to the virus
     so that they can be tracked down for contact tracing reasons\
     Susceptible --> Exposed --> Infected --> Removed <br><br>
-
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
             - t: time
             - return: R_0 value
-    gamma: the infectious period--
-           1 / average duration of infectious period\
-           implemented as a function gamma(t):
-            - t: time
-            - return: infectious period
     N: the total population\
        implemented as a function N(t):
             - t: time
@@ -93,6 +83,9 @@ def SEIR(R_0, gamma, N, p_recovery, recovery_rate, delta):
                     - return: incubation period
     """
 
+    def gamma(t):
+        return p_recovery(t) * recovery_rate(t)
+
     # compile compartments
     Susceptible = comps.Susceptible(0, R_0, gamma, N)
     Exposed = comps.Exposed(1, R_0, gamma, N, delta)
@@ -109,24 +102,17 @@ def SEIR(R_0, gamma, N, p_recovery, recovery_rate, delta):
     return SEIR_Model
 
 
-def SIRD(R_0, gamma, N, p_recovery, recovery_rate, rho, alpha):
+def SIRD(R_0, N, p_recovery, recovery_rate, alpha, rho):
     """
     The SIRD Model; a tweak on the SIR Model to separate Recovered & Dead compartments
     which allows for death predictions as well as herd immunity predictions\
-
     Susceptible --> Infected --> Recovered \
                     |----------> Dead <br><br>
-
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
             - t: time
             - return: R_0 value
-    gamma: the infectious period--
-           1 / average duration of infectious period\
-           implemented as a function gamma(t):
-            - t: time
-            - return: infectious period
     N: the total population\
        implemented as a function N(t):
             - t: time
@@ -149,6 +135,9 @@ def SIRD(R_0, gamma, N, p_recovery, recovery_rate, rho, alpha):
             - t: time
             - return: probability of death
     """
+
+    def gamma(t):
+        return p_recovery(t) * recovery_rate(t) + alpha(t) * rho(t)
 
     # compile compartments
     Susceptible = comps.Susceptible(0, R_0, gamma, N)
@@ -167,34 +156,27 @@ def SIRD(R_0, gamma, N, p_recovery, recovery_rate, rho, alpha):
     return SIRD_Model
 
 
-def SIHRD(R_0, gamma, N, p_recovery, recovery_rate, rho, alpha, hos_rate, p_hos):
+def SIHRD(R_0, N, p_recovery, recovery_rate, alpha, rho, p_hos, hos_rate, p_hos_to_rec, hos_to_rec_rate):
     """
     The SIHRD Model; Tracks patients from hospitalized to recovered to dead
     which allows for death, herd immunity, and triage predictions\
-
-    Susceptible --> Infected --> Hospitalized --> Recovered \
-                                 |--------------> Dead <br><br>
-
+    Susceptible --> Infected --> Hospitalized --> Dead \
+                    |            |--------------> Recovered \
+                    |---------------------------/ <br><br>
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
             - t: time
             - return: R_0 value
-    gamma: the infectious period--
-           1 / average duration of infectious period\
-           implemented as a function gamma(t):
-            - t: time
-            - return: infectious period
     N: the total population\
        implemented as a function N(t):
             - t: time
             - return: total population
-    p_recovery: probability of recovery\
+    p_recovery: probability of recovery from Infected\
                 implemented as a function p_recovery(t):
                     - t: time
                     - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`
-                   measures only 1 / the time it takes to move to the Recovered layer\
+    recovery_rate: the recovery rate from the Infected layer only
                    implemented as a function recovery_rate(t):
                         - t: time
                         - return: recovery rate
@@ -206,14 +188,27 @@ def SIHRD(R_0, gamma, N, p_recovery, recovery_rate, rho, alpha, hos_rate, p_hos)
            implemented as a function alpha(t)
             - t: time
             - return: probability of death
+    p_hos_to_rec: probability of recovery from Hospitalized\
+                implemented as a function p_hos_to_rec(t):
+                    - t: time
+                    - return: probability of recovery
+    hos_to_rec_rate: the recovery rate from the Hospitalized layer only
+                   implemented as a function hos_to_rec_rate(t):
+                        - t: time
+                        - return: recovery rate
     """
+
+    def gamma(t):
+        return p_recovery(t) * recovery_rate(t) + p_hos(t) * hos_rate(t)
 
     # compile compartments
     Susceptible = comps.Susceptible(0, R_0, gamma, N)
-    Infected = comps.Infected(1, N, R_0=R_0, gamma=gamma, hospital_rate=hos_rate, p_hospitalized=p_hos)
-    Hospitalized = comps.Hospitalized(2, hos_rate=hos_rate, p_hos=p_hos, p_recovery=p_recovery,
-                                      recovery_rate=recovery_rate, rho=rho, alpha=alpha)
-    Recovered = comps.Recovered(3, p_from_hos=p_recovery, from_hos_rate=recovery_rate)
+    Infected = comps.Infected(1, N, R_0=R_0, gamma=gamma, hospital_rate=hos_rate, p_hospitalized=p_hos,
+                              recovery_rate=recovery_rate, p_recovery=p_recovery)
+    Hospitalized = comps.Hospitalized(2, hos_rate=hos_rate, p_hos=p_hos, p_recovery=p_hos_to_rec,
+                                      recovery_rate=hos_to_rec_rate, rho=rho, alpha=alpha)
+    Recovered = comps.Recovered(3, p_from_hos=p_hos_to_rec, from_hos_rate=hos_to_rec_rate,
+                                p_from_inf=p_recovery, from_inf_rate=recovery_rate)
     Dead = comps.Dead(4, rho_hos=rho, alpha_hos=alpha)
 
     # compile model
