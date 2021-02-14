@@ -8,16 +8,12 @@ python: 2.7
 install:
   - pip install codecov
   - pip install coverage
+  - pip install numpy
+  - pip install matplotlib
 
 # Run the unit test
 script:
   - cd tests/CI
-  - coverage run sir.py
-  - coverage run seir.py
-  - coverage run sird.py
-  - coverage run sihrd.py
-  - coverage run fit.py
-  - coverage run tree.py
   - coverage report --omit='tests/*'
 
 # Push the results back to codecov
