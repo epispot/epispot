@@ -1,17 +1,20 @@
+# Set the build language to Python
 language: python
-python:
-  - "3.6"      # current default Python on Travis CI
-  - "3.7"
-  - "3.8"
-  - "3.9"
-# command to install dependencies
+
+# Set the python version to 2.7
+python: 2.7
+
+# Install the codecov pip dependency
 install:
-  - pip install -r requirements.txt
-# command to run tests
+  - pip install codecov
+
+# Run the unit test
 script:
-  - python tests/CI/sir.py
-  - python tests/CI/seir.py
-  - python tests/CI/sird.py
-  - python tests/CI/sihrd.py
+  - coverage tests/CI/sir.py
+  - coverage tests/CI/seir.py
+  - coverage tests/CI/sird.py
+  - coverage tests/CI/sihrd.py
+
+# Push the results back to codecov
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
