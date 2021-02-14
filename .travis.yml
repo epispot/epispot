@@ -11,11 +11,11 @@ install:
 
 # Run the unit test
 script:
-  - python coverage tests/CI/sir.py
-  - python coverage tests/CI/seir.py
-  - python coverage tests/CI/sird.py
-  - python coverage tests/CI/sihrd.py
+  - python -m coverage tests/CI/sir.py
+  - python -m coverage tests/CI/seir.py
+  - python -m coverage tests/CI/sird.py
+  - python -m coverage tests/CI/sihrd.py
 
 # Push the results back to codecov
 after_success:
-  - codecov
+  - python -m codecov
