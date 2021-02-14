@@ -7,7 +7,6 @@ python: 2.7
 # Install the codecov pip dependency
 install:
   - pip install coverage
-  - pip install unitttest
   
 scripts:
   - coverage run -m unittest tests/CI/sir.py
