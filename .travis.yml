@@ -11,8 +11,12 @@ install:
   - pip install pytest-cov
 
 script:
-  - pytest --cov=epispot tests/CI
-  - pytest --cov-report term --cov=epispot tests/CI
+  - coverage run fit.py
+  - coverage run seir.py
+  - coverage run sihrd.py
+  - coverage run sir.py
+  - coverage run sird.py
+  - coverage run tree.py
 
 # Push the results back to codecov
 after_success:
