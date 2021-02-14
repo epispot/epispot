@@ -12,7 +12,7 @@ install:
   - pip install pytest-cov
   
 script:
-  - pytest --cov-report --cov=epispot tests/
+  - pytest --cov-report term --cov=myproj tests/
 
 # Push the results back to codecov
 after_success:
