@@ -13,7 +13,8 @@ install:
 
 # Run the unit test
 script:
-  - coverage run tests/CI/*
+  - coverage run tests/CI
+  - coverage report --omit='tests/*'
 
 # Push the results back to codecov
 after_success:
