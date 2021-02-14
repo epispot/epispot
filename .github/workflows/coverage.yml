@@ -3,7 +3,7 @@ name: coverage
 on:
   push:
     branches: 
-      - master
+      - nightly
     paths:
       - tests/CI/*
 
