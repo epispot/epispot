@@ -13,15 +13,13 @@ install:
 
 # Run the unit test
 script:
-  - cd tests/CI
   - coverage run test/CI/sir.py	
   - coverage run test/CI/seir.py	
   - coverage run test/CI/sird.py	
   - coverage run test/CI/sihrd.py	
   - coverage run test/CI/fit.py	
   - coverage run test/CI/tree.py
-  - coverage report
 
 # Push the results back to codecov
 after_success:
-  - python -m codecov
+  - codecov
