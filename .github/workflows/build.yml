@@ -30,9 +30,9 @@ jobs:
     - name: Test code for errors
       run: |
         cd tests/CI
-        python sir.py
-        python seir.py
-        python sird.py
-        python sihrd.py
-        python fit.py
-        python tree.py
+        python test_sir.py
+        python test_seir.py
+        python test_sird.py
+        python test_sihrd.py
+        python test_fit.py
+        python test_tree.py
