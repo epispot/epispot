@@ -1,7 +1,7 @@
 # ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
 ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success)
 ![conda](https://anaconda.org/conda-forge/epispot/badges/installer/conda.svg)
-[![Downloads](https://static.pepy.tech/personalized-badge/epispot?period=total&units=none&left_color=black&right_color=orange&left_text=PyPI%20Downloads)](https://pepy.tech/project/epispot)
+[![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/context:python)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/quantum9Innovation/epispot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/quantum9Innovation/epispot/alerts/)
 ![lines of code](https://img.shields.io/tokei/lines/github/epispot/epispot?color=orange)
