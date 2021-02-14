@@ -9,12 +9,10 @@ install:
   - pip install coverage
   - pip install matplotlib
   - pip install numpy
+  - pip install pytest-cov
   
 scripts:
-  - coverage run -m pytest tests/CI/sir.py
-  - coverage run -m pytest tests/CI/sird.py
-  - coverage run -m pytest tests/CI/sihrd.py
-  - coverage run -m pytest tests/CI/seir.py
+  - pytest --cov=epispot tests/CI/
 
 # Push the results back to codecov
 after_success:
