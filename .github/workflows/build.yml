@@ -30,9 +30,10 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test code for errors
       run: |
-        python tests/CI/sir.py
-        python tests/CI/seir.py
-        python tests/CI/sird.py
-        python tests/CI/sihrd.py
-        python tests/CI/fit.py
-        python tests/CI/tree.py
+        cd tests/CI
+        python sir.py
+        python seir.py
+        python sird.py
+        python sihrd.py
+        python fit.py
+        python tree.py

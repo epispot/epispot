@@ -26,10 +26,11 @@ jobs:
         pip install numpy
     - name: Run Tests
       run: |
-        coverage run tests/CI/sir.py
-        coverage run tests/CI/seir.py
-        coverage run tests/CI/sird.py
-        coverage run tests/CI/sihrd.py
-        coverage run tests/CI/fit.py
-        coverage run tests/CI/tree.py
+        cd tests/CI
+        coverage run sir.py
+        coverage run seir.py
+        coverage run sird.py
+        coverage run sihrd.py
+        coverage run fit.py
+        coverage run tree.py
         coverage report --omit='tests/*'
