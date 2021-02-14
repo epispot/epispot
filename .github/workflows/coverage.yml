@@ -30,4 +30,4 @@ jobs:
         coverage run tests/CI/seir.py
         coverage run tests/CI/sird.py
         coverage run tests/CI/sihrd.py
-        coverage report
+        coverage report --omit='tests/*'
