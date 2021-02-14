@@ -3,6 +3,11 @@ Borrowed from epispot/covid-19 on GitHub
 See: https://www.github.com/epispot/covid-19
 """
 
+import os, sys, inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+repodir = os.path.dirname(os.path.dirname(currentdir))
+sys.path.insert(0, repodir)
+
 import epispot as epi
 import numpy as np
 from copy import deepcopy
