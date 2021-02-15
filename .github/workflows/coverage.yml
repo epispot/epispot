@@ -3,7 +3,7 @@ name: coverage
 on:
   push:
     branches: 
-      - master
+      - codecov
     paths:
       - tests/CI/*
 
@@ -24,10 +24,10 @@ jobs:
         pip install coverage
         pip install matplotlib
         pip install numpy
+        pip install codecov
     - name: Run Tests
       run: |
-        coverage run tests/CI/sir.py
-        coverage run tests/CI/seir.py
-        coverage run tests/CI/sird.py
-        coverage run tests/CI/sihrd.py
-        coverage report --omit='tests/*'
+        coverage run pytest
+    - name: Upload to Codecov
+      run: |
+        codecov
