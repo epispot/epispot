@@ -1,6 +1,5 @@
 [run]
 source = epispot
-branch = True
 
 [report]
 show_missing = True
