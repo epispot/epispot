@@ -11,10 +11,7 @@ install:
   - pip install coverage
 
 script:
-  - coverage run tests/CI/seir.py
-  - coverage run tests/CI/sihrd.py
-  - coverage run tests/CI/sir.py
-  - coverage run tests/CI/sird.py
+  - coverage run -m pytest
 
 # Push the results back to codecov
 after_success:
