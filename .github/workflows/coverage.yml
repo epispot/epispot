@@ -7,9 +7,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-    env:
-      OS: ${{ matrix.os }}
-      PYTHON: '3.7'
     steps:
     - uses: actions/checkout@master
     - name: Setup Python
@@ -27,10 +24,5 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
-        files: ./coverage.xml
-        directory: ./coverage/reports/
-        flags: pytest
-        env_vars: OS,PYTHON
-        name: codecov-umbrella
-        fail_ci_if_error: true
         verbose: true
+        fail_ci_if_error: true
