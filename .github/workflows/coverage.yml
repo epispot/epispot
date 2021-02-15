@@ -27,7 +27,7 @@ jobs:
         pip install codecov
     - name: Run Tests
       run: |
-        coverage run pytest
+        coverage run -m pytest
     - name: Upload to Codecov
       run: |
         codecov
