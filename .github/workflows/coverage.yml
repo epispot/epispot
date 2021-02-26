@@ -20,5 +20,6 @@ jobs:
         pip install -r requirements.txt
     - name: Generate coverage report
       run: |
+        cd tests/CI
         python -m coverage run -m pytest
         python -m coverage report
