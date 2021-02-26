@@ -17,20 +17,6 @@ pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
 # pyenv
 .python-version
 
@@ -66,3 +52,4 @@ venv.bak/
 /build/
 /epispot.egg-info/
 /epispot_nightly.egg-info/
+/.coverage
