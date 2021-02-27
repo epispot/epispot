@@ -38,6 +38,9 @@ Epispot docs are located [here](https://epispot.github.io/epispot).
 
 ## Latest Release Notes
 
+ - 2/26/21 2.0.1.22 Automations
+   - Automated code coverage reports
+   - Working on automating release notes 
  - 2/12/21 2.0.1.17 Actions Test
  - 2/12/21 2.0.1.16: Stability Improvements
     - Allows for faster bug and issue tracking
