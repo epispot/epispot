@@ -17,6 +17,7 @@ jobs:
       run: |
         pip install pytest
         pip install coverage
+        pip install codecov
         pip install -r requirements.txt
         cd tests/CI
     - name: Prepares Code Coverage Report 
@@ -26,4 +27,7 @@ jobs:
     - name: Generate Coverage Report
       continue-on-error: true
       run: |
-        python -m coverage report
+        python -m coverage xml
+    - name: Upload to codecov
+      run: |
+        codecov
