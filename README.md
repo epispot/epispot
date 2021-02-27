@@ -5,6 +5,7 @@
 ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=nightly)
 ![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
 [![codecov](https://codecov.io/gh/epispot/epispot/branch/codecov/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot)
+
 <br><br>
 
 A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
