@@ -22,7 +22,6 @@ jobs:
     - name: Prepares Code Coverage Report 
       continue-on-error: true
       run: |
-        cd tests/CI/
         python -m coverage run -m pytest
     - name: Generate Coverage Report
       continue-on-error: true
