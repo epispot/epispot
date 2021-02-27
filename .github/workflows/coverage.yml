@@ -19,10 +19,10 @@ jobs:
         pip install coverage
         pip install codecov
         pip install -r requirements.txt
-        cd tests/CI
     - name: Prepares Code Coverage Report 
       continue-on-error: true
       run: |
+        cd tests/CI/
         python -m coverage run -m pytest
     - name: Generate Coverage Report
       continue-on-error: true
