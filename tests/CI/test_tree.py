@@ -151,7 +151,7 @@ params_to_build = [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 36.0, 4.0]
 param_ranges = [np.linspace(2.0, 3.0, num=10)] * 10
 param_ranges.append(np.linspace(0.0, 100.0, num=30))
 param_ranges.append(np.linspace(0.0, 100.0, num=30))
-optimized_parameters = epi.fitters.tree_search(build_model, open('data/fit.csv'), params_to_build,
+optimized_parameters = epi.fitters.tree_search(build_model, open('tests/CI/data/fit.csv'), params_to_build,
                                             param_ranges, 2, 883305, range(0, 255, 255))
 
 print('\nOptimization complete. A verbose log of the optimized parameters is shown below.')
@@ -182,7 +182,7 @@ for system in model_plot:
     pred_hos.append(deepcopy(system)[2])
 
 actual_hos = []
-hos_file = open('data/fit.csv', 'r').readlines()
+hos_file = open('tests/CI/data/fit.csv', 'r').readlines()
 
 for line in hos_file:
     actual_hos.append(float(line))
