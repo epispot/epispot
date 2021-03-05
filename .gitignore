@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# code coverage / testing
+htmlcov/
+.pytest_cache/
+
 # Distribution / packaging
 develop-eggs/
 downloads/
