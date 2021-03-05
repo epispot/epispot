@@ -103,8 +103,8 @@ class Susceptible(object):
                           'by passing `s_rate=Value` into this layer.' % self.layer_index)
 
         for prev_layer_index in self.prev_layer_indices:
-            if layer_names[prev_layer_index] != 'Removed' and layer_names[prev_layer_index] != 'Recovered':
-                # pragma: no cover
+            if layer_names[prev_layer_index] != 'Removed' and \
+               layer_names[prev_layer_index] != 'Recovered':  # pragma: no cover
                 warnings.warn('Previous layer at %s to the Susceptible layer at %s is neither Removed or \n'
                               'Recovered. If you want to create a layer which does this, add a custom \n'
                               'layer through `add_layer`. If not, fix the `layer_map`.' % (prev_layer_index,

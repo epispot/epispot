@@ -187,6 +187,6 @@ for line in hos_file:
 range_container = [[range(0, 257), actual_hos, 'Actual Hospitalizations'],
                    [range(0, 256), pred_hos, 'Predicted Hospitalizations'], [range(0, 256), cases, 'Predicted Cases']]
 markup = [['line', [1897, 0, 146, 'Hospital Capacity']], ['highlighted-box', [122, 135, 0.5, 1]],
-['point', [' Triage Required', 122, 1897]]]
+['point', [' Triage Required', 122, 1897]], ['arrow', [1, 10, 250, 100]]]
 epi.plots.compare(range_container, 'San Francisco Predictions', 'From Hospitalization Data', markers=markup, seed=100)
 print('Test complete: Build passing.')
