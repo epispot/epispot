@@ -968,7 +968,7 @@ class Critical(object):
         return derivative
 
 
-class Idiom(object):
+class Idiom(object):  # pragma: no cover
     """
     An idiom used to create custom classes. Feed this into `Model.add_layer
     Can be used with any class. Make sure to change `get_deriv` file.
