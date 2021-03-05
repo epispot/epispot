@@ -4,7 +4,7 @@
 [![Downloads](https://pepy.tech/badge/epispot-nightly)](https://pepy.tech/project/epispot-nightly)
 ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=nightly)
 ![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
-[![codecov](https://codecov.io/gh/epispot/epispot/branch/super-coverage/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot)
+[![codecov](https://codecov.io/gh/epispot/epispot/branch/nightly/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot)
 
 <br>
 
