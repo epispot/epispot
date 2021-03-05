@@ -6,8 +6,9 @@ on:
       - nightly
     paths:
       - setup.py
+      - release.py
       - epispot/*
-      - README.md
+      - scripts/*
 jobs:
   deploy:
 
