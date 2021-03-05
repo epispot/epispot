@@ -1,5 +1,14 @@
 name: Code Coverage
-on: [push]
+on:
+  push:
+    branches:
+      - super-coverage
+    paths:
+      - epispot/*
+      - tests/*
+  pull_request:
+    branches:
+      - super-coverage
 
 jobs:
   run:
