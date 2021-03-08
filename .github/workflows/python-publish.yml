@@ -37,7 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Change Version Info
       run: | 
-        python scripts/release.py
+        python release.py
     - name: Configure Git
       run: |
         git config user.name github-actions
