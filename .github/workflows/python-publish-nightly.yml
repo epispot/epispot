@@ -1,8 +1,6 @@
 name: Upload Nightly to PyPI
 
 on:
-  workflow_dispatch:
-  
   push:
     branches: 
       - nightly
@@ -11,6 +9,7 @@ on:
       - release.py
       - epispot/*
       - scripts/*
+      - .github/workflows/*
 jobs:
   deploy:
 
