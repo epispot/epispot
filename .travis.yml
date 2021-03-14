@@ -7,7 +7,7 @@ install:
 script:
   - python tests/docs.py
   - make -C docs/ html
-  - touch docs/build/html/.nojekyll
+  - touch docs/_build/html/.nojekyll
 
 deploy:
   - provider: pages:git
