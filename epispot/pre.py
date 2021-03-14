@@ -3,10 +3,10 @@ The 'pre-compiled' module contains already compiled models which can be put to u
 Each function returns an epispot Model object and its corresponding functions. Models parameters can still be changed
 even after compilation.
 STRUCTURE:
-    - SIR()
-    - SEIR()
-    - SIRD()
-    - SIHRD()
+- SIR()
+- SEIR()
+- SIRD()
+- SIHRD()
 """
 
 from . import comps

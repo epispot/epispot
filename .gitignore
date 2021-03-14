@@ -21,6 +21,9 @@ pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 
+# Documentation
+docs/_build
+
 # pyenv
 .python-version
 
@@ -42,6 +45,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.vscode/
 
 # Pyre type checker
 .pyre/
