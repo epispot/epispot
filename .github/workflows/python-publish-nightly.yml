@@ -39,11 +39,6 @@ jobs:
     - name: Change Version Info
       run: | 
         python scripts/release.py
-    - name: Updated Docs
-      run: |
-        cd scripts
-        python docs.py
-        cd ..
     - name: Configure Git
       run: |
         git config user.name github-actions
