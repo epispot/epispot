@@ -12,7 +12,9 @@ script:
   - touch docs/_build/html/.nojekyll
 
 after_success:
-  - .travis/push.sh
+  - git config --global user.email "builds@travis-ci.com"
+  - git config --global user.name "Travis CI"
+  - git push origin docs
 
 deploy:
   - provider: pages:git
