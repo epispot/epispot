@@ -3,14 +3,14 @@ The `compartments` module contains pre-built disease compartments for basic mode
 custom user-defined compartments. This module consists of several classes, each representing a specific
 compartment.
 STRUCTURE:
-    - Susceptible(object)
-    - Infected(object)
-    - Recovered(object)
-    - Exposed(object)
-    - Dead(object)
-    - Hospitalized(object)
-    - Critical(object)
-    - Idiom(object)
+- Susceptible(object)
+- Infected(object)
+- Recovered(object)
+- Exposed(object)
+- Dead(object)
+- Hospitalized(object)
+- Critical(object)
+- Idiom(object)
 """
 
 from . import warnings
@@ -23,10 +23,10 @@ class Susceptible(object):
     This class can be used as a beginning state.
     Recovered (?) --> Susceptible --> Infected
     STRUCTURE:
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
+    - __init__
+    - get_layer_index
+    - test
+    - get_deriv
     """
 
     def __init__(self, layer_index, R_0, gamma, N, p_resusceptibility=None, s_rate=None):
@@ -457,10 +457,10 @@ class Exposed(object):
     This portion of individuals cannot spread the disease but are bound to become infected after some period of time.
     Susceptible --> Exposed --> Infected
     STRUCTURE:
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
+    - __init__
+    - get_layer_index
+    - test
+    - get_deriv
     """
 
     def __init__(self, layer_index, R_0, gamma, N, delta):
@@ -573,10 +573,10 @@ class Dead(object):
     regardless of how many people have been classified as Dead.
     Infected, Critical, Hospitalized --> Dead (TERMINAL)
     STRUCTURE:
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
+    - __init__
+    - get_layer_index
+    - test
+    - get_deriv
     """
 
     def __init__(self, layer_index, rho_inf=None, alpha_inf=None, rho_hos=None, alpha_hos=None, rho_cri=None,
@@ -830,10 +830,10 @@ class Critical(object):
     individuals, who don't require extra resources (ICU beds, ventilators, etc.). This layer supports triage.
     Hospitalized, Infected --> Critical --> Dead, Recovered
     STRUCTURE:
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
+    - __init__
+    - get_layer_index
+    - test
+    - get_deriv
     """
 
     def __init__(self, layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None,

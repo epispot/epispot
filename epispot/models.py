@@ -4,7 +4,7 @@ For example, the basic SIR model would be a model consisting of the Susceptible,
 compartments. These classes also allow for differentiation and integration to evaluate the model's
 predictions.
 STRUCTURE:
-    - Model(object)
+- Model(object)
 """
 
 
@@ -25,14 +25,14 @@ class Model(object):
         :param layer_names: =[], names of every previous layer in Model
                                  (e.g [None, 'Susceptible', 'Infected'])
                                 allowed names are listed below:
-                                    - Susceptible
-                                    - Infected
-                                    - Recovered
-                                    - Exposed
-                                    - Removed
-                                    - Dead
-                                    - Critical
-                                    - Hospitalized
+                                - Susceptible
+                                - Infected
+                                - Recovered
+                                - Exposed
+                                - Removed
+                                - Dead
+                                - Critical
+                                - Hospitalized
                                 use `None` to indicate that no other layer precedes the first layer.
         :param layer_map: =[] next layers (as classes) for every layer in Model
                               (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no other
