@@ -22,7 +22,7 @@ copyright = '2021, @Quantalabs, @quantum9Innovation'
 author = 'Quantalabs, Quantum9Innovation'
 
 # The full version, including alpha/beta/rc tags
-release="v2.0.1.22"
+release="v2.0.1.24"
 
 
 # -- General configuration ---------------------------------------------------
