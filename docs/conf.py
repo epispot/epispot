@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'epispot'
-copyright = '2021, Quantalabs, Quantum9Innovation'
+copyright = '2021, @Quantalabs, @quantum9Innovation'
 author = 'Quantalabs, Quantum9Innovation'
 
 # The full version, including alpha/beta/rc tags
