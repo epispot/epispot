@@ -5,7 +5,9 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - python scripts/docs.py
+  - cd scripts 
+  - python docs.py
+  - cd ..
   - make -C docs/ html
   - touch docs/_build/html/.nojekyll
 
