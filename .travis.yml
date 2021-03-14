@@ -10,6 +10,11 @@ script:
   - cd ..
   - make -C docs/ html
   - touch docs/_build/html/.nojekyll
+  - git config user.name github-actions
+  - git config user.email github-actions@github.com
+  - git add .
+  - git commit -m 'Update docs'
+  - git push origin docs
 
 deploy:
   - provider: pages:git
