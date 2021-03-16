@@ -19,7 +19,7 @@ jobs:
         pip install -r requirements.txt
     - name: Generate documentation
       run: |
-        pdoc --html --output-dir docs epispot
+        pdoc --html --output-dir docs epispot --template-dir pdoc3_templates --force
     - name: Configure Git
       run: |
         git config user.name github-actions
