@@ -33,27 +33,27 @@ class Susceptible(object):
         """
         Initialize the Susceptible class
 
-        :param layer_index: index of layer in `layers`
-        :param R_0: the basic reproductive number
+        -  layer_index: index of layer in `layers`
+        -  R_0: the basic reproductive number
                     this is the average number of susceptibles infected by one infected
                     implemented as a function R_0(t):
                         - t: time
                         - return: R_0 value
-        :param gamma: the infectious period
+        -  gamma: the infectious period
                       1 / average duration of infectious period
                       implemented as a function gamma(t):
                         - t: time
                         - return: infectious period
-        :param N: the total population
+        -  N: the total population
                   implemented as a function N(t):
                         - t: time
                         - return: total population
-        :param p_resusceptibility: =None, probability of re-susceptibility (0 <= x <= 1)
+        -  p_resusceptibility: Defaults to None, probability of re-susceptibility (0 <= x <= 1)
                                    only applicable if individuals can become susceptible again
                                    implemented as a function p_resusceptibility(t):
                                         - t: time
                                         - return: probability of re-susceptibility
-        :param s_rate: =None, 1 / average time to become susceptible again
+        -  s_rate: Defaults to None, 1 / average time to become susceptible again
                        only applicable if individuals can become susceptible again
                        implemented as a function s_rate(t):
                         - t: time
@@ -80,9 +80,9 @@ class Susceptible(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -114,9 +114,9 @@ class Susceptible(object):
         Derivative of the Susceptible compartment
         must be the *only* Susceptible compartment which people from other layers may enter
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         total_infecteds = 0
@@ -156,61 +156,61 @@ class Infected(object):
         """
         Initialize the Infected class
 
-        :param layer_index: index of layer in `layers`
-        :param N: the total population
+        -  layer_index: index of layer in `layers`
+        -  N: the total population
                   implemented as a function N(t):
                         - t: time
                         - return: total population
-        :param R_0: =None, the basic reproductive number (only applicable if previous layer is Susceptible)
+        -  R_0: Defaults to None, the basic reproductive number (only applicable if previous layer is Susceptible)
                     this is the average number of Susceptibles infected by one Infected
                     implemented as a function R_0(t):
                         - t: time
                         - return: R_0 value
-        :param gamma: =None, the infectious period (only applicable if previous layer is Susceptible)
+        -  gamma: Defaults to None, the infectious period (only applicable if previous layer is Susceptible)
                       1 / average duration of infectious period
                       implemented as a function gamma(t):
                         - t: time
                         - return: infectious period
-        :param delta: =None, the incubation period (only applicable if previous layer is Exposed)
+        -  delta: Defaults to None, the incubation period (only applicable if previous layer is Exposed)
                       implemented as a function delta(t)--in most cases this should stay constant
                         - t: time
                         - return: incubation period
-        :param p_recovery: =None, probability of recovery
+        -  p_recovery: Defaults to None, probability of recovery
                       (only applicable if next layer is Recovered)
                       implemented as a function p_recovery(t):
                         - t: time
                         - return: probability of recovery
-        :param recovery_rate: =None, the recovery rate--different from the standard recovery rate `gamma`
+        -  recovery_rate: Defaults to None, the recovery rate--different from the standard recovery rate `gamma`
                                      measures only 1 / the time it takes to move to the Recovered layer
                       (only applicable if next layer is Recovered)
                       implemented as a function recovery_rate(t):
                         - t: time
                         - return: recovery rate
-        :param p_hospitalized: =None, probability of hospitalization
+        -  p_hospitalized: Defaults to None, probability of hospitalization
                       (only applicable if next layer is Hospitalized)
                       implemented as a function p_hospitalized(t):
                         - t: time
                         - return: probability of hospitalization
-        :param hospital_rate: =None, 1 / average time to hospitalization
+        -  hospital_rate: Defaults to None, 1 / average time to hospitalization
                       (only applicable if next layer is Hospitalized)
                       implemented as a function hospital_rate(t)
                         - t: time
                         - return: hospitalization rate
-        :param p_critical: =None, probability of becoming a critical patient
+        -  p_critical: Defaults to None, probability of becoming a critical patient
                       (only applicable if next layer is Critical)
                       implemented as a function p_critical(t)
                         - t: time
                         - return: critical probability
-        :param critical_rate: =None, 1 / average time to becoming a critical patient
+        -  critical_rate: Defaults to None, 1 / average time to becoming a critical patient
                       (only applicable if next layer is Critical)
                       implemented as a function critical_rate(t)
                         - t: time
                         - return: critical rate
-        :param p_death: =None, probability of death (only applicable if next layer is Dead)
+        -  p_death: Defaults to None, probability of death (only applicable if next layer is Dead)
                       implemented as a function p_death(t)
                         - t: time
                         - return: death probability
-        :param death_rate: =None, 1 / rate of death (only applicable if next layer is Dead)
+        -  death_rate: Defaults to None, 1 / rate of death (only applicable if next layer is Dead)
                       implemented as a function death_rate(t)--in most cases this should stay constant
                         - t: time
                         - return: death rate
@@ -241,9 +241,9 @@ class Infected(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -286,9 +286,9 @@ class Infected(object):
         all layers feeding into the infected layer must be of the same type and either Susceptible or
         Exposed
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         total_prev_layer = 0
@@ -333,38 +333,38 @@ class Recovered(object):
         """
         Initialize the Recovered class
 
-        :param layer_index: index of layer in `layers`
-        :param p_from_inf: =None, probability of recovery from Infected (only applicable if previous layer is Infected)
+        -  layer_index: index of layer in `layers`
+        -  p_from_inf: Defaults to None, probability of recovery from Infected (only applicable if previous layer is Infected)
                            implemented as a function p_from_inf(t)
                                 - t: time
                                 - return: probability of recovery
-        :param from_inf_rate: =None, 1 / time to recover from Infected (only applicable if previous layer is Infected)
+        -  from_inf_rate: Defaults to None, 1 / time to recover from Infected (only applicable if previous layer is Infected)
                            implemented as a function from_inf_rate(t)
                                 - t: time
                                 - return: recovery rate
-        :param p_from_cri: =None, probability of recovery from Critical (only applicable if previous layer is Critical)
+        -  p_from_cri: Defaults to None, probability of recovery from Critical (only applicable if previous layer is Critical)
                            implemented as a function p_from_cri(t)
                                 - t: time
                                 - return: probability of recovery
-        :param from_cri_rate: =None, 1 / time to recover from Critical (only applicable if previous layer is Critical)
+        -  from_cri_rate: Defaults to None, 1 / time to recover from Critical (only applicable if previous layer is Critical)
                            implemented as a function from_cri_rate(t)
                                 - t: time
                                 - return: recovery rate
-        :param p_from_hos: =None, probability of recovery from Hospitalized
+        -  p_from_hos: Defaults to None, probability of recovery from Hospitalized
                            (only applicable if previous layer is Hospitalized)
                            implemented as a function p_from_hos(t)
                                 - t: time
                                 - return: probability of recovery
-        :param from_hos_rate: =None, 1 / time to recover from Hospitalized
+        -  from_hos_rate: Defaults to None, 1 / time to recover from Hospitalized
                            (only applicable if previous layer is Hospitalized)
                            implemented as a function from_hos_rate(t)
                                 - t: time
                                 - return: recovery rate
-        :param p_resusceptibility: =None, probability of resusceptibility (only applicable if next layer is Susceptible)
+        -  p_resusceptibility: Defaults to None, probability of resusceptibility (only applicable if next layer is Susceptible)
                            implemented as a function p_resusceptibility(t)
                                 - t: time
                                 - return: probability of resusceptibility
-        :param s_rate: =None, 1 / time to resusceptibility (only applicable if next layer is Susceptible)
+        -  s_rate: Defaults to None, 1 / time to resusceptibility (only applicable if next layer is Susceptible)
                            implemented as a function s_rate(t)
                                 - t: time
                                 - return: rate of resusceptibility
@@ -390,9 +390,9 @@ class Recovered(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -422,9 +422,9 @@ class Recovered(object):
         """
         Derivative of the Recovered compartment
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         derivative = 0
@@ -466,22 +466,22 @@ class Exposed(object):
         """
         Initialize the Exposed class
 
-        :param layer_index: index of layer in `layers`
-        :param R_0: the basic reproductive number
+        -  layer_index: index of layer in `layers`
+        -  R_0: the basic reproductive number
                     this is the average number of Susceptibles infected by one Infected
                     implemented as a function R_0(t):
                         - t: time
                         - return: R_0 value
-        :param gamma: the infectious period
+        -  gamma: the infectious period
                       1 / average duration of infectious period
                       implemented as a function gamma(t):
                         - t: time
                         - return: infectious period
-        :param N: the total population
+        -  N: the total population
                   implemented as a function N(t):
                         - t: time
                         - return: total population
-        :param delta: the incubation period (only applicable if previous layer is Exposed)
+        -  delta: the incubation period (only applicable if previous layer is Exposed)
                       implemented as a function delta(t)--in most cases this should stay constant
                         - t: time
                         - return: incubation period
@@ -504,9 +504,9 @@ class Exposed(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -547,9 +547,9 @@ class Exposed(object):
         """
         Derivative of the Exposed compartment
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         total_susceptibles = 0
@@ -583,30 +583,30 @@ class Dead(object):
         """
         Initialize the Dead class
 
-        :param layer_index: index of layer in `layers`
-        :param rho_inf: =None, 1 / time until death from Infected (only applicable if previous layer is Infected)
+        -  layer_index: index of layer in `layers`
+        -  rho_inf: Defaults to None, 1 / time until death from Infected (only applicable if previous layer is Infected)
                         implemented as a function rho_inf(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
-        :param alpha_inf: =None, probability of death from Infected (only applicable if previous layer is Infected)
+        -  alpha_inf: Defaults to None, probability of death from Infected (only applicable if previous layer is Infected)
                           implemented as a function alpha_inf(t)
                                 - t: time
                                 - return: probability of death
-        :param rho_hos: =None, 1 / time until death from Hospitalized (only applicable if previous layer is
+        -  rho_hos: Defaults to None, 1 / time until death from Hospitalized (only applicable if previous layer is
                         Hospitalized)
                         implemented as a function rho_hos(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
-        :param alpha_hos: =None, probability of death from Hospitalized (only applicable if previous layer is
+        -  alpha_hos: Defaults to None, probability of death from Hospitalized (only applicable if previous layer is
                           Hospitalized)
                           implemented as a function alpha_hos(t)
                                 - t: time
                                 - return: probability of death
-        :param rho_cri: =None, 1 / time until death from Critical (only applicable if previous layer is Critical)
+        -  rho_cri: Defaults to None, 1 / time until death from Critical (only applicable if previous layer is Critical)
                         implemented as a function rho_cri(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
-        :param alpha_cri: =None, probability of death from Critical (only applicable if previous layer is Critical)
+        -  alpha_cri: Defaults to None, probability of death from Critical (only applicable if previous layer is Critical)
                           implemented as a function alpha_cri(t)
                                 - t: time
                                 - return: probability of death
@@ -632,9 +632,9 @@ class Dead(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -677,9 +677,9 @@ class Dead(object):
         """
         Derivative of the Dead compartment
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         derivative = 0
@@ -714,44 +714,44 @@ class Hospitalized(object):
         """
         Initialize the Hospitalized class
 
-        :param layer_index: index of layer in `layers`
-        :param hos_rate: 1 / time until hospitalization
+        -  layer_index: index of layer in `layers`
+        -  hos_rate: 1 / time until hospitalization
                         implemented as a function hos_rate(t)
                                 - t: time
                                 - return: hospitalization rate
-        :param p_hos: probability of hospitalization
+        -  p_hos: probability of hospitalization
                         implemented as a function p_hos(t)
                                 - t: time
                                 - return: probability of hospitalization
-        :param cri_rate: =None, 1 / time until a patient becomes Critical (only applicable if next layer is Critical)
+        -  cri_rate: Defaults to None, 1 / time until a patient becomes Critical (only applicable if next layer is Critical)
                         implemented as a function cri_rate(t)
                                 - t: time
                                 - return: critical rate
-        :param p_cri: =None, probability of becoming a Critical patient (only applicable if next layer is Critical)
+        -  p_cri: Defaults to None, probability of becoming a Critical patient (only applicable if next layer is Critical)
                         implemented as a function p_cri(t)
                                 - t: time
                                 - return: probability of becoming Critical
-        :param recovery_rate: =None, 1 / time to recover (only applicable if next layer is Recovered)
+        -  recovery_rate: Defaults to None, 1 / time to recover (only applicable if next layer is Recovered)
                         implemented as a function recovery_rate(t)
                                 - t: time
                                 - return: recovery rate
-        :param p_recovery: =None, probability of recovery (only applicable if next layer is Recovered)
+        -  p_recovery: Defaults to None, probability of recovery (only applicable if next layer is Recovered)
                         implemented as a function p_recovery(t)
                                 - t: time
                                 - return: probability of recovery
-        :param rho: =None, 1 / time in hospital until death (only applicable if next layer is Dead)
+        -  rho: Defaults to None, 1 / time in hospital until death (only applicable if next layer is Dead)
                         implemented as a function rho(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
-        :param alpha: =None, probability of death (only applicable if next layer is Dead)
+        -  alpha: Defaults to None, probability of death (only applicable if next layer is Dead)
                         implemented as a function alpha(t)
                                 - t: time
                                 - return: probability of death
-        :param maxCap: =None, maximum hospital capacity to implement triage
+        -  maxCap: Defaults to None, maximum hospital capacity to implement triage
                         implemented as a function maxCap(t)
                                 - t: time
                                 - return: maximum capacity
-        :param dump_to_layer: =None, index of the layer to dump patients which do not make the triage
+        -  dump_to_layer: Defaults to None, index of the layer to dump patients which do not make the triage
                               should be of type int()
         """
 
@@ -777,9 +777,9 @@ class Hospitalized(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -797,9 +797,9 @@ class Hospitalized(object):
         """
         Derivative of the Hospitalized compartment
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         derivative = 0
@@ -840,48 +840,48 @@ class Critical(object):
         """
         Initialize the Critical class
 
-        :param layer_index: index of layer in `layers`
-        :param p_from_hos: =None, probability of becoming a Critical patient from Hospitalized
+        -  layer_index: index of layer in `layers`
+        -  p_from_hos: Defaults to None, probability of becoming a Critical patient from Hospitalized
                            (only applicable if previous layer is Hospitalized)
                            implemented as a function p_from_hos(t)
                                 - t: time
                                 - return: Critical probability
-        :param from_hos_rate: =None, 1 / time to Critical condition from Hospitalized
+        -  from_hos_rate: Defaults to None, 1 / time to Critical condition from Hospitalized
                            (only applicable if previous layer is Hospitalized)
                            implemented as a function from_hos_rate(t)
                                 - t: time
                                 - return: Critical rate
-        :param p_from_inf: =None, probability of becoming a Critical patient from Infected
+        -  p_from_inf: Defaults to None, probability of becoming a Critical patient from Infected
                            (only applicable if previous layer is Infected)
                            implemented as a function p_from_inf(t)
                                 - t: time
                                 - return: Critical probability
-        :param from_inf_rate: =None, 1 / time to Critical condition from Infected
+        -  from_inf_rate: Defaults to None, 1 / time to Critical condition from Infected
                            (only applicable if previous layer is Infected)
                            implemented as a function from_inf_rate(t)
                                 - t: time
                                 - return: Critical rate
-        :param alpha: =None, probability of death (only applicable if next layer is Dead)
+        -  alpha: Defaults to None, probability of death (only applicable if next layer is Dead)
                            implemented as a function alpha(t)
                                 - t: time
                                 - return: probability of death
-        :param rho: =None, 1 / time until death from Critical (only applicable if next layer is Dead)
+        -  rho: Defaults to None, 1 / time until death from Critical (only applicable if next layer is Dead)
                            implemented as a function rho(t)--in most cases this should stay constant
                                 - t: time
                                 - return: death rate
-        :param p_recovery: =None, probability of recovery (only applicable if next layer is Recovered)
+        -  p_recovery: Defaults to None, probability of recovery (only applicable if next layer is Recovered)
                            implemented as a function p_recovery(t)
                                 - t: time
                                 - return: probability of recovery
-        :param recovery_rate: =None, 1 / time to recover (only applicable if next layer is Recovered)
+        -  recovery_rate: Defaults to None, 1 / time to recover (only applicable if next layer is Recovered)
                            implemented as a function recovery_rate(t)
                                 - t: time
                                 - return: recovery rate
-        :param maxCap: =None, maximum hospital capacity to implement triage
+        -  maxCap: Defaults to None, maximum hospital capacity to implement triage
                         implemented as a function maxCap(t)
                                 - t: time
                                 - return: maximum capacity
-        :param dump_to_layer: =None, index of the layer to dump patients which do not make the triage
+        -  dump_to_layer: Defaults to None, index of the layer to dump patients which do not make the triage
                               should be of type int()
         """
 
@@ -908,9 +908,9 @@ class Critical(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -941,9 +941,9 @@ class Critical(object):
         """
         Derivative of the Critical compartment
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         derivative = 0
@@ -984,8 +984,8 @@ class Idiom(object):
         """
         Initialize the class
 
-        :param layer_index: index of layer in `layers`
-        :param param_list: =[], list of parameters, passed in array format
+        -  layer_index: index of layer in `layers`
+        -  param_list: Defaults to [], list of parameters, passed in array format
         """
 
         self.layer_index = layer_index
@@ -1005,9 +1005,9 @@ class Idiom(object):
         Test of the `get_deriv` method
         Used to setup commonly used variables and raise common errors
 
-        :param layer_map: next layers (as classes) for every layer in Model
-        :param layer_names: layer names in system
-        :return: derivative
+        -  layer_map: next layers (as classes) for every layer in Model
+        -  layer_names: layer names in system
+        - Returns derivative
         """
 
         # setup
@@ -1026,9 +1026,9 @@ class Idiom(object):
         """
         Derivative of this compartment
 
-        :param time: time to take derivative at
-        :param system: system of all states
-        :return: derivative
+        -  time: time to take derivative at
+        -  system: system of all states
+        - Returns derivative
         """
 
         # warn on no setup
