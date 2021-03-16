@@ -12,7 +12,7 @@ class Model(object):
     """
     Helps create a model out of various disease compartments
     STRUCTURE:
-        - __init__()
+        - \__init__()
     """
 
     def __init__(self, init_pop, layers=[], layer_names=[], layer_map=[]):
@@ -20,23 +20,24 @@ class Model(object):
         Initialize the `Model` class
 
         All optional parameters can be added through the `add_layer` method
+
         -  init_pop: initial population of the area in question
         -  layers: Defaults to [], every layer in Model (as a class, e.g [Susceptible(), Infected(), Recovered()]
         -  layer_names: Defaults to [], names of every previous layer in Model
                                  (e.g [None, 'Susceptible', 'Infected'])
                                 allowed names are listed below:
-                                    - Susceptible
-                                    - Infected
-                                    - Recovered
-                                    - Exposed
-                                    - Removed
-                                    - Dead
-                                    - Critical
-                                    - Hospitalized
-                                use `None` to indicate that no other layer precedes the first layer.
-        -  layer_map: Defaults to [] next layers (as classes) for every layer in Model
-                              (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no other
-                              layer succeeds the last layer.
+            - Susceptible
+            - Infected
+            - Recovered
+            - Exposed
+            - Removed
+            - Dead
+            - Critical
+            - Hospitalized
+
+            use `None` to indicate that no other layer precedes the first layer.
+
+        -  layer_map: Defaults to [] next layers (as classes) for every layer in Model. (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no otherlayer succeeds the last layer.
         """
 
         if layer_map is None:
@@ -103,36 +104,43 @@ class Model(object):
         """
         Add a custom compartment to Model
 
-        -  layer: the layer class
-                      should be an instance of a class with the following structure:
-                        - get_layer_index()
-                            - return: layer index in `self.layers`
-                        - test(time, system, next_layers, layer_names, layer_no)
-                        (to test the `get_deriv` method: output optional)
-                        usually used to save common operations as a class variable
-                            - next_layers: a list of the classes of the following layers
-                            - layer names: names of each layer in Model
-                            - layer_no: index of current layer in `layer_names`
-                            - raise: any errors or warnings
-                        - get_deriv(time, system, next_layers, layer_names, layer_no)
-                            - time: time to take derivative at
-                            - system: system of state values (S, I, R, etc.) --> e.g [973, 12, 15]
-                            - next_layers: a list of the classes of the following layers
-                            - layer names: names of each layer in Model
-                            - layer_no: index of current layer in `layer_names`
-                            - return: derivative
+        -  layer: the layer class. Should be an instance of a class with the following structure:
+
+            - `get_layer_index()`
+                - return: layer index in `self.layers`
+            - `test(time, system, next_layers, layer_names, layer_no)`
+                
+                To test the `get_deriv` method: output optional. Usually used to save common operations as a class variable:
+
+                - next_layers: a list of the classes of the following layers
+                - layer names: names of each layer in Model
+                - layer_no: index of current layer in `layer_names`
+                - raise: any errors or warnings
+
+            - `get_deriv(time, system, next_layers, layer_names, layer_no)`
+
+                - time: time to take derivative at
+                - system: system of state values (S, I, R, etc.) --> e.g [973, 12, 15]
+                - next_layers: a list of the classes of the following layers
+                - layer names: names of each layer in Model
+                - layer_no: index of current layer in `layer_names`
+                - return: derivative
+
         -  layer_name: Defaults to [], names of every layer in Model
                                  (e.g [None, 'Susceptible', 'Infected'])
                                 allowed names are listed below:
-                                    - Susceptible
-                                    - Infected
-                                    - Recovered
-                                    - Exposed
-                                    - Removed
-                                    - Dead
-                                    - Critical
-                                    - Hospitalized
-                                use `None` to indicate that no other layer precedes the first layer.
+
+            - Susceptible
+            - Infected
+            - Recovered
+            - Exposed
+            - Removed
+            - Dead
+            - Critical
+            - Hospitalized
+
+            use `None` to indicate that no other layer precedes the first layer.
+
         -  layer_map: Defaults to [] next layers (as classes) for every layer in Model
                               (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no other
                               layer succeeds the last layer.

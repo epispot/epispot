@@ -22,11 +22,12 @@ class Susceptible(object):
     This is the portion of individuals who have not yet been exposed to the disease.
     This class can be used as a beginning state.
     Recovered (?) --> Susceptible --> Infected
-    STRUCTURE:
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
+    
+    ### STRUCTURE:
+    - \__init__
+    - get_layer_index
+    - test
+    - get_deriv
     """
 
     def __init__(self, layer_index, R_0, gamma, N, p_resusceptibility=None, s_rate=None):
@@ -34,30 +35,21 @@ class Susceptible(object):
         Initialize the Susceptible class
 
         -  layer_index: index of layer in `layers`
-        -  R_0: the basic reproductive number
-                    this is the average number of susceptibles infected by one infected
-                    implemented as a function R_0(t):
-                        - t: time
-                        - return: R_0 value
-        -  gamma: the infectious period
-                      1 / average duration of infectious period
-                      implemented as a function gamma(t):
-                        - t: time
-                        - return: infectious period
-        -  N: the total population
-                  implemented as a function N(t):
-                        - t: time
-                        - return: total population
-        -  p_resusceptibility: Defaults to None, probability of re-susceptibility (0 <= x <= 1)
-                                   only applicable if individuals can become susceptible again
-                                   implemented as a function p_resusceptibility(t):
-                                        - t: time
-                                        - return: probability of re-susceptibility
-        -  s_rate: Defaults to None, 1 / average time to become susceptible again
-                       only applicable if individuals can become susceptible again
-                       implemented as a function s_rate(t):
-                        - t: time
-                        - return: susceptiblity rate
+        -  R_0: the basic reproductive number. This is the average number of susceptibles infected by one infected. Implemented as a function R_0(t):
+            - t: time
+            - return: R_0 value
+        -  gamma: the infectious period. 1 / average duration of infectious period. Implemented as a function gamma(t):
+            - t: time
+            - return: infectious period
+        -  N: the total population. Implemented as a function N(t):
+            - t: time
+            - return: total population
+        -  p_resusceptibility: Defaults to None, probability of re-susceptibility (0 <= x <= 1). Only applicable if individuals can become susceptible again. Implemented as a function p_resusceptibility(t):
+            - t: time
+            - return: probability of re-susceptibility
+        -  s_rate: Defaults to None, 1 / average time to become susceptible again. Only applicable if individuals can become susceptible again. Implemented as a function s_rate(t):
+            - t: time
+            - return: susceptiblity rate
         """
 
         self.layer_index = layer_index
@@ -144,7 +136,7 @@ class Infected(object):
     This is the portion of individuals who are actively spreading the disease.
     Susceptible, Exposed --> Infected --> Recovered, Hospitalized, Critical, Dead
     STRUCTURE:
-        - __init__
+        - \__init__
         - get_layer_index
         - test
         - get_deriv
@@ -157,63 +149,60 @@ class Infected(object):
         Initialize the Infected class
 
         -  layer_index: index of layer in `layers`
-        -  N: the total population
-                  implemented as a function N(t):
-                        - t: time
-                        - return: total population
+        -  N: the total population. Implemented as a function N(t):
+            - t: time
+            - return: total population
         -  R_0: Defaults to None, the basic reproductive number (only applicable if previous layer is Susceptible)
-                    this is the average number of Susceptibles infected by one Infected
-                    implemented as a function R_0(t):
-                        - t: time
-                        - return: R_0 value
+                    this is the average number of Susceptibles infected by one Infected. Implemented as a function R_0(t):
+            - t: time
+            - return: R_0 value
         -  gamma: Defaults to None, the infectious period (only applicable if previous layer is Susceptible)
-                      1 / average duration of infectious period
-                      implemented as a function gamma(t):
-                        - t: time
-                        - return: infectious period
+                      1 / average duration of infectious period. Implemented as a function gamma(t):
+            - t: time
+            - return: infectious period
         -  delta: Defaults to None, the incubation period (only applicable if previous layer is Exposed)
-                      implemented as a function delta(t)--in most cases this should stay constant
-                        - t: time
-                        - return: incubation period
+                      Implemented as a function delta(t)--in most cases this should stay constant
+            - t: time
+            - return: incubation period
         -  p_recovery: Defaults to None, probability of recovery
                       (only applicable if next layer is Recovered)
-                      implemented as a function p_recovery(t):
-                        - t: time
-                        - return: probability of recovery
+                      Implemented as a function p_recovery(t):
+            - t: time
+            - return: probability of recovery
         -  recovery_rate: Defaults to None, the recovery rate--different from the standard recovery rate `gamma`
                                      measures only 1 / the time it takes to move to the Recovered layer
                       (only applicable if next layer is Recovered)
-                      implemented as a function recovery_rate(t):
-                        - t: time
-                        - return: recovery rate
+                      Implemented as a function recovery_rate(t):
+            - t: time
+            - return: recovery rate
         -  p_hospitalized: Defaults to None, probability of hospitalization
                       (only applicable if next layer is Hospitalized)
-                      implemented as a function p_hospitalized(t):
-                        - t: time
-                        - return: probability of hospitalization
+                      Implemented as a function p_hospitalized(t):
+            - t: time
+            - return: recovery rate probability of hospitalization
         -  hospital_rate: Defaults to None, 1 / average time to hospitalization
                       (only applicable if next layer is Hospitalized)
-                      implemented as a function hospital_rate(t)
-                        - t: time
-                        - return: hospitalization rate
+                      Implemented as a function hospital_rate(t)
+            - t: time
+            - return: recovery rate hospitalization rate
         -  p_critical: Defaults to None, probability of becoming a critical patient
                       (only applicable if next layer is Critical)
-                      implemented as a function p_critical(t)
-                        - t: time
-                        - return: critical probability
+                      Implemented as a function p_critical(t)
+            - t: time
+            - return: recovery rate critical probability
         -  critical_rate: Defaults to None, 1 / average time to becoming a critical patient
                       (only applicable if next layer is Critical)
-                      implemented as a function critical_rate(t)
-                        - t: time
-                        - return: critical rate
+                      Implemented as a function critical_rate(t)
+            - t: time
+            - return: recovery rate critical rate
         -  p_death: Defaults to None, probability of death (only applicable if next layer is Dead)
-                      implemented as a function p_death(t)
-                        - t: time
-                        - return: death probability
+                      Implemented as a function p_death(t)
+            - t: time
+            - return: recovery rate death probability
         -  death_rate: Defaults to None, 1 / rate of death (only applicable if next layer is Dead)
-                      implemented as a function death_rate(t)--in most cases this should stay constant
-                        - t: time
-                        - return: death rate
+                      Implemented as a function death_rate(t)--in most cases this should stay constant
+            - t: time
+            - return: recovery rate death rate
         """
 
         self.layer_index = layer_index
@@ -321,7 +310,7 @@ class Recovered(object):
     This class can be used as a terminal state.
     Infected, Critical, Hospitalized --> Recovered --> Susceptible (?)
     STRUCTURE:
-        - __init__
+        - \__init__
         - get_layer_index
         - test
         - get_deriv
@@ -335,39 +324,39 @@ class Recovered(object):
 
         -  layer_index: index of layer in `layers`
         -  p_from_inf: Defaults to None, probability of recovery from Infected (only applicable if previous layer is Infected)
-                           implemented as a function p_from_inf(t)
-                                - t: time
-                                - return: probability of recovery
+                           Implemented as a function p_from_inf(t)
+            - t: time
+            - return: probability of recovery
         -  from_inf_rate: Defaults to None, 1 / time to recover from Infected (only applicable if previous layer is Infected)
-                           implemented as a function from_inf_rate(t)
-                                - t: time
-                                - return: recovery rate
+                           Implemented as a function from_inf_rate(t)
+            - t: time
+            - return: recovery rate
         -  p_from_cri: Defaults to None, probability of recovery from Critical (only applicable if previous layer is Critical)
-                           implemented as a function p_from_cri(t)
-                                - t: time
-                                - return: probability of recovery
+                           Implemented as a function p_from_cri(t)
+            - t: time
+            - return: probability of recovery
         -  from_cri_rate: Defaults to None, 1 / time to recover from Critical (only applicable if previous layer is Critical)
-                           implemented as a function from_cri_rate(t)
-                                - t: time
-                                - return: recovery rate
+                           Implemented as a function from_cri_rate(t)
+            - t: time
+            - return: recovery rate
         -  p_from_hos: Defaults to None, probability of recovery from Hospitalized
                            (only applicable if previous layer is Hospitalized)
-                           implemented as a function p_from_hos(t)
-                                - t: time
-                                - return: probability of recovery
+                           Implemented as a function p_from_hos(t)
+            - t: time
+            - return: probability of recovery
         -  from_hos_rate: Defaults to None, 1 / time to recover from Hospitalized
                            (only applicable if previous layer is Hospitalized)
-                           implemented as a function from_hos_rate(t)
-                                - t: time
-                                - return: recovery rate
+                           Implemented as a function from_hos_rate(t)
+            - t: time
+            - return: recovery rate
         -  p_resusceptibility: Defaults to None, probability of resusceptibility (only applicable if next layer is Susceptible)
-                           implemented as a function p_resusceptibility(t)
-                                - t: time
-                                - return: probability of resusceptibility
+                           Implemented as a function p_resusceptibility(t)
+            - t: time
+            - return: probability of resusceptibility
         -  s_rate: Defaults to None, 1 / time to resusceptibility (only applicable if next layer is Susceptible)
-                           implemented as a function s_rate(t)
-                                - t: time
-                                - return: rate of resusceptibility
+                           Implemented as a function s_rate(t)
+            - t: time
+            - return: rate of resusceptibility
         """
 
         self.layer_index = layer_index
@@ -456,7 +445,7 @@ class Exposed(object):
     This portion of individuals cannot spread the disease but are bound to become infected after some period of time.
     Susceptible --> Exposed --> Infected
     STRUCTURE:
-        - __init__
+        - \__init__
         - get_layer_index
         - test
         - get_deriv
@@ -469,22 +458,22 @@ class Exposed(object):
         -  layer_index: index of layer in `layers`
         -  R_0: the basic reproductive number
                     this is the average number of Susceptibles infected by one Infected
-                    implemented as a function R_0(t):
-                        - t: time
-                        - return: R_0 value
+                    Implemented as a function R_0(t):
+            - t: time
+            - return: recovery rate R_0 value
         -  gamma: the infectious period
                       1 / average duration of infectious period
-                      implemented as a function gamma(t):
-                        - t: time
-                        - return: infectious period
+                      Implemented as a function gamma(t):
+            - t: time
+            - return: recovery rate infectious period
         -  N: the total population
-                  implemented as a function N(t):
-                        - t: time
-                        - return: total population
+                  Implemented as a function N(t):
+            - t: time
+            - return: recovery rate total population
         -  delta: the incubation period (only applicable if previous layer is Exposed)
-                      implemented as a function delta(t)--in most cases this should stay constant
-                        - t: time
-                        - return: incubation period
+                      Implemented as a function delta(t)--in most cases this should stay constant
+            - t: time
+            - return: recovery rate incubation period
         """
 
         self.layer_index = layer_index
@@ -572,7 +561,7 @@ class Dead(object):
     regardless of how many people have been classified as Dead.
     Infected, Critical, Hospitalized --> Dead (TERMINAL)
     STRUCTURE:
-        - __init__
+        - \__init__
         - get_layer_index
         - test
         - get_deriv
@@ -585,31 +574,31 @@ class Dead(object):
 
         -  layer_index: index of layer in `layers`
         -  rho_inf: Defaults to None, 1 / time until death from Infected (only applicable if previous layer is Infected)
-                        implemented as a function rho_inf(t)--in most cases this should stay constant
-                                - t: time
-                                - return: death rate
+                        Implemented as a function rho_inf(t)--in most cases this should stay constant
+            - t: time
+            - return: death rate
         -  alpha_inf: Defaults to None, probability of death from Infected (only applicable if previous layer is Infected)
-                          implemented as a function alpha_inf(t)
-                                - t: time
-                                - return: probability of death
+                          Implemented as a function alpha_inf(t)
+            - t: time
+            - return: probability of death
         -  rho_hos: Defaults to None, 1 / time until death from Hospitalized (only applicable if previous layer is
                         Hospitalized)
-                        implemented as a function rho_hos(t)--in most cases this should stay constant
-                                - t: time
-                                - return: death rate
+                        Implemented as a function rho_hos(t)--in most cases this should stay constant
+            - t: time
+            - return: death rate
         -  alpha_hos: Defaults to None, probability of death from Hospitalized (only applicable if previous layer is
                           Hospitalized)
-                          implemented as a function alpha_hos(t)
-                                - t: time
-                                - return: probability of death
+                          Implemented as a function alpha_hos(t)
+            - t: time
+            - return: probability of death
         -  rho_cri: Defaults to None, 1 / time until death from Critical (only applicable if previous layer is Critical)
-                        implemented as a function rho_cri(t)--in most cases this should stay constant
-                                - t: time
-                                - return: death rate
+                        Implemented as a function rho_cri(t)--in most cases this should stay constant
+            - t: time
+            - return: death rate
         -  alpha_cri: Defaults to None, probability of death from Critical (only applicable if previous layer is Critical)
-                          implemented as a function alpha_cri(t)
-                                - t: time
-                                - return: probability of death
+                          Implemented as a function alpha_cri(t)
+            - t: time
+            - return: probability of death
         """
 
         self.layer_index = layer_index
@@ -703,7 +692,7 @@ class Hospitalized(object):
     more resources (ICU beds, ventilators, etc.). This layer supports triage.
     Infected --> Hospitalized --> Critical, Dead
     STRUCTURE:
-        - __init__
+        - \__init__
         - get_layer_index
         - test
         - get_deriv
@@ -716,41 +705,41 @@ class Hospitalized(object):
 
         -  layer_index: index of layer in `layers`
         -  hos_rate: 1 / time until hospitalization
-                        implemented as a function hos_rate(t)
-                                - t: time
-                                - return: hospitalization rate
+                        Implemented as a function hos_rate(t)
+            - t: time
+            - return: hospitalization rate
         -  p_hos: probability of hospitalization
-                        implemented as a function p_hos(t)
-                                - t: time
-                                - return: probability of hospitalization
+                        Implemented as a function p_hos(t)
+            - t: time
+            - return: probability of hospitalization
         -  cri_rate: Defaults to None, 1 / time until a patient becomes Critical (only applicable if next layer is Critical)
-                        implemented as a function cri_rate(t)
-                                - t: time
-                                - return: critical rate
+                        Implemented as a function cri_rate(t)
+            - t: time
+            - return: critical rate
         -  p_cri: Defaults to None, probability of becoming a Critical patient (only applicable if next layer is Critical)
-                        implemented as a function p_cri(t)
-                                - t: time
-                                - return: probability of becoming Critical
+                        Implemented as a function p_cri(t)
+            - t: time
+            - return: probability of becoming Critical
         -  recovery_rate: Defaults to None, 1 / time to recover (only applicable if next layer is Recovered)
-                        implemented as a function recovery_rate(t)
-                                - t: time
-                                - return: recovery rate
+                        Implemented as a function recovery_rate(t)
+            - t: time
+            - return: recovery rate
         -  p_recovery: Defaults to None, probability of recovery (only applicable if next layer is Recovered)
-                        implemented as a function p_recovery(t)
-                                - t: time
-                                - return: probability of recovery
+                        Implemented as a function p_recovery(t)
+            - t: time
+            - return: probability of recovery
         -  rho: Defaults to None, 1 / time in hospital until death (only applicable if next layer is Dead)
-                        implemented as a function rho(t)--in most cases this should stay constant
-                                - t: time
-                                - return: death rate
+                        Implemented as a function rho(t)--in most cases this should stay constant
+            - t: time
+            - return: death rate
         -  alpha: Defaults to None, probability of death (only applicable if next layer is Dead)
-                        implemented as a function alpha(t)
-                                - t: time
-                                - return: probability of death
+                        Implemented as a function alpha(t)
+            - t: time
+            - return: probability of death
         -  maxCap: Defaults to None, maximum hospital capacity to implement triage
-                        implemented as a function maxCap(t)
-                                - t: time
-                                - return: maximum capacity
+                        Implemented as a function maxCap(t)
+            - t: time
+            - return: maximum capacity
         -  dump_to_layer: Defaults to None, index of the layer to dump patients which do not make the triage
                               should be of type int()
         """
@@ -829,7 +818,7 @@ class Critical(object):
     individuals, who don't require extra resources (ICU beds, ventilators, etc.). This layer supports triage.
     Hospitalized, Infected --> Critical --> Dead, Recovered
     STRUCTURE:
-        - __init__
+        - \__init__
         - get_layer_index
         - test
         - get_deriv
@@ -843,44 +832,44 @@ class Critical(object):
         -  layer_index: index of layer in `layers`
         -  p_from_hos: Defaults to None, probability of becoming a Critical patient from Hospitalized
                            (only applicable if previous layer is Hospitalized)
-                           implemented as a function p_from_hos(t)
-                                - t: time
-                                - return: Critical probability
+                           Implemented as a function p_from_hos(t)
+            - t: time
+            - return: Critical probability
         -  from_hos_rate: Defaults to None, 1 / time to Critical condition from Hospitalized
                            (only applicable if previous layer is Hospitalized)
-                           implemented as a function from_hos_rate(t)
-                                - t: time
-                                - return: Critical rate
+                           Implemented as a function from_hos_rate(t)
+            - t: time
+            - return: Critical rate
         -  p_from_inf: Defaults to None, probability of becoming a Critical patient from Infected
                            (only applicable if previous layer is Infected)
-                           implemented as a function p_from_inf(t)
-                                - t: time
-                                - return: Critical probability
+                           Implemented as a function p_from_inf(t)
+            - t: time
+            - return: Critical probability
         -  from_inf_rate: Defaults to None, 1 / time to Critical condition from Infected
                            (only applicable if previous layer is Infected)
-                           implemented as a function from_inf_rate(t)
-                                - t: time
-                                - return: Critical rate
+                           Implemented as a function from_inf_rate(t)
+            - t: time
+            - return: Critical rate
         -  alpha: Defaults to None, probability of death (only applicable if next layer is Dead)
-                           implemented as a function alpha(t)
-                                - t: time
-                                - return: probability of death
+                           Implemented as a function alpha(t)
+            - t: time
+            - return: probability of death
         -  rho: Defaults to None, 1 / time until death from Critical (only applicable if next layer is Dead)
-                           implemented as a function rho(t)--in most cases this should stay constant
-                                - t: time
-                                - return: death rate
+                           Implemented as a function rho(t)--in most cases this should stay constant
+            - t: time
+            - return: death rate
         -  p_recovery: Defaults to None, probability of recovery (only applicable if next layer is Recovered)
-                           implemented as a function p_recovery(t)
-                                - t: time
-                                - return: probability of recovery
+                           Implemented as a function p_recovery(t)
+            - t: time
+            - return: probability of recovery
         -  recovery_rate: Defaults to None, 1 / time to recover (only applicable if next layer is Recovered)
-                           implemented as a function recovery_rate(t)
-                                - t: time
-                                - return: recovery rate
+                           Implemented as a function recovery_rate(t)
+            - t: time
+            - return: recovery rate
         -  maxCap: Defaults to None, maximum hospital capacity to implement triage
-                        implemented as a function maxCap(t)
-                                - t: time
-                                - return: maximum capacity
+                        Implemented as a function maxCap(t)
+            - t: time
+            - return: maximum capacity
         -  dump_to_layer: Defaults to None, index of the layer to dump patients which do not make the triage
                               should be of type int()
         """
@@ -974,7 +963,7 @@ class Idiom(object):
     If you wish, you can change all the other methods as well.
     Pass all parameters as an array in `param_list`
     STRUCTURE:
-        - __init__
+        - \__init__
         - get_layer_index
         - test
         - get_deriv

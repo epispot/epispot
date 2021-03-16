@@ -17,8 +17,10 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
                                 param: parameters, parameters for model
                                 return: model predictions (use the integrate() method)
     -  real_data: .csv file in the form:
-                        HEADER: ...layer #s
-                        CONTENTS: ...people in layers
+
+                        HEADER: layer #s
+                        CONTENTS: people in layers
+
     -  model_params: list of model parameters
     -  mu: the learning rate (adjust so that loss decreases after every epoch)
     -  epochs: number of training sessions to run
