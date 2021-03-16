@@ -48,8 +48,8 @@ it helpful to see the examples in the `tests/examples` folder.
 
 ## Screenshots
 
-![sf-case-study](tests/assets/compare-function.png)
-![line-graph](tests/assets/line-graph.png)
+![sf-case-study](https://github.com/epispot/epispot/blob/master/tests/assets/compare-function.png?raw=true)
+![line-graph](https://github.com/epispot/epispot/blob/master/tests/assets/line-graph.png?raw=true)
 
 ## Features
 
@@ -70,15 +70,7 @@ it helpful to see the examples in the `tests/examples` folder.
     - Plot model predictions interactively
     - Compare different model predictions
 
-# Stats
+## Stats
 **GitHub Tests:** ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
 <br>**PyPi:** ![Downloads](https://pepy.tech/badge/epispot)
 <br>**Anaconda:** ![Anaconda Donwloads](https://shields.io/conda/dn/conda-forge/epispot)
-
-## Compile your model at the speed of light
-### and get insights that match
-Documentation can easily be accessed from function, class, and file docstrings.
-Doc strings provide additional documentation on a certain function.
-They can be accessed by the built-in Python `help()` command.
-These strings are formatted in Github-flavored markdown.
-Additionally, all files will have a 'STRUCTURE' label.
