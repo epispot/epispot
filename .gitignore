@@ -131,3 +131,9 @@ dmypy.json
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
+
+# Additional Files
+/build/
+/epispot.egg-info/
+/epispot_nightly.egg-info/
+/.coverage

@@ -12,24 +12,25 @@
 A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
-<br>
+**This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.\
+Additionally, code within this branch may be deprecated at any time.\
+See the official stable build and all its features [here](https://pypi.org/project/epispot/)**
 
-![epi-spot social image](https://docs.google.com/drawings/d/e/2PACX-1vT6zazkjjnz8UMZz7mxPFXjnvC1Q1HgBLGcNwt0DEqla5N10kC_LPcdbuWae2VBWgCL7kynE8vCTzru/pub?w=1440&h=1080)
+To ensure that you are using the latest version, run the following command regularly*:\
+`pip install epispot-nightly --upgrade` \
+*updates are published after every commit (~1/day)
+
+<br>
 
 ## Installation
 
-Epispot can be installed via pip or via Anaconda.
-If using pip, install with:
+Epispot nightly can _only_ be installed on pip at this time.
+Install with:
 ```
-pip install epispot
+pip install epispot-nightly
 ```
-For Anaconda, use:
-```
-conda config --add channels conda-forge
-conda install -c conda-forge epispot
-```
-
 As a shorthand, use `import epispot as epi`.
+Both nightly and stable packages cannot be used at the same time in the same file.
 
 You can also install the `epispot-nightly` package from pip:
 ``` bash
@@ -52,25 +53,34 @@ it helpful to see the examples in the `tests/examples` folder.
 ![line-graph](https://github.com/epispot/epispot/blob/master/tests/assets/line-graph.png?raw=true)
 
 ## Features
-
- - SIR-based models
-    - Susceptible
-    - Infected
-    - Recovered
-    - Exposed
-    - Dead
-    - Critical
-    - Hospitalized
-    
- - Custom-defined compartmental models
-    - Create custom models using the `Model` class
- 
- - Graphing Capabilities
-    - Plot real data from a `.csv` file
-    - Plot model predictions interactively
-    - Compare different model predictions
+- SIR-based models
+  - Susceptible
+  - Infected
+  - Recovered
+  - Exposed
+  - Dead
+  - Critical
+  - Hospitalized
+- Custom-defined compartmental models
+  - Create custom models using the `Model` class
+- Graphing Capabilities
+  - Plot real data from a `.csv` file
+  - Plot model predictions interactively
+  - Compare different model predictions
 
 ## Stats
 **GitHub Tests:** ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
 <br>**PyPi:** ![Downloads](https://pepy.tech/badge/epispot)
 <br>**Anaconda:** ![Anaconda Donwloads](https://shields.io/conda/dn/conda-forge/epispot)
+
+## Latest Release Notes (nightly build)
+
+ - 3/13/21 2.0.1.23 Add documentation, triggering workflow. See commit description for deeper info.
+ - 2/26/21 2.0.1.22 Automations
+   - Automated code coverage reports
+   - Working on automating release notes 
+ - 2/12/21 2.0.1.17 Actions Test
+ - 2/12/21 2.0.1.16: Stability Improvements
+    - Allows for faster bug and issue tracking
+
+**Stay one step ahead and preview the latest features with epispot-nightly.*

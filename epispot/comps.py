@@ -3,14 +3,14 @@ The `compartments` module contains pre-built disease compartments for basic mode
 custom user-defined compartments. This module consists of several classes, each representing a specific
 compartment.
 STRUCTURE:
-    - Susceptible(object)
-    - Infected(object)
-    - Recovered(object)
-    - Exposed(object)
-    - Dead(object)
-    - Hospitalized(object)
-    - Critical(object)
-    - Idiom(object)
+- Susceptible(object)
+- Infected(object)
+- Recovered(object)
+- Exposed(object)
+- Dead(object)
+- Hospitalized(object)
+- Critical(object)
+- Idiom(object)
 """
 
 from . import warnings
@@ -89,13 +89,14 @@ class Susceptible(object):
                     self.prev_layer_indices.append(layer_no)
 
         # tests
-        if not self.first_layer and not self.s_rate:
+        if not self.first_layer and not self.s_rate:  # pragma: no cover
             warnings.warn('The Susceptible layer at %s is not the first layer and there does not seem \n'
                           'to be any specified susceptibility rate. You can specify this \n'
                           'by passing `s_rate=Value` into this layer.' % self.layer_index)
 
         for prev_layer_index in self.prev_layer_indices:
-            if layer_names[prev_layer_index] != 'Removed' and layer_names[prev_layer_index] != 'Recovered':
+            if layer_names[prev_layer_index] != 'Removed' and \
+               layer_names[prev_layer_index] != 'Recovered':  # pragma: no cover
                 warnings.warn('Previous layer at %s to the Susceptible layer at %s is neither Removed or \n'
                               'Recovered. If you want to create a layer which does this, add a custom \n'
                               'layer through `add_layer`. If not, fix the `layer_map`.' % (prev_layer_index,
@@ -116,7 +117,7 @@ class Susceptible(object):
             total_infecteds += system[infected_category_index]
 
         derivative = - self.gamma(time) * self.R_0(time) * system[self.layer_index] * \
-                        total_infecteds / self.N(time)
+                       total_infecteds / self.N(time)
 
         if self.first_layer:
             return derivative
@@ -243,7 +244,7 @@ class Infected(object):
                     self.prev_layer_indices.append(layer_map_no)
                 # warning if there are different input layer types
                 if self.prev_layer_type is not None and next_layer.get_layer_index() == self.layer_index and \
-                layer_names[layer_map_no] != self.prev_layer_type:
+                   layer_names[layer_map_no] != self.prev_layer_type:  # pragma: no cover
                     warnings.warn('Not all input layers to the Infected layer at %s are the same. \n'
                                   'Input layers to the Infected layer should either all be Susceptible \n'
                                   'or Exposed. Consider changing the `layer_map`.' %
@@ -251,20 +252,20 @@ class Infected(object):
 
         # warnings
         # undefined parameters
-        if self.prev_layer_type == 'Susceptible' and not self.R_0:
+        if self.prev_layer_type == 'Susceptible' and not self.R_0:  # pragma: no cover
             warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the \n'
                           'basic reproductive number is not defined. Please define as `R_0=Value`.' %
                           self.layer_index)
-        if self.prev_layer_type == 'Susceptible' and not self.gamma:
+        if self.prev_layer_type == 'Susceptible' and not self.gamma:  # pragma: no cover
             warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the \n'
                           'recovery rate is not defined. Please define as `gamma=Value.`' % self.layer_index)
 
-        if self.prev_layer_type == 'Exposed' and not self.delta:
+        if self.prev_layer_type == 'Exposed' and not self.delta:  # pragma: no cover
             warnings.warn('The previous layer type to the Infected layer at %s is Exposed and the \n'
                           'incubation period is not defined. Please define as `delta=Value`.' % self.layer_index)
 
         # layer structures
-        if self.prev_layer_type != 'Susceptible' and self.prev_layer_type != 'Exposed':
+        if self.prev_layer_type != 'Susceptible' and self.prev_layer_type != 'Exposed':  # pragma: no cover
             warnings.warn('Input layer types to the Infected layer at %s must be either \n'
                           'Susceptible or Exposed. Consider changing the Input layers in `layer_map` \n'
                           'or creating a custom Infected layer using `add_layer`.' % self.layer_index)
@@ -394,7 +395,7 @@ class Recovered(object):
                         self.prev_layer_indices_by_type[1].append(layer_no)
                     elif layer_names[layer_no] == 'Hospitalized':
                         self.prev_layer_indices_by_type[2].append(layer_no)
-                    else:
+                    else:  # pragma: no cover
                         warnings.warn('Previous layer at %s to Recovered layer at %s is not Infected, Critical, or \n'
                                       'Hospitalized. Consider either correcting the `layer_map` if this is not \n'
                                       'supposed to happen, or accomodating for this setup by using a custom \n'
@@ -402,7 +403,7 @@ class Recovered(object):
 
         # warnings
         for next_layer_index in range(len(layer_map[self.layer_index])):
-            if layer_names[next_layer_index] != 'Susceptible':
+            if layer_names[next_layer_index] != 'Susceptible':  # pragma: no cover
                 warnings.warn('The next layer to the Recovered layer at %s must be a Susceptible layer. \n'
                               'Change the `layer_map` to avoid this complication or use a custom layer.'
                               % self.layer_index)
@@ -507,7 +508,7 @@ class Exposed(object):
                     self.prev_layer_indices.append(layer_no)
 
                 # warning
-                elif next_layer.get_layer_index() == self.layer_index:
+                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
                     warnings.warn('It seems like you want to connect the layer at %s to the Exposed layer at %s. \n'
                                   'However, only Susceptible layers can be fed into an Exposed layer. \n'
                                   'Consider creating a custom layer to handle this or remove the connection.' %
@@ -520,14 +521,14 @@ class Exposed(object):
                                                       get_layer_index())
 
             # warnings
-            else:
+            else:  # pragma: no cover
                 warnings.warn('It seems like you want to connect Exposed layer at %s to the layer at %s. \n'
                               'However, only Infected layers can be placed in front of Exposed layers. \n'
                               'Consider creating a custom layer to handle this or remove the connection.' %
                               (self.layer_index, next_layer_index))
 
         # warnings
-        if len(self.prev_layer_indices) == 0:
+        if len(self.prev_layer_indices) == 0:  # pragma: no cover
             warnings.warn('It seems that the Exposed layer at %s is not in use. Please find a Susceptible \n'
                           'layer to route through this layer or remove this layer altogether.' %
                           self.layer_index)
@@ -638,25 +639,25 @@ class Dead(object):
                     self.critical_category_indices.append(layer_no)
 
                 # warnings
-                elif next_layer.get_layer_index() == self.layer_index:
+                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
                     warnings.warn('You are trying to connect an incorrect layer type at %s to the Dead layer at %s. \n'
                                   'Previous layers to the Dead layer must be of the Infected, Critical, or \n'
                                   'Hospitalized type.' % (layer_no, self.layer_index))
 
         # warnings
-        if not self.rho_inf and len(self.infected_category_indices) > 0:
+        if not self.rho_inf and len(self.infected_category_indices) > 0:  # pragma: no cover
             warnings.warn('You have connected an Infected layer to the Dead layer at %s but \n'
                           'you have not specified a death rate for that layer. Please do this by \n'
                           'passing in parameters `rho_inf=Float` and `alpha_inf=Float` when \n'
                           'the Dead layer is initialized.' % self.layer_index)
 
-        if not self.rho_hos and len(self.hospitalized_category_indices) > 0:
+        if not self.rho_hos and len(self.hospitalized_category_indices) > 0:  # pragma: no cover
             warnings.warn('You have connected a Hospitalized layer to the Dead layer at %s but \n'
                           'you have not specified a death rate for that layer. Please do this by \n'
                           'passing in parameters `rho_hos=Float` and `alpha_hos=Float` when \n'
                           'the Dead layer is initialized.' % self.layer_index)
 
-        if not self.rho_cri and len(self.critical_category_indices) > 0:
+        if not self.rho_cri and len(self.critical_category_indices) > 0:  # pragma: no cover
             warnings.warn('You have connected a Critical layer to the Dead layer at %s but \n'
                           'you have not specified a death rate for that layer. Please do this by \n'
                           'passing in parameters `rho_cri=Float` and `alpha_cri=Float` when \n'
@@ -777,7 +778,7 @@ class Hospitalized(object):
                 if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
                     self.prev_layer_indices.append(layer_no)
                 # warnings
-                elif next_layer.get_layer_index() == self.layer_index:
+                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
                     warnings.warn('An layer of an unsupported type at %s is being connected to the Infected \n'
                                   'layer at %s. If this is a mistake, remove the connection. Otherwise, try \n'
                                   'using a custom layer to do this.' % (layer_no, self.layer_index))
@@ -824,8 +825,8 @@ class Critical(object):
         - get_deriv
     """
 
-    def __init__(self, layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None, alpha=None,
-                 p_recovery=None, recovery_rate=None, maxCap=None, dump_to_layer=None):
+    def __init__(self, layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None,
+                 alpha=None, p_recovery=None, recovery_rate=None, maxCap=None, dump_to_layer=None):
         """
         Initialize the Critical class
 
@@ -910,18 +911,18 @@ class Critical(object):
                 elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
                     self.infected_category_indices.append(layer_no)
                 # warnings
-                elif next_layer.get_layer_index() == self.layer_index:
+                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
                     warnings.warn('You are trying to connect a layer to the Critical layer at %s that is neither \n'
                                   'of the Hospitalized or Infected type. Please remove this connection or use a \n'
                                   'custom layer instead of this one.' % self.layer_index)
 
         # warnings
-        if not self.p_from_hos and len(self.hospitalized_category_indices) > 0:
+        if not self.p_from_hos and len(self.hospitalized_category_indices) > 0:  # pragma: no cover
             warnings.warn("You have connected a Hospitalized layer to the Critical layer at %s but \n"
                           "haven't specified a Critical probability. Please do this by writing \n"
                           "`p_from_hos=FLOAT` AND `from_hos_rate=FLOAT` so this can be used.")
 
-        if not self.p_from_inf and len(self.infected_category_indices) > 0:
+        if not self.p_from_inf and len(self.infected_category_indices) > 0:  # pragma: no cover
             warnings.warn("You have connected a Infected layer to the Critical layer at %s but \n"
                           "haven't specified a Critical probability. Please do this by writing \n"
                           "`p_from_inf=FLOAT` AND `from_inf_rate=FLOAT` so this can be used.")
@@ -956,7 +957,7 @@ class Critical(object):
         return derivative
 
 
-class Idiom(object):
+class Idiom(object):  # pragma: no cover
     """
     An idiom used to create custom classes. Feed this into `Model.add_layer
     Can be used with any class. Make sure to change `get_deriv` file.
@@ -969,7 +970,7 @@ class Idiom(object):
         - get_deriv
     """
 
-    def __init__(self, layer_index, param_list=[]):
+    def __init__(self, layer_index, param_list=None):
         """
         Initialize the class
 
@@ -1011,10 +1012,11 @@ class Idiom(object):
             self.next_layer_types.append(layer_names[layer_map[self.layer_index][next_layer_no].
                                          get_layer_index()])
 
-    def get_deriv(self, time, system):
+    def get_deriv(self):
         """
         Derivative of this compartment
-
+        Setup by changing the function--create a new method with parameters time & system:
+        
         -  time: time to take derivative at
         -  system: system of all states
         - Returns derivative
@@ -1023,5 +1025,5 @@ class Idiom(object):
         # warn on no setup
         warnings.warn("The Idiom layer at %s has not been set up yet. Please replace the `get_deriv` method by \n"
                       "adding IDIOM_LAYER_NAME.get_deriv = SOME_FUNCTION(self, time, system). Please see this \n"
-                      "function's documentation for more info" % self.layer_index)
+                      "function's documentation for more info" % self.layer_index)  # pragma: no cover
         return None

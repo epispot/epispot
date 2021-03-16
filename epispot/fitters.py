@@ -2,7 +2,7 @@
 This module contains all available fitting algorithms.
 These operate separately from the `Model` class.
 STRUCTURE:
-    - grad_des
+- grad_des
 """
 
 from . import np
@@ -34,7 +34,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(',')]
+    # layers_to_opt = [int(char) for char in file[0].split(',')] - for specific layer optimizations
 
     # quadratic cost
 
@@ -47,7 +47,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
             p_samp.append(pred[sample][0] / N)
             r_samp.append(real[sample][0] / N)
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print('predicted, data: ')
             print(p_samp)
             print(r_samp)
@@ -81,13 +81,14 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
             model_params[param] -= delta
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print('Gradients: ')
             print(gradients)
             print('\n')
 
         model_params = model_params - mu * np.array(gradients)
     return model_params
+
 
 def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False):
     """
@@ -96,7 +97,7 @@ def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(',')]
+    # layers_to_opt = [int(char) for char in file[0].split(',')] - use for specific layer optimizations
 
     # quadratic cost
 
@@ -140,7 +141,7 @@ def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N
                 if pair[1] < best_pair[1]:
                     best_pair = pair
 
-            if verbose:
+            if verbose:  # pragma: no cover
                 print(cost_per_value)
 
             model_params[param] = best_pair[0]
