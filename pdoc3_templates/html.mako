@@ -449,7 +449,7 @@ window.addEventListener('load', function() {
 <script type="text/javascript"> docsearch({
 apiKey: 'ca8d2c9b20faf530dec51dcce701d48a',
 indexName: 'epispot',
-inputSelector: 'search_input',
+inputSelector: '#search_input',
 debug: false // Set debug to true if you want to inspect the dropdown
 });
 </script>
