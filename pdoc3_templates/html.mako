@@ -265,6 +265,7 @@
     <%include file="logo.mako"/>
     <input type="text" placeholder="Search..." id='search_input'> </input>
     <br>
+    <br>
     <div>
     ${extract_toc(module.docstring) if extract_module_toc_into_sidebar else ''} 
     <ul id="index">
