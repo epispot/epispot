@@ -263,9 +263,10 @@
   %>
   <nav id="sidebar">
     <%include file="logo.mako"/>
-    <div class="scrollable-index">
-    ${extract_toc(module.docstring) if extract_module_toc_into_sidebar else ''}
-    <input id='search_input' placeholder='Search...'></input>
+    <input type="text" placeholder="Search..." id='search_input'> </input>
+    <br>
+    <div>
+    ${extract_toc(module.docstring) if extract_module_toc_into_sidebar else ''} 
     <ul id="index">
     % if supermodule:
     <li><h3>Super-module</h3>
