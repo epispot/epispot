@@ -19,6 +19,7 @@ Each function returns an epispot Model object and its …" />
 <link rel="apple-touch-icon" sizes="180x180" href="https://epispot.github.io/images/epispotfavicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://epispot.github.io/images/epispotfavicon.png">
 <meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 </head>
 <body>
 <main>
@@ -733,8 +734,10 @@ probability of death</li>
 <p>epispot</p>
 </a>
 </header>
-<div class="scrollable-index">
-<h1 class="index-caption">Index</h1>
+<input type="text" placeholder="Search..." id='search_input'> </input>
+<br>
+<br>
+<div>
 <div class="toc">
 <ul>
 <li><a href="#structure">Structure:</a></li>
@@ -804,6 +807,14 @@ setTimeout(function() {
 textEl.textContent = 'Copy';
 }, 2000);
 });
+});
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript"> docsearch({
+apiKey: 'ca8d2c9b20faf530dec51dcce701d48a',
+indexName: 'epispot',
+inputSelector: 'search_input',
+debug: false // Set debug to true if you want to inspect the dropdown
 });
 </script>
 </body>

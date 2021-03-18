@@ -19,6 +19,7 @@ For example, the basic SIR model would be a model consisting of the …" />
 <link rel="apple-touch-icon" sizes="180x180" href="https://epispot.github.io/images/epispotfavicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://epispot.github.io/images/epispotfavicon.png">
 <meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 </head>
 <body>
 <main>
@@ -30,11 +31,9 @@ For example, the basic SIR model would be a model consisting of the …" />
 <p>The <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> classes help create a model out of various disease compartments.
 For example, the basic SIR model would be a model consisting of the Susceptible, Infected, and Recovered
 compartments. These classes also allow for differentiation and integration to evaluate the model's
-predictions.</p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li>Model(object)</li>
-</ul>
+predictions.
+STRUCTURE:
+- Model(object)</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -45,7 +44,7 @@ For example, the basic SIR model would be a model consisting of the Susceptible,
 compartments. These classes also allow for differentiation and integration to evaluate the model&#39;s
 predictions.
 STRUCTURE:
-    - Model(object)
+- Model(object)
 &#34;&#34;&#34;
 
 
@@ -56,7 +55,7 @@ class Model(object):
         - \__init__()
     &#34;&#34;&#34;
 
-    def __init__(self, init_pop, layers=[], layer_names=[], layer_map=[]):
+    def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
         &#34;&#34;&#34;
         Initialize the `Model` class
 
@@ -81,8 +80,6 @@ class Model(object):
         -  layer_map: Defaults to [] next layers (as classes) for every layer in Model. (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no otherlayer succeeds the last layer.
         &#34;&#34;&#34;
 
-        if layer_map is None:
-            layer_map = []
         self.init_pop = init_pop
         self.layers = layers
         self.layer_names = layer_names
@@ -187,9 +184,20 @@ class Model(object):
                               layer succeeds the last layer.
         &#34;&#34;&#34;
 
-        self.layers.append(layer)
-        self.layer_names.append(layer_name)
-        self.layer_map.append(layer_map)</code></pre>
+        if self.layers is None:
+            self.layers = [layer]
+        else:
+            self.layers.append(layer)
+
+        if self.layer_names is None:
+            self.layer_names = [layer_name]
+        else:
+            self.layer_names.append(layer_name)
+
+        if self.layer_map is None:
+            self.layer_map = [layer_map]
+        else:
+            self.layer_map.append(layer_map)</code></pre>
 </details>
 </section>
 <section>
@@ -203,7 +211,7 @@ class Model(object):
 <dl>
 <dt id="epispot.models.Model"><code class="flex name class">
 <span>class <span class="ident parent-fname">Model</span></span>
-<span>(</span><span>init_pop, layers=[], layer_names=[], layer_map=[])</span>
+<span>(</span><span>init_pop, layers=None, layer_names=None, layer_map=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Helps create a model out of various disease compartments</p>
@@ -247,7 +255,7 @@ allowed names are listed below:</p>
         - \__init__()
     &#34;&#34;&#34;
 
-    def __init__(self, init_pop, layers=[], layer_names=[], layer_map=[]):
+    def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
         &#34;&#34;&#34;
         Initialize the `Model` class
 
@@ -272,8 +280,6 @@ allowed names are listed below:</p>
         -  layer_map: Defaults to [] next layers (as classes) for every layer in Model. (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no otherlayer succeeds the last layer.
         &#34;&#34;&#34;
 
-        if layer_map is None:
-            layer_map = []
         self.init_pop = init_pop
         self.layers = layers
         self.layer_names = layer_names
@@ -378,9 +384,20 @@ allowed names are listed below:</p>
                               layer succeeds the last layer.
         &#34;&#34;&#34;
 
-        self.layers.append(layer)
-        self.layer_names.append(layer_name)
-        self.layer_map.append(layer_map)</code></pre>
+        if self.layers is None:
+            self.layers = [layer]
+        else:
+            self.layers.append(layer)
+
+        if self.layer_names is None:
+            self.layer_names = [layer_name]
+        else:
+            self.layer_names.append(layer_name)
+
+        if self.layer_map is None:
+            self.layer_map = [layer_map]
+        else:
+            self.layer_map.append(layer_map)</code></pre>
 </details>
 <h3 class="section-subtitle">Methods</h3>
 <dl>
@@ -492,9 +509,20 @@ layer succeeds the last layer.</p>
                           layer succeeds the last layer.
     &#34;&#34;&#34;
 
-    self.layers.append(layer)
-    self.layer_names.append(layer_name)
-    self.layer_map.append(layer_map)</code></pre>
+    if self.layers is None:
+        self.layers = [layer]
+    else:
+        self.layers.append(layer)
+
+    if self.layer_names is None:
+        self.layer_names = [layer_name]
+    else:
+        self.layer_names.append(layer_name)
+
+    if self.layer_map is None:
+        self.layer_map = [layer_map]
+    else:
+        self.layer_map.append(layer_map)</code></pre>
 </details>
 </dd>
 <dt id="epispot.models.Model.get_deriv"><code class="name flex">
@@ -599,8 +627,10 @@ derivative order is the same as the order of the layers passed into Model</li>
 <p>epispot</p>
 </a>
 </header>
-<div class="scrollable-index">
-<h1 class="index-caption">Index</h1>
+<input type="text" placeholder="Search..." id='search_input'> </input>
+<br>
+<br>
+<div>
 <div class="toc">
 <ul></ul>
 </div>
@@ -672,6 +702,14 @@ setTimeout(function() {
 textEl.textContent = 'Copy';
 }, 2000);
 });
+});
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript"> docsearch({
+apiKey: 'ca8d2c9b20faf530dec51dcce701d48a',
+indexName: 'epispot',
+inputSelector: 'search_input',
+debug: false // Set debug to true if you want to inspect the dropdown
 });
 </script>
 </body>

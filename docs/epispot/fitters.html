@@ -21,6 +21,7 @@ STRUCTURE:
 <link rel="apple-touch-icon" sizes="180x180" href="https://epispot.github.io/images/epispotfavicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://epispot.github.io/images/epispotfavicon.png">
 <meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 </head>
 <body>
 <main>
@@ -30,11 +31,9 @@ STRUCTURE:
 </header>
 <section id="section-intro">
 <p>This module contains all available fitting algorithms.
-These operate separately from the <code>Model</code> class.</p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li>grad_des</li>
-</ul>
+These operate separately from the <code>Model</code> class.
+STRUCTURE:
+- grad_des</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -43,7 +42,7 @@ These operate separately from the <code>Model</code> class.</p>
 This module contains all available fitting algorithms.
 These operate separately from the `Model` class.
 STRUCTURE:
-    - grad_des
+- grad_des
 &#34;&#34;&#34;
 
 from . import np
@@ -75,7 +74,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)]
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - for specific layer optimizations
 
     # quadratic cost
 
@@ -88,7 +87,7 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
             p_samp.append(pred[sample][0] / N)
             r_samp.append(real[sample][0] / N)
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;predicted, data: &#39;)
             print(p_samp)
             print(r_samp)
@@ -122,13 +121,14 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
             model_params[param] -= delta
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;Gradients: &#39;)
             print(gradients)
             print(&#39;\n&#39;)
 
         model_params = model_params - mu * np.array(gradients)
     return model_params
+
 
 def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False):
     &#34;&#34;&#34;
@@ -137,7 +137,7 @@ def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)]
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - use for specific layer optimizations
 
     # quadratic cost
 
@@ -181,7 +181,7 @@ def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N
                 if pair[1] &lt; best_pair[1]:
                     best_pair = pair
 
-            if verbose:
+            if verbose:  # pragma: no cover
                 print(cost_per_value)
 
             model_params[param] = best_pair[0]
@@ -254,7 +254,7 @@ return: model predictions (use the integrate() method)</li>
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)]
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - for specific layer optimizations
 
     # quadratic cost
 
@@ -267,7 +267,7 @@ return: model predictions (use the integrate() method)</li>
             p_samp.append(pred[sample][0] / N)
             r_samp.append(real[sample][0] / N)
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;predicted, data: &#39;)
             print(p_samp)
             print(r_samp)
@@ -301,7 +301,7 @@ return: model predictions (use the integrate() method)</li>
 
             model_params[param] -= delta
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;Gradients: &#39;)
             print(gradients)
             print(&#39;\n&#39;)
@@ -326,7 +326,7 @@ return: model predictions (use the integrate() method)</li>
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)]
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - use for specific layer optimizations
 
     # quadratic cost
 
@@ -370,7 +370,7 @@ return: model predictions (use the integrate() method)</li>
                 if pair[1] &lt; best_pair[1]:
                     best_pair = pair
 
-            if verbose:
+            if verbose:  # pragma: no cover
                 print(cost_per_value)
 
             model_params[param] = best_pair[0]
@@ -391,8 +391,10 @@ return: model predictions (use the integrate() method)</li>
 <p>epispot</p>
 </a>
 </header>
-<div class="scrollable-index">
-<h1 class="index-caption">Index</h1>
+<input type="text" placeholder="Search..." id='search_input'> </input>
+<br>
+<br>
+<div>
 <div class="toc">
 <ul></ul>
 </div>
@@ -458,6 +460,14 @@ setTimeout(function() {
 textEl.textContent = 'Copy';
 }, 2000);
 });
+});
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript"> docsearch({
+apiKey: 'ca8d2c9b20faf530dec51dcce701d48a',
+indexName: 'epispot',
+inputSelector: 'search_input',
+debug: false // Set debug to true if you want to inspect the dropdown
 });
 </script>
 </body>
