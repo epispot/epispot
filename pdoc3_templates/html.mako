@@ -264,8 +264,8 @@
   <nav id="sidebar">
     <%include file="logo.mako"/>
     <div class="scrollable-index">
-    <h1 class="index-caption">Index</h1>
     ${extract_toc(module.docstring) if extract_module_toc_into_sidebar else ''}
+    <input id='search_input' placeholder='Search...'></input>
     <ul id="index">
     % if supermodule:
     <li><h3>Super-module</h3>
@@ -441,6 +441,14 @@ window.addEventListener('load', function() {
       textEl.textContent = 'Copy';
     }, 2000);
   });
+});
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript"> docsearch({
+apiKey: 'ca8d2c9b20faf530dec51dcce701d48a',
+indexName: 'epispot',
+inputSelector: 'search_input',
+debug: false // Set debug to true if you want to inspect the dropdown
 });
 </script>
 </body>
