@@ -1,4 +1,4 @@
-# ![epi-spot](https://i.ibb.co/hXMjrCV/epi-spot.png)
+# ![epispot](https://i.ibb.co/hXMjrCV/epi-spot.png)
 ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success)
 ![conda](https://anaconda.org/conda-forge/epispot/badges/installer/conda.svg)
 [![Downloads](https://pepy.tech/badge/epispot)](https://pepy.tech/project/epispot)
@@ -15,6 +15,9 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 <br>
 
 ![epi-spot social image](https://docs.google.com/drawings/d/e/2PACX-1vT6zazkjjnz8UMZz7mxPFXjnvC1Q1HgBLGcNwt0DEqla5N10kC_LPcdbuWae2VBWgCL7kynE8vCTzru/pub?w=1440&h=1080)
+
+## DOI Information
+See [#Credits](https://github.com/epispot/epispot/#credits)
 
 ## Installation
 
@@ -83,3 +86,6 @@ ___
 The epispot package is supported by the following contributors:
  - Head of Software & Development: [@quantum9innovation](https://www.github.com/quantum9innovation)
  - Head of Code Maintenance: [@Quantalabs](https://www.github.com/quantalabs)
+
+**Cite epispot in your research!** :fireworks: \
+[![DOI](https://zenodo.org/badge/280527664.svg)](https://zenodo.org/badge/latestdoi/280527664)
