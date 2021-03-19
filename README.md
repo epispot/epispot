@@ -9,7 +9,7 @@
 ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
 <br><br>
 
-A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
+A tool for creating and testing compartmental epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
 <br>
@@ -20,11 +20,11 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 
 Epispot can be installed via pip or via Anaconda.
 If using pip, install with:
-```
+```bash
 pip install epispot
 ```
-For Anaconda, use:
-```
+For Anaconda, install via conda-forge as:
+```bash
 conda config --add channels conda-forge
 conda install -c conda-forge epispot
 ```
@@ -47,8 +47,9 @@ documentation can be found at https://epispot.github.io/epispot. You may also fi
 it helpful to see the examples in the `tests/examples` folder.
 
 ## Screenshots
-
+### Case Studies
 ![sf-case-study](tests/assets/compare-function.png)
+### Generic Modeling
 ![line-graph](tests/assets/line-graph.png)
 
 ## Features
@@ -70,15 +71,15 @@ it helpful to see the examples in the `tests/examples` folder.
     - Plot model predictions interactively
     - Compare different model predictions
 
-# Stats
-**GitHub Tests:** ![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=master)
-<br>**PyPi:** ![Downloads](https://pepy.tech/badge/epispot)
-<br>**Anaconda:** ![Anaconda Donwloads](https://shields.io/conda/dn/conda-forge/epispot)
-
-## Compile your model at the speed of light
-### and get insights that match
+## A Note on Documentation
 Documentation can easily be accessed from function, class, and file docstrings.
-Doc strings provide additional documentation on a certain function.
+Docstrings provide additional documentation on a certain function.
 They can be accessed by the built-in Python `help()` command.
 These strings are formatted in Github-flavored markdown.
 Additionally, all files will have a 'STRUCTURE' label.
+
+___
+## Credits
+The epispot package is supported by the following contributors:
+ - Head of Software & Development: [@quantum9innovation](https://www.github.com/quantum9innovation)
+ - Head of Code Maintenance: [@Quantalabs](https://www.github.com/quantalabs)
