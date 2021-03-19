@@ -268,7 +268,7 @@
     <br>
     <div>
     ${extract_toc(module.docstring) if extract_module_toc_into_sidebar else ''} 
-    <ul id="index">
+    <ul id="index" class="scrollable-index">
     % if supermodule:
     <li><h3>Super-module</h3>
       <ul>
