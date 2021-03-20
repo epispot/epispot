@@ -1,8 +1,9 @@
 name: Upload Python Package Release
 
 on:
-  release:
-    types: [created]
+  push:
+    paths:
+      setup.py
   workflow_dispatch:
 
 jobs:
