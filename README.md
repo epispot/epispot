@@ -19,6 +19,14 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 ## DOI Information
 See [#Credits](https://github.com/epispot/epispot/#credits)
 
+## Current Build Statuses
+| Workflow | Status |
+| --- | --- |
+| `build.yml` | ![GitHub Workflow Status](https://shields.mitmproxy.org/github/workflow/status/epispot/epispot/build?label=build%203.7%2C%203.8%2C%203.9) |
+| `coverage.yml` | ![GitHub Workflow Status](https://shields.mitmproxy.org/github/workflow/status/epispot/epispot/coverage?label=code%20coverage%20reporting) |
+| `python-publish.yml` | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) |
+| `codeql-analysis.yml` | ![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/epispot/epispot?color=success&label=known%20vulnerabilities&query=VULNERABILITY) |
+
 ## Installation
 
 Epispot can be installed via pip or via Anaconda.
