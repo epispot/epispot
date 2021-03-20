@@ -6,7 +6,7 @@ The following versions will receive regular security updates:
 | Version | Supported          |
 | ------- | ------------------ |
 | master-latest   | :white_check_mark: |
-| master-2.0.x   | :x:                |
+| master-2.0.x   | :white_check_mark:              |
 | nightly-latest   | :white_check_mark: |
 | master < 2.0   | :x:                |
 | nightly < latest   | :x:                |
