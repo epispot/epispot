@@ -1,6 +1,9 @@
-# Feature Request Template
+# Pull Request Template
+For PR #x
+___
+
 ## New Feature
-Describe the new feature here.
+Describe any new features here.
 Include screenshots, data, or code snippets to show what this feature does.
 ## Known Issues
 Describe any known issues, problems, or security vulnerabilities here.
@@ -17,4 +20,4 @@ Ex:
 List any additional notes here.
 You can also use this section to **@mention** a CODEOWNER or link to an issue.
 If this PR *solves* an issue, use closing keywords here. Ex:
-**Fixes #[issue]**
+**Fixes #x**
