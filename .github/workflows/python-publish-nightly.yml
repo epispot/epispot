@@ -8,7 +8,6 @@ on:
       - setup.py
       - release.py
       - epispot/*
-      - scripts/*
       - .github/workflows/*
 jobs:
   deploy:
@@ -38,12 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Change Version Info
       run: | 
-        python scripts/release.py
-    - name: Updated Docs
-      run: |
-        cd scripts
-        python docs.py
-        cd ..
+        python release.py
     - name: Configure Git
       run: |
         git config user.name github-actions
