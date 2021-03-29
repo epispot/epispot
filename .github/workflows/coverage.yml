@@ -5,6 +5,7 @@ on:
     branches: 
       - codecov
     paths:
+      - epispot
       - tests/CI/*
 
 jobs:
