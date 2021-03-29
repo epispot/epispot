@@ -40,7 +40,7 @@ Recovered = epi.comps.Recovered(3, p_from_inf=p_recovery, from_inf_rate=gamma)  
 
 # the blank array in `layer_map` symbolizes that the Recovered layer has no further layers
 Model = epi.models.Model(N(0), layers=[Susceptible, Exposed, Infected, Recovered], layer_names=['Susceptible', 'Exposed',
-                                                                                       'Infected', 'Recovered'],
+                                                                                                'Infected', 'Recovered'],
                          layer_map=[[Exposed],
                                     [Infected], [Recovered], []])  # compile the model out of the layers defined above
 
