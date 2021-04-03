@@ -34,3 +34,8 @@ jobs:
         python test_seir.py
         python test_sird.py
         python test_sihrd.py
+        python test_fit.py
+        python test_tree.py
+        python test_fit.py
+        python test_recurrent.py
+        python test_critical.py

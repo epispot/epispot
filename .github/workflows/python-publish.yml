@@ -3,7 +3,7 @@ name: Upload Python Package Release
 on:
   push:
     paths:
-      setup.py
+       - setup.py
   workflow_dispatch:
 
 jobs:

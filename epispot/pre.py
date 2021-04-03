@@ -3,25 +3,20 @@ The 'pre-compiled' module contains already compiled models which can be put to u
 Each function returns an epispot Model object and its corresponding functions. Models parameters can still be changed
 even after compilation.
 STRUCTURE:
-    - SIR()
-    - SEIR()
-    - SIRD()
-    - SIHRD()
+- SIR()
+- SEIR()
+- SIRD()
+- SIHRD()
 """
 
 from . import comps
 from . import models
-
-# ROADMAP
-# TODO: Test all model types and replace their corresponding testing files
-# TODO: Update CI on epispot/epispot to test with new files
 
 
 def SIR(R_0, N, p_recovery, recovery_rate):
     """
     The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases\
     Susceptible --> Infected --> Removed <br><br>
-
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
@@ -64,7 +59,6 @@ def SEIR(R_0, N, p_recovery, recovery_rate, delta):
     The SEIR Model; a variant of the SIR Model that investigates people who have been *exposed* to the virus
     so that they can be tracked down for contact tracing reasons\
     Susceptible --> Exposed --> Infected --> Removed <br><br>
-
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
@@ -112,10 +106,8 @@ def SIRD(R_0, N, p_recovery, recovery_rate, alpha, rho):
     """
     The SIRD Model; a tweak on the SIR Model to separate Recovered & Dead compartments
     which allows for death predictions as well as herd immunity predictions\
-
     Susceptible --> Infected --> Recovered \
                     |----------> Dead <br><br>
-
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
@@ -168,11 +160,9 @@ def SIHRD(R_0, N, p_recovery, recovery_rate, alpha, rho, p_hos, hos_rate, p_hos_
     """
     The SIHRD Model; Tracks patients from hospitalized to recovered to dead
     which allows for death, herd immunity, and triage predictions\
-
     Susceptible --> Infected --> Hospitalized --> Dead \
                     |            |--------------> Recovered \
                     |---------------------------/ <br><br>
-
     R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):

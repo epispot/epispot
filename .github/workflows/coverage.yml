@@ -3,8 +3,9 @@ name: coverage
 on:
   push:
     branches: 
-      - codecov
+      - master
     paths:
+      - epispot
       - tests/CI/*
 
 jobs:
