@@ -1,34 +1,32 @@
-name: coverage
-
-on:
-  push:
-    branches: 
-      - master
-    paths:
-      - epispot
-      - tests/CI/*
+name: Code Coverage
+on: [push, pull_request]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  run:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@master
+    - name: Setup Python
+      uses: actions/setup-python@master
       with:
-        python-version: '3.x'
-    - name: Install dependencies
+        python-version: 3.7
+    - name: Install Dependencies
       run: |
-        python -m pip install --upgrade pip
+        pip install pytest
         pip install coverage
-        pip install matplotlib
-        pip install numpy
         pip install codecov
-    - name: Run Tests
+        pip install -r requirements.txt
+    - name: Prepares Code Coverage Report 
+      continue-on-error: true
       run: |
-        coverage run -m pytest
-    - name: Upload to Codecov
+        python -m coverage run -m pytest
+    - name: Generate Coverage Report
+      continue-on-error: true
+      run: |
+        python -m coverage xml
+    - name: Upload to codecov
       run: |
         codecov
