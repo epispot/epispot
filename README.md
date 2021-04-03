@@ -17,7 +17,12 @@ diseases. An idea from https://github.com/henrifroese/infectious_disease_modelli
 ![epi-spot social image](https://docs.google.com/drawings/d/e/2PACX-1vT6zazkjjnz8UMZz7mxPFXjnvC1Q1HgBLGcNwt0DEqla5N10kC_LPcdbuWae2VBWgCL7kynE8vCTzru/pub?w=1440&h=1080)
 
 ## DOI Information
-See [#Credits](https://github.com/epispot/epispot/#credits)
+**Use epispot's DOI in your research!** :fireworks: 
+<br>
+[![DOI](https://zenodo.org/badge/280527664.svg)](https://zenodo.org/badge/latestdoi/280527664)
+<br><br>
+**Citation:**
+> q9i, & QLabs. (2021, April 2). epispot/epispot: (Version 2.1.0). Zenodo. http://doi.org/10.5281/zenodo.4624423
 
 ## Current Build Statuses
 | Workflow | Status |
@@ -50,18 +55,12 @@ You can import it the same as `import epispot as epi`. Both packages cannot be u
 
 ## Getting Started
 
-Check the guides and tutorials found
-in the `tests/tutorials` folder. All tutorials will have a `.md` file
-followed by a corresponding code file. If you get stuck, don't understand 
-something, or just need to reference the documentation, per-class 
-documentation can be found at https://epispot.github.io/epispot. You may also find 
+Start with the tutorials in `tests/tutorials` (see [GitHub repo](https://www.github.com/epispot/epispot/tree/master/tests/tutorials)). Next, check out the 
+documentation at https://epispot.github.io/epispot. You may also find 
 it helpful to see the examples in the `tests/examples` folder.
 
-## Screenshots
-### Case Studies
-![sf-case-study](tests/assets/compare-function.png)
-### Generic Modeling
-![line-graph](tests/assets/line-graph.png)
+## Release Notes
+See [GitHub repo](https://www.github.com/epispot/epispot/releases) for more info.
 
 ## Features
 
@@ -94,6 +93,3 @@ ___
 The epispot package is supported by the following contributors:
  - Head of Software & Development: [@quantum9innovation](https://www.github.com/quantum9innovation)
  - Head of Code Maintenance: [@Quantalabs](https://www.github.com/quantalabs)
-
-**Cite epispot in your research!** :fireworks: \
-[![DOI](https://zenodo.org/badge/280527664.svg)](https://zenodo.org/badge/latestdoi/280527664)
