@@ -30,7 +30,7 @@ jobs:
         git pull
     - name: Generate documentation
       run: |
-        pdoc --html --output-dir docs epispot --template-dir pdoc3_templates --force
+        pdoc --html --output-dir docs epispot
     - name: Stash changes
       run: |
         git add .
