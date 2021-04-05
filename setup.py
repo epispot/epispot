@@ -5,12 +5,12 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="epispot",
-    version="v2.0.2",
+    version="v2.1.0",
     author="quantum9innovation",
-    description="A tool for modelling infectious diseases.",
+    description="A tool for modeling infectious diseases.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://quantum9innovation.github.io/epispot",
+    url="https://www.github.com/epispot/epispot",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
