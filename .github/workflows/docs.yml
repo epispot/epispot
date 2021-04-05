@@ -38,7 +38,7 @@ jobs:
         git checkout gh-pages-patch1
         rm docs/*
         git checkout docs-patch1 docs/
-        mv docs/epispot docs
+        mv docs/epispot/* docs
         git add .
         git commit -m "Updated Documentation"
         git push
