@@ -11,5 +11,8 @@ for dname in glob("./*/"):
     
     shutil.rmtree(dname)
 
-for fname in os.path.abspath('./'):
+for fname in os.path.abspath('/'):
+    if fname == 'scripts/branch.py' or fname.find('docs') != -1:
+        continue
+
     os.remove(fname)
