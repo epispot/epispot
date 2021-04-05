@@ -18,7 +18,7 @@ jobs:
         pip install pdoc3
         pip install -r requirements.txt
     - name: Change Branches
-      continue_on_error: true     
+      continue-on-error: true     
       run: |
         git branch -D gh-pages
         git branch gh-pages
