@@ -1,0 +1,42 @@
+name: Documentation
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        pip install pdoc3
+        pip install -r requirements.txt
+    - name: Change Branches
+      continue-on-error: true     
+      run: |
+        git branch -D gh-pages
+        git branch gh-pages
+        git switch gh-pages 
+    - name: Generate documentation
+      run: |
+        pdoc --html --output-dir docs epispot --template-dir pdoc3_templates --force
+    - name: Remove directories
+      run: |
+        python scripts/branch.py
+        rm scripts/branch.py
+    - name: Configure Git
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+    - name: Commit docs
+      continue-on-error: true
+      run: |
+        git add .
+        git commit -m "Update documentation"
+        git push
