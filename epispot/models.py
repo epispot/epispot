@@ -13,6 +13,9 @@ class Model(object):
     Helps create a model out of various disease compartments
     STRUCTURE:
         - __init__()
+        - get_deriv()
+        - integrate()
+        - add_layer()
     """
 
     def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
@@ -20,23 +23,22 @@ class Model(object):
         Initialize the `Model` class
 
         All optional parameters can be added through the `add_layer` method
-        :param init_pop: initial population of the area in question
-        :param layers: =[], every layer in Model (as a class, e.g [Susceptible(), Infected(), Recovered()]
-        :param layer_names: =[], names of every previous layer in Model
-                                 (e.g [None, 'Susceptible', 'Infected'])
-                                allowed names are listed below:
-                                - Susceptible
-                                - Infected
-                                - Recovered
-                                - Exposed
-                                - Removed
-                                - Dead
-                                - Critical
-                                - Hospitalized
-                                use `None` to indicate that no other layer precedes the first layer.
-        :param layer_map: =[] next layers (as classes) for every layer in Model
-                              (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no other
-                              layer succeeds the last layer.
+        - init_pop: initial population of the area in question
+        - layers: =[], every layer in Model ( as a class, e.g [ Susceptible(), Infected(), Recovered() ] )
+        - layer_names: =[], names of every previous layer in Model (e.g [None, 'Susceptible', 'Infected'])\
+            allowed names are listed below:
+            - Susceptible
+            - Infected
+            - Recovered
+            - Exposed
+            - Removed
+            - Dead
+            - Critical
+            - Hospitalized
+            use `None` to indicate that no other layer precedes the first layer.
+        - layer_map: =[] next layers (as classes) for every layer in Model
+            (e.g. [Infected(), Recovered(), None])--use `None` to indicate that no other
+            layer succeeds the last layer.
         """
 
         self.init_pop = init_pop
@@ -49,9 +51,9 @@ class Model(object):
         Return list of derivatives from each layer.
         Used by `integrate()` for evaluating model predictions.
 
-        :param time: Time to take derivative at
-        :param system: System of state values (S, I, R, etc.) --> e.g [973, 12, 15]
-        :return: List of derivatives in the order that layers were added
+        - time: Time to take derivative at
+        - system: System of state values (S, I, R, etc.) --> e.g [973, 12, 15]
+        - return: List of derivatives in the order that layers were added
         """
 
         derivatives = []
@@ -64,14 +66,15 @@ class Model(object):
         """
         Integrate the model from `get_deriv` to arrive at future predictions using Euler's Method
 
-        :param timesteps: range of evenly-spaced times (from start of epidemic to prediction time)
-                          The difference between each of the times is used as `delta` in Euler's Method.
-                          The closer this difference is to zero, the more accurate these predictions
-                          become.
-        :param starting_state: starting state of the model--the system of values of each layer at time 0
-                               e.g [973, 12, 15]
-        :return: predictions in the form of `timesteps`, each timestep consisting of a list of derivatives
-                 derivative order is the same as the order of the layers passed into Model
+        - timesteps: range of evenly-spaced times (from start of epidemic to prediction time)\
+            Note:
+              > The difference between each of the times is used as `delta` in Euler's Method.
+              > The closer this difference is to zero, the more accurate these predictions
+              > become.
+        - starting_state: starting state of the model--the system of values of each layer at time 0--
+            e.g [973, 12, 15]
+        - return: predictions in the form of `timesteps`, each timestep consisting of a list of derivatives--
+            derivative order is the same as the order of the layers passed into Model
         """
 
         results = []
@@ -101,39 +104,38 @@ class Model(object):
         """
         Add a custom compartment to Model
 
-        :param layer: the layer class
-                      should be an instance of a class with the following structure:
-                        - get_layer_index()
-                            - return: layer index in `self.layers`
-                        - test(time, system, next_layers, layer_names, layer_no)
-                        (to test the `get_deriv` method: output optional)
-                        usually used to save common operations as a class variable
-                            - next_layers: a list of the classes of the following layers
-                            - layer names: names of each layer in Model
-                            - layer_no: index of current layer in `layer_names`
-                            - raise: any errors or warnings
-                        - get_deriv(time, system, next_layers, layer_names, layer_no)
-                            - time: time to take derivative at
-                            - system: system of state values (S, I, R, etc.) --> e.g [973, 12, 15]
-                            - next_layers: a list of the classes of the following layers
-                            - layer names: names of each layer in Model
-                            - layer_no: index of current layer in `layer_names`
-                            - return: derivative
-        :param layer_name: =[], names of every layer in Model
-                                 (e.g [None, 'Susceptible', 'Infected'])
-                                allowed names are listed below:
-                                    - Susceptible
-                                    - Infected
-                                    - Recovered
-                                    - Exposed
-                                    - Removed
-                                    - Dead
-                                    - Critical
-                                    - Hospitalized
-                                use `None` to indicate that no other layer precedes the first layer.
-        :param layer_map: =[] next layers (as classes) for every layer in Model
-                              (e.g. [Infected(), Recovered(), None]) Use `None` to indicate that no other
-                              layer succeeds the last layer.
+        - layer: the layer class
+          should be an instance of a class with the following structure:
+            - get_layer_index()
+                - return: layer index in `self.layers`
+            - test(time, system, next_layers, layer_names, layer_no)
+                - (to test the `get_deriv` method: output optional)
+                  usually used to save common operations as a class variable
+                - next_layers: a list of the classes of the following layers
+                - layer names: names of each layer in Model
+                - layer_no: index of current layer in `layer_names`
+                - raise: any errors or warnings
+            - get_deriv(time, system, next_layers, layer_names, layer_no)
+                - time: time to take derivative at
+                - system: system of state values (S, I, R, etc.) --> e.g [973, 12, 15]
+                - next_layers: a list of the classes of the following layers
+                - layer names: names of each layer in Model
+                - layer_no: index of current layer in `layer_names`
+                - return: derivative
+        - layer_name: =[], names of every layer in Model (e.g [None, 'Susceptible', 'Infected'])\
+            allowed names are listed below:
+                - Susceptible
+                - Infected
+                - Recovered
+                - Exposed
+                - Removed
+                - Dead
+                - Critical
+                - Hospitalized
+            use `None` to indicate that no other layer precedes the first layer.
+        - layer_map: =[] next layers (as classes) for every layer in Model
+          (e.g. [Infected(), Recovered(), None])--use `None` to indicate that no other
+          layer succeeds the last layer.
         """
 
         if self.layers is None:

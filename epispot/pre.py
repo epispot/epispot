@@ -26,15 +26,15 @@ def SIR(R_0, N, p_recovery, recovery_rate):
        implemented as a function N(t):
             - t: time
             - return: total population
-    p_recovery: probability of recovery
-                implemented as a function p_recovery(t):
-                    - t: time
-                    - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`
-                   measures only 1 / the time it takes to move to the Recovered layer\
-                   implemented as a function recovery_rate(t):
-                        - t: time
-                        - return: recovery rate
+    p_recovery: probability of recovery\
+    implemented as a function p_recovery(t):
+        - t: time
+        - return: probability of recovery
+    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+       measures only 1 / the time it takes to move to the Recovered layer\
+       implemented as a function recovery_rate(t):
+            - t: time
+            - return: recovery rate
     """
 
     def gamma(t):
@@ -69,18 +69,18 @@ def SEIR(R_0, N, p_recovery, recovery_rate, delta):
             - t: time
             - return: total population
     p_recovery: probability of recovery\
-                implemented as a function p_recovery(t):
-                    - t: time
-                    - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`
-                   measures only 1 / the time it takes to move to the Recovered layer\
-                   implemented as a function recovery_rate(t):
-                        - t: time
-                        - return: recovery rate
+    implemented as a function p_recovery(t):
+        - t: time
+        - return: probability of recovery
+    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+       measures only 1 / the time it takes to move to the Recovered layer\
+       implemented as a function recovery_rate(t):
+            - t: time
+            - return: recovery rate
     delta: =None, the incubation period\
-                  implemented as a function delta(t)--in most cases this should stay constant
-                    - t: time
-                    - return: incubation period
+      implemented as a function delta(t)--in most cases this should stay constant
+        - t: time
+        - return: incubation period
     """
 
     def gamma(t):
@@ -118,22 +118,22 @@ def SIRD(R_0, N, p_recovery, recovery_rate, alpha, rho):
             - t: time
             - return: total population
     p_recovery: probability of recovery\
-                implemented as a function p_recovery(t):
-                    - t: time
-                    - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`
-                   measures only 1 / the time it takes to move to the Recovered layer\
-                   implemented as a function recovery_rate(t):
-                        - t: time
-                        - return: recovery rate
+    implemented as a function p_recovery(t):
+        - t: time
+        - return: probability of recovery
+    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+       measures only 1 / the time it takes to move to the Recovered layer\
+       implemented as a function recovery_rate(t):
+            - t: time
+            - return: recovery rate
     rho: 1 / time until death\
-         implemented as a function rho(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
+     implemented as a function rho(t)--in most cases this should stay constant
+        - t: time
+        - return: death rate
     alpha: probability of death from Infected\
-           implemented as a function alpha(t)
-            - t: time
-            - return: probability of death
+       implemented as a function alpha(t)
+        - t: time
+        - return: probability of death
     """
 
     def gamma(t):
@@ -173,29 +173,29 @@ def SIHRD(R_0, N, p_recovery, recovery_rate, alpha, rho, p_hos, hos_rate, p_hos_
             - t: time
             - return: total population
     p_recovery: probability of recovery from Infected\
-                implemented as a function p_recovery(t):
-                    - t: time
-                    - return: probability of recovery
-    recovery_rate: the recovery rate from the Infected layer only
-                   implemented as a function recovery_rate(t):
-                        - t: time
-                        - return: recovery rate
+    implemented as a function p_recovery(t):
+        - t: time
+        - return: probability of recovery
+    recovery_rate: the recovery rate from the Infected layer only\
+       implemented as a function recovery_rate(t):
+            - t: time
+            - return: recovery rate
     rho: 1 / time until death\
-         implemented as a function rho(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
+     implemented as a function rho(t)--in most cases this should stay constant
+        - t: time
+        - return: death rate
     alpha: probability of death from Infected\
-           implemented as a function alpha(t)
-            - t: time
-            - return: probability of death
+       implemented as a function alpha(t)
+        - t: time
+        - return: probability of death
     p_hos_to_rec: probability of recovery from Hospitalized\
-                implemented as a function p_hos_to_rec(t):
-                    - t: time
-                    - return: probability of recovery
-    hos_to_rec_rate: the recovery rate from the Hospitalized layer only
-                   implemented as a function hos_to_rec_rate(t):
-                        - t: time
-                        - return: recovery rate
+    implemented as a function p_hos_to_rec(t):
+        - t: time
+        - return: probability of recovery
+    hos_to_rec_rate: the recovery rate from the Hospitalized layer only\
+       implemented as a function hos_to_rec_rate(t):
+            - t: time
+            - return: recovery rate
     """
 
     def gamma(t):
