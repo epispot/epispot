@@ -2,8 +2,8 @@
 The 'plots' module contains all plotting functions for visualizing models.
 These functions require the installation of matplotlib for graphics.
 STRUCTURE:
-    - plot_comp_nums
-    - compare
+- plot_comp_nums
+- compare
 """
 
 from . import plt
@@ -53,7 +53,7 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     plt.show()
 
 
-def compare(ranges, title="", subtitle="", markers=[], seed=200):
+def compare(ranges, title="", subtitle="", markers=None, seed=200):
     """
     This function is used to compare multiple predictions which can range across time ranges.
     Often, this is used to compare real data with model predictions or to show the predictions after
@@ -84,20 +84,21 @@ def compare(ranges, title="", subtitle="", markers=[], seed=200):
         ax.plot(r[0], r[1], colors.to_hex(color), linewidth=2,
                 label=r[2])
 
-    for marker in markers:
+    if markers is not None:
+        for marker in markers:
 
-        if marker[0] == 'line':
-            plt.hlines(marker[1][0], marker[1][1], marker[1][2], label=marker[1][3])
+            if marker[0] == 'line':
+                plt.hlines(marker[1][0], marker[1][1], marker[1][2], label=marker[1][3])
 
-        if marker[0] == 'highlighted-box':
-            plt.axvspan(marker[1][0], marker[1][1], ymin=marker[1][2], ymax=marker[1][3], facecolor='y', alpha=0.25)
+            if marker[0] == 'highlighted-box':
+                plt.axvspan(marker[1][0], marker[1][1], ymin=marker[1][2], ymax=marker[1][3], facecolor='y', alpha=0.25)
 
-        if marker[0] == 'point':
-            plt.plot(marker[1][1], marker[1][2], 'ko')
-            plt.annotate(marker[1][0], (marker[1][1] + 1, marker[1][2] + 1))
+            if marker[0] == 'point':
+                plt.plot(marker[1][1], marker[1][2], 'ko')
+                plt.annotate(marker[1][0], (marker[1][1] + 1, marker[1][2] + 1))
 
-        if marker[0] == 'arrow':
-            plt.arrow(marker[1][0], marker[1][1], marker[1][2], marker[1][3])
+            if marker[0] == 'arrow':
+                plt.arrow(marker[1][0], marker[1][1], marker[1][2], marker[1][3])
 
     legend = ax.legend()
     legend.get_frame().set_alpha(0.5)
