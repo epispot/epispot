@@ -6,14 +6,16 @@ The docstring standard for epispot
 Docstring format:
 ``` python
 def function (parameters):
-    ```
+    """
     Overview
     - [PARAM NAME]: [DESCRIPTION]
-        more description
-        - a list
-        - more list
+      continued description\
+      list intro:
+        - a list item
+        - more list items
     - [PARAM NAME]: [DESCRIPTION]
-    ```
+    ...
+    """
     ...
 ```
 
