@@ -24,8 +24,8 @@ jobs:
       run: |
         python -m coverage run -m pytest
     - name: Generate Coverage Report
-      continue-on-error: true
       run: |
+        python -m coverage report
         python -m coverage xml
     - name: Upload to codecov
       run: |
