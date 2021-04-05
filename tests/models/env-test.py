@@ -1,1 +1,1 @@
-print(open("tests\models\sf-total-cases.csv", 'r').readlines())
+print('Your environment is working.')
