@@ -7,19 +7,14 @@
 <title>epispot.comps API documentation</title>
 <meta name="description" content="The `compartments` module contains pre-built disease compartments for basic modelling and allows for
 custom user-defined compartments. This module …" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
-<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar>*:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #eee;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold;word-break:break-all}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8}.hljs{padding:1.25rem 1.5rem;margin-left:-15px;margin-right:-15px;border:1px solid #eee;border-radius:6px;background:#282c34 !important;color:#9da29e !important}.python{color:#c5c8c6 !important}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word;font-size:90%}h1 code{background:transparent}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{padding-bottom:.5em;border-bottom:1px solid #e82}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes+dl>dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name>span:first-child{white-space:nowrap}.name.class>span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary>*{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}.badge{display:inline-block;padding:0.25em 0.4em;font-size:75%;font-weight:700;line-height:1;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:0.25rem;transition:color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out}@media (prefers-reduced-motion:reduce){.badge{transition:none}}a.badge:hover,a.badge:focus{text-decoration:none}.badge:empty{display:none}.btn .badge{position:relative;top:-1px}.badge-pill{padding-right:0.6em;padding-left:0.6em;border-radius:10rem}.badge-primary{color:#fff;background-color:#007bff}a.badge-primary:hover,a.badge-primary:focus{color:#fff;background-color:#0062cc}a.badge-primary:focus,a.badge-primary.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(0,123,255,0.5)}.badge-secondary{color:#fff;background-color:#6c757d}a.badge-secondary:hover,a.badge-secondary:focus{color:#fff;background-color:#545b62}a.badge-secondary:focus,a.badge-secondary.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(108,117,125,0.5)}.badge-success{color:#fff;background-color:#28a745}a.badge-success:hover,a.badge-success:focus{color:#fff;background-color:#1e7e34}a.badge-success:focus,a.badge-success.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(40,167,69,0.5)}.badge-info{color:#fff;background-color:#17a2b8}a.badge-info:hover,a.badge-info:focus{color:#fff;background-color:#117a8b}a.badge-info:focus,a.badge-info.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(23,162,184,0.5)}.badge-warning{color:#212529;background-color:#ffc107}a.badge-warning:hover,a.badge-warning:focus{color:#212529;background-color:#d39e00}a.badge-warning:focus,a.badge-warning.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(255,193,7,0.5)}.badge-danger{color:#fff;background-color:#dc3545}a.badge-danger:hover,a.badge-danger:focus{color:#fff;background-color:#bd2130}a.badge-danger:focus,a.badge-danger.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(220,53,69,0.5)}.badge-light{color:#212529;background-color:#f8f9fa}a.badge-light:hover,a.badge-light:focus{color:#212529;background-color:#dae0e5}a.badge-light:focus,a.badge-light.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(248,249,250,0.5)}.badge-dark{color:#fff;background-color:#343a40}a.badge-dark:hover,a.badge-dark:focus{color:#fff;background-color:#1d2124}a.badge-dark:focus,a.badge-dark.focus{outline:0;box-shadow:0 0 0 0.2rem rgba(52,58,64,0.5)}.search-container{width:100%;margin-top:15px;margin-bottom:15px}#search_input{display:inline-block;width:100%;height:40px;padding:.375rem .75rem;font-size:1rem;line-height:1.5;color:white;background:#282c34 !important;border:none;border-radius:6px;border-bottom:1px solid #e82;outline:none}.algolia-autocomplete{width:100%;background:rgba(0,0,0,.2);border:none;border-radius:6px}.algolia-autocomplete input{display:none}.index-caption{color:white}#index a,#index h3,.toc a{color:white}#index a:hover,.toc a:hover{color:#e82}#sidebar{background:#3B4556}.toc ul ul,#index ul{padding-left:1.5em}.toc>ul>li{margin-top:.5em}pre{position:relative;background:#fafafa}pre .btnIcon{position:absolute;top:4px;z-index:2;cursor:pointer;border:1px solid transparent;padding:0;color:#383a42;background-color:transparent;height:30px;transition:all .25s ease-out}pre .btnIcon:hover{text-decoration:none}.btnIcon__body{align-items:center;display:flex;color:#abb2bf}.btnIcon svg{fill:currentColor;margin-right:.4em}.btnIcon__label{font-size:11px}.btnClipboard{right:10px}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:400px;height:100vh;overflow:visible;position:sticky;top:0}#content{width:100%;max-width:100ch;padding:3em 4em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.scrollable-index{overflow-y:scroll;height:calc(100vh - 250px)}}</style>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<style>.homelink{display:block;font-size:2em;font-weight:bold;color:white}.homelink:hover{color:#e82}</style>
-<link rel="apple-touch-icon" sizes="180x180" href="https://epispot.github.io/images/epispotfavicon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://epispot.github.io/images/epispotfavicon.png">
-<meta name="theme-color" content="#ffffff">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
 <main>
@@ -1095,7 +1090,7 @@ class Idiom(object):  # pragma: no cover
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
 <dt id="epispot.comps.Critical"><code class="flex name class">
-<span>class <span class="ident parent-fname">Critical</span></span>
+<span>class <span class="ident">Critical</span></span>
 <span>(</span><span>layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None, alpha=None, p_recovery=None, recovery_rate=None, maxCap=None, dump_to_layer=None)</span>
 </code></dt>
 <dd>
@@ -1302,10 +1297,10 @@ should be of type int()</li>
 
         return derivative</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Critical.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self, time, system)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of the Critical compartment</p>
@@ -1349,7 +1344,7 @@ should be of type int()</li>
 </details>
 </dd>
 <dt id="epispot.comps.Critical.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1362,7 +1357,7 @@ should be of type int()</li>
 </details>
 </dd>
 <dt id="epispot.comps.Critical.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -1414,7 +1409,7 @@ Used to setup commonly used variables and raise common errors</p>
 </dl>
 </dd>
 <dt id="epispot.comps.Dead"><code class="flex name class">
-<span>class <span class="ident parent-fname">Dead</span></span>
+<span>class <span class="ident">Dead</span></span>
 <span>(</span><span>layer_index, rho_inf=None, alpha_inf=None, rho_hos=None, alpha_hos=None, rho_cri=None, alpha_cri=None)</span>
 </code></dt>
 <dd>
@@ -1593,10 +1588,10 @@ implemented as a function alpha_cri(t)
 
         return derivative</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Dead.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self, time, system)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of the Dead compartment</p>
@@ -1633,7 +1628,7 @@ implemented as a function alpha_cri(t)
 </details>
 </dd>
 <dt id="epispot.comps.Dead.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1646,7 +1641,7 @@ implemented as a function alpha_cri(t)
 </details>
 </dd>
 <dt id="epispot.comps.Dead.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -1710,7 +1705,7 @@ Used to setup commonly used variables and raise common errors</p>
 </dl>
 </dd>
 <dt id="epispot.comps.Exposed"><code class="flex name class">
-<span>class <span class="ident parent-fname">Exposed</span></span>
+<span>class <span class="ident">Exposed</span></span>
 <span>(</span><span>layer_index, R_0, gamma, N, delta)</span>
 </code></dt>
 <dd>
@@ -1865,10 +1860,10 @@ implemented as a function delta(t)&ndash;in most cases this should stay constant
         return self.gamma(time) * self.R_0(time) * total_susceptibles * \
                total_infecteds / self.N(time) - self.delta(time) * system[self.layer_index]</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Exposed.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self, time, system)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of the Exposed compartment</p>
@@ -1903,7 +1898,7 @@ implemented as a function delta(t)&ndash;in most cases this should stay constant
 </details>
 </dd>
 <dt id="epispot.comps.Exposed.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1916,7 +1911,7 @@ implemented as a function delta(t)&ndash;in most cases this should stay constant
 </details>
 </dd>
 <dt id="epispot.comps.Exposed.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -1978,7 +1973,7 @@ Used to setup commonly used variables and raise common errors</p>
 </dl>
 </dd>
 <dt id="epispot.comps.Hospitalized"><code class="flex name class">
-<span>class <span class="ident parent-fname">Hospitalized</span></span>
+<span>class <span class="ident">Hospitalized</span></span>
 <span>(</span><span>layer_index, hos_rate, p_hos, cri_rate=None, p_cri=None, recovery_rate=None, p_recovery=None, rho=None, alpha=None, maxCap=None, dump_to_layer=None)</span>
 </code></dt>
 <dd>
@@ -2164,10 +2159,10 @@ should be of type int()</li>
 
         return derivative</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Hospitalized.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self, time, system)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of the Hospitalized compartment</p>
@@ -2210,7 +2205,7 @@ should be of type int()</li>
 </details>
 </dd>
 <dt id="epispot.comps.Hospitalized.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2223,7 +2218,7 @@ should be of type int()</li>
 </details>
 </dd>
 <dt id="epispot.comps.Hospitalized.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -2262,7 +2257,7 @@ Used to setup commonly used variables and raise common errors</p>
 </dl>
 </dd>
 <dt id="epispot.comps.Idiom"><code class="flex name class">
-<span>class <span class="ident parent-fname">Idiom</span></span>
+<span>class <span class="ident">Idiom</span></span>
 <span>(</span><span>layer_index, param_list=None)</span>
 </code></dt>
 <dd>
@@ -2357,10 +2352,10 @@ Pass all parameters as an array in <code>param_list</code></p>
                       &#34;function&#39;s documentation for more info&#34; % self.layer_index)  # pragma: no cover
         return None</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Idiom.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of this compartment
@@ -2392,7 +2387,7 @@ Setup by changing the function&ndash;create a new method with parameters time &a
 </details>
 </dd>
 <dt id="epispot.comps.Idiom.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2405,7 +2400,7 @@ Setup by changing the function&ndash;create a new method with parameters time &a
 </details>
 </dd>
 <dt id="epispot.comps.Idiom.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -2445,7 +2440,7 @@ Used to setup commonly used variables and raise common errors</p>
 </dl>
 </dd>
 <dt id="epispot.comps.Infected"><code class="flex name class">
-<span>class <span class="ident parent-fname">Infected</span></span>
+<span>class <span class="ident">Infected</span></span>
 <span>(</span><span>layer_index, N, R_0=None, gamma=None, delta=None, p_recovery=None, recovery_rate=None, p_hospitalized=None, hospital_rate=None, p_critical=None, critical_rate=None, p_death=None, death_rate=None)</span>
 </code></dt>
 <dd>
@@ -2718,10 +2713,10 @@ implemented as a function death_rate(t)&ndash;in most cases this should stay con
 
         return derivative</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Infected.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self, time, system)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of the Infected compartment
@@ -2770,7 +2765,7 @@ Exposed</p>
 </details>
 </dd>
 <dt id="epispot.comps.Infected.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2783,7 +2778,7 @@ Exposed</p>
 </details>
 </dd>
 <dt id="epispot.comps.Infected.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -2845,7 +2840,7 @@ Used to setup commonly used variables and raise common errors</p>
 </dl>
 </dd>
 <dt id="epispot.comps.Recovered"><code class="flex name class">
-<span>class <span class="ident parent-fname">Recovered</span></span>
+<span>class <span class="ident">Recovered</span></span>
 <span>(</span><span>layer_index, p_from_inf=None, from_inf_rate=None, p_from_cri=None, from_cri_rate=None, p_from_hos=None, from_hos_rate=None, p_resusceptibility=None, s_rate=None)</span>
 </code></dt>
 <dd>
@@ -3037,10 +3032,10 @@ implemented as a function s_rate(t)
 
         return derivative</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Recovered.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self, time, system)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of the Recovered compartment</p>
@@ -3086,7 +3081,7 @@ implemented as a function s_rate(t)
 </details>
 </dd>
 <dt id="epispot.comps.Recovered.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3099,7 +3094,7 @@ implemented as a function s_rate(t)
 </details>
 </dd>
 <dt id="epispot.comps.Recovered.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -3150,7 +3145,7 @@ Used to setup commonly used variables and raise common errors</p>
 </dl>
 </dd>
 <dt id="epispot.comps.Susceptible"><code class="flex name class">
-<span>class <span class="ident parent-fname">Susceptible</span></span>
+<span>class <span class="ident">Susceptible</span></span>
 <span>(</span><span>layer_index, R_0, gamma, N, p_resusceptibility=None, s_rate=None)</span>
 </code></dt>
 <dd>
@@ -3321,10 +3316,10 @@ implemented as a function s_rate(t):<ul>
             derivative += self.p_resusceptibility(time) * self.s_rate(time) * possible_new_susceptibles
             return derivative</code></pre>
 </details>
-<h3 class="section-subtitle">Methods</h3>
+<h3>Methods</h3>
 <dl>
 <dt id="epispot.comps.Susceptible.get_deriv"><code class="name flex">
-<span>def <span class="ident fname">get_deriv</span></span>(<span>self, time, system)</span>
+<span>def <span class="ident">get_deriv</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Derivative of the Susceptible compartment
@@ -3368,7 +3363,7 @@ must be the <em>only</em> Susceptible compartment which people from other layers
 </details>
 </dd>
 <dt id="epispot.comps.Susceptible.get_layer_index"><code class="name flex">
-<span>def <span class="ident fname">get_layer_index</span></span>(<span>self)</span>
+<span>def <span class="ident">get_layer_index</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3381,7 +3376,7 @@ must be the <em>only</em> Susceptible compartment which people from other layers
 </details>
 </dd>
 <dt id="epispot.comps.Susceptible.test"><code class="name flex">
-<span>def <span class="ident fname">test</span></span>(<span>self, layer_map, layer_names)</span>
+<span>def <span class="ident">test</span></span>(<span>self, layer_map, layer_names)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test of the <code>get_deriv</code> method
@@ -3437,17 +3432,7 @@ Used to setup commonly used variables and raise common errors</p>
 </section>
 </article>
 <nav id="sidebar">
-<header>
-<a class="homelink" rel="home" title="epispot" href="https://github.com/epispot/epispot">
-<img alt="epispot logo"src="https://camo.githubusercontent.com/87a2a010e6ffdcef771467821c6bc034a01a00e7903e2d7d47ee95d9cb7ef23a/68747470733a2f2f692e6962622e636f2f68584d6a7243562f6570692d73706f742e706e67"/>
-<br>
-<p>epispot</p>
-</a>
-</header>
-<input type="text" placeholder="Search..." id='search_input'> </input>
-<br>
-<br>
-<div>
+<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -3526,64 +3511,10 @@ Used to setup commonly used variables and raise common errors</p>
 </ul>
 </li>
 </ul>
-</div>
 </nav>
 </main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
-<script src="https://buttons.github.io/buttons.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-<script>
-// Turn off ESLint for this file because it's sent down to users as-is.
-/* eslint-disable */
-window.addEventListener('load', function() {
-function button(label, ariaLabel, icon, className) {
-const btn = document.createElement('button');
-btn.classList.add('btnIcon', className);
-btn.setAttribute('type', 'button');
-btn.setAttribute('aria-label', ariaLabel);
-btn.innerHTML =
-'<div class="btnIcon__body">' +
-icon +
-'<strong class="btnIcon__label">' +
-label +
-'</strong>' +
-'</div>';
-return btn;
-}
-function addButtons(codeBlockSelector, btn) {
-document.querySelectorAll(codeBlockSelector).forEach(function(code) {
-code.parentNode.appendChild(btn.cloneNode(true));
-});
-}
-const copyIcon =
-'<svg width="12" height="12" viewBox="340 364 14 15" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M342 375.974h4v.998h-4v-.998zm5-5.987h-5v.998h5v-.998zm2 2.994v-1.995l-3 2.993 3 2.994v-1.996h5v-1.995h-5zm-4.5-.997H342v.998h2.5v-.997zm-2.5 2.993h2.5v-.998H342v.998zm9 .998h1v1.996c-.016.28-.11.514-.297.702-.187.187-.422.28-.703.296h-10c-.547 0-1-.452-1-.998v-10.976c0-.546.453-.998 1-.998h3c0-1.107.89-1.996 2-1.996 1.11 0 2 .89 2 1.996h3c.547 0 1 .452 1 .998v4.99h-1v-2.995h-10v8.98h10v-1.996zm-9-7.983h8c0-.544-.453-.996-1-.996h-1c-.547 0-1-.453-1-.998 0-.546-.453-.998-1-.998-.547 0-1 .452-1 .998 0 .545-.453.998-1 .998h-1c-.547 0-1 .452-1 .997z" fill-rule="evenodd"/></svg>';
-addButtons(
-'.hljs',
-button('Copy', 'Copy code to clipboard', copyIcon, 'btnClipboard'),
-);
-const clipboard = new ClipboardJS('.btnClipboard', {
-target: function(trigger) {
-return trigger.parentNode.querySelector('code');
-},
-});
-clipboard.on('success', function(event) {
-event.clearSelection();
-const textEl = event.trigger.querySelector('.btnIcon__label');
-textEl.textContent = 'Copied';
-setTimeout(function() {
-textEl.textContent = 'Copy';
-}, 2000);
-});
-});
-</script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
-<script type="text/javascript"> docsearch({
-apiKey: 'ca8d2c9b20faf530dec51dcce701d48a',
-indexName: 'epispot',
-inputSelector: 'search_input',
-debug: false // Set debug to true if you want to inspect the dropdown
-});
-</script>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
 </body>
 </html>
