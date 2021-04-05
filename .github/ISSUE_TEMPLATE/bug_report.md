@@ -32,7 +32,7 @@ If applicable, add screenshots to help explain your problem.
 **Anaconda**
 - Anaconda Version
 - Operating System
-- Epispot Version (currently only 2.0.1)
+- Epispot Version (eg. 2.0.1, 2.1.0, etc.)
 
 **Additional context**
 Add any other context about the problem here.
