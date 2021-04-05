@@ -20,9 +20,9 @@ jobs:
     - name: Change Branches
       continue-on-error: true     
       run: |
-        git branch -D gh-pages
-        git branch gh-pages
-        git switch gh-pages 
+        git branch -D gh-pages-1
+        git branch gh-pages-1
+        git switch gh-pages-1
     - name: Generate documentation
       run: |
         pdoc --html --output-dir docs epispot --template-dir pdoc3_templates --force
