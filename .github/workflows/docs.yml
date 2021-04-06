@@ -3,7 +3,7 @@ name: Auto-Generate Documentation
 on:
   push:
     branches: 
-      - docs-patch1
+      - nightly
     paths:
       - epispot/*
       - .github/workflows/*
