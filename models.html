@@ -26,9 +26,11 @@ For example, the basic SIR model would be a model consisting of the …" />
 <p>The <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> classes help create a model out of various disease compartments.
 For example, the basic SIR model would be a model consisting of the Susceptible, Infected, and Recovered
 compartments. These classes also allow for differentiation and integration to evaluate the model's
-predictions.
-STRUCTURE:
-- Model(object)</p>
+predictions.</p>
+<p>STRUCTURE:</p>
+<ul>
+<li>Model(object)</li>
+</ul>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -38,7 +40,9 @@ The `Model` classes help create a model out of various disease compartments.
 For example, the basic SIR model would be a model consisting of the Susceptible, Infected, and Recovered
 compartments. These classes also allow for differentiation and integration to evaluate the model&#39;s
 predictions.
+
 STRUCTURE:
+
 - Model(object)
 &#34;&#34;&#34;
 
@@ -46,7 +50,9 @@ STRUCTURE:
 class Model(object):
     &#34;&#34;&#34;
     Helps create a model out of various disease compartments
+
     STRUCTURE:
+
         - __init__()
         - get_deriv()
         - integrate()
@@ -56,11 +62,11 @@ class Model(object):
     def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
         &#34;&#34;&#34;
         Initialize the `Model` class
-
         All optional parameters can be added through the `add_layer` method
+
         - init_pop: initial population of the area in question
         - layers: =[], every layer in Model ( as a class, e.g [ Susceptible(), Infected(), Recovered() ] )
-        - layer_names: =[], names of every previous layer in Model (e.g [None, &#39;Susceptible&#39;, &#39;Infected&#39;])\
+        - layer_names: =[], names of every layer in Model (e.g [&#39;Susceptible&#39;, &#39;Infected&#39;, &#39;Recovered&#39;])\
             allowed names are listed below:
             - Susceptible
             - Infected
@@ -70,10 +76,11 @@ class Model(object):
             - Dead
             - Critical
             - Hospitalized
-            use `None` to indicate that no other layer precedes the first layer.
         - layer_map: =[] next layers (as classes) for every layer in Model
-            (e.g. [Infected(), Recovered(), None])--use `None` to indicate that no other
+            (e.g. [Infected(), Recovered(), None])--use `[]` to indicate that no other
             layer succeeds the last layer.
+            - Ex: SIRD Model
+                - [[Infected()], [Recovered(), Dead()], [], []]
         &#34;&#34;&#34;
 
         self.init_pop = init_pop
@@ -102,10 +109,11 @@ class Model(object):
         Integrate the model from `get_deriv` to arrive at future predictions using Euler&#39;s Method
 
         - timesteps: range of evenly-spaced times (from start of epidemic to prediction time)\
+
             Note:
-              &gt; The difference between each of the times is used as `delta` in Euler&#39;s Method.
-              &gt; The closer this difference is to zero, the more accurate these predictions
-              &gt; become.
+          &gt; The difference between each of the times is used as `delta` in Euler&#39;s Method.
+          &gt; The closer this difference is to zero, the more accurate these predictions
+          &gt; become.
         - starting_state: starting state of the model--the system of values of each layer at time 0--
             e.g [973, 12, 15]
         - return: predictions in the form of `timesteps`, each timestep consisting of a list of derivatives--
@@ -211,24 +219,33 @@ class Model(object):
 <li>integrate()</li>
 <li>add_layer()</li>
 </ul>
-<p>Initialize the <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> class</p>
-<p>All optional parameters can be added through the <code>add_layer</code> method
-- init_pop: initial population of the area in question
-- layers: =[], every layer in Model ( as a class, e.g [ Susceptible(), Infected(), Recovered() ] )
-- layer_names: =[], names of every previous layer in Model (e.g [None, 'Susceptible', 'Infected'])
-allowed names are listed below:
-- Susceptible
-- Infected
-- Recovered
-- Exposed
-- Removed
-- Dead
-- Critical
-- Hospitalized
-use <code>None</code> to indicate that no other layer precedes the first layer.
-- layer_map: =[] next layers (as classes) for every layer in Model
-(e.g. [Infected(), Recovered(), None])&ndash;use <code>None</code> to indicate that no other
-layer succeeds the last layer.</p></div>
+<p>Initialize the <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> class
+All optional parameters can be added through the <code>add_layer</code> method</p>
+<ul>
+<li>init_pop: initial population of the area in question</li>
+<li>layers: =[], every layer in Model ( as a class, e.g [ Susceptible(), Infected(), Recovered() ] )</li>
+<li>layer_names: =[], names of every layer in Model (e.g ['Susceptible', 'Infected', 'Recovered'])
+allowed names are listed below:<ul>
+<li>Susceptible</li>
+<li>Infected</li>
+<li>Recovered</li>
+<li>Exposed</li>
+<li>Removed</li>
+<li>Dead</li>
+<li>Critical</li>
+<li>Hospitalized</li>
+</ul>
+</li>
+<li>layer_map: =[] next layers (as classes) for every layer in Model
+(e.g. [Infected(), Recovered(), None])&ndash;use <code>[]</code> to indicate that no other
+layer succeeds the last layer.<ul>
+<li>Ex: SIRD Model<ul>
+<li>[[Infected()], [Recovered(), Dead()], [], []]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -236,7 +253,9 @@ layer succeeds the last layer.</p></div>
 <pre><code class="python">class Model(object):
     &#34;&#34;&#34;
     Helps create a model out of various disease compartments
+
     STRUCTURE:
+
         - __init__()
         - get_deriv()
         - integrate()
@@ -246,11 +265,11 @@ layer succeeds the last layer.</p></div>
     def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
         &#34;&#34;&#34;
         Initialize the `Model` class
-
         All optional parameters can be added through the `add_layer` method
+
         - init_pop: initial population of the area in question
         - layers: =[], every layer in Model ( as a class, e.g [ Susceptible(), Infected(), Recovered() ] )
-        - layer_names: =[], names of every previous layer in Model (e.g [None, &#39;Susceptible&#39;, &#39;Infected&#39;])\
+        - layer_names: =[], names of every layer in Model (e.g [&#39;Susceptible&#39;, &#39;Infected&#39;, &#39;Recovered&#39;])\
             allowed names are listed below:
             - Susceptible
             - Infected
@@ -260,10 +279,11 @@ layer succeeds the last layer.</p></div>
             - Dead
             - Critical
             - Hospitalized
-            use `None` to indicate that no other layer precedes the first layer.
         - layer_map: =[] next layers (as classes) for every layer in Model
-            (e.g. [Infected(), Recovered(), None])--use `None` to indicate that no other
+            (e.g. [Infected(), Recovered(), None])--use `[]` to indicate that no other
             layer succeeds the last layer.
+            - Ex: SIRD Model
+                - [[Infected()], [Recovered(), Dead()], [], []]
         &#34;&#34;&#34;
 
         self.init_pop = init_pop
@@ -292,10 +312,11 @@ layer succeeds the last layer.</p></div>
         Integrate the model from `get_deriv` to arrive at future predictions using Euler&#39;s Method
 
         - timesteps: range of evenly-spaced times (from start of epidemic to prediction time)\
+
             Note:
-              &gt; The difference between each of the times is used as `delta` in Euler&#39;s Method.
-              &gt; The closer this difference is to zero, the more accurate these predictions
-              &gt; become.
+          &gt; The difference between each of the times is used as `delta` in Euler&#39;s Method.
+          &gt; The closer this difference is to zero, the more accurate these predictions
+          &gt; become.
         - starting_state: starting state of the model--the system of values of each layer at time 0--
             e.g [973, 12, 15]
         - return: predictions in the form of `timesteps`, each timestep consisting of a list of derivatives--
@@ -524,10 +545,12 @@ Used by <code>integrate()</code> for evaluating model predictions.</p>
 <div class="desc"><p>Integrate the model from <code>get_deriv</code> to arrive at future predictions using Euler's Method</p>
 <ul>
 <li>timesteps: range of evenly-spaced times (from start of epidemic to prediction time)
-Note:
-&gt; The difference between each of the times is used as <code>delta</code> in Euler's Method.
-&gt; The closer this difference is to zero, the more accurate these predictions
-&gt; become.</li>
+Note:<blockquote>
+<p>The difference between each of the times is used as <code>delta</code> in Euler's Method.
+The closer this difference is to zero, the more accurate these predictions
+become.</p>
+</blockquote>
+</li>
 <li>starting_state: starting state of the model&ndash;the system of values of each layer at time 0&ndash;
 e.g [973, 12, 15]</li>
 <li>return: predictions in the form of <code>timesteps</code>, each timestep consisting of a list of derivatives&ndash;
@@ -542,10 +565,11 @@ derivative order is the same as the order of the layers passed into Model</li>
     Integrate the model from `get_deriv` to arrive at future predictions using Euler&#39;s Method
 
     - timesteps: range of evenly-spaced times (from start of epidemic to prediction time)\
+
         Note:
-          &gt; The difference between each of the times is used as `delta` in Euler&#39;s Method.
-          &gt; The closer this difference is to zero, the more accurate these predictions
-          &gt; become.
+      &gt; The difference between each of the times is used as `delta` in Euler&#39;s Method.
+      &gt; The closer this difference is to zero, the more accurate these predictions
+      &gt; become.
     - starting_state: starting state of the model--the system of values of each layer at time 0--
         e.g [973, 12, 15]
     - return: predictions in the form of `timesteps`, each timestep consisting of a list of derivatives--

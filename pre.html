@@ -25,12 +25,14 @@ Each function returns an epispot Model object and its …" />
 <section id="section-intro">
 <p>The 'pre-compiled' module contains already compiled models which can be put to use immediately.
 Each function returns an epispot Model object and its corresponding functions. Models parameters can still be changed
-even after compilation.
-STRUCTURE:
-- SIR()
-- SEIR()
-- SIRD()
-- SIHRD()</p>
+even after compilation.</p>
+<p>STRUCTURE:</p>
+<ul>
+<li>SIR()</li>
+<li>SEIR()</li>
+<li>SIRD()</li>
+<li>SIHRD()</li>
+</ul>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -39,7 +41,9 @@ STRUCTURE:
 The &#39;pre-compiled&#39; module contains already compiled models which can be put to use immediately.
 Each function returns an epispot Model object and its corresponding functions. Models parameters can still be changed
 even after compilation.
+
 STRUCTURE:
+
 - SIR()
 - SEIR()
 - SIRD()
@@ -52,26 +56,30 @@ from . import models
 
 def SIR(R_0, N, p_recovery, recovery_rate):
     &#34;&#34;&#34;
-    The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases\
-    Susceptible --&gt; Infected --&gt; Removed &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases
+
+    ```
+    Susceptible --&gt; Infected --&gt; Removed
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
        measures only 1 / the time it takes to move to the Recovered layer\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
+        - t: time
+        - return: recovery rate
     &#34;&#34;&#34;
 
     def gamma(t):
@@ -94,27 +102,31 @@ def SIR(R_0, N, p_recovery, recovery_rate):
 def SEIR(R_0, N, p_recovery, recovery_rate, delta):
     &#34;&#34;&#34;
     The SEIR Model; a variant of the SIR Model that investigates people who have been *exposed* to the virus
-    so that they can be tracked down for contact tracing reasons\
-    Susceptible --&gt; Exposed --&gt; Infected --&gt; Removed &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    so that they can be tracked down for contact tracing reasons
+
+    ```
+    Susceptible --&gt; Exposed --&gt; Infected --&gt; Removed
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
        measures only 1 / the time it takes to move to the Recovered layer\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
-    delta: =None, the incubation period\
+        - t: time
+        - return: recovery rate
+    - delta: =None, the incubation period\
       implemented as a function delta(t)--in most cases this should stay constant
         - t: time
         - return: incubation period
@@ -142,32 +154,36 @@ def SEIR(R_0, N, p_recovery, recovery_rate, delta):
 def SIRD(R_0, N, p_recovery, recovery_rate, alpha, rho):
     &#34;&#34;&#34;
     The SIRD Model; a tweak on the SIR Model to separate Recovered &amp; Dead compartments
-    which allows for death predictions as well as herd immunity predictions\
-    Susceptible --&gt; Infected --&gt; Recovered \
-                    |----------&gt; Dead &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    which allows for death predictions as well as herd immunity predictions
+
+    ```
+    Susceptible --&gt; Infected --&gt; Recovered
+                    |----------&gt; Dead
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
        measures only 1 / the time it takes to move to the Recovered layer\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
-    rho: 1 / time until death\
-     implemented as a function rho(t)--in most cases this should stay constant
+        - t: time
+        - return: recovery rate
+    - rho: 1 / time until death\
+        implemented as a function rho(t)--in most cases this should stay constant
         - t: time
         - return: death rate
-    alpha: probability of death from Infected\
+    - alpha: probability of death from Infected\
        implemented as a function alpha(t)
         - t: time
         - return: probability of death
@@ -196,43 +212,47 @@ def SIRD(R_0, N, p_recovery, recovery_rate, alpha, rho):
 def SIHRD(R_0, N, p_recovery, recovery_rate, alpha, rho, p_hos, hos_rate, p_hos_to_rec, hos_to_rec_rate):
     &#34;&#34;&#34;
     The SIHRD Model; Tracks patients from hospitalized to recovered to dead
-    which allows for death, herd immunity, and triage predictions\
-    Susceptible --&gt; Infected --&gt; Hospitalized --&gt; Dead \
-                    |            |--------------&gt; Recovered \
-                    |---------------------------/ &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    which allows for death, herd immunity, and triage predictions
+
+    ```
+    Susceptible --&gt; Infected --&gt; Hospitalized --&gt; Dead
+                    |            |--------------&gt; Recovered
+                    |---------------------------/
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery from Infected\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery from Infected\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate from the Infected layer only\
+    - recovery_rate: the recovery rate from the Infected layer only\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
-    rho: 1 / time until death\
-     implemented as a function rho(t)--in most cases this should stay constant
+        - t: time
+        - return: recovery rate
+    - rho: 1 / time until death\
+        implemented as a function rho(t)--in most cases this should stay constant
         - t: time
         - return: death rate
-    alpha: probability of death from Infected\
+    - alpha: probability of death from Infected\
        implemented as a function alpha(t)
         - t: time
         - return: probability of death
-    p_hos_to_rec: probability of recovery from Hospitalized\
-    implemented as a function p_hos_to_rec(t):
+    - p_hos_to_rec: probability of recovery from Hospitalized\
+        implemented as a function p_hos_to_rec(t):
         - t: time
         - return: probability of recovery
-    hos_to_rec_rate: the recovery rate from the Hospitalized layer only\
+    - hos_to_rec_rate: the recovery rate from the Hospitalized layer only\
        implemented as a function hos_to_rec_rate(t):
-            - t: time
-            - return: recovery rate
+        - t: time
+        - return: recovery rate
     &#34;&#34;&#34;
 
     def gamma(t):
@@ -271,30 +291,43 @@ def SIHRD(R_0, N, p_recovery, recovery_rate, alpha, rho, p_hos, hos_rate, p_hos_
 </code></dt>
 <dd>
 <div class="desc"><p>The SEIR Model; a variant of the SIR Model that investigates people who have been <em>exposed</em> to the virus
-so that they can be tracked down for contact tracing reasons
-Susceptible &ndash;&gt; Exposed &ndash;&gt; Infected &ndash;&gt; Removed <br><br>
-R_0: the basic reproductive number&ndash;
+so that they can be tracked down for contact tracing reasons</p>
+<pre><code>Susceptible --&gt; Exposed --&gt; Infected --&gt; Removed
+</code></pre>
+<ul>
+<li>R_0: the basic reproductive number&ndash;
 this is the average number of susceptibles infected by one infected
-implemented as a function R_0(t):
-- t: time
-- return: R_0 value
-N: the total population
-implemented as a function N(t):
-- t: time
-- return: total population
-p_recovery: probability of recovery
-implemented as a function p_recovery(t):
-- t: time
-- return: probability of recovery
-recovery_rate: the recovery rate&ndash;different from the standard recovery rate <code>gamma</code>&ndash;
+implemented as a function R_0(t):<ul>
+<li>t: time</li>
+<li>return: R_0 value</li>
+</ul>
+</li>
+<li>N: the total population
+implemented as a function N(t):<ul>
+<li>t: time</li>
+<li>return: total population</li>
+</ul>
+</li>
+<li>p_recovery: probability of recovery
+implemented as a function p_recovery(t):<ul>
+<li>t: time</li>
+<li>return: probability of recovery</li>
+</ul>
+</li>
+<li>recovery_rate: the recovery rate&ndash;different from the standard recovery rate <code>gamma</code>&ndash;
 measures only 1 / the time it takes to move to the Recovered layer
-implemented as a function recovery_rate(t):
-- t: time
-- return: recovery rate
-delta: =None, the incubation period
-implemented as a function delta(t)&ndash;in most cases this should stay constant
-- t: time
-- return: incubation period</p></div>
+implemented as a function recovery_rate(t):<ul>
+<li>t: time</li>
+<li>return: recovery rate</li>
+</ul>
+</li>
+<li>delta: =None, the incubation period
+implemented as a function delta(t)&ndash;in most cases this should stay constant<ul>
+<li>t: time</li>
+<li>return: incubation period</li>
+</ul>
+</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -302,27 +335,31 @@ implemented as a function delta(t)&ndash;in most cases this should stay constant
 <pre><code class="python">def SEIR(R_0, N, p_recovery, recovery_rate, delta):
     &#34;&#34;&#34;
     The SEIR Model; a variant of the SIR Model that investigates people who have been *exposed* to the virus
-    so that they can be tracked down for contact tracing reasons\
-    Susceptible --&gt; Exposed --&gt; Infected --&gt; Removed &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    so that they can be tracked down for contact tracing reasons
+
+    ```
+    Susceptible --&gt; Exposed --&gt; Infected --&gt; Removed
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
        measures only 1 / the time it takes to move to the Recovered layer\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
-    delta: =None, the incubation period\
+        - t: time
+        - return: recovery rate
+    - delta: =None, the incubation period\
       implemented as a function delta(t)--in most cases this should stay constant
         - t: time
         - return: incubation period
@@ -352,44 +389,62 @@ implemented as a function delta(t)&ndash;in most cases this should stay constant
 </code></dt>
 <dd>
 <div class="desc"><p>The SIHRD Model; Tracks patients from hospitalized to recovered to dead
-which allows for death, herd immunity, and triage predictions
-Susceptible &ndash;&gt; Infected &ndash;&gt; Hospitalized &ndash;&gt; Dead
-|
-|--------------&gt; Recovered
-|---------------------------/ <br><br>
-R_0: the basic reproductive number&ndash;
+which allows for death, herd immunity, and triage predictions</p>
+<pre><code>Susceptible --&gt; Infected --&gt; Hospitalized --&gt; Dead
+                |            |--------------&gt; Recovered
+                |---------------------------/
+</code></pre>
+<ul>
+<li>R_0: the basic reproductive number&ndash;
 this is the average number of susceptibles infected by one infected
-implemented as a function R_0(t):
-- t: time
-- return: R_0 value
-N: the total population
-implemented as a function N(t):
-- t: time
-- return: total population
-p_recovery: probability of recovery from Infected
-implemented as a function p_recovery(t):
-- t: time
-- return: probability of recovery
-recovery_rate: the recovery rate from the Infected layer only
-implemented as a function recovery_rate(t):
-- t: time
-- return: recovery rate
-rho: 1 / time until death
-implemented as a function rho(t)&ndash;in most cases this should stay constant
-- t: time
-- return: death rate
-alpha: probability of death from Infected
-implemented as a function alpha(t)
-- t: time
-- return: probability of death
-p_hos_to_rec: probability of recovery from Hospitalized
-implemented as a function p_hos_to_rec(t):
-- t: time
-- return: probability of recovery
-hos_to_rec_rate: the recovery rate from the Hospitalized layer only
-implemented as a function hos_to_rec_rate(t):
-- t: time
-- return: recovery rate</p></div>
+implemented as a function R_0(t):<ul>
+<li>t: time</li>
+<li>return: R_0 value</li>
+</ul>
+</li>
+<li>N: the total population
+implemented as a function N(t):<ul>
+<li>t: time</li>
+<li>return: total population</li>
+</ul>
+</li>
+<li>p_recovery: probability of recovery from Infected
+implemented as a function p_recovery(t):<ul>
+<li>t: time</li>
+<li>return: probability of recovery</li>
+</ul>
+</li>
+<li>recovery_rate: the recovery rate from the Infected layer only
+implemented as a function recovery_rate(t):<ul>
+<li>t: time</li>
+<li>return: recovery rate</li>
+</ul>
+</li>
+<li>rho: 1 / time until death
+implemented as a function rho(t)&ndash;in most cases this should stay constant<ul>
+<li>t: time</li>
+<li>return: death rate</li>
+</ul>
+</li>
+<li>alpha: probability of death from Infected
+implemented as a function alpha(t)<ul>
+<li>t: time</li>
+<li>return: probability of death</li>
+</ul>
+</li>
+<li>p_hos_to_rec: probability of recovery from Hospitalized
+implemented as a function p_hos_to_rec(t):<ul>
+<li>t: time</li>
+<li>return: probability of recovery</li>
+</ul>
+</li>
+<li>hos_to_rec_rate: the recovery rate from the Hospitalized layer only
+implemented as a function hos_to_rec_rate(t):<ul>
+<li>t: time</li>
+<li>return: recovery rate</li>
+</ul>
+</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -397,43 +452,47 @@ implemented as a function hos_to_rec_rate(t):
 <pre><code class="python">def SIHRD(R_0, N, p_recovery, recovery_rate, alpha, rho, p_hos, hos_rate, p_hos_to_rec, hos_to_rec_rate):
     &#34;&#34;&#34;
     The SIHRD Model; Tracks patients from hospitalized to recovered to dead
-    which allows for death, herd immunity, and triage predictions\
-    Susceptible --&gt; Infected --&gt; Hospitalized --&gt; Dead \
-                    |            |--------------&gt; Recovered \
-                    |---------------------------/ &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    which allows for death, herd immunity, and triage predictions
+
+    ```
+    Susceptible --&gt; Infected --&gt; Hospitalized --&gt; Dead
+                    |            |--------------&gt; Recovered
+                    |---------------------------/
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery from Infected\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery from Infected\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate from the Infected layer only\
+    - recovery_rate: the recovery rate from the Infected layer only\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
-    rho: 1 / time until death\
-     implemented as a function rho(t)--in most cases this should stay constant
+        - t: time
+        - return: recovery rate
+    - rho: 1 / time until death\
+        implemented as a function rho(t)--in most cases this should stay constant
         - t: time
         - return: death rate
-    alpha: probability of death from Infected\
+    - alpha: probability of death from Infected\
        implemented as a function alpha(t)
         - t: time
         - return: probability of death
-    p_hos_to_rec: probability of recovery from Hospitalized\
-    implemented as a function p_hos_to_rec(t):
+    - p_hos_to_rec: probability of recovery from Hospitalized\
+        implemented as a function p_hos_to_rec(t):
         - t: time
         - return: probability of recovery
-    hos_to_rec_rate: the recovery rate from the Hospitalized layer only\
+    - hos_to_rec_rate: the recovery rate from the Hospitalized layer only\
        implemented as a function hos_to_rec_rate(t):
-            - t: time
-            - return: recovery rate
+        - t: time
+        - return: recovery rate
     &#34;&#34;&#34;
 
     def gamma(t):
@@ -464,52 +523,67 @@ implemented as a function hos_to_rec_rate(t):
 <span>def <span class="ident">SIR</span></span>(<span>R_0, N, p_recovery, recovery_rate)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases
-Susceptible &ndash;&gt; Infected &ndash;&gt; Removed <br><br>
-R_0: the basic reproductive number&ndash;
+<div class="desc"><p>The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases</p>
+<pre><code>Susceptible --&gt; Infected --&gt; Removed
+</code></pre>
+<ul>
+<li>R_0: the basic reproductive number&ndash;
 this is the average number of susceptibles infected by one infected
-implemented as a function R_0(t):
-- t: time
-- return: R_0 value
-N: the total population
-implemented as a function N(t):
-- t: time
-- return: total population
-p_recovery: probability of recovery
-implemented as a function p_recovery(t):
-- t: time
-- return: probability of recovery
-recovery_rate: the recovery rate&ndash;different from the standard recovery rate <code>gamma</code>&ndash;
+implemented as a function R_0(t):<ul>
+<li>t: time</li>
+<li>return: R_0 value</li>
+</ul>
+</li>
+<li>N: the total population
+implemented as a function N(t):<ul>
+<li>t: time</li>
+<li>return: total population</li>
+</ul>
+</li>
+<li>p_recovery: probability of recovery
+implemented as a function p_recovery(t):<ul>
+<li>t: time</li>
+<li>return: probability of recovery</li>
+</ul>
+</li>
+<li>recovery_rate: the recovery rate&ndash;different from the standard recovery rate <code>gamma</code>&ndash;
 measures only 1 / the time it takes to move to the Recovered layer
-implemented as a function recovery_rate(t):
-- t: time
-- return: recovery rate</p></div>
+implemented as a function recovery_rate(t):<ul>
+<li>t: time</li>
+<li>return: recovery rate</li>
+</ul>
+</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def SIR(R_0, N, p_recovery, recovery_rate):
     &#34;&#34;&#34;
-    The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases\
-    Susceptible --&gt; Infected --&gt; Removed &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases
+
+    ```
+    Susceptible --&gt; Infected --&gt; Removed
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
        measures only 1 / the time it takes to move to the Recovered layer\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
+        - t: time
+        - return: recovery rate
     &#34;&#34;&#34;
 
     def gamma(t):
@@ -534,35 +608,50 @@ implemented as a function recovery_rate(t):
 </code></dt>
 <dd>
 <div class="desc"><p>The SIRD Model; a tweak on the SIR Model to separate Recovered &amp; Dead compartments
-which allows for death predictions as well as herd immunity predictions
-Susceptible &ndash;&gt; Infected &ndash;&gt; Recovered
-|----------&gt; Dead <br><br>
-R_0: the basic reproductive number&ndash;
+which allows for death predictions as well as herd immunity predictions</p>
+<pre><code>Susceptible --&gt; Infected --&gt; Recovered
+                |----------&gt; Dead
+</code></pre>
+<ul>
+<li>R_0: the basic reproductive number&ndash;
 this is the average number of susceptibles infected by one infected
-implemented as a function R_0(t):
-- t: time
-- return: R_0 value
-N: the total population
-implemented as a function N(t):
-- t: time
-- return: total population
-p_recovery: probability of recovery
-implemented as a function p_recovery(t):
-- t: time
-- return: probability of recovery
-recovery_rate: the recovery rate&ndash;different from the standard recovery rate <code>gamma</code>&ndash;
+implemented as a function R_0(t):<ul>
+<li>t: time</li>
+<li>return: R_0 value</li>
+</ul>
+</li>
+<li>N: the total population
+implemented as a function N(t):<ul>
+<li>t: time</li>
+<li>return: total population</li>
+</ul>
+</li>
+<li>p_recovery: probability of recovery
+implemented as a function p_recovery(t):<ul>
+<li>t: time</li>
+<li>return: probability of recovery</li>
+</ul>
+</li>
+<li>recovery_rate: the recovery rate&ndash;different from the standard recovery rate <code>gamma</code>&ndash;
 measures only 1 / the time it takes to move to the Recovered layer
-implemented as a function recovery_rate(t):
-- t: time
-- return: recovery rate
-rho: 1 / time until death
-implemented as a function rho(t)&ndash;in most cases this should stay constant
-- t: time
-- return: death rate
-alpha: probability of death from Infected
-implemented as a function alpha(t)
-- t: time
-- return: probability of death</p></div>
+implemented as a function recovery_rate(t):<ul>
+<li>t: time</li>
+<li>return: recovery rate</li>
+</ul>
+</li>
+<li>rho: 1 / time until death
+implemented as a function rho(t)&ndash;in most cases this should stay constant<ul>
+<li>t: time</li>
+<li>return: death rate</li>
+</ul>
+</li>
+<li>alpha: probability of death from Infected
+implemented as a function alpha(t)<ul>
+<li>t: time</li>
+<li>return: probability of death</li>
+</ul>
+</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -570,32 +659,36 @@ implemented as a function alpha(t)
 <pre><code class="python">def SIRD(R_0, N, p_recovery, recovery_rate, alpha, rho):
     &#34;&#34;&#34;
     The SIRD Model; a tweak on the SIR Model to separate Recovered &amp; Dead compartments
-    which allows for death predictions as well as herd immunity predictions\
-    Susceptible --&gt; Infected --&gt; Recovered \
-                    |----------&gt; Dead &lt;br&gt;&lt;br&gt;
-    R_0: the basic reproductive number--
+    which allows for death predictions as well as herd immunity predictions
+
+    ```
+    Susceptible --&gt; Infected --&gt; Recovered
+                    |----------&gt; Dead
+    ```
+
+    - R_0: the basic reproductive number--
          this is the average number of susceptibles infected by one infected\
          implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-    N: the total population\
+        - t: time
+        - return: R_0 value
+    - N: the total population\
        implemented as a function N(t):
-            - t: time
-            - return: total population
-    p_recovery: probability of recovery\
-    implemented as a function p_recovery(t):
+        - t: time
+        - return: total population
+    - p_recovery: probability of recovery\
+        implemented as a function p_recovery(t):
         - t: time
         - return: probability of recovery
-    recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
+    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
        measures only 1 / the time it takes to move to the Recovered layer\
        implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
-    rho: 1 / time until death\
-     implemented as a function rho(t)--in most cases this should stay constant
+        - t: time
+        - return: recovery rate
+    - rho: 1 / time until death\
+        implemented as a function rho(t)--in most cases this should stay constant
         - t: time
         - return: death rate
-    alpha: probability of death from Infected\
+    - alpha: probability of death from Infected\
        implemented as a function alpha(t)
         - t: time
         - return: probability of death
