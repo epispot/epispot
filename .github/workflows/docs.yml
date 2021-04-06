@@ -30,15 +30,17 @@ jobs:
         git pull
     - name: Generate documentation
       run: |
-        pdoc --html --output-dir docs epispot
+        pdoc --html --output-dir stash1 epispot
     - name: Stash changes
       run: |
         git add .
         git commit -m "Stashed documentation changes"
+    - name: Set up gh-pages
         git checkout gh-pages-patch1
         rm *.html
-        git checkout docs-patch1 docs/
-        mv docs/epispot/* .
+    - name: Push docs to gh-pages
+        git checkout docs-patch1 stash1/
+        mv stash1/epispot/* .
         git add .
         git commit -m "Updated Documentation"
         git push
