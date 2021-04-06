@@ -3,11 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>epispot.plots API documentation</title>
 <meta name="description" content="The &#39;plots&#39; module contains all plotting functions for visualizing models.
-These functions require the installation of matplotlib for graphics.
-…" />
+These functions require the installation of matplotlib for graphics …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -26,7 +25,7 @@ These functions require the installation of matplotlib for graphics.
 <section id="section-intro">
 <p>The 'plots' module contains all plotting functions for visualizing models.
 These functions require the installation of matplotlib for graphics.</p>
-<h2 id="structure">Structure</h2>
+<p>STRUCTURE:</p>
 <ul>
 <li>plot_comp_nums</li>
 <li>compare</li>
@@ -38,9 +37,11 @@ These functions require the installation of matplotlib for graphics.</p>
 <pre><code class="python">&#34;&#34;&#34;
 The &#39;plots&#39; module contains all plotting functions for visualizing models.
 These functions require the installation of matplotlib for graphics.
+
 STRUCTURE:
-    - plot_comp_nums
-    - compare
+
+- plot_comp_nums
+- compare
 &#34;&#34;&#34;
 
 from . import plt
@@ -52,11 +53,11 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     &#34;&#34;&#34;
     This is meant for plotting the number of people in each compartment over a period of time
 
-    :param Model: an instance of the `Model` class
-    :param timesteps: timesteps to plot as range(beg_time, end_time, day_length)
-    :param starting_state: initial conditions vector: [comp_1_start, comp_2_start, ...]
-    :param seed: =100, for generating new random colors
-    :return: matplotlib plot
+    - Model: an instance of the `Model` class
+    - timesteps: timesteps to plot as range(beg_time, end_time, day_length)
+    - starting_state: initial conditions vector: [comp_1_start, comp_2_start, ...]
+    - seed: =100, for generating new random colors
+    - return: matplotlib plot
     &#34;&#34;&#34;
 
     f, ax = plt.subplots(1, 1, figsize=(10, 4))
@@ -90,26 +91,28 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     plt.show()
 
 
-def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=[], seed=200):
+def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=None, seed=200):
     &#34;&#34;&#34;
     This function is used to compare multiple predictions which can range across time ranges.
     Often, this is used to compare real data with model predictions or to show the predictions after
     the real data in one window.
 
-    :param ranges: A list of items to plot. Follow the idiom below:
-                    [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
-                    label (in str() format), ... ]
-    :param title: =&#34;&#34;, (str) the title of the plot
-    :param subtitle: =&#34;&#34;, (str) the subtitle of the plot
-    :param markers: =[], a list of sequenced markers in the format:
-                         [&#39;marker name&#39;, [...marker parameters]]
-                         &#39;marker name&#39; can be any of:
-                            - line, param: [y, x1, x2, label]
-                            - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
-                            - point, param: [label, x, y]
-                            - arrow, param: [x, y, dx, dy]
-    :param seed: =200, for generating new random colors
-    :return: matplotlib plot (log scale)
+    - ranges: A list of items to plot. Follow the idiom below:
+        ```python
+        [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
+        label (in str() format), ... ]
+        ```
+    - title: =&#34;&#34;, (str) the title of the plot
+    - subtitle: =&#34;&#34;, (str) the subtitle of the plot
+    - markers: =[], a list of sequenced markers in the format:\
+         [&#39;marker name&#39;, [...marker parameters]]\
+         &#39;marker name&#39; can be any of:
+            - line, param: [y, x1, x2, label]
+            - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
+            - point, param: [label, x, y]
+            - arrow, param: [x, y, dx, dy]
+    - seed: =200, for generating new random colors
+    - return: matplotlib plot (log scale)
     &#34;&#34;&#34;
 
     f, ax = plt.subplots(1, 1, figsize=(10, 4))
@@ -121,20 +124,21 @@ def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=[], seed=200)
         ax.plot(r[0], r[1], colors.to_hex(color), linewidth=2,
                 label=r[2])
 
-    for marker in markers:
+    if markers is not None:
+        for marker in markers:
 
-        if marker[0] == &#39;line&#39;:
-            plt.hlines(marker[1][0], marker[1][1], marker[1][2], label=marker[1][3])
+            if marker[0] == &#39;line&#39;:
+                plt.hlines(marker[1][0], marker[1][1], marker[1][2], label=marker[1][3])
 
-        if marker[0] == &#39;highlighted-box&#39;:
-            plt.axvspan(marker[1][0], marker[1][1], ymin=marker[1][2], ymax=marker[1][3], facecolor=&#39;y&#39;, alpha=0.25)
+            if marker[0] == &#39;highlighted-box&#39;:
+                plt.axvspan(marker[1][0], marker[1][1], ymin=marker[1][2], ymax=marker[1][3], facecolor=&#39;y&#39;, alpha=0.25)
 
-        if marker[0] == &#39;point&#39;:
-            plt.plot(marker[1][1], marker[1][2], &#39;ko&#39;)
-            plt.annotate(marker[1][0], (marker[1][1] + 1, marker[1][2] + 1))
+            if marker[0] == &#39;point&#39;:
+                plt.plot(marker[1][1], marker[1][2], &#39;ko&#39;)
+                plt.annotate(marker[1][0], (marker[1][1] + 1, marker[1][2] + 1))
 
-        if marker[0] == &#39;arrow&#39;:
-            plt.arrow(marker[1][0], marker[1][1], marker[1][2], marker[1][3])
+            if marker[0] == &#39;arrow&#39;:
+                plt.arrow(marker[1][0], marker[1][1], marker[1][2], marker[1][3])
 
     legend = ax.legend()
     legend.get_frame().set_alpha(0.5)
@@ -159,50 +163,55 @@ def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=[], seed=200)
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="epispot.plots.compare"><code class="name flex">
-<span>def <span class="ident">compare</span></span>(<span>ranges, title='', subtitle='', markers=[], seed=200)</span>
+<span>def <span class="ident">compare</span></span>(<span>ranges, title='', subtitle='', markers=None, seed=200)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This function is used to compare multiple predictions which can range across time ranges.
 Often, this is used to compare real data with model predictions or to show the predictions after
 the real data in one window.</p>
-<p>:param ranges: A list of items to plot. Follow the idiom below:
-[timesteps (use range(beg, end)), predictions (corresponding to each element in <code>timesteps</code>,
-label (in str() format), &hellip; ]
-:param title: ="", (str) the title of the plot
-:param subtitle: ="", (str) the subtitle of the plot
-:param markers: =[], a list of sequenced markers in the format:
+<ul>
+<li>ranges: A list of items to plot. Follow the idiom below:
+<code>python
+[timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
+label (in str() format), ... ]</code></li>
+<li>title: ="", (str) the title of the plot</li>
+<li>subtitle: ="", (str) the subtitle of the plot</li>
+<li>markers: =[], a list of sequenced markers in the format:
 ['marker name', [&hellip;marker parameters]]
 'marker name' can be any of:
 - line, param: [y, x1, x2, label]
 - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
 - point, param: [label, x, y]
-- arrow, param: [x, y, dx, dy]
-:param seed: =200, for generating new random colors
-:return: matplotlib plot (log scale)</p></div>
+- arrow, param: [x, y, dx, dy]</li>
+<li>seed: =200, for generating new random colors</li>
+<li>return: matplotlib plot (log scale)</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=[], seed=200):
+<pre><code class="python">def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=None, seed=200):
     &#34;&#34;&#34;
     This function is used to compare multiple predictions which can range across time ranges.
     Often, this is used to compare real data with model predictions or to show the predictions after
     the real data in one window.
 
-    :param ranges: A list of items to plot. Follow the idiom below:
-                    [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
-                    label (in str() format), ... ]
-    :param title: =&#34;&#34;, (str) the title of the plot
-    :param subtitle: =&#34;&#34;, (str) the subtitle of the plot
-    :param markers: =[], a list of sequenced markers in the format:
-                         [&#39;marker name&#39;, [...marker parameters]]
-                         &#39;marker name&#39; can be any of:
-                            - line, param: [y, x1, x2, label]
-                            - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
-                            - point, param: [label, x, y]
-                            - arrow, param: [x, y, dx, dy]
-    :param seed: =200, for generating new random colors
-    :return: matplotlib plot (log scale)
+    - ranges: A list of items to plot. Follow the idiom below:
+        ```python
+        [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
+        label (in str() format), ... ]
+        ```
+    - title: =&#34;&#34;, (str) the title of the plot
+    - subtitle: =&#34;&#34;, (str) the subtitle of the plot
+    - markers: =[], a list of sequenced markers in the format:\
+         [&#39;marker name&#39;, [...marker parameters]]\
+         &#39;marker name&#39; can be any of:
+            - line, param: [y, x1, x2, label]
+            - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
+            - point, param: [label, x, y]
+            - arrow, param: [x, y, dx, dy]
+    - seed: =200, for generating new random colors
+    - return: matplotlib plot (log scale)
     &#34;&#34;&#34;
 
     f, ax = plt.subplots(1, 1, figsize=(10, 4))
@@ -214,20 +223,21 @@ label (in str() format), &hellip; ]
         ax.plot(r[0], r[1], colors.to_hex(color), linewidth=2,
                 label=r[2])
 
-    for marker in markers:
+    if markers is not None:
+        for marker in markers:
 
-        if marker[0] == &#39;line&#39;:
-            plt.hlines(marker[1][0], marker[1][1], marker[1][2], label=marker[1][3])
+            if marker[0] == &#39;line&#39;:
+                plt.hlines(marker[1][0], marker[1][1], marker[1][2], label=marker[1][3])
 
-        if marker[0] == &#39;highlighted-box&#39;:
-            plt.axvspan(marker[1][0], marker[1][1], ymin=marker[1][2], ymax=marker[1][3], facecolor=&#39;y&#39;, alpha=0.25)
+            if marker[0] == &#39;highlighted-box&#39;:
+                plt.axvspan(marker[1][0], marker[1][1], ymin=marker[1][2], ymax=marker[1][3], facecolor=&#39;y&#39;, alpha=0.25)
 
-        if marker[0] == &#39;point&#39;:
-            plt.plot(marker[1][1], marker[1][2], &#39;ko&#39;)
-            plt.annotate(marker[1][0], (marker[1][1] + 1, marker[1][2] + 1))
+            if marker[0] == &#39;point&#39;:
+                plt.plot(marker[1][1], marker[1][2], &#39;ko&#39;)
+                plt.annotate(marker[1][0], (marker[1][1] + 1, marker[1][2] + 1))
 
-        if marker[0] == &#39;arrow&#39;:
-            plt.arrow(marker[1][0], marker[1][1], marker[1][2], marker[1][3])
+            if marker[0] == &#39;arrow&#39;:
+                plt.arrow(marker[1][0], marker[1][1], marker[1][2], marker[1][3])
 
     legend = ax.legend()
     legend.get_frame().set_alpha(0.5)
@@ -249,11 +259,13 @@ label (in str() format), &hellip; ]
 </code></dt>
 <dd>
 <div class="desc"><p>This is meant for plotting the number of people in each compartment over a period of time</p>
-<p>:param Model: an instance of the <code>Model</code> class
-:param timesteps: timesteps to plot as range(beg_time, end_time, day_length)
-:param starting_state: initial conditions vector: [comp_1_start, comp_2_start, &hellip;]
-:param seed: =100, for generating new random colors
-:return: matplotlib plot</p></div>
+<ul>
+<li>Model: an instance of the <code>Model</code> class</li>
+<li>timesteps: timesteps to plot as range(beg_time, end_time, day_length)</li>
+<li>starting_state: initial conditions vector: [comp_1_start, comp_2_start, &hellip;]</li>
+<li>seed: =100, for generating new random colors</li>
+<li>return: matplotlib plot</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -262,11 +274,11 @@ label (in str() format), &hellip; ]
     &#34;&#34;&#34;
     This is meant for plotting the number of people in each compartment over a period of time
 
-    :param Model: an instance of the `Model` class
-    :param timesteps: timesteps to plot as range(beg_time, end_time, day_length)
-    :param starting_state: initial conditions vector: [comp_1_start, comp_2_start, ...]
-    :param seed: =100, for generating new random colors
-    :return: matplotlib plot
+    - Model: an instance of the `Model` class
+    - timesteps: timesteps to plot as range(beg_time, end_time, day_length)
+    - starting_state: initial conditions vector: [comp_1_start, comp_2_start, ...]
+    - seed: =100, for generating new random colors
+    - return: matplotlib plot
     &#34;&#34;&#34;
 
     f, ax = plt.subplots(1, 1, figsize=(10, 4))
@@ -326,7 +338,7 @@ label (in str() format), &hellip; ]
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 </body>
 </html>
