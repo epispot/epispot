@@ -23,8 +23,6 @@ share/python-wheels/
 
 # Documentation
 docs/
-docs/*
-docs/_build
 
 # pyenv
 .python-version
