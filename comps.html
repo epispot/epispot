@@ -26,7 +26,7 @@ custom user-defined compartments. This module …" />
 <p>The <code>compartments</code> module contains pre-built disease compartments for basic modelling and allows for
 custom user-defined compartments. This module consists of several classes, each representing a specific
 compartment.</p>
-<p>STRUCTURE:</p>
+<h2 id="structure">Structure:</h2>
 <ul>
 <li>Susceptible(object)</li>
 <li>Infected(object)</li>
@@ -46,7 +46,7 @@ The `compartments` module contains pre-built disease compartments for basic mode
 custom user-defined compartments. This module consists of several classes, each representing a specific
 compartment.
 
-STRUCTURE:
+## Structure:
 
 - Susceptible(object)
 - Infected(object)
@@ -69,7 +69,7 @@ class Susceptible(object):
 
     Recovered (?) --&gt; Susceptible --&gt; Infected
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -194,7 +194,7 @@ class Infected(object):
 
     Susceptible, Exposed --&gt; Infected --&gt; Recovered, Hospitalized, Critical, Dead
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -373,7 +373,7 @@ class Recovered(object):
 
     Infected, Critical, Hospitalized --&gt; Recovered --&gt; Susceptible (?)
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -511,7 +511,7 @@ class Exposed(object):
 
     Susceptible --&gt; Exposed --&gt; Infected
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -625,12 +625,12 @@ class Dead(object):
     &#34;&#34;&#34;
     The Dead class is a terminal state\
     As is convention with the SIR Model, we assume that this portion of individuals does not significantly
-    change the original population structure, and therefore, the total population will remain the same
+    change the original population ## Structure, and therefore, the total population will remain the same
     regardless of how many people have been classified as Dead.
 
     Infected, Critical, Hospitalized --&gt; Dead (TERMINAL)
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -764,7 +764,7 @@ class Hospitalized(object):
 
     Infected --&gt; Hospitalized --&gt; Critical, Dead
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -893,7 +893,7 @@ class Critical(object):
 
     Hospitalized, Infected --&gt; Critical --&gt; Dead, Recovered
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -1040,7 +1040,7 @@ class Idiom(object):  # pragma: no cover
     If you wish, you can change all the other methods as well.
     Pass all parameters as an array in `param_list`
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -1125,7 +1125,7 @@ class Idiom(object):  # pragma: no cover
 hospitals <em>and</em> using limited resources. However, this is a distinct category from the Hospitalized portion of
 individuals, who don't require extra resources (ICU beds, ventilators, etc.). This layer supports triage.</p>
 <p>Hospitalized, Infected &ndash;&gt; Critical &ndash;&gt; Dead, Recovered</p>
-<p>STRUCTURE:</p>
+<h2 id="structure">Structure:</h2>
 <ul>
 <li><strong>init</strong></li>
 <li>get_layer_index</li>
@@ -1208,7 +1208,7 @@ should be of type int()</li>
 
     Hospitalized, Infected --&gt; Critical --&gt; Dead, Recovered
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -1465,10 +1465,10 @@ Used to setup commonly used variables and raise common errors</p>
 <dd>
 <div class="desc"><p>The Dead class is a terminal state
 As is convention with the SIR Model, we assume that this portion of individuals does not significantly
-change the original population structure, and therefore, the total population will remain the same
+change the original population ## Structure, and therefore, the total population will remain the same
 regardless of how many people have been classified as Dead.</p>
 <p>Infected, Critical, Hospitalized &ndash;&gt; Dead (TERMINAL)</p>
-<p>STRUCTURE:</p>
+<h2 id="structure">Structure:</h2>
 <ul>
 <li><strong>init</strong></li>
 <li>get_layer_index</li>
@@ -1525,12 +1525,12 @@ implemented as a function alpha_cri(t)<ul>
     &#34;&#34;&#34;
     The Dead class is a terminal state\
     As is convention with the SIR Model, we assume that this portion of individuals does not significantly
-    change the original population structure, and therefore, the total population will remain the same
+    change the original population ## Structure, and therefore, the total population will remain the same
     regardless of how many people have been classified as Dead.
 
     Infected, Critical, Hospitalized --&gt; Dead (TERMINAL)
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -1779,7 +1779,7 @@ Used to setup commonly used variables and raise common errors</p>
 <div class="desc"><p>The Exposed class represents the incubation period of the disease.
 This portion of individuals cannot spread the disease but are bound to become infected after some period of time.</p>
 <p>Susceptible &ndash;&gt; Exposed &ndash;&gt; Infected</p>
-<p>STRUCTURE:</p>
+<h2 id="structure">Structure:</h2>
 <ul>
 <li><strong>init</strong></li>
 <li>get_layer_index</li>
@@ -1827,7 +1827,7 @@ implemented as a function delta(t)&ndash;in most cases this should stay constant
 
     Susceptible --&gt; Exposed --&gt; Infected
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -2057,13 +2057,12 @@ Used to setup commonly used variables and raise common errors</p>
 hospitals. However, this is a distinct category from the Critical portion of individuals, who require
 more resources (ICU beds, ventilators, etc.). This layer supports triage.</p>
 <p>Infected &ndash;&gt; Hospitalized &ndash;&gt; Critical, Dead</p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li><strong>init</strong></li>
-<li>get_layer_index</li>
-<li>test</li>
-<li>get_deriv</li>
-</ul>
+<h2 id="structure">Structure:</h2>
+<pre><code>- __init__
+- get_layer_index
+- test
+- get_deriv
+</code></pre>
 <p>Initialize the Hospitalized class</p>
 <ul>
 <li>layer_index: index of layer in <code>layers</code></li>
@@ -2136,7 +2135,7 @@ should be of type int()</li>
 
     Infected --&gt; Hospitalized --&gt; Critical, Dead
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -2362,13 +2361,12 @@ Used to setup commonly used variables and raise common errors</p>
 be used with any class. Make sure to change <code>get_deriv</code> file.
 If you wish, you can change all the other methods as well.
 Pass all parameters as an array in <code>param_list</code></p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li><strong>init</strong></li>
-<li>get_layer_index</li>
-<li>test</li>
-<li>get_deriv</li>
-</ul>
+<h2 id="structure">Structure:</h2>
+<pre><code>- __init__
+- get_layer_index
+- test
+- get_deriv
+</code></pre>
 <p>Initialize the class</p>
 <ul>
 <li>layer_index: index of layer in <code>layers</code></li>
@@ -2385,7 +2383,7 @@ Pass all parameters as an array in <code>param_list</code></p>
     If you wish, you can change all the other methods as well.
     Pass all parameters as an array in `param_list`
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -2546,13 +2544,12 @@ Used to setup commonly used variables and raise common errors</p>
 <div class="desc"><p>The Infected class is the 'I' of the 'SIR' Model.
 This is the portion of individuals who are actively spreading the disease.</p>
 <p>Susceptible, Exposed &ndash;&gt; Infected &ndash;&gt; Recovered, Hospitalized, Critical, Dead</p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li><strong>init</strong></li>
-<li>get_layer_index</li>
-<li>test</li>
-<li>get_deriv</li>
-</ul>
+<h2 id="structure">Structure:</h2>
+<pre><code>- __init__
+- get_layer_index
+- test
+- get_deriv
+</code></pre>
 <p>Initialize the Infected class</p>
 <ul>
 <li>layer_index: index of layer in <code>layers</code></li>
@@ -2649,7 +2646,7 @@ implemented as a function death_rate(t)&ndash;in most cases this should stay con
 
     Susceptible, Exposed --&gt; Infected --&gt; Recovered, Hospitalized, Critical, Dead
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -2954,13 +2951,12 @@ Used to setup commonly used variables and raise common errors</p>
 This class actually consists of individuals who have had the disease and recovered (i.e. did not die).
 This class can be used as a terminal state.</p>
 <p>Infected, Critical, Hospitalized &ndash;&gt; Recovered &ndash;&gt; Susceptible (?)</p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li><strong>init</strong></li>
-<li>get_layer_index</li>
-<li>test</li>
-<li>get_deriv</li>
-</ul>
+<h2 id="structure">Structure:</h2>
+<pre><code>- __init__
+- get_layer_index
+- test
+- get_deriv
+</code></pre>
 <p>Initialize the Recovered class</p>
 <ul>
 <li>layer_index: index of layer in <code>layers</code></li>
@@ -3027,7 +3023,7 @@ implemented as a function s_rate(t)<ul>
 
     Infected, Critical, Hospitalized --&gt; Recovered --&gt; Susceptible (?)
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -3278,7 +3274,7 @@ Used to setup commonly used variables and raise common errors</p>
 This is the portion of individuals who have not yet been exposed to the disease.
 This class can be used as a beginning state.</p>
 <p>Recovered (?) &ndash;&gt; Susceptible &ndash;&gt; Infected</p>
-<p>STRUCTURE:</p>
+<h2 id="structure">Structure:</h2>
 <ul>
 <li><strong>init</strong></li>
 <li>get_layer_index</li>
@@ -3335,7 +3331,7 @@ implemented as a function s_rate(t):<ul>
 
     Recovered (?) --&gt; Susceptible --&gt; Infected
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -3570,7 +3566,9 @@ Used to setup commonly used variables and raise common errors</p>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#structure">Structure:</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>

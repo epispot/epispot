@@ -27,7 +27,7 @@ For example, the basic SIR model would be a model consisting of the …" />
 For example, the basic SIR model would be a model consisting of the Susceptible, Infected, and Recovered
 compartments. These classes also allow for differentiation and integration to evaluate the model's
 predictions.</p>
-<p>STRUCTURE:</p>
+<h2 id="structure">Structure:</h2>
 <ul>
 <li>Model(object)</li>
 </ul>
@@ -41,7 +41,7 @@ For example, the basic SIR model would be a model consisting of the Susceptible,
 compartments. These classes also allow for differentiation and integration to evaluate the model&#39;s
 predictions.
 
-STRUCTURE:
+## Structure:
 
 - Model(object)
 &#34;&#34;&#34;
@@ -51,7 +51,7 @@ class Model(object):
     &#34;&#34;&#34;
     Helps create a model out of various disease compartments
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__()
         - get_deriv()
@@ -212,13 +212,12 @@ class Model(object):
 </code></dt>
 <dd>
 <div class="desc"><p>Helps create a model out of various disease compartments</p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li><strong>init</strong>()</li>
-<li>get_deriv()</li>
-<li>integrate()</li>
-<li>add_layer()</li>
-</ul>
+<h2 id="structure">Structure:</h2>
+<pre><code>- __init__()
+- get_deriv()
+- integrate()
+- add_layer()
+</code></pre>
 <p>Initialize the <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> class
 All optional parameters can be added through the <code>add_layer</code> method</p>
 <ul>
@@ -254,7 +253,7 @@ layer succeeds the last layer.<ul>
     &#34;&#34;&#34;
     Helps create a model out of various disease compartments
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__()
         - get_deriv()
@@ -608,7 +607,9 @@ derivative order is the same as the order of the layers passed into Model</li>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#structure">Structure:</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
