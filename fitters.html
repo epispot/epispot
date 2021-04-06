@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>epispot.fitters API documentation</title>
 <meta name="description" content="This module contains all available fitting algorithms.
 These operate separately from the `Model` class.
@@ -26,11 +26,9 @@ STRUCTURE:
 </header>
 <section id="section-intro">
 <p>This module contains all available fitting algorithms.
-These operate separately from the <code>Model</code> class.</p>
-<h2 id="structure">Structure</h2>
-<ul>
-<li>grad_des</li>
-</ul>
+These operate separately from the <code>Model</code> class.
+STRUCTURE:
+- grad_des</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -39,7 +37,7 @@ These operate separately from the <code>Model</code> class.</p>
 This module contains all available fitting algorithms.
 These operate separately from the `Model` class.
 STRUCTURE:
-    - grad_des
+- grad_des
 &#34;&#34;&#34;
 
 from . import np
@@ -50,26 +48,26 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
     The gradient descent fitter. This is not stochastic.
     For long timespans, this may take a long time to converge.
 
-    :param get_model_pred: function in the form:
-                                param: parameters, parameters for model
-                                return: model predictions (use the integrate() method)
-    :param real_data: .csv file in the form:
-                        HEADER: ...layer #s
-                        CONTENTS: ...people in layers
-    :param model_params: list of model parameters
-    :param mu: the learning rate (adjust so that loss decreases after every epoch)
-    :param epochs: number of training sessions to run
-                   (more epochs = more accuracy + more time running)
-    :param N: the total population
-    :param samples: array of timestamps to use for training
-    :param delta: =0.0001, use small values for more precision--increase if gradients are 0
-    :param verbose: =False, use to debug and get gradient information
-    :return: optimized `model_params`
+    - get_model_pred: function in the form:
+        - param: parameters, parameters for model
+        - return: model predictions (use the integrate() method)
+    - real_data: .csv file in the form:
+        - HEADER: ...layer #s
+        - CONTENTS: ...people in layers
+    - model_params: list of model parameters
+    - mu: the learning rate (adjust so that loss decreases after every epoch)
+    - epochs: number of training sessions to run
+        (more epochs = more accuracy + more time running)
+    - N: the total population
+    - samples: array of timestamps to use for training
+    - delta: =0.0001, use small values for more precision--increase if gradients are 0
+    - verbose: =False, use to debug and get gradient information
+    - return: optimized `model_params`
     &#34;&#34;&#34;
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)]
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - for specific layer optimizations
 
     # quadratic cost
 
@@ -79,16 +77,16 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
         r_samp = []
 
         for sample in samples:
-            p_samp.append(pred[sample][1] / N)
-            r_samp.append(real[sample][1] / N)
+            p_samp.append(pred[sample][0] / N)
+            r_samp.append(real[sample][0] / N)
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;predicted, data: &#39;)
             print(p_samp)
             print(r_samp)
             print(&#39;\n&#39;)
 
-        return np.sum((np.array(p_samp) - np.array(r_samp)) ** 2)
+        return np.sum(np.abs(np.array(p_samp) - np.array(r_samp)))
 
     data = [file[l].split(&#39;,&#39;) for l in range(1, len(file))]
     for line in range(len(data)):
@@ -116,12 +114,70 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 
             model_params[param] -= delta
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;Gradients: &#39;)
             print(gradients)
             print(&#39;\n&#39;)
 
         model_params = model_params - mu * np.array(gradients)
+    return model_params
+
+
+def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False):
+    &#34;&#34;&#34;
+    Note: This is an experimental fitter
+    &#34;&#34;&#34;
+
+    # get real data
+    file = real_data.readlines()
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - use for specific layer optimizations
+
+    # quadratic cost
+
+    def cost(pred, real):
+
+        p_samp = []
+        r_samp = []
+
+        for sample in samples:
+            p_samp.append(pred[sample][0] / N)
+            r_samp.append(real[sample][0] / N)
+
+        return np.sum(np.abs(np.array(p_samp) - np.array(r_samp)))
+
+    data = [file[l].split(&#39;,&#39;) for l in range(1, len(file))]
+    for line in range(len(data)):
+        for char in range(len(data[line])):
+            data[line][char] = float(data[line][char])
+    for char in range(len(data[0])):
+        data[0][char] = int(data[0][char])
+
+    for epoch in range(epochs):
+
+        predictions = get_model_pred(model_params)
+        base_cost = cost(predictions, data[1:])
+        print(&#39;Epoch %s: Loss at %s&#39; % (epoch, base_cost))
+
+        for param in range(len(model_params)):
+
+            cost_per_value = []
+
+            for value in param_ranges[param]:
+
+                model_params[param] = value
+                new_predictions = get_model_pred(model_params)
+                new_cost = cost(new_predictions, data[1:])
+                cost_per_value.append((value, new_cost))
+
+            best_pair = (0, 1e8)
+            for pair in cost_per_value:
+                if pair[1] &lt; best_pair[1]:
+                    best_pair = pair
+
+            if verbose:  # pragma: no cover
+                print(cost_per_value)
+
+            model_params[param] = best_pair[0]
 
     return model_params</code></pre>
 </details>
@@ -139,21 +195,27 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
 <dd>
 <div class="desc"><p>The gradient descent fitter. This is not stochastic.
 For long timespans, this may take a long time to converge.</p>
-<p>:param get_model_pred: function in the form:
-param: parameters, parameters for model
-return: model predictions (use the integrate() method)
-:param real_data: .csv file in the form:
-HEADER: &hellip;layer #s
-CONTENTS: &hellip;people in layers
-:param model_params: list of model parameters
-:param mu: the learning rate (adjust so that loss decreases after every epoch)
-:param epochs: number of training sessions to run
-(more epochs = more accuracy + more time running)
-:param N: the total population
-:param samples: array of timestamps to use for training
-:param delta: =0.0001, use small values for more precision&ndash;increase if gradients are 0
-:param verbose: =False, use to debug and get gradient information
-:return: optimized <code>model_params</code></p></div>
+<ul>
+<li>get_model_pred: function in the form:<ul>
+<li>param: parameters, parameters for model</li>
+<li>return: model predictions (use the integrate() method)</li>
+</ul>
+</li>
+<li>real_data: .csv file in the form:<ul>
+<li>HEADER: &hellip;layer #s</li>
+<li>CONTENTS: &hellip;people in layers</li>
+</ul>
+</li>
+<li>model_params: list of model parameters</li>
+<li>mu: the learning rate (adjust so that loss decreases after every epoch)</li>
+<li>epochs: number of training sessions to run
+(more epochs = more accuracy + more time running)</li>
+<li>N: the total population</li>
+<li>samples: array of timestamps to use for training</li>
+<li>delta: =0.0001, use small values for more precision&ndash;increase if gradients are 0</li>
+<li>verbose: =False, use to debug and get gradient information</li>
+<li>return: optimized <code>model_params</code></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -163,26 +225,26 @@ CONTENTS: &hellip;people in layers
     The gradient descent fitter. This is not stochastic.
     For long timespans, this may take a long time to converge.
 
-    :param get_model_pred: function in the form:
-                                param: parameters, parameters for model
-                                return: model predictions (use the integrate() method)
-    :param real_data: .csv file in the form:
-                        HEADER: ...layer #s
-                        CONTENTS: ...people in layers
-    :param model_params: list of model parameters
-    :param mu: the learning rate (adjust so that loss decreases after every epoch)
-    :param epochs: number of training sessions to run
-                   (more epochs = more accuracy + more time running)
-    :param N: the total population
-    :param samples: array of timestamps to use for training
-    :param delta: =0.0001, use small values for more precision--increase if gradients are 0
-    :param verbose: =False, use to debug and get gradient information
-    :return: optimized `model_params`
+    - get_model_pred: function in the form:
+        - param: parameters, parameters for model
+        - return: model predictions (use the integrate() method)
+    - real_data: .csv file in the form:
+        - HEADER: ...layer #s
+        - CONTENTS: ...people in layers
+    - model_params: list of model parameters
+    - mu: the learning rate (adjust so that loss decreases after every epoch)
+    - epochs: number of training sessions to run
+        (more epochs = more accuracy + more time running)
+    - N: the total population
+    - samples: array of timestamps to use for training
+    - delta: =0.0001, use small values for more precision--increase if gradients are 0
+    - verbose: =False, use to debug and get gradient information
+    - return: optimized `model_params`
     &#34;&#34;&#34;
 
     # get real data
     file = real_data.readlines()
-    layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)]
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - for specific layer optimizations
 
     # quadratic cost
 
@@ -192,16 +254,16 @@ CONTENTS: &hellip;people in layers
         r_samp = []
 
         for sample in samples:
-            p_samp.append(pred[sample][1] / N)
-            r_samp.append(real[sample][1] / N)
+            p_samp.append(pred[sample][0] / N)
+            r_samp.append(real[sample][0] / N)
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;predicted, data: &#39;)
             print(p_samp)
             print(r_samp)
             print(&#39;\n&#39;)
 
-        return np.sum((np.array(p_samp) - np.array(r_samp)) ** 2)
+        return np.sum(np.abs(np.array(p_samp) - np.array(r_samp)))
 
     data = [file[l].split(&#39;,&#39;) for l in range(1, len(file))]
     for line in range(len(data)):
@@ -229,12 +291,79 @@ CONTENTS: &hellip;people in layers
 
             model_params[param] -= delta
 
-        if verbose:
+        if verbose:  # pragma: no cover
             print(&#39;Gradients: &#39;)
             print(gradients)
             print(&#39;\n&#39;)
 
         model_params = model_params - mu * np.array(gradients)
+    return model_params</code></pre>
+</details>
+</dd>
+<dt id="epispot.fitters.tree_search"><code class="name flex">
+<span>def <span class="ident">tree_search</span></span>(<span>get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Note: This is an experimental fitter</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False):
+    &#34;&#34;&#34;
+    Note: This is an experimental fitter
+    &#34;&#34;&#34;
+
+    # get real data
+    file = real_data.readlines()
+    # layers_to_opt = [int(char) for char in file[0].split(&#39;,&#39;)] - use for specific layer optimizations
+
+    # quadratic cost
+
+    def cost(pred, real):
+
+        p_samp = []
+        r_samp = []
+
+        for sample in samples:
+            p_samp.append(pred[sample][0] / N)
+            r_samp.append(real[sample][0] / N)
+
+        return np.sum(np.abs(np.array(p_samp) - np.array(r_samp)))
+
+    data = [file[l].split(&#39;,&#39;) for l in range(1, len(file))]
+    for line in range(len(data)):
+        for char in range(len(data[line])):
+            data[line][char] = float(data[line][char])
+    for char in range(len(data[0])):
+        data[0][char] = int(data[0][char])
+
+    for epoch in range(epochs):
+
+        predictions = get_model_pred(model_params)
+        base_cost = cost(predictions, data[1:])
+        print(&#39;Epoch %s: Loss at %s&#39; % (epoch, base_cost))
+
+        for param in range(len(model_params)):
+
+            cost_per_value = []
+
+            for value in param_ranges[param]:
+
+                model_params[param] = value
+                new_predictions = get_model_pred(model_params)
+                new_cost = cost(new_predictions, data[1:])
+                cost_per_value.append((value, new_cost))
+
+            best_pair = (0, 1e8)
+            for pair in cost_per_value:
+                if pair[1] &lt; best_pair[1]:
+                    best_pair = pair
+
+            if verbose:  # pragma: no cover
+                print(cost_per_value)
+
+            model_params[param] = best_pair[0]
 
     return model_params</code></pre>
 </details>
@@ -258,13 +387,14 @@ CONTENTS: &hellip;people in layers
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="epispot.fitters.grad_des" href="#epispot.fitters.grad_des">grad_des</a></code></li>
+<li><code><a title="epispot.fitters.tree_search" href="#epispot.fitters.tree_search">tree_search</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 </body>
 </html>
