@@ -1,0 +1,48 @@
+name: Auto-Generate Documentation
+
+on:
+  push:
+    branches: 
+      - nightly
+    paths:
+      - epispot/*
+      - .github/workflows/*
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        pip install pdoc3
+        pip install -r requirements.txt
+    - name: Configure Git
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git pull
+    - name: Generate documentation
+      run: |
+        pdoc --html --output-dir stash1 epispot
+    - name: Stash changes
+      run: |
+        git add .
+        git commit -m "Stashed documentation changes"
+    - name: Set up gh-pages
+      run: |
+        git checkout gh-pages
+        rm *.html
+    - name: Push docs to gh-pages
+      run: |
+        git checkout nightly stash1/
+        mv stash1/epispot/* .
+        git add .
+        git commit -m "Updated Documentation"
+        git push

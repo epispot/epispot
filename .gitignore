@@ -22,7 +22,7 @@ share/python-wheels/
 *.egg-info/
 
 # Documentation
-docs/_build
+docs/
 
 # pyenv
 .python-version

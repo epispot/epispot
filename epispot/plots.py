@@ -1,7 +1,9 @@
 """
 The 'plots' module contains all plotting functions for visualizing models.
 These functions require the installation of matplotlib for graphics.
-STRUCTURE:
+
+## Structure:
+
 - plot_comp_nums
 - compare
 """
@@ -15,11 +17,11 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     """
     This is meant for plotting the number of people in each compartment over a period of time
 
-    :param Model: an instance of the `Model` class
-    :param timesteps: timesteps to plot as range(beg_time, end_time, day_length)
-    :param starting_state: initial conditions vector: [comp_1_start, comp_2_start, ...]
-    :param seed: =100, for generating new random colors
-    :return: matplotlib plot
+    - Model: an instance of the `Model` class
+    - timesteps: timesteps to plot as range(beg_time, end_time, day_length)
+    - starting_state: initial conditions vector: [comp_1_start, comp_2_start, ...]
+    - seed: =100, for generating new random colors
+    - return: matplotlib plot
     """
 
     f, ax = plt.subplots(1, 1, figsize=(10, 4))
@@ -59,20 +61,22 @@ def compare(ranges, title="", subtitle="", markers=None, seed=200):
     Often, this is used to compare real data with model predictions or to show the predictions after
     the real data in one window.
 
-    :param ranges: A list of items to plot. Follow the idiom below:
-                    [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
-                    label (in str() format), ... ]
-    :param title: ="", (str) the title of the plot
-    :param subtitle: ="", (str) the subtitle of the plot
-    :param markers: =[], a list of sequenced markers in the format:
-                         ['marker name', [...marker parameters]]
-                         'marker name' can be any of:
-                            - line, param: [y, x1, x2, label]
-                            - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
-                            - point, param: [label, x, y]
-                            - arrow, param: [x, y, dx, dy]
-    :param seed: =200, for generating new random colors
-    :return: matplotlib plot (log scale)
+    - ranges: A list of items to plot. Follow the idiom below:
+        ```python
+        [timesteps (use range(beg, end)), predictions (corresponding to each element in `timesteps`,
+        label (in str() format), ... ]
+        ```
+    - title: ="", (str) the title of the plot
+    - subtitle: ="", (str) the subtitle of the plot
+    - markers: =[], a list of sequenced markers in the format:\
+         ['marker name', [...marker parameters]]\
+         'marker name' can be any of:
+            - line, param: [y, x1, x2, label]
+            - highlighted-box, param: [x1, x2, y1 (axis units), y2 (axis units)]
+            - point, param: [label, x, y]
+            - arrow, param: [x, y, dx, dy]
+    - seed: =200, for generating new random colors
+    - return: matplotlib plot (log scale)
     """
 
     f, ax = plt.subplots(1, 1, figsize=(10, 4))
