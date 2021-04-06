@@ -3,7 +3,9 @@ The `Model` classes help create a model out of various disease compartments.
 For example, the basic SIR model would be a model consisting of the Susceptible, Infected, and Recovered
 compartments. These classes also allow for differentiation and integration to evaluate the model's
 predictions.
+
 STRUCTURE:
+
 - Model(object)
 """
 
@@ -11,7 +13,9 @@ STRUCTURE:
 class Model(object):
     """
     Helps create a model out of various disease compartments
+
     STRUCTURE:
+
         - __init__()
         - get_deriv()
         - integrate()
@@ -21,11 +25,11 @@ class Model(object):
     def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
         """
         Initialize the `Model` class
-
         All optional parameters can be added through the `add_layer` method
+
         - init_pop: initial population of the area in question
         - layers: =[], every layer in Model ( as a class, e.g [ Susceptible(), Infected(), Recovered() ] )
-        - layer_names: =[], names of every previous layer in Model (e.g [None, 'Susceptible', 'Infected'])\
+        - layer_names: =[], names of every layer in Model (e.g ['Susceptible', 'Infected', 'Recovered'])\
             allowed names are listed below:
             - Susceptible
             - Infected
@@ -35,10 +39,11 @@ class Model(object):
             - Dead
             - Critical
             - Hospitalized
-            use `None` to indicate that no other layer precedes the first layer.
         - layer_map: =[] next layers (as classes) for every layer in Model
-            (e.g. [Infected(), Recovered(), None])--use `None` to indicate that no other
+            (e.g. [Infected(), Recovered(), None])--use `[]` to indicate that no other
             layer succeeds the last layer.
+            - Ex: SIRD Model
+                - [[Infected()], [Recovered(), Dead()], [], []]
         """
 
         self.init_pop = init_pop
@@ -67,10 +72,11 @@ class Model(object):
         Integrate the model from `get_deriv` to arrive at future predictions using Euler's Method
 
         - timesteps: range of evenly-spaced times (from start of epidemic to prediction time)\
+
             Note:
-              > The difference between each of the times is used as `delta` in Euler's Method.
-              > The closer this difference is to zero, the more accurate these predictions
-              > become.
+          > The difference between each of the times is used as `delta` in Euler's Method.
+          > The closer this difference is to zero, the more accurate these predictions
+          > become.
         - starting_state: starting state of the model--the system of values of each layer at time 0--
             e.g [973, 12, 15]
         - return: predictions in the form of `timesteps`, each timestep consisting of a list of derivatives--
