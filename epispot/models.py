@@ -4,7 +4,7 @@ For example, the basic SIR model would be a model consisting of the Susceptible,
 compartments. These classes also allow for differentiation and integration to evaluate the model's
 predictions.
 
-STRUCTURE:
+## Structure:
 
 - Model(object)
 """
@@ -14,7 +14,7 @@ class Model(object):
     """
     Helps create a model out of various disease compartments
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__()
         - get_deriv()

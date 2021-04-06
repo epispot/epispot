@@ -2,7 +2,7 @@
 The 'plots' module contains all plotting functions for visualizing models.
 These functions require the installation of matplotlib for graphics.
 
-STRUCTURE:
+## Structure:
 
 - plot_comp_nums
 - compare

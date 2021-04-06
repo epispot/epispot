@@ -3,7 +3,7 @@ The `compartments` module contains pre-built disease compartments for basic mode
 custom user-defined compartments. This module consists of several classes, each representing a specific
 compartment.
 
-STRUCTURE:
+## Structure:
 
 - Susceptible(object)
 - Infected(object)
@@ -26,7 +26,7 @@ class Susceptible(object):
 
     Recovered (?) --> Susceptible --> Infected
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -151,7 +151,7 @@ class Infected(object):
 
     Susceptible, Exposed --> Infected --> Recovered, Hospitalized, Critical, Dead
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -330,7 +330,7 @@ class Recovered(object):
 
     Infected, Critical, Hospitalized --> Recovered --> Susceptible (?)
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -468,7 +468,7 @@ class Exposed(object):
 
     Susceptible --> Exposed --> Infected
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -582,12 +582,12 @@ class Dead(object):
     """
     The Dead class is a terminal state\
     As is convention with the SIR Model, we assume that this portion of individuals does not significantly
-    change the original population structure, and therefore, the total population will remain the same
+    change the original population ## Structure, and therefore, the total population will remain the same
     regardless of how many people have been classified as Dead.
 
     Infected, Critical, Hospitalized --> Dead (TERMINAL)
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -721,7 +721,7 @@ class Hospitalized(object):
 
     Infected --> Hospitalized --> Critical, Dead
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index
@@ -850,7 +850,7 @@ class Critical(object):
 
     Hospitalized, Infected --> Critical --> Dead, Recovered
 
-    STRUCTURE:
+    ## Structure:
 
     - __init__
     - get_layer_index
@@ -997,7 +997,7 @@ class Idiom(object):  # pragma: no cover
     If you wish, you can change all the other methods as well.
     Pass all parameters as an array in `param_list`
 
-    STRUCTURE:
+    ## Structure:
 
         - __init__
         - get_layer_index

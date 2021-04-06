@@ -2,7 +2,7 @@
 This module contains all available fitting algorithms.
 These operate separately from the `Model` class.
 
-STRUCTURE:
+## Structure:
 
 - grad_des
 """
