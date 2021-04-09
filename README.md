@@ -11,13 +11,9 @@
 A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
 diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
 
-**This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.\
-Additionally, code within this branch may be deprecated at any time.\
-See the official stable build and all its features [here](https://pypi.org/project/epispot/)**
-
-To ensure that you are using the latest version, run the following command regularly*:\
-`pip install epispot-nightly --upgrade` \
-*updates are published after every commit (~1/day)
+> **This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.\
+> Additionally, code within this branch may be deprecated at any time.\
+> See the official stable build and all its features [here](https://pypi.org/project/epispot/)**
 
 <br>
 
@@ -25,26 +21,27 @@ To ensure that you are using the latest version, run the following command regul
 
 Epispot nightly can _only_ be installed on pip at this time.
 Install with:
-```
+```shell
 pip install epispot-nightly
 ```
 As a shorthand, use `import epispot as epi`.
 Both nightly and stable packages cannot be used at the same time in the same file.
+To ensure that you are using the latest version, run the following command regularly*:\
+```shell
+pip install epispot-nightly --upgrade
+```
+
+*updates are published after every commit (~1/day)\
+See [CHANGELOG.md](https://www.github.com/epispot/epispot/tree/nightly/CHANGELOG.md)
+for detailed update information
 
 ## Getting Started
 
-Make sure you are already familiar with epispot. You can view the new functions and changes by using the built in python `help()` command.
+Make sure you are already familiar with [epispot](https://www.pypi.org/project/epispot).
+If not, checkout the [tests/ directory](https://www.github.com/epispot/epispot/tree/nightly/tests)
+for hands-on examples.
+You can view the new functions and changes by using the built-in Python `help()` command.
 Epispot docs are located [here](https://epispot.github.io/epispot).
-
-## Latest Release Notes
-
- - 3/13/21 2.0.1.23 Add documentation, triggering workflow. See commit description for deeper info.
- - 2/26/21 2.0.1.22 Automations
-   - Automated code coverage reports
-   - Working on automating release notes 
- - 2/12/21 2.0.1.17 Actions Test
- - 2/12/21 2.0.1.16: Stability Improvements
-    - Allows for faster bug and issue tracking
 
 ## Stay one step ahead
 ### And preview the latest features
