@@ -22,7 +22,6 @@ jobs:
     - name: Prepares Code Coverage Report 
       continue-on-error: true
       run: |
-        mv bin/epispot bin/epispot.py
         python -m coverage run -m pytest
     - name: Generate Coverage Report
       continue-on-error: true
