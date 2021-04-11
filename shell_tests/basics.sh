@@ -1,1 +1,2 @@
-epispot about
+cd ../bin
+epispot.py about
