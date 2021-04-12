@@ -1,0 +1,21 @@
+tests:
+  - tests/*
+
+src:
+  - epispot/*
+  - bin/*
+  - setup.py
+  - README.md
+
+repo:
+  - .github/*
+
+workflows:
+  - .github/workflows
+  - .github/labeler.yml
+
+issue templates:
+  - .github/ISSUE_TEMPLATES/*
+
+pull request:
+  - .github/pull_request_template.md
