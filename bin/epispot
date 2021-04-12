@@ -1,7 +1,7 @@
 """Shell Initialization"""
+import bcolors
 import pathlib
 import epispot
-from bcolors import bcolors
 
 try:
     import fire
