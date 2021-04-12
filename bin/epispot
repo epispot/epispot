@@ -10,6 +10,10 @@ except:
 
 
 class bcolors:
+    """
+    Styling Format:
+        C[color/format/style][additional 2 for a new ANSI code with the same style/color]
+    """
     CEND      = '\33[0m'
     CBOLD     = '\33[1m'
     CITALIC   = '\33[3m'
