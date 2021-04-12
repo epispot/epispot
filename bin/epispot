@@ -1,10 +1,6 @@
-#!/usr/bin/env python
-
 """Shell Initialization"""
 import pathlib
 import epispot
-
-__color__ = False
 
 try:
     import fire
@@ -12,34 +8,67 @@ except:
     print("Please install Fire to use epispot's CLI")
     print('>>> pip install fire')
 
-try:
-    __color__ = True
-    import termcolor
-except:
-    print('Color output will be suppressed. To use colors run')
-    print('>>> pip install termcolor')
+class bcolors:
+    CEND      = '\33[0m'
+    CBOLD     = '\33[1m'
+    CITALIC   = '\33[3m'
+    CURL      = '\33[4m'
+    CBLINK    = '\33[5m'
+    CBLINK2   = '\33[6m'
+    CSELECTED = '\33[7m'
 
+    CBLACK  = '\33[30m'
+    CRED    = '\33[31m'
+    CGREEN  = '\33[32m'
+    CYELLOW = '\33[33m'
+    CBLUE   = '\33[34m'
+    CVIOLET = '\33[35m'
+    CBEIGE  = '\33[36m'
+    CWHITE  = '\33[37m'
+
+    CBLACKBG  = '\33[40m'
+    CREDBG    = '\33[41m'
+    CGREENBG  = '\33[42m'
+    CYELLOWBG = '\33[43m'
+    CBLUEBG   = '\33[44m'
+    CVIOLETBG = '\33[45m'
+    CBEIGEBG  = '\33[46m'
+    CWHITEBG  = '\33[47m'
+
+    CGREY    = '\33[90m'
+    CRED2    = '\33[91m'
+    CGREEN2  = '\33[92m'
+    CYELLOW2 = '\33[93m'
+    CBLUE2   = '\33[94m'
+    CVIOLET2 = '\33[95m'
+    CBEIGE2  = '\33[96m'
+    CWHITE2  = '\33[97m'
+
+    CGREYBG    = '\33[100m'
+    CREDBG2    = '\33[101m'
+    CGREENBG2  = '\33[102m'
+    CYELLOWBG2 = '\33[103m'
+    CBLUEBG2   = '\33[104m'
+    CVIOLETBG2 = '\33[105m'
+    CBEIGEBG2  = '\33[106m'
+    CWHITEBG2  = '\33[107m'
 
 class Shell(object):
     """The base shell for epispot containing linking commands for Fire"""
 
-    def __init__(self, color=False):
+    def __init__(self):
         """Initialize the epispot shell"""
 
-        self.color = color
         self.path = pathlib.Path(__file__).parent.absolute()
         self.version = 'shell-v0.1.0-alpha epispot-{0}'.format(epispot.__version__)
 
     def about(self):
-        """Basic information about the epispot CLI"""
+        """Basic information about the epispot CLI""" 
 
-        print('Epispot was invoked via the epispot CLI')
+        print(bcolors.CBLUEBG2+bcolors.CGREEN2+'Epispot was invoked via the epispot CLI'+bcolors.CEND)
         print('Path: {0}'.format(self.path))
         print('Version: {0}'.format(self.version))
-        print('Color output enabled (True/False): {0}'.format(self.color))
 
 
 if __name__ == '__main__':
-    fire.Fire(Shell(
-        color=__color__
-    ))
+    fire.Fire(Shell())
