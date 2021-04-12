@@ -8,6 +8,7 @@ except:
     print("Please install Fire to use epispot's CLI")
     print('>>> pip install fire')
 
+
 class bcolors:
     CEND      = '\33[0m'
     CBOLD     = '\33[1m'
@@ -52,6 +53,7 @@ class bcolors:
     CVIOLETBG2 = '\33[105m'
     CBEIGEBG2  = '\33[106m'
     CWHITEBG2  = '\33[107m'
+
 
 class Shell(object):
     """The base shell for epispot containing linking commands for Fire"""
