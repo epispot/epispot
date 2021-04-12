@@ -53,3 +53,10 @@ Doc strings provide additional documentation on a certain function.
 They can be accessed by the built-in Python `help()` command.
 These strings are formatted in Github-flavored markdown.
 Additionally, all files will have a 'STRUCTURE' label.
+
+## Thanks to all contributers
+<a href="https://github.com/epispot/epispot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=epispot/epispot" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
