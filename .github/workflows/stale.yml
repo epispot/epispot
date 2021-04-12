@@ -17,3 +17,4 @@ jobs:
         stale-pr-message: 'Issue marked as stale after no activity.'
         stale-issue-label: 'stale'
         stale-pr-label: 'stale'
+        days-before-stale: 14
