@@ -22,7 +22,7 @@ class Shell(object):
     def about(self):
         """Basic information about the epispot CLI""" 
 
-        print(bcolors.CBLUEBG2+bcolors.CGREEN2+'Epispot was invoked via the epispot CLI'+bcolors.CEND)
+        print(bcolors.CGREEN2+'Epispot was invoked successfully via the epispot CLI'+bcolors.CEND)
         print('Path: {0}'.format(self.path))
         print('Version: {0}'.format(self.version))
 
