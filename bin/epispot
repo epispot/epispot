@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+"""Shell Initialization"""
+import pathlib
+import epispot
+
+__color__ = False
+
+try:
+    import fire
+except:
+    print("Please install Fire to use epispot's CLI")
+    print('>>> pip install fire')
+
+try:
+    __color__ = True
+    import termcolor
+except:
+    print('Color output will be suppressed. To use colors run')
+    print('>>> pip install termcolor')
+
+
+class Shell(object):
+    """The base shell for epispot containing linking commands for Fire"""
+
+    def __init__(self, color=False):
+        """Initialize the epispot shell"""
+
+        self.color = color
+        self.path = pathlib.Path(__file__).parent.absolute()
+        self.version = 'shell-v0.1.0-alpha epispot-{0}'.format(epispot.__version__)
+
+    def about(self):
+        """Basic information about the epispot CLI"""
+
+        print('Epispot was invoked via the epispot CLI')
+        print('Path: {0}'.format(self.path))
+        print('Version: {0}'.format(self.version))
+        print('Color output enabled (True/False): {0}'.format(self.color))
+
+
+if __name__ == '__main__':
+    fire.Fire(Shell(
+        color=__color__
+    ))
