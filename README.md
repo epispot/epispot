@@ -93,3 +93,10 @@ ___
 The epispot package is supported by the following contributors:
  - Head of Software & Development: [@quantum9innovation](https://www.github.com/quantum9innovation)
  - Head of Code Maintenance: [@Quantalabs](https://www.github.com/quantalabs)
+
+Thanks also to all contributers:
+<a href="https://github.com/epispot/epispot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=epispot/epispot" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
