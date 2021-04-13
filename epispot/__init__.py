@@ -20,7 +20,7 @@ from . import plots
 from . import fitters
 
 # version info
-__version__ = "v2.1.1.1"  # version (v#.#.#)
+__version__ = "v2.1.1.2"  # version (v#.#.#)
 """epispot's version info"""
 __stable__ = False
 """stability of the build: True --> stable release (master), False --> unstable release (nightly)"""

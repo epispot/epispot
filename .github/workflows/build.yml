@@ -42,5 +42,5 @@ jobs:
         python tests/CI/test_critical.py
     - name: Test CLI for errors
       run: |
-        python setup.py install
+        python setup.py develop
         epispot about
