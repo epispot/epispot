@@ -51,7 +51,7 @@ They can be accessed by the built-in Python `help()` command.
 These strings are formatted in Github-flavored markdown.
 Additionally, all files will have a 'STRUCTURE' label.
 
-## Thanks to all contributers
+## Thanks to all contributors
 <a href="https://github.com/epispot/epispot/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=epispot/epispot" />
 </a>
