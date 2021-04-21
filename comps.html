@@ -852,7 +852,7 @@ class Hospitalized(object):
                     self.prev_layer_indices.append(layer_no)
                 # warnings
                 elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                    warnings.warn(&#39;An layer of an unsupported type at %s is being connected to the Infected \n&#39;
+                    warnings.warn(&#39;A layer of an unsupported type at %s is being connected to the Infected \n&#39;
                                   &#39;layer at %s. If this is a mistake, remove the connection. Otherwise, try \n&#39;
                                   &#39;using a custom layer to do this.&#39; % (layer_no, self.layer_index))
 
@@ -867,6 +867,7 @@ class Hospitalized(object):
 
         derivative = 0
 
+        # no triage
         for prev_layer_index in self.prev_layer_indices:
             derivative += self.hos_rate(time) * self.p_hos(time) * system[prev_layer_index]
 
@@ -878,9 +879,14 @@ class Hospitalized(object):
             derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
 
         # implement triage
-        if self.maxCap:
-            if system[self.layer_index] &gt; self.maxCap(time):
-                derivative -= system[self.layer_index] - self.maxCap(time)
+        if self.maxCap and system[self.layer_index] &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
+
+        # limited triage
+        elif self.maxCap and system[self.layer_index] + derivative &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
 
         return derivative
 
@@ -1026,9 +1032,14 @@ class Critical(object):
             derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
 
         # implement triage
-        if self.maxCap:
-            if system[self.layer_index] &gt; self.maxCap(time):
-                derivative -= system[self.layer_index] - self.maxCap(time)
+        if self.maxCap and system[self.layer_index] &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
+
+        # limited triage
+        elif self.maxCap and system[self.layer_index] + derivative &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
 
         return derivative
 
@@ -1341,9 +1352,14 @@ should be of type int()</li>
             derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
 
         # implement triage
-        if self.maxCap:
-            if system[self.layer_index] &gt; self.maxCap(time):
-                derivative -= system[self.layer_index] - self.maxCap(time)
+        if self.maxCap and system[self.layer_index] &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
+
+        # limited triage
+        elif self.maxCap and system[self.layer_index] + derivative &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
 
         return derivative</code></pre>
 </details>
@@ -1386,9 +1402,14 @@ should be of type int()</li>
         derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
 
     # implement triage
-    if self.maxCap:
-        if system[self.layer_index] &gt; self.maxCap(time):
-            derivative -= system[self.layer_index] - self.maxCap(time)
+    if self.maxCap and system[self.layer_index] &gt; self.maxCap(time):
+        system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+        derivative = self.maxCap(time) - system[self.layer_index]
+
+    # limited triage
+    elif self.maxCap and system[self.layer_index] + derivative &gt; self.maxCap(time):
+        system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+        derivative = self.maxCap(time) - system[self.layer_index]
 
     return derivative</code></pre>
 </details>
@@ -2223,7 +2244,7 @@ should be of type int()</li>
                     self.prev_layer_indices.append(layer_no)
                 # warnings
                 elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                    warnings.warn(&#39;An layer of an unsupported type at %s is being connected to the Infected \n&#39;
+                    warnings.warn(&#39;A layer of an unsupported type at %s is being connected to the Infected \n&#39;
                                   &#39;layer at %s. If this is a mistake, remove the connection. Otherwise, try \n&#39;
                                   &#39;using a custom layer to do this.&#39; % (layer_no, self.layer_index))
 
@@ -2238,6 +2259,7 @@ should be of type int()</li>
 
         derivative = 0
 
+        # no triage
         for prev_layer_index in self.prev_layer_indices:
             derivative += self.hos_rate(time) * self.p_hos(time) * system[prev_layer_index]
 
@@ -2249,9 +2271,14 @@ should be of type int()</li>
             derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
 
         # implement triage
-        if self.maxCap:
-            if system[self.layer_index] &gt; self.maxCap(time):
-                derivative -= system[self.layer_index] - self.maxCap(time)
+        if self.maxCap and system[self.layer_index] &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
+
+        # limited triage
+        elif self.maxCap and system[self.layer_index] + derivative &gt; self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
 
         return derivative</code></pre>
 </details>
@@ -2282,6 +2309,7 @@ should be of type int()</li>
 
     derivative = 0
 
+    # no triage
     for prev_layer_index in self.prev_layer_indices:
         derivative += self.hos_rate(time) * self.p_hos(time) * system[prev_layer_index]
 
@@ -2293,9 +2321,14 @@ should be of type int()</li>
         derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
 
     # implement triage
-    if self.maxCap:
-        if system[self.layer_index] &gt; self.maxCap(time):
-            derivative -= system[self.layer_index] - self.maxCap(time)
+    if self.maxCap and system[self.layer_index] &gt; self.maxCap(time):
+        system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+        derivative = self.maxCap(time) - system[self.layer_index]
+
+    # limited triage
+    elif self.maxCap and system[self.layer_index] + derivative &gt; self.maxCap(time):
+        system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+        derivative = self.maxCap(time) - system[self.layer_index]
 
     return derivative</code></pre>
 </details>
@@ -2345,7 +2378,7 @@ Used to setup commonly used variables and raise common errors</p>
                 self.prev_layer_indices.append(layer_no)
             # warnings
             elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                warnings.warn(&#39;An layer of an unsupported type at %s is being connected to the Infected \n&#39;
+                warnings.warn(&#39;A layer of an unsupported type at %s is being connected to the Infected \n&#39;
                               &#39;layer at %s. If this is a mistake, remove the connection. Otherwise, try \n&#39;
                               &#39;using a custom layer to do this.&#39; % (layer_no, self.layer_index))</code></pre>
 </details>
