@@ -809,7 +809,7 @@ class Hospitalized(object):
                     self.prev_layer_indices.append(layer_no)
                 # warnings
                 elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                    warnings.warn('An layer of an unsupported type at %s is being connected to the Infected \n'
+                    warnings.warn('A layer of an unsupported type at %s is being connected to the Infected \n'
                                   'layer at %s. If this is a mistake, remove the connection. Otherwise, try \n'
                                   'using a custom layer to do this.' % (layer_no, self.layer_index))
 
@@ -824,6 +824,7 @@ class Hospitalized(object):
 
         derivative = 0
 
+        # no triage
         for prev_layer_index in self.prev_layer_indices:
             derivative += self.hos_rate(time) * self.p_hos(time) * system[prev_layer_index]
 
@@ -835,9 +836,14 @@ class Hospitalized(object):
             derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
 
         # implement triage
-        if self.maxCap:
-            if system[self.layer_index] > self.maxCap(time):
-                derivative -= system[self.layer_index] - self.maxCap(time)
+        if self.maxCap and system[self.layer_index] > self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
+
+        # limited triage
+        elif self.maxCap and system[self.layer_index] + derivative > self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
 
         return derivative
 
@@ -983,9 +989,14 @@ class Critical(object):
             derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
 
         # implement triage
-        if self.maxCap:
-            if system[self.layer_index] > self.maxCap(time):
-                derivative -= system[self.layer_index] - self.maxCap(time)
+        if self.maxCap and system[self.layer_index] > self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
+
+        # limited triage
+        elif self.maxCap and system[self.layer_index] + derivative > self.maxCap(time):
+            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
+            derivative = self.maxCap(time) - system[self.layer_index]
 
         return derivative
 
