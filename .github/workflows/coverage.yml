@@ -1,5 +1,11 @@
 name: Code Coverage
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - epispot/*
+      - tests/*
+      - .github/workflows/*
+  pull_request:
 
 jobs:
   run:
