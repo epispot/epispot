@@ -10,7 +10,7 @@ on:
       - epispot/*
       - .github/workflows/*
 jobs:
-  deploy:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -35,6 +35,17 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        
+  publish-pypi:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
     - name: Change Version Info
       run: | 
         python release.py
@@ -42,6 +53,16 @@ jobs:
       run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
+  commit-changes:
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
     - name: Commit Changes
       run: |
         git add .
