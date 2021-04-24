@@ -40,6 +40,7 @@ jobs:
         git checkout gh-pages
         rm *.html
     - name: Push docs to gh-pages
+      continue-on-error: true
       run: |
         git checkout master stash1/
         mv stash1/epispot/* .
