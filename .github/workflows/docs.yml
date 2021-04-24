@@ -32,6 +32,7 @@ jobs:
       run: |
         pdoc --html --output-dir stash1 epispot
     - name: Stash changes
+      continue-on-error: true
       run: |
         git add .
         git commit -m "Stashed documentation changes"
