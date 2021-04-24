@@ -46,7 +46,7 @@ jobs:
       run: |
         git add .
         git commit -m "New Release"
-        git push origin nightly
+        git push origin master
     - name: Build & Publish Package as 'epispot-nightly'
       run: |
         python setup-nightly.py sdist bdist_wheel
