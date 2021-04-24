@@ -65,6 +65,7 @@ jobs:
         git config user.email github-actions@github.com
     - name: Commit Changes
       run: |
+        python release.py
         git add .
         git commit -m "New Release"
         git push origin master

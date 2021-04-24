@@ -32,6 +32,7 @@ jobs:
       run: |
         pdoc --html --output-dir stash1 epispot
     - name: Stash changes
+      continue-on-error: true
       run: |
         git add .
         git commit -m "Stashed documentation changes"
@@ -40,6 +41,7 @@ jobs:
         git checkout gh-pages
         rm *.html
     - name: Push docs to gh-pages
+      continue-on-error: true
       run: |
         git checkout master stash1/
         mv stash1/epispot/* .
