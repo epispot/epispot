@@ -1,7 +1,9 @@
 """
 This module contains all available fitting algorithms.
 These operate separately from the `Model` class.
-STRUCTURE:
+
+## Structure:
+
 - grad_des
 """
 
@@ -13,21 +15,21 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
     The gradient descent fitter. This is not stochastic.
     For long timespans, this may take a long time to converge.
 
-    :param get_model_pred: function in the form:
-                                param: parameters, parameters for model
-                                return: model predictions (use the integrate() method)
-    :param real_data: .csv file in the form:
-                        HEADER: ...layer #s
-                        CONTENTS: ...people in layers
-    :param model_params: list of model parameters
-    :param mu: the learning rate (adjust so that loss decreases after every epoch)
-    :param epochs: number of training sessions to run
-                   (more epochs = more accuracy + more time running)
-    :param N: the total population
-    :param samples: array of timestamps to use for training
-    :param delta: =0.0001, use small values for more precision--increase if gradients are 0
-    :param verbose: =False, use to debug and get gradient information
-    :return: optimized `model_params`
+    - get_model_pred: function in the form:
+        - param: parameters, parameters for model
+        - return: model predictions (use the integrate() method)
+    - real_data: .csv file in the form:
+        - HEADER: ...layer #s
+        - CONTENTS: ...people in layers
+    - model_params: list of model parameters
+    - mu: the learning rate (adjust so that loss decreases after every epoch)
+    - epochs: number of training sessions to run
+        (more epochs = more accuracy + more time running)
+    - N: the total population
+    - samples: array of timestamps to use for training
+    - delta: =0.0001, use small values for more precision--increase if gradients are 0
+    - verbose: =False, use to debug and get gradient information
+    - return: optimized `model_params`
     """
 
     # get real data
