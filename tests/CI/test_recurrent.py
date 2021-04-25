@@ -7,7 +7,7 @@ import epispot as epi
 
 
 def R_0(t):
-    return 5 * 2.718 ** ((- 1 / 500) * (t - 30) ** 2)
+    return 2.0  # try 5 * 2.718 ** ((- 1 / 500) * (t - 30) ** 2) to see non-fluctuation
 
 
 def N(t):
