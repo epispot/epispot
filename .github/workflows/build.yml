@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - epispot/*
-      - tests/*
+      - tests/CI/*
       - .github/workflows/*
   pull_request:
 
