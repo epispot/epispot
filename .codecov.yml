@@ -1,0 +1,10 @@
+comment:
+  require_changes: true
+
+codecov:
+  require_ci_to_pass: false
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 5%
