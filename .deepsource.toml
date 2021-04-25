@@ -1,0 +1,19 @@
+version = 1
+
+test_patterns = [
+    "tests/**",
+    "**/test_*"
+]
+
+exclude_patterns = [
+    "dist/*",
+    "build/*",
+    "docs/*"
+]
+
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
