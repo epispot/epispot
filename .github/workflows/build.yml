@@ -29,6 +29,9 @@ jobs:
         pip install -U pytest
         pip install -r bin/requirements.txt
         pip install -r requirements.txt
+    - name: Build from source
+      run: |
+        python setup-nightly.py install
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -37,17 +40,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test package source code for errors
       run: |
-        python tests/CI/test_sir.py
-        python tests/CI/test_seir.py
-        python tests/CI/test_sird.py
-        python tests/CI/test_sihrd.py
-        python tests/CI/test_fit.py
-        python tests/CI/test_tree.py
-        python tests/CI/test_fit.py
-        python tests/CI/test_recurrent.py
-        python tests/CI/test_critical.py
-    # For CLI (when released):
-    # - name: Test CLI for errors
-      # run: |
-        # python setup.py develop
-        # epispot about
+        pytest
