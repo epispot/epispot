@@ -28,7 +28,7 @@ class Shell(object):
 
         self.color = color
         self.path = pathlib.Path(__file__).parent.absolute()
-        self.version = 'shell-v0.1.0-alpha epispot-{0}'.format(epispot.__version__)
+        self.version = 'shell-v0.1.0-alpha epispot-{0}'.format(epispot.version)
 
     def about(self):
         """Basic information about the epispot CLI"""
