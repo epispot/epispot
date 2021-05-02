@@ -8,14 +8,14 @@ __color__ = False
 
 try:
     import fire
-except:
+except ImportError:
     print("Please install Fire to use epispot's CLI")
     print('>>> pip install fire')
 
 try:
     __color__ = True
     import termcolor
-except:
+except ImportError:
     print('Color output will be suppressed. To use colors run')
     print('>>> pip install termcolor')
 
