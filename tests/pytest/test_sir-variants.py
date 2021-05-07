@@ -3,8 +3,12 @@ Test of all simple SIR-related models and variants
 |- GLOBALS
    |- R_0
    |- N
-   |- p_rec
-   |- rec_rate
+   |- place
+   |- gamma
+   |- delta
+   |- alpha
+   |- p_inf_to_hos
+   |- p_hos_to_rec
 |- TESTS
    |- SIR
 """
