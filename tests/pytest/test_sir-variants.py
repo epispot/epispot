@@ -11,6 +11,9 @@ Test of all simple SIR-related models and variants
    |- p_hos_to_rec
 |- TESTS
    |- SIR
+   |- SEIR
+   |- SIRD
+   |- SIHRD
 """
 
 import epispot as epi
