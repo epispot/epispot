@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - epispot/*
+      - setup-nightly.py
       - tests/*
       - .github/workflows/*
   pull_request:
