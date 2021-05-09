@@ -2,9 +2,9 @@ name: Code Coverage
 on:
   push:
     paths:
-      - epispot/
-      - tests/
-      - .github/workflows/
+      - epispot/*
+      - tests/*
+      - .github/workflows/*
   pull_request:
 
 jobs:

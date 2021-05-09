@@ -7,8 +7,8 @@ on:
     paths:
       - setup-nightly.py
       - release.py
-      - epispot/
-      - .github/workflows/
+      - epispot/*
+      - .github/workflows/*
 jobs:
   deploy:
 
