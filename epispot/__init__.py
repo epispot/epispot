@@ -112,19 +112,38 @@ from . import fitters
 def _sanity_check():
     """Pre-defined sanity check to check for installation errors"""
 
-    if not version:
-        warnings.warn('Version info could not be found; your version of epispot may be deprecated.', DeprecationWarning)
-    if not source:
-        warnings.warn('''No repository source indicated. Try installing directly from PyPI or Anaconda with:
-                             >>> pip install epispot  # pip
-                             >>> conda install epispot  # anaconda''', DeprecationWarning)
-    if not docs:
-        warnings.warn('Documentation source not found. Check the repository source for more information if it exists. '
-                      'Otherwise, you can use the built-in Python `help` command to access documentation.',
-                      DeprecationWarning)
-    if not issues:
-        warnings.warn('No issue tracker found for this version of epispot; your version of epispot may be deprecated',
-                      DeprecationWarning)
+    if not version or not source:  # pragma: no cover
+        message = \
+        '''
+        Version information and/or source for your epispot installation could not be found.
+        This likely means
+         (1) this version of epispot is deprecated or dated
+         (2) your installation of epispot is unstable
+        Try reinstalling epispot
+         (1) From PyPI:
+             $ pip install epispot
+         (2) From Anaconda:
+             $ conda config --add channels conda-forge
+             $ conda install -c conda-forge epispot
+         (3) From the GitHub Source:
+             $ git clone https://github.com/epispot/epispot
+             $ cd epispot
+             $ python install setup-nightly.py
+        If this fails or has failed before, then revert to epispot's last stable version.
+        Again, you can do this via
+         (1) PyPI:
+             (a) Go to https://pypi.org/project/epispot
+             (b) Scroll to the last MAJOR release in the form `a.0.0`
+             (c) Install via `$ pip install epispot==a.0.0` -- replace `a` with version #
+         (2) GitHub Source:
+             (a) Go to https://github.com/epispot/epispot
+             (b) Click the 'branches' tab
+             (c) Select the last branch with name `vA.0.0` for some version number A
+             (d) Install as `.zip`
+             (e) Unzip
+             (f) Run `$ python install setup.py`
+        '''
+        raise DeprecationWarning(message)
 
 
 # version info
