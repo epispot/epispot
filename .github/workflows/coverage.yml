@@ -25,6 +25,10 @@ jobs:
         pip install -U coverage
         pip install -U codecov
         pip install -r requirements.txt
+        pip install -r bin/requirements.txt
+    - name: Build from source
+      run: |
+        python setup-nightly.py install
     - name: Prepares Code Coverage Report 
       continue-on-error: true
       run: |
