@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - epispot/*
-      - .github/workflows/*
+      - .github/workflows/
 
 jobs:
   build:

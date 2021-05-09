@@ -3,9 +3,9 @@ name: build
 on:
   push:
     paths:
-      - epispot/*
-      - tests/CI/*
-      - .github/workflows/*
+      - epispot/
+      - tests/
+      - .github/workflows/
   pull_request:
 
 jobs:
@@ -27,8 +27,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8
         pip install -U pytest
-        pip install -r bin/requirements.txt
         pip install -r requirements.txt
+        pip install -r bin/requirements.txt
     - name: Build from source
       run: |
         python setup-nightly.py install
