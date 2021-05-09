@@ -64,8 +64,11 @@
 /.github/ISSUE_TEMPLATE/    @quantum9innovation
 /.github/workflows/*    @Quantalabs
 /epispot/    @quantum9innovation
+bin/    @Quantalabs
+/bin/    @quantum9innovation
 
 LICENSE    @quantum9innovation
 setup.py    @Quantalabs
 setup-nightly.py    @Quantalabs
 upload.sh    @Quantalabs
+requirements.txt    @Quantalabs
