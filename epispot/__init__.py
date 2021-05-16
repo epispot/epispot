@@ -109,6 +109,7 @@ import random
 
 # dependencies
 _dependency_check()  # check for uninstalled dependencies
+del _dependency_check()
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import colors
@@ -184,3 +185,4 @@ issues = 'https://www.github.com/epispot/epispot/issues'
 
 
 _sanity_check()  # complete installation
+del _sanity_check()
