@@ -2,7 +2,7 @@
 read_setup = open('setup-nightly.py', 'r').readlines()
 setup_no = 0
 
-for line in range(len(read_setup)):
+for line, _ in enumerate(read_setup):
     if len(list(read_setup[line])) > 12:
         if list(read_setup[line])[4:11] == list('version'):
             setup_no = line
@@ -21,7 +21,7 @@ print('setup-nightly.py release info updated')
 read_init = open('epispot/__init__.py', 'r').readlines()
 line_no = 0
 
-for line in range(len(read_init)):
+for line, _ in enumerate(read_init):
     if len(list(read_init[line])) > 8:
         if list(read_init[line])[0:7] == list('version'):
             line_no = line
