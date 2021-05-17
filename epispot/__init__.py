@@ -95,7 +95,7 @@ def _dependency_check():
                                  >>> pip install numpy  # pip
                                  >>> conda install numpy  # anaconda''')
     try:
-        import matplotlib
+        import matplotlib  # lgtm [py/import-and-import-from]
     except ImportError:  # pragma: no cover
         raise ImportError('''Epispot requires matplotlib for creating interactive plots of models; install with either:
                                  >>> pip install matplotlib  # pip
