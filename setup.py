@@ -12,9 +12,11 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://epispot.github.io",
     project_urls={
-        "Repository Source": "https://github.com/epispot/epispot",
-        "Documentation": "https://epispot.github.io/epispot",
+        "Repository": "https://github.com/epispot/epispot",
+        "Changelog": "https://github.com/epispot/epispot/tree/master/CHANGELOG.md",
         "Bug Tracker": "https://github.com/epispot/epispot/issues",
+        "Documentation": "https://epispot.github.io/epispot",
+        "Code Coverage": "https://app.codecov.io/gh/epispot/epispot"
     },
     packages=setuptools.find_packages(),
     classifiers=[
@@ -30,3 +32,4 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=['matplotlib', 'numpy', ],
 )
+
