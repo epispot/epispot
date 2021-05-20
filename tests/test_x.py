@@ -1,21 +1,15 @@
 """
 Basic packaging checks
-|- dependencies
-|- sanity
+|- base
+   |- sanity
+   |- dependency
 |- integrity
 """
 
-import epispot as epi
 
-
-def test_dependencies():
-    """Tests epispot's dependencies (triggers a check from within the package)"""
-    epi._dependency_check()
-
-
-def test_sanity():
-    """Tests epispot's installation (triggers a check from within the package)"""
-    epi._sanity_check()
+def test_base():
+    """Triggers automatic import checks from within epispot"""
+    import epispot
 
 
 def test_integrity():

@@ -10,7 +10,10 @@ These operate separately from the `Model` class.
 from . import np
 
 
-def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, delta=0.0001, verbose=False):
+def grad_des(get_model_pred, real_data,
+             model_params, mu, epochs,
+             N, samples, delta=0.0001,
+             verbose=False):  # pragma: no cover
     """
     The gradient descent fitter. This is not stochastic.
     For long timespans, this may take a long time to converge.
@@ -90,7 +93,10 @@ def grad_des(get_model_pred, real_data, model_params, mu, epochs, N, samples, de
     return model_params
 
 
-def tree_search(get_model_pred, real_data, model_params, param_ranges, epochs, N, samples, verbose=False):
+def tree_search(get_model_pred, real_data,
+                model_params, param_ranges,
+                epochs, N, samples,
+                verbose=False):  # pragma: no cover
     """
     Note: This is an experimental fitter
     """
