@@ -49,7 +49,7 @@ from . import random
 from . import colors
 
 
-def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
+def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):  # pragma: no cover
     &#34;&#34;&#34;
     This is meant for plotting the number of people in each compartment over a period of time
 
@@ -88,10 +88,10 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     for spine in (&#39;top&#39;, &#39;right&#39;, &#39;bottom&#39;, &#39;left&#39;):
         ax.spines[spine].set_visible(False)
 
-    plt.show()
+    return plt
 
 
-def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=None, seed=200):
+def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=None, seed=200):  # pragma: no cover
     &#34;&#34;&#34;
     This function is used to compare multiple predictions which can range across time ranges.
     Often, this is used to compare real data with model predictions or to show the predictions after
@@ -152,7 +152,7 @@ def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=None, seed=20
         ax.spines[spine].set_visible(False)
 
     plt.title(title+&#39;: &#39;+subtitle)
-    plt.show()</code></pre>
+    return plt</code></pre>
 </details>
 </section>
 <section>
@@ -190,7 +190,7 @@ label (in str() format), ... ]</code></li>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=None, seed=200):
+<pre><code class="python">def compare(ranges, title=&#34;&#34;, subtitle=&#34;&#34;, markers=None, seed=200):  # pragma: no cover
     &#34;&#34;&#34;
     This function is used to compare multiple predictions which can range across time ranges.
     Often, this is used to compare real data with model predictions or to show the predictions after
@@ -251,7 +251,7 @@ label (in str() format), ... ]</code></li>
         ax.spines[spine].set_visible(False)
 
     plt.title(title+&#39;: &#39;+subtitle)
-    plt.show()</code></pre>
+    return plt</code></pre>
 </details>
 </dd>
 <dt id="epispot.plots.plot_comp_nums"><code class="name flex">
@@ -270,7 +270,7 @@ label (in str() format), ... ]</code></li>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
+<pre><code class="python">def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):  # pragma: no cover
     &#34;&#34;&#34;
     This is meant for plotting the number of people in each compartment over a period of time
 
@@ -309,7 +309,7 @@ label (in str() format), ... ]</code></li>
     for spine in (&#39;top&#39;, &#39;right&#39;, &#39;bottom&#39;, &#39;left&#39;):
         ax.spines[spine].set_visible(False)
 
-    plt.show()</code></pre>
+    return plt</code></pre>
 </details>
 </dd>
 </dl>
