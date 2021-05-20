@@ -1,5 +1,7 @@
-# tests/CI
-The home for epispot's CI testing and code coverage reporting.
+# testing-examples
+**This directory contains epispot's old testing and CI suite; these tests are not 
+compatible with newer versions of epispot**
+---
 
 This directory contains all the testing files that are executed in 
 .github/workflows, however, many of these files may not work if run locally. 

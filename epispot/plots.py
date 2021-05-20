@@ -13,7 +13,7 @@ from . import random
 from . import colors
 
 
-def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
+def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):  # pragma: no cover
     """
     This is meant for plotting the number of people in each compartment over a period of time
 
@@ -52,10 +52,10 @@ def plot_comp_nums(Model, timesteps, starting_state=None, seed=100):
     for spine in ('top', 'right', 'bottom', 'left'):
         ax.spines[spine].set_visible(False)
 
-    plt.show()
+    return plt
 
 
-def compare(ranges, title="", subtitle="", markers=None, seed=200):
+def compare(ranges, title="", subtitle="", markers=None, seed=200):  # pragma: no cover
     """
     This function is used to compare multiple predictions which can range across time ranges.
     Often, this is used to compare real data with model predictions or to show the predictions after
@@ -116,4 +116,4 @@ def compare(ranges, title="", subtitle="", markers=None, seed=200):
         ax.spines[spine].set_visible(False)
 
     plt.title(title+': '+subtitle)
-    plt.show()
+    return plt
