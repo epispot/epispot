@@ -15,14 +15,6 @@ Test of advanced modeling techniques with epispot
    |- SIHCR
 """
 
-import os
-import sys
-import csv
-
-currentdir = os.path.dirname(os.path.realpath(__file__))
-parentdir = os.path.dirname(currentdir)
-sys.path.append(parentdir)
-
 import epispot as epi
 
 
