@@ -14,10 +14,11 @@ install:
   - pip install pytest codecov
 
 script:
-  - pytest
+  - python -m pytest
 
 after_success:
   - pip install coverage
-  - coverage run -m pytest
-  - coverage xml
+  - python -m coverage run -m pytest
+  - python -m coverage xml
+  - python -m coverage report
   - codecov
