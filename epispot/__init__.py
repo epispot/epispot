@@ -161,7 +161,7 @@ def _sanity_check():
 
 
 # version info
-version = '2.1.1.9'
+version = '2.1.1.10'
 """
 Epispot's version info (updated every nightly release)
 Get with 
