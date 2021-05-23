@@ -46,14 +46,15 @@ def delta(t):
 
 
 # MODELS
-PlotModel1 = epi.pre.SIR(R_0, N, place, gamma)
-PlotModel2 = epi.pre.SEIR(R_0, N, place, gamma, delta)
+PlotModel1 = epi.pre.SIR(R_0, N, place, gamma)  # compile SIR model
+PlotModel2 = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile SEIR model
 
 
 # TESTS
 def test_plots():
     """Base plotting test"""
-    Base = epi.plots.plot_comp_nums(PlotModel1, range(100))
+    Base = epi.plots.plot_comp_nums(PlotModel1, range(100))  # plot compartment capacity
+    # plot compartment capacity with starting state and custom color palette
     Complex = epi.plots.plot_comp_nums(PlotModel2, range(100),
                                        starting_state=[0.8 * N(0), 0.15 * N(0), 0.05 * N(0), 0],
                                        seed=42)

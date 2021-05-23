@@ -76,27 +76,27 @@ def p_hos_to_rec(t):
 # TESTS
 def test_SIR():
     """SIR Pre-Compiled Model Test"""
-    Model = epi.pre.SIR(R_0, N, place, gamma)
-    Solution = Model.integrate(range(0, 100))
+    Model = epi.pre.SIR(R_0, N, place, gamma)  # compile model
+    Solution = Model.integrate(range(0, 100))  # get solutions
     return Solution
 
 
 def test_SEIR():
     """SEIR Pre-Compiled Model Test"""
-    Model = epi.pre.SEIR(R_0, N, place, gamma, delta)
-    Solution = Model.integrate(range(0, 100))
+    Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
+    Solution = Model.integrate(range(0, 100))  # get solutions
     return Solution
 
 
 def test_SIRD():
     """SIRD Pre-Compiled Model Test"""
-    Model = epi.pre.SIRD(R_0, N, place, gamma, alpha, place)
-    Solution = Model.integrate(range(0, 100))
+    Model = epi.pre.SIRD(R_0, N, place, gamma, alpha, place)  # compile model
+    Solution = Model.integrate(range(0, 100))  # get solutions
     return Solution
 
 
 def test_SIHRD():
     """SIHRD Pre-Compiled Model Test"""
-    Model = epi.pre.SIHRD(R_0, N, place, gamma, alpha, place, p_inf_to_hos, place, p_hos_to_rec, place)
-    Solution = Model.integrate(range(0, 100))
+    Model = epi.pre.SIHRD(R_0, N, place, gamma, alpha, place, p_inf_to_hos, place, p_hos_to_rec, place)  # compile model
+    Solution = Model.integrate(range(0, 100))  # get solutions
     return Solution
