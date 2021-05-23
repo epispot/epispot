@@ -31,20 +31,24 @@ be adapted for almost any type of modeling scenario.</p>
 <h2 id="features">Features</h2>
 <p>The epispot package currently only supports compartmental models, though
 we plan to expand the package to work for stochastic agent-based and spatial
-models as well. Currently, epispot offers the following:
-- Quick compilation of compartmental models with the following compartments:
-- Susceptible
-- Infected
-- Recovered
-- Removed
-- Exposed
-- Dead
-- Critical
-- Hospitalized
-- Custom-defined compartments for research
-- Built-in graphing and visualization engine
-- Plots model predictions interactively
-- Creates comparisons between models</p>
+models as well. Currently, epispot offers the following:</p>
+<ul>
+<li>Quick compilation of compartmental models with the following compartments:<ul>
+<li>Susceptible</li>
+<li>Infected</li>
+<li>Recovered</li>
+<li>Removed</li>
+<li>Exposed</li>
+<li>Dead</li>
+<li>Critical</li>
+<li>Hospitalized</li>
+</ul>
+</li>
+<li>Custom-defined compartments for research</li>
+<li>Built-in graphing and visualization engine</li>
+<li>Plots model predictions interactively</li>
+<li>Creates comparisons between models</li>
+</ul>
 <p>Due to its diverse range of features, epispot can be used for both research
 and experimental modeling. If you would like to add more modeling support, please
 see the <a href="#contributing">contributing section</a>.</p>
@@ -156,19 +160,23 @@ designed for helping you get started with epispot and some hands-on examples.</p
 </tbody>
 </table>
 <h2 id="feedback">Feedback</h2>
-<p>If you have any feedback, please
-- Create a discussion on GitHub
-- Create an issue if you've found a bug
-- Submit a PR if you want to add a new feature
-- Contact a <a href=".github/CODEOWNERS">CODEOWNER</a></p>
+<p>If you have any feedback, please</p>
+<ul>
+<li>Create a discussion on GitHub</li>
+<li>Create an issue if you've found a bug</li>
+<li>Submit a PR if you want to add a new feature</li>
+<li>Contact a <a href=".github/CODEOWNERS">CODEOWNER</a></li>
+</ul>
 <h2 id="contributing">Contributing</h2>
 <p>Contributions are always welcome!
 See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for instructions on how to get started,
 including environment setup and instructions to build from the source.
 Please note also that epispot has many guides dedicated to certain types of
-contributions. Please see
-- <a href="DOCUMENTATION.md">DOCUMENTATION.md</a> for documentation additions
-- <a href="SECURITY.md">SECURITY.md</a> for epispot's security policy</p>
+contributions. Please see</p>
+<ul>
+<li><a href="DOCUMENTATION.md">DOCUMENTATION.md</a> for documentation additions</li>
+<li><a href="SECURITY.md">SECURITY.md</a> for epispot's security policy</li>
+</ul>
 <h2 id="citation">Citation</h2>
 <p><a href="https://opensource.org/licenses/"><img alt="GPLv3 License" src="https://img.shields.io/badge/License-GPL%20v3-green.svg"></a></p>
 <p>If you plan on using epispot in your project, please abide by the GPLv3 license.
@@ -209,182 +217,39 @@ codebase was maintained by @Quantalabs. Additionally, thank you to all of
 epispot's open-source contributors!</p>
 <p><img alt="epispot's open-source contributors" src="https://contrib.rocks/image?repo=epispot/epispot"></p>
 <h3 id="dependencies">Dependencies</h3>
-<p>The epispot team also relies on the following open-source projects as dependencies:
-- NumPy (<a href="https://github.com/numpy/numpy">GitHub</a>),
-the fundamental package for scientific computing with Python
-- Matplotlib (<a href="https://github.com/matplotlib/matplotlib">GitHub</a>), plotting with
-Python
-- Google Fire (<a href="https://github.com/google/python-fire">Github</a>), a library for
+<p>The epispot team also relies on the following open-source projects as dependencies:</p>
+<ul>
+<li>NumPy (<a href="https://github.com/numpy/numpy">GitHub</a>),
+the fundamental package for scientific computing with Python</li>
+<li>Matplotlib (<a href="https://github.com/matplotlib/matplotlib">GitHub</a>), plotting with
+Python</li>
+<li>Google Fire (<a href="https://github.com/google/python-fire">Github</a>), a library for
 automatically generating command line interfaces (CLIs) from absolutely any
-Python object.</p>
+Python object.</li>
+</ul>
 <h3 id="external-code-management-tools">External Code Management Tools</h3>
-<p>For code maintenance, epispot uses various tools including:
-- Coverage.py (<a href="https://pypi.org/project/coverage/">PyPI</a>) for code coverage
-report generation
-- Pdoc3 (<a href="https://github.com/pdoc3/pdoc">GitHub</a>) for automatic documentation
-generation
-- GitBook (<a href="https://www.gitbook.com">Website</a>) for documentation hosting
-- CodeCov (<a href="https://about.codecov.io">Website</a>) for code coverage report analysis
-- LGTM (<a href="https://lgtm.com">Website</a>) for CodeQL analysis
-- DeepSource (<a href="https://deepsource.io">Website</a>) for static code analysis
-- GitLocalize (<a href="https://gitlocalize.com">Website</a>) for localization of
-documentation
-- Zenodo (<a href="https://zenodo.org">Website</a>) for automatic DOI &amp; citations</p>
-<!--- START: inline documentation
-=======
-epispot
-=======
-A tool for creating and testing compartmental epidemiological models faster than ever for the mathematical modeling of
-infectious diseases. An idea from <https://github.com/henrifroese/infectious_disease_modelling.>
----
-===============
-DOI Information
-===============
-Recommended Citation for Research:
-> q9i, & QLabs. (2021, April 2). epispot/epispot: (Version 2.1.0). Zenodo. <http://doi.org/10.5281/zenodo.4624423>
-==========================
-Checking your installation
-==========================
-When using epispot, epispot should automatically run a 'sanity check' to make sure everything was installed correctly.
-To access some of epispot's metadata from the package itself and double-check your installation, run:
-<pre><code class="language-python-repl">&gt;&gt;&gt; import epispot as epi
-&gt;&gt;&gt; print(epispot.version)
-&gt;&gt;&gt; '2.x.x'  # should return something like this
-</code></pre>
-<pre><code class="language-python-repl">&gt;&gt;&gt; print(epispot.stable)
-&gt;&gt;&gt; True  # if this is False, you can always install a stable version from either Anaconda or the main package on PyPI
-</code></pre>
-<pre><code class="language-python-repl">&gt;&gt;&gt; help(epispot)
-&gt;&gt;&gt; 'Returns this docstring ...'
-</code></pre>
-===============
-Getting Started
-===============
-Start with the tutorials in `tests/tutorials`
-(see <https://www.github.com/epispot/epispot/tree/master/tests/tutorials>). Next, check out the
-documentation at <https://epispot.github.io/epispot.> You may also find
-it helpful to see the examples in the `tests/examples` folder.
-========
-Features
-========
-- Compartmental models with the following compartments:
-- Susceptible (traditional SIR)
-- Infected (traditional SIR)
-- Recovered (traditional SIR)
-- Exposed (extended SIR)
-- Dead (extended SIR)
-- Critical (extended SIR)
-- Hospitalized (extended SIR)
-- Custom-defined compartmental models (useful for research)
-- Graphing and visualization engine
-- Plot model predictions interactively
-- Compare different model predictions
-===================
-Documentation Notes
-===================
-Docstrings provide additional documentation on a certain function.
-They can be accessed via the built-in Python <code>help()</code> command.
-These strings are formatted in GitHub-flavored markdown.
-Additionally, all files will have a 'STRUCTURE' label. This README
-is the only exception.
-=======
-Credits
-=======
-The epispot package is supported by the following contributors:
-- Head of Software & Development: @quantum9innovation - <https://www.github.com/quantum9innovation>
-- Head of Code Maintenance: @Quantalabs - <https://www.github.com/quantalabs>
-Thank you also to all GitHub contributors!
-See: <https://www.github.com/epispot/epispot/insights/contributors>
--->
+<p>For code maintenance, epispot uses various tools including:</p>
+<ul>
+<li>Coverage.py (<a href="https://pypi.org/project/coverage/">PyPI</a>) for code coverage
+report generation</li>
+<li>Pdoc3 (<a href="https://github.com/pdoc3/pdoc">GitHub</a>) for automatic documentation
+generation</li>
+<li>GitBook (<a href="https://www.gitbook.com">Website</a>) for documentation hosting</li>
+<li>CodeCov (<a href="https://about.codecov.io">Website</a>) for code coverage report analysis</li>
+<li>LGTM (<a href="https://lgtm.com">Website</a>) for CodeQL analysis</li>
+<li>DeepSource (<a href="https://deepsource.io">Website</a>) for static code analysis</li>
+<li>GitLocalize (<a href="https://gitlocalize.com">Website</a>) for localization of
+documentation</li>
+<li>Zenodo (<a href="https://zenodo.org">Website</a>) for automatic DOI &amp; citations</li>
+</ul>
+<!-- Documentation available at: <https://epispot.github.io/epispot> -->
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 .. include:: ../README.md
-&lt;!--- START: inline documentation
-
-=======
-epispot
-=======
-
-A tool for creating and testing compartmental epidemiological models faster than ever for the mathematical modeling of
-infectious diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
-
----
-
-===============
-DOI Information
-===============
-
-Recommended Citation for Research:
-&gt; q9i, &amp; QLabs. (2021, April 2). epispot/epispot: (Version 2.1.0). Zenodo. http://doi.org/10.5281/zenodo.4624423
-
-==========================
-Checking your installation
-==========================
-
-When using epispot, epispot should automatically run a &#39;sanity check&#39; to make sure everything was installed correctly.
-To access some of epispot&#39;s metadata from the package itself and double-check your installation, run:
-
-&gt;&gt;&gt; import epispot as epi
-&gt;&gt;&gt; print(epispot.version)
-&gt;&gt;&gt; &#39;2.x.x&#39;  # should return something like this
-
-&gt;&gt;&gt; print(epispot.stable)
-&gt;&gt;&gt; True  # if this is False, you can always install a stable version from either Anaconda or the main package on PyPI
-
-&gt;&gt;&gt; help(epispot)
-&gt;&gt;&gt; &#39;Returns this docstring ...&#39;
-
-===============
-Getting Started
-===============
-
-Start with the tutorials in `tests/tutorials`
-(see https://www.github.com/epispot/epispot/tree/master/tests/tutorials). Next, check out the
-documentation at https://epispot.github.io/epispot. You may also find
-it helpful to see the examples in the `tests/examples` folder.
-
-========
-Features
-========
-
-- Compartmental models with the following compartments:
-    - Susceptible (traditional SIR)
-    - Infected (traditional SIR)
-    - Recovered (traditional SIR)
-    - Exposed (extended SIR)
-    - Dead (extended SIR)
-    - Critical (extended SIR)
-    - Hospitalized (extended SIR)
-- Custom-defined compartmental models (useful for research)
-- Graphing and visualization engine
-    - Plot model predictions interactively
-    - Compare different model predictions
-
-===================
-Documentation Notes
-===================
-
-Docstrings provide additional documentation on a certain function.
-They can be accessed via the built-in Python `help()` command.
-These strings are formatted in GitHub-flavored markdown.
-Additionally, all files will have a &#39;STRUCTURE&#39; label. This README
-is the only exception.
-
-=======
-Credits
-=======
-
-The epispot package is supported by the following contributors:
- - Head of Software &amp; Development: @quantum9innovation - https://www.github.com/quantum9innovation
- - Head of Code Maintenance: @Quantalabs - https://www.github.com/quantalabs
-
-Thank you also to all GitHub contributors!
-See: https://www.github.com/epispot/epispot/insights/contributors
-
---&gt;
+&lt;!-- Documentation available at: https://epispot.github.io/epispot --&gt;
 &#34;&#34;&#34;
 
 
