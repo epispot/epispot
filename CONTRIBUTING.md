@@ -1,5 +1,11 @@
 # Contributing Guidelines
 Thank you for contributing to the epispot repo! Here are some guidelines to streamline all contributions so we can accept issues and/or pull requests as fast as possible.
+
+**Important Note:**
+> If you are working on a documentation patch, please see
+> [DOCUMENTATION.md](DOCUMENTATION.md) for more information.
+> For security patches, see [SECURITY.md](SECURITY.md).
+
 ## Issues
 ### I found a bug.
 When creating an issue, you will be prompted to choose a template. Choose `BUG_REPORT` and fill in the required information before submitting the issue.
@@ -11,51 +17,34 @@ Check out the steps outlined in [SECURITY.md](SECURITY.md) and submit the issue 
 Cool! Create a blank issue and give us as much information as possible to make fixing your issue as easy as possible. 
 It is also good to add labels to your issue to increase its visibility to other contributors and to help maintainers understand its impact to the overall project.
 ## Pull Requests
-### Development Structure
-Before creating your PR, understand which branch to work on in the first place.
-The **master** branch is mainly only for critical issues since all new feature and developments pass through the **nightly** branch first as a testing ground before being 
-merged into the final package.
-| Purpose | Branch |
-| --- | --- |
-| Fixes a *critical* bug | **master** |
-| Fixes an issue tagged with **help wanted** | **master** |
-| Fixes an issue tagged with **high-priority** | **master** |
-| Maintenance on the main package | **master** |
-| Documentation improvements | **master** |
-| Adds a new feature (specified or unspecified by an issue) | **nightly** |
-| General code cleanup | **nightly** |
-| Fixes an issue tagged with **nightly** | **nightly** |
-| Maintenance on the nightly package | **nightly** |
 ### Tests
-When you first create your PR, an array of tests will be triggered to run. Don't worry! Here's a guide to what each test does and what its status means:
-| Test | Passing | Failing |
-| -- | --- | --- |
-| Code Coverage | You've increased our testing capacity! | You may have added a new feature without providing testing scripts. |
-| Build 3.7 | All code is working on Python 3.7 | Code is incompatible with Python 3.7 |
-| Build 3.8 | All code is working on Python 3.8 | Code is incompatible with Python 3.8 |
-| Build 3.9 | All code is working on Python 3.9 | Code is incompatible with Python 3.9 |
-| CodeFactor | Wow! No new code alerts! | Your new code may introduce minor maintainability issues |
-| Codecov | Code coverage metrics were successfully uploaded | Problem with uploading code coverage metrics |
+When you first create your PR, an array of tests will be triggered to run. 
+Here's a guide to what each test does and what its status means:
 
-Don't worry if one (or even two) tests fail! Your PR is still useful, but there might still be things to improve on. We'll discuss this when your PR is reviewed.
+| Test | Status Passing | Status Failing |
+| --- | --- | --- |
+| CodeQL / Analyze | No new vulnerabilities introduced | Security vulnerability detected |
+| LGTM analysis: Python | No major code quality issues | Possible code quality issues |
+| DeepSource: Python | No technical debt | Possible technical debt introduced |
+| Travis CI | Build passed | Build failed |
+| codecov/patch | Patch code coverage good | Patch code coverage bad |
+| codecov/project | Code coverage increased | Code coverage decreased |
 ### Priority
 Pull requests are prioritized by the following criteria:
  - Branch
     1. master
-    2. nightly
-    3. other branches
+    2. other branches
  - Tests
-    1. Build 3.7
-    2. Build 3.8
-    3. Build 3.9
-    4. Codecov
-    5. Code Coverage
-    6. CodeFactor
+    1. CodeQL
+    2. Travis CI
+    3. LGTM 
+    3. CodeCov Project
+    4. DeepSource
  - Tags
     1. high-priority
     2. help-wanted
-    3. other tags
-    4. low-priority
+    3. low-priority
+    4. untagged
  - Code Review
     1. More than 1 code review with pending code review
     2. More than 1 code review
