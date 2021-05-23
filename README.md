@@ -136,13 +136,13 @@ designed for helping you get started with epispot and some hands-on examples.
 ![open-issues](https://img.shields.io/github/issues-raw/epispot/epispot?color=orange)
 
 ### Statuses
-| Workflow | Status |
+| Pipeline | Status |
 | --- | --- |
-| `build.yml` | ![GitHub Workflow Status](https://shields.mitmproxy.org/github/workflow/status/epispot/epispot/build?label=build%203.7%2C%203.8%2C%203.9) |
-| `coverage.yml` | [![codecov](https://codecov.io/gh/epispot/epispot/branch/master/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot) |
-| `python-publish.yml` | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) |
-| `python-publish-nightly.yml` | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success) |
-| `codeql-analysis.yml` | ![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/epispot/epispot?color=success&label=known%20vulnerabilities&query=VULNERABILITY%20is:open%20is:issue) |
+| Travis CI | [![Build Status](https://www.travis-ci.com/epispot/epispot.svg?branch=master)](https://www.travis-ci.com/epispot/epispot) |
+| CodeCov | [![codecov](https://codecov.io/gh/epispot/epispot/branch/master/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot) |
+| PyPI main | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) |
+| PyPI nightly | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success) |
+| Security | ![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/epispot/epispot?color=success&label=known%20vulnerabilities&query=VULNERABILITY%20is:open%20is:issue) |
 
 ## Feedback
 
