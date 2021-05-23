@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - epispot/*
+      - README.md  # documentation uses README via `.. include`
       - .github/workflows/*
 
 jobs:
