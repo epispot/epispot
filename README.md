@@ -15,15 +15,16 @@ be adapted for almost any type of modeling scenario.
 The epispot package currently only supports compartmental models, though
 we plan to expand the package to work for stochastic agent-based and spatial 
 models as well. Currently, epispot offers the following:
+
 - Quick compilation of compartmental models with the following compartments:
-  - Susceptible
-  - Infected
-  - Recovered
-  - Removed
-  - Exposed
-  - Dead
-  - Critical
-  - Hospitalized
+    - Susceptible
+    - Infected
+    - Recovered
+    - Removed
+    - Exposed
+    - Dead
+    - Critical
+    - Hospitalized
 - Custom-defined compartments for research
 - Built-in graphing and visualization engine
   - Plots model predictions interactively
@@ -147,6 +148,7 @@ designed for helping you get started with epispot and some hands-on examples.
 ## Feedback
 
 If you have any feedback, please
+
 - Create a discussion on GitHub
 - Create an issue if you've found a bug
 - Submit a PR if you want to add a new feature
@@ -160,6 +162,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to get started,
 including environment setup and instructions to build from the source.
 Please note also that epispot has many guides dedicated to certain types of
 contributions. Please see
+
 - [DOCUMENTATION.md](DOCUMENTATION.md) for documentation additions
 - [SECURITY.md](SECURITY.md) for epispot's security policy
   
@@ -216,6 +219,7 @@ epispot's open-source contributors!
 ### Dependencies
 
 The epispot team also relies on the following open-source projects as dependencies:
+
 - NumPy ([GitHub](https://github.com/numpy/numpy)), 
   the fundamental package for scientific computing with Python
 - Matplotlib ([GitHub](https://github.com/matplotlib/matplotlib)), plotting with 
@@ -227,6 +231,7 @@ The epispot team also relies on the following open-source projects as dependenci
 ### External Code Management Tools
 
 For code maintenance, epispot uses various tools including:
+
 - Coverage.py ([PyPI](https://pypi.org/project/coverage/)) for code coverage 
   report generation
 - Pdoc3 ([GitHub](https://github.com/pdoc3/pdoc)) for automatic documentation 
