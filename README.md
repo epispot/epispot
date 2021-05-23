@@ -101,7 +101,8 @@ python setup-nightly.py install
 
 ## Quick Demo
 Installing epispot from `pip` and then compiling a simple SIR model in less than 
-40 seconds.
+40 seconds. 
+[Link to source](https://github.com/epispot/epispot/tree/master/assets/demo.gif)
 
 ![](assets/demo.gif)
 
