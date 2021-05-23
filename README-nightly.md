@@ -1,59 +1,137 @@
-# ![epi-spot](https://i.ibb.co/m9yS1yh/epispot-nightly.jpg)
-![build](https://img.shields.io/badge/build-nightly-black)
-![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success)
-[![Downloads](https://pepy.tech/badge/epispot-nightly)](https://pepy.tech/project/epispot-nightly)
-![build-status](https://github.com/epispot/epispot/workflows/build/badge.svg?branch=nightly)
-![open-issues](https://img.shields.io/github/issues-search/epispot/epispot?color=red&label=Open%20Issues&query=is%3Aopen%20label%3Anightly)
-[![codecov](https://codecov.io/gh/epispot/epispot/branch/nightly/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot)
+![epispot](https://i.ibb.co/m9yS1yh/epispot-nightly.jpg)
 
-<br>
+---
 
-A tool for creating and testing epidemiological models faster than ever for the mathematical modeling of infectious 
-diseases. An idea from https://github.com/henrifroese/infectious_disease_modelling.
+# epispot nightly
 
-> **This is a nightly build of epispot. Releases may contain unstable code and issues are to be expected.\
-> Additionally, code within this branch may be deprecated at any time.\
-> See the official stable build and all its features [here](https://pypi.org/project/epispot/)**
+A Python package for the mathematical modeling of infectious diseases via 
+compartmental models. Originally designed for epidemiologists, epispot can
+be adapted for almost any type of modeling scenario.
 
-<br>
+> This is a nightly version of epispot and may contain possibly unstable code.\
+> **Please see usage instructions prior to adding this project as a dependency**\
+> If you prefer to use the stable version of epispot, please see
+> the [project on PyPI](https://pypi.org/project/epispot)
 
 ## Installation
 
-Epispot nightly can _only_ be installed on pip at this time.
-Install with:
+The epispot package can be installed from PyPI, Anaconda, or be built from the
+source. However, as epispot's nightly versions cannot be released per-commit to 
+the conda packaging registry, using Anaconda means that epispot will have to be
+installed via the built-in `pip` installer. Instructions for each platform are listed
+below.
+
+### PyPI
+This is the easiest way to install epispot nightly. Fire up a terminal and type:
 ```shell
 pip install epispot-nightly
 ```
-As a shorthand, use `import epispot as epi`.
-Both nightly and stable packages cannot be used at the same time in the same file.
-To ensure that you are using the latest version, run the following command regularly*:\
+Pip will ask you to install `numpy` and `matplotlib` as dependencies if you 
+haven't already. Additionally, it may require you to install `fire` for the CLI.
+These can be installed beforehand with:
+```shell
+pip install numpy
+pip install matplotlib
+pip install fire
+```
+
+Update the package regularly with:
 ```shell
 pip install epispot-nightly --upgrade
 ```
 
-*updates are published after every commit (~1/day)\
-See [CHANGELOG.md](https://www.github.com/epispot/epispot/tree/nightly/CHANGELOG.md)
-for detailed update information
+### Anaconda
+Please note that the `nightly` version is **not** available on the `conda` 
+package registry. However, it is still possible to install on `conda`-based
+systems with
+```shell
+pip install epispot-nightly
+```
+which uses `pip` from Anaconda to install it. All dependencies are available
+on the conda package registry, but you may prefer to install them via `pip` to
+avoid cross-referencing packages installed on different registries.
+
+Update the package regularly with:
+```shell
+pip install epispot-nightly --upgrade
+```
+
+If you installed the dependencies on conda instead of `pip` you may have to update
+them too after major releases. You can do that with:
+```shell
+conda update numpy
+conda update matplotlib
+conda update fire
+```
+
+### Building from the source
+This is the hardest way to install `epispot-nightly` but it can be particularly
+useful if you plan on helping out with the development process. The main downside
+of this approach is that you will have to continuously run `git pull` and then 
+rerun the steps listed below to get the latest version.
+
+Clone the repository with:
+```shell
+git clone https://github.com/epispot/epispot  # clone epispot/epispot
+cd epispot  # open project
+pip install -r requirements.txt  # install package requirements
+pip install -r bin/requirements.txt  # Install CLI requirements
+```
+
+Then, build the nightly version with:
+```shell
+python setup-nightly.py install
+```
+
+If you're working on a patch, you may find it helpful to use
+```shell
+python setup-nightly.py develop
+```
+instead because it will greatly simplify the constant reinstallation of the package.
+
+## Usage
+
+It is important to note that this package was designed specifically
+for getting releases out as soon as possible when modeling is important.
+During the COVID-19 pandemic, this strategy has allowed epispot to 
+distribute versions quickly on PyPI, however, this package may be idle for long
+periods of time when there is no need for this kind of rapid distribution.
+
+Please also note that security updates are not provided on previous nightly versions. 
+To make sure that your version has no vulnerabilities, upgrade to the latest published
+version regularly. The latest version of the nightly package is the one that is
+maintained by our development team.
 
 ## Getting Started
 
 Make sure you are already familiar with [epispot](https://www.pypi.org/project/epispot).
-If not, checkout the [tests/ directory](https://www.github.com/epispot/epispot/tree/nightly/tests)
-for hands-on examples.
-You can view the new functions and changes by using the built-in Python `help()` command.
-Epispot docs are located [here](https://epispot.github.io/epispot).
+If not, you can find epispot's auto-generated documentation
+[here](https://epispot.github.io/epispot/). Additionally, we highly recommend reading
+the [epispot manual](https://epispot.gitbook.io) to get a better understanding of
+the documentation and how to use epispot.
 
-## Stay one step ahead
-### And preview the latest features
-Documentation can easily be accessed from function, class, and file docstrings.
-Doc strings provide additional documentation on a certain function.
-They can be accessed by the built-in Python `help()` command.
-These strings are formatted in Github-flavored markdown.
-Additionally, all files will have a 'STRUCTURE' label.
+## Statuses
+| Pipeline | Status |
+| --- | --- |
+| Travis CI | [![Build Status](https://www.travis-ci.com/epispot/epispot.svg?branch=master)](https://www.travis-ci.com/epispot/epispot) |
+| CodeCov | [![codecov](https://codecov.io/gh/epispot/epispot/branch/master/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot) |
+| PyPI main | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) |
+| PyPI nightly | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success) |
+| Security | ![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/epispot/epispot?color=success&label=known%20vulnerabilities&query=VULNERABILITY%20is:open%20is:issue) |
 
-## Thanks to all contributors
-<a href="https://github.com/epispot/epispot/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=epispot/epispot" />
-</a>
+## Contributing
 
-Made with [contributors-img](https://contrib.rocks).
+Contributions are always welcome!
+See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to get started,
+including environment setup and instructions to build from the source.
+Please note also that epispot has many guides dedicated to certain types of
+contributions. Please see
+- [DOCUMENTATION.md](DOCUMENTATION.md) for documentation additions
+- [SECURITY.md](SECURITY.md) for epispot's security policy
+
+### Thank you to all contributors!
+
+---
+
+![epispot's open-source contributors](https://contrib.rocks/image?repo=epispot/epispot)
+
