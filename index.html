@@ -45,9 +45,11 @@ models as well. Currently, epispot offers the following:</p>
 </ul>
 </li>
 <li>Custom-defined compartments for research</li>
-<li>Built-in graphing and visualization engine</li>
+<li>Built-in graphing and visualization engine<ul>
 <li>Plots model predictions interactively</li>
 <li>Creates comparisons between models</li>
+</ul>
+</li>
 </ul>
 <p>Due to its diverse range of features, epispot can be used for both research
 and experimental modeling. If you would like to add more modeling support, please
@@ -96,11 +98,13 @@ cd epispot  # open project
 pip install -r requirements.txt  # install package requirements
 pip install -r bin/requirements.txt  # Install CLI requirements
 </code></pre>
-<p>Then, build the standard version with</p>
-<pre><code class="language-shell">python setup.py install
-</code></pre>
-<p>For the nightly version, use:</p>
+<p>Then, build the nightly version with</p>
 <pre><code class="language-shell">python setup-nightly.py install
+</code></pre>
+<p>For the stable version, first checkout a
+release branch with something like:</p>
+<pre><code class="language-shell">git checkout v2.1.1
+python setup.py install
 </code></pre>
 <h2 id="quick-demo">Quick Demo</h2>
 <p>Installing epispot from <code>pip</code> and then compiling a simple SIR model in less than
@@ -328,7 +332,7 @@ def _sanity_check():
 
 
 # version info
-version = &#39;2.1.1.10&#39;
+version = &#39;2.1.1.11&#39;
 &#34;&#34;&#34;
 Epispot&#39;s version info (updated every nightly release)
 Get with 
