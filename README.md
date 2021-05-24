@@ -27,8 +27,8 @@ models as well. Currently, epispot offers the following:
     - Hospitalized
 - Custom-defined compartments for research
 - Built-in graphing and visualization engine
-  - Plots model predictions interactively
-  - Creates comparisons between models
+    - Plots model predictions interactively
+    - Creates comparisons between models
 
 Due to its diverse range of features, epispot can be used for both research
 and experimental modeling. If you would like to add more modeling support, please 
@@ -91,13 +91,15 @@ pip install -r requirements.txt  # install package requirements
 pip install -r bin/requirements.txt  # Install CLI requirements
 ```
 
-Then, build the standard version with
-```shell
-python setup.py install
-```
-For the nightly version, use:
+Then, build the nightly version with
 ```shell
 python setup-nightly.py install
+```
+For the stable version, first checkout a
+release branch with something like:
+```shell
+git checkout v2.1.1
+python setup.py install
 ```
 
 ## Quick Demo
