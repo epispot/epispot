@@ -104,10 +104,9 @@ python setup.py install
 
 ## Quick Demo
 Installing epispot from `pip` and then compiling a simple SIR model in less than 
-40 seconds. 
-[Link to source](https://github.com/epispot/epispot/tree/master/assets/demo.gif)
+40 seconds.
 
-![](assets/demo.gif)
+![](https://epispot.github.io/epispot/assets/demo.gif)
 
 ## Documentation
 
@@ -154,19 +153,19 @@ If you have any feedback, please
 - Create a discussion on GitHub
 - Create an issue if you've found a bug
 - Submit a PR if you want to add a new feature
-- Contact a [CODEOWNER](.github/CODEOWNERS)
+- Contact a [CODEOWNER](https://github.com/epispot/epispot/tree/master/.github/CODEOWNERS)
 
   
 ## Contributing
 
 Contributions are always welcome!
-See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to get started,
+See [CONTRIBUTING.md](https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md) for instructions on how to get started,
 including environment setup and instructions to build from the source.
 Please note also that epispot has many guides dedicated to certain types of
 contributions. Please see
 
-- [DOCUMENTATION.md](DOCUMENTATION.md) for documentation additions
-- [SECURITY.md](SECURITY.md) for epispot's security policy
+- [DOCUMENTATION.md](https://github.com/epispot/epispot/tree/master/DOCUMENTATION.md) for documentation additions
+- [SECURITY.md](https://github.com/epispot/epispot/tree/master/SECURITY.md) for epispot's security policy
   
 ## Citation
 
@@ -188,7 +187,7 @@ The recommended citation for epispot is:
   
 ## Authors
 
-Please see our [CODEOWNERS](.github/CODEOWNERS) file for authors. Because epispot
+Please see our [CODEOWNERS](https://github.com/epispot/epispot/tree/master/.github/CODEOWNERS) file for authors. Because epispot
 is an open-source project, different pieces of our code have different authors.
 However, if citing epispot or using it in another project, you can put 
 @quantum9innovation as the lead author.

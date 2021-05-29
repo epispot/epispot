@@ -122,13 +122,13 @@ the documentation and how to use epispot.
 ## Contributing
 
 Contributions are always welcome!
-See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to get started,
+See [CONTRIBUTING.md](https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md) for instructions on how to get started,
 including environment setup and instructions to build from the source.
 Please note also that epispot has many guides dedicated to certain types of
 contributions. Please see
-- [DOCUMENTATION.md](DOCUMENTATION.md) for documentation additions
-- [SECURITY.md](SECURITY.md) for epispot's security policy
-
+- [DOCUMENTATION.md](https://github.com/epispot/epispot/tree/master/DOCUMENTATION.md) for documentation additions
+- [SECURITY.md](https://github.com/epispot/epispot/tree/master/SECURITY.md) for epispot's security policy
+  
 ### Thank you to all contributors!
 
 ---
