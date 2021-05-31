@@ -1,5 +1,5 @@
 comment:
-  require_changes: true
+  require_changes: false
 
 codecov:
   require_ci_to_pass: false
