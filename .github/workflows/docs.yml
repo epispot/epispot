@@ -45,6 +45,7 @@ jobs:
       continue-on-error: true  # Git will return an error if the working tree is clean (i.e. no modifications to the current documentation exist)
       run: |
         git checkout master stash1/
+        mkdir -p en/latest/  # recreate empty directory after being deleted in previous step
         mv stash1/epispot/* en/latest/
         git add .
         git commit -m "Updated Documentation"
