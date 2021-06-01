@@ -79,7 +79,7 @@ def _sanity_check():
 
 
 # version info
-version = '2.1.1.12'
+version = '2.1.1.13'
 """
 Epispot's version info (updated every nightly release)
 Get with 
