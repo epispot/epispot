@@ -1,0 +1,41 @@
+# Workflow borrowed from covid19india/covid19india-react
+on:
+  issue_comment:
+    types: [created]
+name: Claim an issue
+jobs:
+  assign:
+    name: Primary routine
+    if: github.event.issue.pull_request == ''
+      && contains(github.event.comment.body, '/claim')
+      && contains(toJson(github.event.issue.labels), 'available')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['status:claimed']
+              })
+            await github.issues.removeLabel({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'status:available'
+              })
+            await github.issues.addAssignees({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              assignees: [context.payload.sender.login]
+              })
+               await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Thank you @'+context.payload.sender.login+' for claiming this issue!\nPlease reference this issue when you submit your PR.\nIf you need help, here are epispot's [contributing guidelines](https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md).'
+            })

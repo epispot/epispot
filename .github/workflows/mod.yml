@@ -1,0 +1,38 @@
+# Worflow borrowed from covid19india/covid19india-react
+
+
+on:
+  issue_comment:
+    types: [created]
+name: Make an issue available
+
+jobs:
+  moderate:
+    runs-on: ubuntu-latest
+    name: Primary routine
+    if: github.event.issue.pull_request == ''
+      && contains(github.event.comment.body, '/available')
+      && contains(toJson(github.event.issue.labels), 'review-needed')
+    steps:
+      - uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.issues.removeLabel({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'status:review-needed'
+              })
+            await github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['status:available']
+              })
+            await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'This issue is open for contributions.\nClaim this issue with "\claim" (without the quotes).'
+            })
