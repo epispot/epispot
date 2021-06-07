@@ -34,5 +34,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'This issue is open for contributions.\nClaim this issue with "\claim" (without the quotes).'
+              body: 'This issue is open for contributions.\nClaim this issue with "/claim" (without the quotes).'
             })
