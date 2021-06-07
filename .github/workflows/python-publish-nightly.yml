@@ -2,13 +2,10 @@ name: Upload Nightly to PyPI
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
-      - setup-nightly.py
-      - release.py
       - epispot/*
-      - .github/workflows/*
 jobs:
   deploy:
 
