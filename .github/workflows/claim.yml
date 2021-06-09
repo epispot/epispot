@@ -1,4 +1,6 @@
 # Workflow borrowed from covid19india/covid19india-react
+
+
 on:
   issue_comment:
     types: [created]
@@ -33,9 +35,9 @@ jobs:
               repo: context.repo.repo,
               assignees: [context.payload.sender.login]
               })
-            await github.issues.createComment({
+               await github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Thank you @'+context.payload.sender.login+' for claiming this issue!\nPlease reference this issue when you submit your PR.\nIf you need help, here are epispot's [contributing guidelines](https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md).'
-              })
+              body: 'Thank you @'+context.payload.sender.login+' for claiming this issue! \nPlease reference this issue when you submit your PR and make sure to follow the [contributing guidelines](https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md).'
+            })
