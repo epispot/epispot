@@ -1,8 +1,8 @@
 ---
 name: Feature request
 about: Suggest an idea for epispot.
-title: ''
-labels: ''
+title: "[Feat]"
+labels: enhancement, status:review-needed
 assignees: ''
 
 ---
