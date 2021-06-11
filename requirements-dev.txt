@@ -1,0 +1,8 @@
+matplotlib
+numpy
+fire
+plotly
+pytest
+coverage
+codecov
+pdoc3

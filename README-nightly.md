@@ -76,8 +76,13 @@ Clone the repository with:
 ```shell
 git clone https://github.com/epispot/epispot  # clone epispot/epispot
 cd epispot  # open project
-pip install -r requirements.txt  # install package requirements
-pip install -r bin/requirements.txt  # Install CLI requirements
+pip install -r requirements-nightly.txt  # install package requirements
+```
+
+If you're planning on helping out in the development process, it will be 
+helpful to install a few extra requirements with:
+```shell
+pip install -r requirements-dev.txt
 ```
 
 Then, build the nightly version with:

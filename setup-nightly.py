@@ -31,5 +31,5 @@ setuptools.setup(
         "Topic :: Scientific/Engineering",
     ],
     python_requires='>=3.7',
-    install_requires=['matplotlib', 'numpy', ],
+    install_requires=['matplotlib', 'numpy', 'fire', 'plotly'],
 )
