@@ -1,6 +1,7 @@
 matplotlib
 numpy
 fire
+pandas
 plotly
 pytest
 coverage
