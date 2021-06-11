@@ -27,12 +27,13 @@ This is the easiest way to install epispot nightly. Fire up a terminal and type:
 pip install epispot-nightly
 ```
 Pip will ask you to install `numpy` and `matplotlib` as dependencies if you 
-haven't already. Additionally, it may require you to install `fire` for the CLI.
+haven't already. Additionally, it may require you to install `fire` and `plotly` for some `nightly` experiments.
 These can be installed beforehand with:
 ```shell
 pip install numpy
 pip install matplotlib
 pip install fire
+pip install plotly
 ```
 
 Update the package regularly with:
@@ -62,6 +63,7 @@ them too after major releases. You can do that with:
 conda update numpy
 conda update matplotlib
 conda update fire
+conda update -c conda-forge plotly
 ```
 
 ### Building from the source
@@ -93,7 +95,7 @@ instead because it will greatly simplify the constant reinstallation of the pack
 
 It is important to note that this package was designed specifically
 for getting releases out as soon as possible when modeling is important.
-During the COVID-19 pandemic, this strategy has allowed epispot to 
+During the COVID-19 pandemic, this strategy allowed epispot to 
 distribute versions quickly on PyPI, however, this package may be idle for long
 periods of time when there is no need for this kind of rapid distribution.
 

@@ -9,15 +9,15 @@ def _dependency_check():
     try:
         import numpy
     except ImportError:  # pragma: no cover
-        raise ImportError('''Epispot requires numpy for integrating models; install with either:
-                                 >>> pip install numpy  # pip
-                                 >>> conda install numpy  # anaconda''')
+        raise ImportError('In order to integrate `epispot` models, `numpy` is a required dependency.\nInstall with either:\n'
+                          ' $ pip install epispot\n'
+                          ' $ conda install epispot')
     try:
         import matplotlib  # lgtm [py/import-and-import-from]
     except ImportError:  # pragma: no cover
-        raise ImportError('''Epispot requires matplotlib for creating interactive plots of models; install with either:
-                                 >>> pip install matplotlib  # pip
-                                 >>> conda install matplotlib  # anaconda''')
+        raise ImportError('In order to display plots, `matplotlib` is a required dependency.\nInstall with either:\n'
+                          ' $ pip install matplotlib\n'
+                          ' $ conda install matplotlib')
 
 
 # imports
@@ -37,8 +37,8 @@ from matplotlib import colors
 from . import comps
 from . import models
 from . import pre
-from . import plots
 from . import fitters
+from . import plots
 
 
 def _sanity_check():
