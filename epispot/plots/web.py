@@ -72,5 +72,20 @@ def model(Model, time_frame, starting_state=None, compartments=None, names=None,
                     color_discrete_sequence=colors, 
                     template='plotly_white',
                     log_y=log)
+    
+    Figure.update_layout(
+        font = dict(
+            family="Times New Roman, Serif",
+            size=24,
+            color="Black"
+        ),
+        margin=dict(
+            l=250, 
+            r=250, 
+            t=150,
+            b=150,
+        ),
+    )
+
     return Figure
     
