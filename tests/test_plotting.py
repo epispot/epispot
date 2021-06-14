@@ -62,3 +62,25 @@ def test_full_web():
                                  colors=['red', 'green', 'blue']
                                  )
     return Figure
+
+
+def test_plain_stacked():
+    """In-browser plotting test for stacked area charts (minimal parameters)"""
+    Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
+    Figure = epi.plots.web.stacked(Model, range(120))
+    return Figure
+
+
+def test_full_stacked():
+    """In-browser plotting test for stacked area charts (all parameters)"""
+    Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
+    Figure = epi.plots.web.stacked(Model, range(120),
+                                 starting_state=[N(0) - 10, 10, 0],
+                                 compartments=[0, 1, 2],
+                                 names=['Susceptible',
+                                        'Pre-infection', 'Infection'],
+                                 show_susceptible=True,
+                                 log=True,
+                                 colors=['red', 'green', 'blue']
+                                 )
+    return Figure
