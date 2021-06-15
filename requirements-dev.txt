@@ -3,7 +3,6 @@ numpy
 fire
 pandas
 plotly
-SciencePlots
 pytest
 coverage
 codecov
