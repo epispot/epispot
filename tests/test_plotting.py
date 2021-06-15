@@ -8,6 +8,11 @@ Test of the `plots` subpackage in `epispot`
    |- delta
 |- TESTS
    |- web
+      |- plain
+      |- full
+   |- stacked
+      |- plain
+      |- full
 """
 
 import epispot as epi
@@ -54,6 +59,7 @@ def test_full_web():
     """In-browser plotting test (all parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     Figure = epi.plots.web.model(Model, range(120), 
+                                 title='SEIR Model Plot',
                                  starting_state=[N(0) - 10, 10, 0], 
                                  compartments=[0, 1, 2], 
                                  names=['Susceptible', 'Pre-infection', 'Infection'], 
@@ -75,6 +81,7 @@ def test_full_stacked():
     """In-browser plotting test for stacked area charts (all parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     Figure = epi.plots.web.stacked(Model, range(120),
+                                 title='SEIR Model Plot',
                                  starting_state=[N(0) - 10, 10, 0],
                                  compartments=[0, 1, 2],
                                  names=['Susceptible',

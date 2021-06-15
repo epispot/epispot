@@ -15,7 +15,9 @@ pip install plotly
 from . import px
 
 
-def model(Model, time_frame, starting_state=None, compartments=None, names=None, show_susceptible=False, log=False, colors=None):
+def model(Model, time_frame, title='Compartment Populations over Time', 
+          starting_state=None, compartments=None, names=None, show_susceptible=False, 
+          log=False, colors=None):
     """
     Plots the results of one model using `plotly`.
     The results are displayed in-browser via a `localhost`.
@@ -24,6 +26,7 @@ def model(Model, time_frame, starting_state=None, compartments=None, names=None,
 
     - Model: An `epispot.models.Model` object
     - time_frame: A `range()` describing the time period to plot
+    - title: (`='Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
     - compartments: (default:all) The indices of the compartments in the model to plot; 
                     all other compartments will be hidden
@@ -69,7 +72,7 @@ def model(Model, time_frame, starting_state=None, compartments=None, names=None,
                         'index': 'Time (in days)',
                         'value': 'Compartment Population'
                     }, 
-                    title='Compartment Populations over Time',
+                    title=title,
                     color_discrete_sequence=colors, 
                     template='plotly_white',
                     log_y=log)
@@ -91,7 +94,9 @@ def model(Model, time_frame, starting_state=None, compartments=None, names=None,
     return Figure
 
 
-def stacked(Model, time_frame, starting_state=None, compartments=None, names=None, show_susceptible=False, log=False, colors=None):
+def stacked(Model, time_frame, title='Compartment Populations over Time', 
+            starting_state=None, compartments=None, names=None, show_susceptible=False, 
+            log=False, colors=None):
     """
     Plots the results of one model using `plotly` as a stacked area chart.
     The results are displayed in-browser via a `localhost`.
@@ -100,6 +105,7 @@ def stacked(Model, time_frame, starting_state=None, compartments=None, names=Non
 
     - Model: An `epispot.models.Model` object
     - time_frame: A `range()` describing the time period to plot
+    - title: (`='Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
     - compartments: (default:all) The indices of the compartments in the model to plot; 
                     all other compartments will be hidden
@@ -145,7 +151,7 @@ def stacked(Model, time_frame, starting_state=None, compartments=None, names=Non
                          'index': 'Time (in days)',
                          'value': 'Compartment Population'
                      },
-                     title='Compartment Populations over Time',
+                     title=title,
                      color_discrete_sequence=colors,
                      template='plotly_white',
                      log_y=log)
@@ -165,4 +171,3 @@ def stacked(Model, time_frame, starting_state=None, compartments=None, names=Non
     )
 
     return Figure
-    
