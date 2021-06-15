@@ -3,3 +3,4 @@ numpy
 fire
 pandas
 plotly
+SciencePlots

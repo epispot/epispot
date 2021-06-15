@@ -13,6 +13,8 @@ Test of the `plots` subpackage in `epispot`
    |- stacked
       |- plain
       |- full
+   |- native
+      |- plain
 """
 
 import epispot as epi
@@ -90,4 +92,10 @@ def test_full_stacked():
                                  log=True,
                                  colors=['red', 'green', 'blue']
                                  )
+    return Figure
+
+
+def test_plain_native():
+    Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
+    Figure = epi.plots.native.model(Model, range(120), latex=False)  # `latex=False` flag speeds up testing
     return Figure
