@@ -8,7 +8,8 @@ pip install plotly
 
 ## Structure:
 
-- model
+- model()
+- stacked()
 """
 
 from . import px
