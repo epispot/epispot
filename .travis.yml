@@ -10,6 +10,7 @@ before_install:
   - python -m pip install --upgrade pip  # Upgrade to latest version of pip
 
 install:
+  - pip install SciencePlots
   - pip install -r requirements-dev.txt  # Install all necessary development requirements
 
 script:
