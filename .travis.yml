@@ -10,8 +10,14 @@ before_install:
   - python -m pip install --upgrade pip  # Upgrade to latest version of pip
 
 install:
-  - pip install -r requirements-dev.txt  # Install all necessary development requirements
+  - pip install numpy
+  - pip install matplotlib
+  - pip install pandas
+  - pip install plotly
   - pip install SciencePlots
+  - pip install pytest
+  - pip install coverage
+  - pip install codecov
 
 script:
   - python -m pytest
