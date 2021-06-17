@@ -66,27 +66,29 @@ def model(Model, time_frame, title='Compartment Populations over Time',
 
     # parameter substitutions
     if compartments is None:
-        compartments = range(len(Model.layers))
+        compartments = list(range(len(Model.layers)))
 
     if names is None:
         names = Model.layer_names
 
     # setup
-    for name in names:
+    for name in Model.layer_names:
         DataFrame[name] = []
 
     for day in System:
         for i, compartment in enumerate(day):
-            DataFrame[names[i]].append(compartment)
+            DataFrame[Model.layer_names[i]].append(compartment)
 
     if not show_susceptible:
-        del DataFrame[names[0]]
-        del names[0]
+        for i, compartment in enumerate(compartments):
+            if compartment == 0:
+                del compartments[i]
+                break
 
     # plotting
     plt.figure(figsize=(9, 5))
-    for name in names:
-        plt.plot(time_frame, DataFrame[name], label=name)
+    for compartment in compartments:
+        plt.plot(time_frame, DataFrame[Model.layer_names[compartment]], label=names[compartment])
 
     if log:
         plt.yscale('log')

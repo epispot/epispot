@@ -15,6 +15,7 @@ Test of the `plots` subpackage in `epispot`
       |- full
    |- native
       |- plain
+      |- full
 """
 
 import epispot as epi
@@ -98,4 +99,19 @@ def test_full_stacked():
 def test_plain_native():
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     Figure = epi.plots.native.model(Model, range(120), latex=False)  # `latex=False` flag speeds up testing
+    return Figure
+
+
+def test_full_native():
+    Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
+    #`latex=True` enabled by default
+    # blank strings `''` in `names=` are used to indicate that 
+    # the corresponding compartment is not being plotted
+    Figure = epi.plots.native.model(Model, range(120), 
+                                    title='SEIR Model Plot', 
+                                    starting_state=[N(0) - 50, 25, 25, 0], 
+                                    compartments=[0, 3], 
+                                    names=['Susceptible Population', '', '', 'Removed/Recovered'], 
+                                    show_susceptible=True, 
+                                    log=True)
     return Figure
