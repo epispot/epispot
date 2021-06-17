@@ -21,7 +21,7 @@ def _dependency_check():
     try:
         from matplotlib import pyplot as plt
         plt.style.use('science')  # `SciencePlots` cannot be imported directly
-    except:  # pragma: no cover
+    except ImportError:  # pragma: no cover
         raise ImportError('In order to create scientific plots with `matplotlib`, it is highly recommended that you install `SciencePlots` as an experimental' 
                           'dependency. Please note that `SciencePlots` is only available via `pip` at this time. If using Anaconda, '
                           'use the pre-existing `pip` installation to add `SciencePlots` to your environment.\n'
