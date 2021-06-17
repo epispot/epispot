@@ -99,12 +99,14 @@ def test_full_stacked():
 
 
 def test_plain_native():
+    """Native plotting test (minimal parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     Figure = epi.plots.native.model(Model, range(120), latex=False)  # `latex=False` flag speeds up testing
     return Figure
 
 
 def test_full_native():
+    """Native plotting test (all parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     #`latex=True` enabled by default
     # blank strings `''` in `names=` are used to indicate that 
@@ -120,12 +122,14 @@ def test_full_native():
 
 
 def test_plain_native_stack():
+    """Native plotting test for stacked area charts (minimal parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     Figure = epi.plots.native.stacked(Model, range(120), latex=False)  # `latex=False` flag speeds up testing
     return Figure
 
 
 def test_full_native_stack():
+    """Native plotting test for stacked area charts (all parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     #`latex=True` enabled by default
     # blank strings `''` in `names=` are used to indicate that
