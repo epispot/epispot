@@ -90,8 +90,7 @@ def test_full_stacked():
                                  title='SEIR Model Plot',
                                  starting_state=[N(0) - 10, 10, 0],
                                  compartments=[0, 1, 2],
-                                 names=['Susceptible',
-                                        'Pre-infection', 'Infection'],
+                                 names=['Susceptible', 'Pre-infection', 'Infection'],
                                  show_susceptible=True,
                                  log=True,
                                  colors=['red', 'green', 'blue']
@@ -135,8 +134,7 @@ def test_full_native_stack():
                                     title='SEIR Model Plot',
                                     starting_state=[N(0) - 50, 25, 25, 0],
                                     compartments=[0, 3],
-                                    names=['Susceptible Population',
-                                           '', '', 'Removed/Recovered'],
+                                    names=['Susceptible Population', '', '', 'Removed/Recovered'],
                                     show_susceptible=True,
                                     log=True)
     return Figure
