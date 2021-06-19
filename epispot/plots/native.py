@@ -162,6 +162,7 @@ def stacked(Model, time_frame, title='Compartment Populations over Time',
     if log:
         plt.yscale('log')
     plt.title(title)
-    plt.legend(loc='upper left', facecolor='white')
+    plt.legend(loc="lower center", bbox_to_anchor=(0.5, -0.2), borderaxespad=0, ncol=2)
+    plt.tight_layout()
 
     return plt
