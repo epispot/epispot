@@ -12,9 +12,10 @@ before_install:
 install:
   - pip install numpy
   - pip install matplotlib
+  - pip install SciencePlots
+  - sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended cm-super  # install LaTeX requirements for Travis CI
   - pip install pandas
   - pip install plotly
-  - pip install SciencePlots
   - pip install pytest
   - pip install coverage
   - pip install codecov
