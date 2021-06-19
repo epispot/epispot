@@ -64,14 +64,13 @@ def test_plain_web():
 def test_full_web():
     """In-browser plotting test (all parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
-    Figure = epi.plots.web.model(Model, range(120), 
+    Figure = epi.plots.web.model(Model, range(120),
                                  title='SEIR Model Plot',
-                                 starting_state=[N(0) - 10, 10, 0], 
-                                 compartments=[0, 1, 2], 
-                                 names=['Susceptible', 'Pre-infection', 'Infection'], 
-                                 show_susceptible=True, 
-                                 log=True, 
-                                 colors=['red', 'green', 'blue']
+                                 starting_state=[N(0) - 10, 10, 0, 0],
+                                 names=['Susceptible', 'Pre-infection', 'Infection', 'Recovered/Removed'],
+                                 show_susceptible=True,
+                                 log=True,
+                                 colors=['red', 'green', 'blue', 'purple']
                                  )
     return Figure
 
@@ -87,14 +86,13 @@ def test_full_stacked():
     """In-browser plotting test for stacked area charts (all parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     Figure = epi.plots.web.stacked(Model, range(120),
-                                 title='SEIR Model Plot',
-                                 starting_state=[N(0) - 10, 10, 0],
-                                 compartments=[0, 1, 2],
-                                 names=['Susceptible', 'Pre-infection', 'Infection'],
-                                 show_susceptible=True,
-                                 log=True,
-                                 colors=['red', 'green', 'blue']
-                                 )
+                                   title='SEIR Model Plot',
+                                   starting_state=[N(0) - 10, 10, 0, 0],
+                                   names=['Susceptible', 'Pre-infection', 'Infection', 'Recovered/Removed'],
+                                   show_susceptible=True,
+                                   log=True,
+                                   colors=['red', 'green', 'blue', 'purple']
+                                   )
     return Figure
 
 
@@ -109,14 +107,13 @@ def test_full_native():
     """Native plotting test (all parameters)"""
     Model = epi.pre.SEIR(R_0, N, place, gamma, delta)  # compile model
     #`latex=True` enabled by default
-    # blank strings `''` in `names=` are used to indicate that 
+    # blank strings `''` in `names=` are used to indicate that
     # the corresponding compartment is not being plotted
-    Figure = epi.plots.native.model(Model, range(120), 
-                                    title='SEIR Model Plot', 
-                                    starting_state=[N(0) - 50, 25, 25, 0], 
-                                    compartments=[0, 3], 
-                                    names=['Susceptible Population', '', '', 'Removed/Recovered'], 
-                                    show_susceptible=True, 
+    Figure = epi.plots.native.model(Model, range(120),
+                                    title='SEIR Model Plot',
+                                    starting_state=[N(0) - 50, 25, 25, 0],
+                                    names=['Susceptible Population','Pre-Infection', 'Infection', 'Removed/Recovered'],
+                                    show_susceptible=True,
                                     log=True)
     return Figure
 
@@ -135,10 +132,10 @@ def test_full_native_stack():
     # blank strings `''` in `names=` are used to indicate that
     # the corresponding compartment is not being plotted
     Figure = epi.plots.native.stacked(Model, range(120),
-                                    title='SEIR Model Plot',
-                                    starting_state=[N(0) - 50, 25, 25, 0],
-                                    compartments=[0, 3],
-                                    names=['Susceptible Population', '', '', 'Removed/Recovered'],
-                                    show_susceptible=True,
-                                    log=True)
+                                      title='SEIR Model Plot',
+                                      starting_state=[N(0) - 50, 25, 25, 0],
+                                      compartments=[0, 3],
+                                      names=['Susceptible Population', 'Pre-Infection', 'Infection', 'Removed/Recovered'],
+                                      show_susceptible=True,
+                                      log=True)
     return Figure

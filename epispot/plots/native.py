@@ -30,7 +30,7 @@ plt.style.use(['science', 'no-latex'])  # default style
 
 
 def model(Model, time_frame, title='Compartment Populations over Time', 
-          starting_state=None, compartments=None, names=None, show_susceptible=False, 
+          starting_state=None, names=None, show_susceptible=False, 
           log=False, latex=True):
     """
     Plots the results of one model using `matplotlib`.
@@ -44,8 +44,6 @@ def model(Model, time_frame, title='Compartment Populations over Time',
     - time_frame: A `range()` describing the time period to plot
     - title: (`='Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - compartments: (default:all) The indices of the compartments in the model to plot; 
-                    all other compartments will be hidden
     - names: (default:`Model.layer_names`) A list of names for each of the compartments
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
                                    **This assumes that the Susceptible compartment is the first in `Model`**\
@@ -65,9 +63,6 @@ def model(Model, time_frame, title='Compartment Populations over Time',
     System = Model.integrate(time_frame, starting_state=starting_state)
 
     # parameter substitutions
-    if compartments is None:
-        compartments = list(range(len(Model.layers)))
-
     if names is None:
         names = Model.layer_names
 
@@ -79,16 +74,11 @@ def model(Model, time_frame, title='Compartment Populations over Time',
         for i, compartment in enumerate(day):
             DataFrame[Model.layer_names[i]].append(compartment)
 
-    if not show_susceptible:
-        for i, compartment in enumerate(compartments):
-            if compartment == 0:
-                del compartments[i]
-                break
-
     # plotting
     plt.figure(figsize=(9, 5))
-    for compartment in compartments:
-        plt.plot(time_frame, DataFrame[Model.layer_names[compartment]], label=names[compartment])
+    for compartment, _ in enumerate(Model.layers):
+        if (not show_susceptible and compartment != 0) or show_susceptible:
+            plt.plot(time_frame, DataFrame[Model.layer_names[compartment]], label=names[compartment])
 
     if log:
         plt.yscale('log')
