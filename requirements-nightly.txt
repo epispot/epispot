@@ -1,0 +1,6 @@
+matplotlib
+numpy
+fire
+pandas
+plotly
+SciencePlots

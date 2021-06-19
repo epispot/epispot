@@ -1,0 +1,10 @@
+matplotlib
+numpy
+fire
+pandas
+plotly
+pytest
+coverage
+codecov
+pdoc3
+SciencePlots

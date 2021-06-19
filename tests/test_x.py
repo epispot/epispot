@@ -17,5 +17,6 @@ def test_integrity():
     from epispot import comps
     from epispot import fitters
     from epispot import models
-    from epispot import plots
     from epispot import pre
+    from epispot.plots import web
+    from epispot.plots import native
