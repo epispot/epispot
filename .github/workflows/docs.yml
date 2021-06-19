@@ -22,8 +22,11 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
-        pip install pdoc3
-        pip install -r requirements-dev.txt
+        pip install numpy
+        pip install matplotlib
+        pip install SciencePlots
+        pip install pandas
+        pip install plotly
     - name: Configure Git
       run: |
         git config user.name github-actions
