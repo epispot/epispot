@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install pdoc3
-        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
     - name: Configure Git
       run: |
         git config user.name github-actions
