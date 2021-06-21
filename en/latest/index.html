@@ -26,14 +26,11 @@
 <hr>
 <h1 id="epispot-v2">epispot v2</h1>
 <p>A Python package for the mathematical modeling of infectious diseases via
-compartmental models. Originally designed for epidemiologists, epispot can
-be adapted for almost any type of modeling scenario.</p>
+compartmental models. Originally designed for epidemiologists, epispot can be adapted for almost any type of modeling scenario.</p>
 <h2 id="features">Features</h2>
-<p>The epispot package currently only supports compartmental models, though
-we plan to expand the package to work for stochastic agent-based and spatial
-models as well. Currently, epispot offers the following:</p>
+<p>The epispot package currently only supports compartmental models, though we plan to expand the package to work for stochastic agent-based and spatial models as well. Currently, epispot offers the following:</p>
 <ul>
-<li>Quick compilation of compartmental models with the following compartments:<ul>
+<li>Quick compilation of compartmental models with the following compartments:</li>
 <li>Susceptible</li>
 <li>Infected</li>
 <li>Recovered</li>
@@ -42,26 +39,14 @@ models as well. Currently, epispot offers the following:</p>
 <li>Dead</li>
 <li>Critical</li>
 <li>Hospitalized</li>
-</ul>
-</li>
 <li>Custom-defined compartments for research</li>
-<li>Built-in graphing and visualization engine<ul>
+<li>Built-in graphing and visualization engine</li>
 <li>Plots model predictions interactively</li>
 <li>Creates comparisons between models</li>
 </ul>
-</li>
-</ul>
-<p>Due to its diverse range of features, epispot can be used for both research
-and experimental modeling. If you would like to add more modeling support, please
-see the <a href="#contributing">contributing section</a>.</p>
+<p>Due to its diverse range of features, epispot can be used for both research and experimental modeling. If you would like to add more modeling support, please see the <a href="#contributing">contributing section</a>.</p>
 <h2 id="installation">Installation</h2>
-<p>The epispot package can be installed from PyPI, Anaconda, or be built from the
-source. Before reading this guide, it is important to note that there are actually
-<em>two</em> different versions of the epispot package. The first of which is the
-<code>master</code> package, which will always have a version tag like <code>v#.#.#</code>.
-This package is used to release stable versions of epispot. However, during
-important events, like the COVID-19 pandemic, the <code>nightly</code> package is used to
-publish new features quickly. However, these versions may be unstable.</p>
+<p>The epispot package can be installed from PyPI, Anaconda, or be built from the source. Before reading this guide, it is important to note that there are actually <em>two</em> different versions of the epispot package. The first of which is the <code>master</code> package, which will always have a version tag like <code>v#.#.#</code>. This package is used to release stable versions of epispot. However, during important events, like the COVID-19 pandemic, the <code>nightly</code> package is used to publish new features quickly. However, these versions may be unstable.</p>
 <h3 id="pypi">PyPI</h3>
 <p>This is the easiest way to install epispot. Fire up a terminal and type:</p>
 <pre><code class="language-shell">pip install epispot
@@ -69,29 +54,23 @@ publish new features quickly. However, these versions may be unstable.</p>
 <p>For the nightly version, use</p>
 <pre><code class="language-shell">pip install epispot-nightly
 </code></pre>
-<p>Pip will ask you to install <code>numpy</code> and <code>matplotlib</code> as dependencies if you
-haven't already. Additionally, it may require you to install <code>fire</code> for the CLI.
+<p>Pip will ask you to install <code>numpy</code> and <code>matplotlib</code> as dependencies if you haven't already. Additionally, it may require you to install <code>fire</code> for the CLI.
 These can be installed beforehand with:</p>
 <pre><code class="language-shell">pip install numpy
 pip install matplotlib
 pip install fire
 </code></pre>
 <h3 id="anaconda">Anaconda</h3>
-<p>Please note that the <code>nightly</code> version is <strong>not</strong> available on the <code>conda</code>
-package registry. However, it is still possible to install on <code>conda</code>-based
-systems with</p>
+<p>Please note that the <code>nightly</code> version is <strong>not</strong> available on the <code>conda</code> package registry. However, it is still possible to install on <code>conda</code>-based systems with</p>
 <pre><code class="language-shell">pip install epispot-nightly
 </code></pre>
 <p>which uses <code>pip</code> from Anaconda to install it.</p>
-<p>The standard version of epispot is published to <code>conda</code> using the
-<code>conda-forge</code> channel. To install, please use:</p>
+<p>The standard version of epispot is published to <code>conda</code> using the <code>conda-forge</code> channel. To install, please use:</p>
 <pre><code class="language-shell">conda config --add channels conda-forge
 conda install -c conda-forge epispot
 </code></pre>
 <h3 id="building-from-the-source">Building from the source</h3>
-<p>This is the hardest way to install <code><a title="epispot" href="#epispot">epispot</a></code> and it is recommended that you
-use either <code>PyPI</code> or <code>Anaconda</code> to install it instead. However, if you would like
-to contribute to the repository, this will be particularly useful.</p>
+<p>This is the hardest way to install <code><a title="epispot" href="#epispot">epispot</a></code> and it is recommended that you use either <code>PyPI</code> or <code>Anaconda</code> to install it instead. However, if you would like to contribute to the repository, this will be particularly useful.</p>
 <p>Clone the repository with:</p>
 <pre><code class="language-shell">git clone https://github.com/epispot/epispot  # clone epispot/epispot
 cd epispot  # open project
@@ -101,29 +80,21 @@ pip install -r bin/requirements.txt  # Install CLI requirements
 <p>Then, build the nightly version with</p>
 <pre><code class="language-shell">python setup-nightly.py install
 </code></pre>
-<p>For the stable version, first checkout a
-release branch with something like:</p>
+<p>For the stable version, first checkout a release branch with something like:</p>
 <pre><code class="language-shell">git checkout v2.1.1
 python setup.py install
 </code></pre>
 <h2 id="quick-demo">Quick Demo</h2>
-<p>Installing epispot from <code>pip</code> and then compiling a simple SIR model in less than
-40 seconds.</p>
-<p><img alt="" src="https://epispot.github.io/epispot/assets/demo.gif"></p>
+<p>Installing epispot from <code>pip</code> and then compiling a simple SIR model in less than 40 seconds.</p>
+<p><img alt="Quick demo GIF" src="https://epispot.github.io/epispot/assets/demo.gif"></p>
 <h2 id="documentation">Documentation</h2>
-<p>The documentation for the epispot package is generated automatically from
-the Python source code using Pdoc3. You can view the
-documentation for both the nightly and stable builds of epispot
-<a href="https://epispot.github.io/epispot">here</a>.</p>
+<p>The documentation for the epispot package is generated automatically from the Python source code using Pdoc3. You can view the documentation for both the nightly and stable builds of epispot <a href="https://epispot.github.io/epispot">here</a>.</p>
 <p>At first, the documentation may seem a bit hard to understand, especially
-if you're new to epidemiology. That's why epispot has put together an entire
-manual describing some basic concepts you'll need to know to master
+if you're new to epidemiology. That's why epispot has put together an entire manual describing some basic concepts you'll need to know to master
 epispot. You can view it <a href="https://epispot.gitbook.io/manual/">here</a>.
 The GitHub source is available <a href="https://github.com/epispot/manual">here</a>.</p>
 <h2 id="usageexamples">Usage/Examples</h2>
-<p>The GitHub repository has a vast array of samples using epispot. You can start
-by checking out the <code>explorables/</code> directory. In it, you'll find many programs
-designed for helping you get started with epispot and some hands-on examples.</p>
+<p>The GitHub repository has a vast array of samples using epispot. You can start by checking out the <code>explorables/</code> directory. In it, you'll find many programs designed for helping you get started with epispot and some hands-on examples.</p>
 <h2 id="badges">Badges</h2>
 <p><img alt="latest-release" src="https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success">
 <img alt="conda" src="https://anaconda.org/conda-forge/epispot/badges/installer/conda.svg">
@@ -172,9 +143,7 @@ designed for helping you get started with epispot and some hands-on examples.</p
 </ul>
 <h2 id="contributing">Contributing</h2>
 <p>Contributions are always welcome!
-See <a href="https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md">CONTRIBUTING.md</a> for instructions on how to get started,
-including environment setup and instructions to build from the source.
-Please note also that epispot has many guides dedicated to certain types of
+See <a href="https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md">CONTRIBUTING.md</a> for instructions on how to get started, including environment setup and instructions to build from the source. Please note also that epispot has many guides dedicated to certain types of
 contributions. Please see</p>
 <ul>
 <li><a href="https://github.com/epispot/epispot/tree/master/DOCUMENTATION.md">DOCUMENTATION.md</a> for documentation additions</li>
@@ -182,77 +151,51 @@ contributions. Please see</p>
 </ul>
 <h2 id="citation">Citation</h2>
 <p><a href="https://opensource.org/licenses/"><img alt="GPLv3 License" src="https://img.shields.io/badge/License-GPL%20v3-green.svg"></a></p>
-<p>If you plan on using epispot in your project, please abide by the GPLv3 license.
-This requires that any changes you make to epispot must be open-sourced under
-the GPLv3 license as well and that you give credit to the author, which you can
-do by citing the project in your research, linking back to the original repository,
-or mentioning the author @quantum9innovation.</p>
+<p>If you plan on using epispot in your project, please abide by the GPLv3 license. This requires that any changes you make to epispot must be open-sourced under the GPLv3 license as well and that you give credit to the author, which you can do by citing the project in your research, linking back to the original repository, or mentioning the author @quantum9innovation.</p>
 <p>For research, you can also use epispot's DOI to reference the project:</p>
 <blockquote>
 <p><a href="https://zenodo.org/badge/latestdoi/280527664"><img alt="DOI" src="https://zenodo.org/badge/280527664.svg"></a></p>
 </blockquote>
 <p>The recommended citation for epispot is:</p>
 <blockquote>
-<p>quantum9innovation (2021, April 2). epispot/epispot:
-(Version 2.1.0). Zenodo. <a href="http://doi.org/10.5281/zenodo.4624423">http://doi.org/10.5281/zenodo.4624423</a></p>
+<p>quantum9innovation (2021, April 2). epispot/epispot: (Version 2.1.0).
+Zenodo. <a href="http://doi.org/10.5281/zenodo.4624423">http://doi.org/10.5281/zenodo.4624423</a></p>
 </blockquote>
 <h2 id="authors">Authors</h2>
-<p>Please see our <a href="https://github.com/epispot/epispot/tree/master/.github/CODEOWNERS">CODEOWNERS</a> file for authors. Because epispot
-is an open-source project, different pieces of our code have different authors.
-However, if citing epispot or using it in another project, you can put
-@quantum9innovation as the lead author.</p>
+<p>Please see our <a href="https://github.com/epispot/epispot/tree/master/.github/CODEOWNERS">CODEOWNERS</a> file for authors. Because epispot is an open-source project, different pieces of our code have different authors. However, if citing epispot or using it in another project, you can put @quantum9innovation as the lead author.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
 <h3 id="idea-inspiration">Idea &amp; Inspiration</h3>
-<p>The original idea for epispot came from a
-<a href="https://www.youtube.com/watch?v=gxAaO2rsdIs">3Blue1Brown video</a> on basic
-infectious disease dynamics and an
-<a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">interactive article</a>
-in the Washington Post. This in turn inspired the very basic infectious disease
-dynamics simulated <a href="https://quantum9innovation.github.io/disease/">here</a>. However,
-what finally set the package into motion was a series of articles by Henry Froese,
-available on Medium
-<a href="https://towardsdatascience.com/infectious-disease-modelling-part-i-understanding-sir-28d60e29fdfc">here</a>,
-along with their corresponding interactive notebooks.</p>
+<p>The original idea for epispot came from a <a href="https://www.youtube.com/watch?v=gxAaO2rsdIs">3Blue1Brown video</a> on basic infectious disease dynamics and an <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">interactive article</a> in the Washington Post. This in turn inspired the very basic infectious disease dynamics simulated <a href="https://quantum9innovation.github.io/disease/">here</a> However, what finally set the package into motion was a series of articles by Henry Froese, available on Medium <a href="https://towardsdatascience.com/infectious-disease-modelling-part-i-understanding-sir-28d60e29fdfc">here</a>, along with their corresponding interactive notebooks.</p>
 <h3 id="code-development-maintenance">Code Development &amp; Maintenance</h3>
-<p>The epispot project is built on open source code and is itself open-source.
-The initial core development was fueled by @quantum9innovation and much of the
-codebase was maintained by @Quantalabs. Additionally, thank you to all of
-epispot's open-source contributors!</p>
+<p>The epispot project is built on open source code and is itself open-source. The initial core development was fueled by @quantum9innovation and much of the codebase was maintained by @Quantalabs. Additionally, thank you to all of epispot's open-source contributors!</p>
 <p><img alt="epispot's open-source contributors" src="https://contrib.rocks/image?repo=epispot/epispot"></p>
 <h3 id="dependencies">Dependencies</h3>
 <p>The epispot team also relies on the following open-source projects as dependencies:</p>
 <ul>
-<li>NumPy (<a href="https://github.com/numpy/numpy">GitHub</a>),
-the fundamental package for scientific computing with Python</li>
-<li>Matplotlib (<a href="https://github.com/matplotlib/matplotlib">GitHub</a>), plotting with
-Python</li>
-<li>Google Fire (<a href="https://github.com/google/python-fire">Github</a>), a library for
-automatically generating command line interfaces (CLIs) from absolutely any
-Python object.</li>
+<li>NumPy (<a href="https://github.com/numpy/numpy">GitHub</a>), the fundamental package for scientific computing with Python</li>
+<li>Matplotlib (<a href="https://github.com/matplotlib/matplotlib">GitHub</a>), plotting with Python</li>
+<li>Google Fire (<a href="https://github.com/google/python-fire">Github</a>), a library for automatically generating command line interfaces (CLIs) from absolutely any Python object.</li>
 </ul>
 <h3 id="external-code-management-tools">External Code Management Tools</h3>
 <p>For code maintenance, epispot uses various tools including:</p>
 <ul>
-<li>Coverage.py (<a href="https://pypi.org/project/coverage/">PyPI</a>) for code coverage
-report generation</li>
-<li>Pdoc3 (<a href="https://github.com/pdoc3/pdoc">GitHub</a>) for automatic documentation
-generation</li>
+<li>Coverage.py (<a href="https://pypi.org/project/coverage/">PyPI</a>) for code coverage report generation</li>
+<li>Pdoc3 (<a href="https://github.com/pdoc3/pdoc">GitHub</a>) for automatic documentation generation</li>
 <li>GitBook (<a href="https://www.gitbook.com">Website</a>) for documentation hosting</li>
 <li>CodeCov (<a href="https://about.codecov.io">Website</a>) for code coverage report analysis</li>
 <li>LGTM (<a href="https://lgtm.com">Website</a>) for CodeQL analysis</li>
 <li>DeepSource (<a href="https://deepsource.io">Website</a>) for static code analysis</li>
-<li>GitLocalize (<a href="https://gitlocalize.com">Website</a>) for localization of
-documentation</li>
+<li>GitLocalize (<a href="https://gitlocalize.com">Website</a>) for localization of documentation</li>
 <li>Zenodo (<a href="https://zenodo.org">Website</a>) for automatic DOI &amp; citations</li>
 </ul>
-<!-- Documentation available at: <https://epispot.github.io/epispot> -->
+<!-- Documentation available at: <https://epispot.github.io/epispot/en/v3.0.0-alpha-1> -->
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 .. include:: ../README.md
-&lt;!-- Documentation available at: https://epispot.github.io/epispot --&gt;
+&lt;!-- Documentation available at: https://epispot.github.io/epispot/en/v3.0.0-alpha-1 --&gt;
 &#34;&#34;&#34;
 
 
@@ -331,18 +274,22 @@ def _sanity_check():
 
 
 # version info
-version = &#39;2.1.1.15&#39;
+version = &#39;3.0.0-alpha-1&#39;
 &#34;&#34;&#34;
 Epispot&#39;s version info (updated every nightly release)
-Get with 
+Get with:
+
+```
     &gt;&gt;&gt; print(epispot.version)
+```
 &#34;&#34;&#34;
 
 stable = False
 &#34;&#34;&#34;
-Build stability
-- True --&gt; main package (stable)
-- False --&gt; nightly package (possibly unstable)
+Build stability:
+
+- True → main package (stable)
+- False → nightly package (possibly unstable)
 &#34;&#34;&#34;
 
 # metadata
@@ -405,15 +352,18 @@ Each function returns an epispot Model object and its …</p></div>
 </dd>
 <dt id="epispot.stable"><code class="name">var <span class="ident">stable</span></code></dt>
 <dd>
-<div class="desc"><p>Build stability
-- True &ndash;&gt; main package (stable)
-- False &ndash;&gt; nightly package (possibly unstable)</p></div>
+<div class="desc"><p>Build stability:</p>
+<ul>
+<li>True → main package (stable)</li>
+<li>False → nightly package (possibly unstable)</li>
+</ul></div>
 </dd>
 <dt id="epispot.version"><code class="name">var <span class="ident">version</span></code></dt>
 <dd>
 <div class="desc"><p>Epispot's version info (updated every nightly release)
-Get with
-&gt;&gt;&gt; print(epispot.version)</p></div>
+Get with:</p>
+<pre><code>    &gt;&gt;&gt; print(epispot.version)
+</code></pre></div>
 </dd>
 </dl>
 </section>
