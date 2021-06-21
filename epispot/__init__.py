@@ -82,8 +82,11 @@ def _sanity_check():
 version = '3.0.0-alpha-1'
 """
 Epispot's version info (updated every nightly release)
-Get with 
+Get with:
+
+```
     >>> print(epispot.version)
+```
 """
 
 stable = False
