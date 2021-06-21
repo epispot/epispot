@@ -15,7 +15,7 @@ def nightly():
     return ''.join(list(read_setup[setup_no])[13:-3])
 
 
-def setup():
+def stable():
     read_setup = open('setup.py', 'r').readlines()
     setup_no = 0
 
@@ -33,8 +33,8 @@ version_info = None
 if sys.argv[1] == 'nightly':
     version_info = nightly()
     print('`setup-nightly.py` version info found: '+version_info)
-elif sys.argv[1] == 'setup':
-    version_info = setup()
+elif sys.argv[1] == 'stable':
+    version_info = stable()
     print('`setup.py` version info found: '+version_info)
 else:
     raise ValueError("Exited with 1; no version information found")

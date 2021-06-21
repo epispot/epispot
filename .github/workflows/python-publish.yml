@@ -27,7 +27,7 @@ jobs:
         SECURITY_CODE: ${{ secrets.RELEASE_SECURITY_CODE }}
       run: |
         ./checker.sh ${{ SECURITY_CODE }} ${{ github.event.inputs.securityCode }}  # check matching security codes
-        python release.py setup  # check matching versions
+        python release.py stable  # check matching versions
     - name: Build and publish to PyPI package 'epispot'
       env:
         TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
