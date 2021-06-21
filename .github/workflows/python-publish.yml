@@ -3,8 +3,8 @@ name: Upload Python Package Release
 on: 
   workflow_dispatch:
     inputs:
-      securityCode:
-        description: 'Security Code'     
+      version:
+        description: 'Normalized Version Tag'     
         required: true
 
 jobs:
@@ -23,11 +23,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
     - name: Run security and version checks
-      env:
-        SECURITY_CODE: ${{ secrets.RELEASE_SECURITY_CODE }}
       run: |
-        ./checker.sh ${{ SECURITY_CODE }} ${{ github.event.inputs.securityCode }}  # check matching security codes
-        python release.py stable  # check matching versions
+        python release.py stable ${{ github.event.inputs.version }}  # check matching stable versions
     - name: Build and publish to PyPI package 'epispot'
       env:
         TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
