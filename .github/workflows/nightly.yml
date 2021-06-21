@@ -1,4 +1,4 @@
-name: Upload Python Package Release
+name: Upload Nightly Python Package Release
 
 on: 
   workflow_dispatch:
@@ -24,14 +24,14 @@ jobs:
         pip install setuptools wheel twine
     - name: Run security and version checks
       env:
-        SECURITY_CODE: ${{ secrets.RELEASE_SECURITY_CODE }}
+        SECURITY_CODE: ${{ secrets.NIGHTLY_SECURITY_CODE }}
       run: |
         ./checker.sh ${{ SECURITY_CODE }} ${{ github.event.inputs.securityCode }}  # check matching security codes
-        python release.py setup  # check matching versions
-    - name: Build and publish to PyPI package 'epispot'
+        python release.py nightly  # check matching versions
+    - name: Build and publish to PyPI package 'epispot-nightly'
       env:
         TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
       run: |
-        python setup.py sdist bdist_wheel
+        python setup-nightly.py sdist bdist_wheel
         twine upload dist/*

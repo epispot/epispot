@@ -1,22 +1,43 @@
 
-read_setup = open('setup-nightly.py', 'r').readlines()
-setup_no = 0
+import sys
 
-for line, _ in enumerate(read_setup):
-    if len(list(read_setup[line])) > 12:
-        if list(read_setup[line])[4:11] == list('version'):
-            setup_no = line
-            break
 
-version_info = ''.join(list(read_setup[setup_no])[13:-3])
-base_version = '.'.join(version_info.split('.')[:-1])
-commit_num = int(version_info.split('.')[-1])
+def nightly():
+    read_setup = open('setup-nightly.py', 'r').readlines()
+    setup_no = 0
 
-write_init = open('setup-nightly.py', 'w')
-read_setup[setup_no] = '    version="'+base_version+'.'+str(commit_num + 1)+'",\n'
-write_init.writelines(read_setup)
+    for line, _ in enumerate(read_setup):
+        if len(list(read_setup[line])) > 12:
+            if list(read_setup[line])[4:11] == list('version'):
+                setup_no = line
+                break
+    
+    return ''.join(list(read_setup[setup_no])[13:-3])
 
-print('setup-nightly.py release info updated')
+
+def setup():
+    read_setup = open('setup.py', 'r').readlines()
+    setup_no = 0
+
+    for line, _ in enumerate(read_setup):
+        if len(list(read_setup[line])) > 12:
+            if list(read_setup[line])[4:11] == list('version'):
+                setup_no = line
+                break
+    
+    return ''.join(list(read_setup[setup_no])[13:-3])
+
+
+version_info = None
+
+if sys.argv[1] == 'nightly':
+    version_info = nightly()
+    print('`setup-nightly.py` version info found: '+version_info)
+elif sys.argv[1] == 'setup':
+    version_info = setup()
+    print('`setup.py` version info found: '+version_info)
+else:
+    raise ValueError("Exited with 1; no version information found")
 
 read_init = open('epispot/__init__.py', 'r').readlines()
 line_no = 0
@@ -27,8 +48,10 @@ for line, _ in enumerate(read_init):
             line_no = line
             break
 
-write_init = open('epispot/__init__.py', 'w')
-read_init[line_no] = "version = '"+base_version+"."+str(commit_num + 1)+"'\n"
-write_init.writelines(read_init)
+init_info = read_init[line_no][11:-2]
+print('`epispot/__init__.py` version info found: '+init_info)
 
-print('epispot/__init__ release info updated')
+if version_info == init_info:
+    print('Exited with 0; version information matches')
+else:
+    raise ValueError("Exited with 1; version information doesn't match")
