@@ -1,6 +1,6 @@
 """
 .. include:: ../README.md
-<!-- Documentation available at: https://epispot.github.io/epispot -->
+<!-- Documentation available at: https://epispot.github.io/epispot/en/v3.0.0-alpha-1 -->
 """
 
 
@@ -79,7 +79,7 @@ def _sanity_check():
 
 
 # version info
-version = '2.1.1.15'
+version = '3.0.0-alpha-1'
 """
 Epispot's version info (updated every nightly release)
 Get with 
@@ -88,9 +88,10 @@ Get with
 
 stable = False
 """
-Build stability
-- True --> main package (stable)
-- False --> nightly package (possibly unstable)
+Build stability:
+
+- True → main package (stable)
+- False → nightly package (possibly unstable)
 """
 
 # metadata
