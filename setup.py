@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="epispot",
-    version="v2.1.1",
+    version="2.1.1",
     author="quantum9innovation",
     description="A tool for modeling infectious diseases.",
     long_description=long_description,
