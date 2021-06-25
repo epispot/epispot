@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for epispot.
 title: "[Feat]"
-labels: enhancement, status:review-needed
+labels: feat :sparkle:, status:review-needed
 assignees: ''
 
 ---
