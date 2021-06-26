@@ -166,6 +166,14 @@ The recommended citation for epispot is:
 > quantum9innovation (2021, April 2). epispot/epispot: (Version 2.1.0).
 > Zenodo. <http://doi.org/10.5281/zenodo.4624423>
 
+## Related Work
+
+There are many related projects to epispot, although we believe that epispot has greater extesibility than many of these other projects. Additionally, epispot is quite portable (graphs can be used as web components/displayed as images/etc.). However, below we would like to acknowledge a few projects that may be better suited to certain use cases:
+
+- [EpiJS](https://github.com/Quantalabs/EpiJS) by @Quantalabs is a disease modeling package for Javascript
+- [covasim](https://github.com/institutefordiseasemodeling/covasim) by the [Institute for Disease Modeling](https://www.idmod.org) offers agent-based stochastic models which epispot unfortunately does not support as of yet
+- [CovsirPhy](https://github.com/lisphilar/covid19-sir) by @lisphilar offers greater support for loading and analyzing real COVID-19 data, which epispot strives to add soon
+
 ## Authors
 
 Please see our [CODEOWNERS](https://github.com/epispot/epispot/tree/master/.github/CODEOWNERS) file for authors. Because epispot is an open-source project, different pieces of our code have different authors. However, if citing epispot or using it in another project, you can put @quantum9innovation as the lead author.

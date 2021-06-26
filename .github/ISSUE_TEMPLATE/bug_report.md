@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a report to help us improve
 title: "[Bug]"
-labels: bug, status:review-needed
-assignees: Quantalabs
+labels: bug :warning:, status:review-needed
+assignees: ''
 
 ---
 
