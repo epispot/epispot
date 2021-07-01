@@ -1,3 +1,2 @@
-matplotlib>=3.4.2,<4.0.0
-numpy>=1.21.0,<2.0.0
-fire
+matplotlib~=3.4.2
+numpy~=1.21.0
