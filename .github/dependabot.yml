@@ -4,3 +4,12 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    assignees:
+      - "quantum9innovation"
+    commit-message:
+      prefix: "[dep]"
+      prefix-development: "[dep/dev]"
+      include: "scope"
+    labels:
+      - "dependencies"
+    
