@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "quantum9innovation"
+    # reviewers automatically triggered via CODEOWNERS
+    # further labels automatically added by labeler.yml
+    labels:
+      - "dependencies"
+      - "low priority :arrow_down_small:"
+      - "unsupported :no_entry:"
+    # "Dependabot" milestone: 
+    # https://github.com/epispot/epispot/milestone/2
+    milestone: 2
+    pull-request-branch-name:
+      separator: ': '

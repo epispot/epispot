@@ -10,15 +10,9 @@ before_install:
   - python -m pip install --upgrade pip  # Upgrade to latest version of pip
 
 install:
-  - pip install numpy
-  - pip install matplotlib
-  - pip install SciencePlots
   - sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended cm-super  # install LaTeX requirements for Travis CI
-  - pip install pandas
-  - pip install plotly
-  - pip install pytest
-  - pip install coverage
-  - pip install codecov
+  - pip install pandas  # install pandas before reading from requirements files
+  - requirements/build-travis.sh  # build script for Travis CI
 
 script:
   - python -m pytest
