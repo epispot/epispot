@@ -1,8 +1,8 @@
-## `Scripts/`
-The `scripts/` folder contains build, upload, and other scripts.
+# scripts/
+The scripts/ folder contains an array of scripts used for building and uploading packages.
 
-|Script|Description|
-|---|---|
-|`build.sh`|Installs requirements and sets up project.|
-|`conda.sh`|Equivelent of `build.sh` but for Anaconda users. Sets up and enviorment and installs dependencies into the new conda environment.|
-|`travis/`|CI/CD related scripts for travis CI.|
+| Script | Description |
+| --- | --- |
+| ![build.sh](./build.sh) | Installs requirements and sets up project. |
+| ![conda.sh](./conda.sh) | Equivalent of build.sh for conda environments. |
+| ![travis/](./travis) | Travis CI config |
