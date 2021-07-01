@@ -12,4 +12,8 @@ updates:
       include: "scope"
     labels:
       - "dependencies"
+      - "low priority :arrow_down_small:"
+      - "unsupported :no_entry:"
+    pull-request-branch-name:
+      separator: ': '
     
