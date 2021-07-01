@@ -1,6 +1,6 @@
-matplotlib
-numpy
-fire
-pandas
-plotly
-SciencePlots
+matplotlib==3.4.2
+numpy==1.21.0
+fire==0.4.0
+pandas==1.2.4
+plotly==5.1.0
+SciencePlots==1.0.8
