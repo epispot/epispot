@@ -12,7 +12,9 @@ before_install:
 install:
   - sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended cm-super  # install LaTeX requirements for Travis CI
   - pip install pandas  # install pandas before reading from requirements files
-  - requirements/build-travis.sh  # build script for Travis CI
+  # build script for Travis CI
+  - chmod u+x requirements/build-travis.sh
+  - requirements/build-travis.sh
 
 script:
   - python -m pytest
