@@ -1,1075 +1,579 @@
 """
-The `compartments` module contains pre-built disease compartments for basic modelling and allows for
-custom user-defined compartments. This module consists of several classes, each representing a specific
-compartment.
-
-## Structure:
-
-- Susceptible(object)
-- Infected(object)
-- Recovered(object)
-- Exposed(object)
-- Dead(object)
-- Hospitalized(object)
-- Critical(object)
-- Idiom(object)
+The `comps` module is a collection of compartments used to initialize
+the `epispot.models.Model` object to create a compartmental model. Each
+of these compartments are not very useful on their own, but when strung
+together in a `epispot.models.Model` object, they can be quite powerful.
 """
 
-from . import warnings
+from . import np
 
 
-class Susceptible(object):
+class Compartment(object):
     """
-    The Susceptible class is the 'S' of the 'SIR' Model.
-    This is the portion of individuals who have not yet been exposed to the disease.
-    This class can be used as a beginning state.
+    This class represents a compartment, used in compartmental models.
+    The base compartmental model that all compartments can be used for 
+    is the `epispot.models.Model` class. Additionally, this class can 
+    be used with `super().__init__()` to create a custom compartment.
 
-    Recovered (?) --> Susceptible --> Infected
-
-    ## Structure:
-
-    - __init__
-    - get_layer_index
-    - test
-    - get_deriv
     """
+    def __init__(self, name, config={}):
+        """
+        Initialize the compartment; invoke with:
 
-    def __init__(self, layer_index, R_0, gamma, N, p_resusceptibility=None, s_rate=None):
+        ```python
+        class CustomCompartment(Compartment):
+            def __init__():
+                super().__init__(name='Custom Compartment', config={})
+        ```
+
+        ## **Parameters**
+
+        `name`: Name of the compartment (used in error messages)
+
+        `config`: Configuration dictionary for the compartment* (see 
+                  examples for more details).
+
+        ## **Example**
+
+        Example `config` dictionary:
+
+        ```python
+        valid_types = ['Susceptible', 'Infected', None]
+        config = {
+            'type': '',  # should be one of `valid_types`
+        }
+        ```
+
+        ## **Additional Notes**
+
+        *The `config` dictionary is currently in beta and may vary 
+        drastically in future releases.
+
+        .. versionadded:: v3.0.0-alpha-2
+
+        """
+        self.name = name
+        self.config = config
+        self._check_config()
+
+    def __repr__(self):
+        """A string representation of the compartment."""
+        return f'<{self.name} Compartment @ epispot.comps.Compartment>'
+    
+    def _check_config(self):
+        """Configuration dictionary checker"""
+        if not 'type' in self.config.keys():
+            self.config['type'] = None
+
+    def _base_check(self, valid_compartments, minimap, compartments):
+        """
+        A helper function to check model integrity. Implement this in 
+        child classes through a `_check()` function.
+
+        ## **Parameters**
+
+        `valid_compartments`: A list of valid compartments that the 
+                              model can connect to. If any compartments 
+                              not specified in this list are found, 
+                              they will raise an error.
+        
+        `minimap`: A slice of the larger connections list given in the 
+                   `map` parameter of `epispot.models.Model` specific to 
+                   this compartment.
+
+        `compartments`: A copy of the `compartments` parameter in 
+                        `epispot.models.Model`; used to check against
+                        `valid_compartments`. 
+        
+        ## **Error Handling**
+
+        If any extraneous compartments are found in the `compartments` 
+        list, this method will automatically raise a `ValueError`
+
+        ## **Returns**
+        
+        `True` if no errors have been raised.
+        
+        """
+        for compartment_no in minimap:
+            
+            compartment = compartments[compartment_no]
+            valid = False
+
+            for valid_compartment in valid_compartments:
+                if isinstance(compartment, valid_compartment):
+                    valid = True
+
+            if not valid:  # pragma: no cover
+                raise ValueError(f'Invalid compartment {compartment} '
+                                 f'found connected to compartment '
+                                 f'{self.name}.')
+
+        return True
+
+    def diff(self, time, system, pos, minimap, slice):
+        """
+        Calculate the derivative of the compartment with respect to 
+        time.
+        
+        ## **Parameters**
+        
+        `time`: Time to take the derivative at. Similar to `time` 
+                parameter in `epispot.models.Model.diff`.
+        
+        `system`: A list containing the system of compartment values.
+                  Should be of the same shape as the `starting_state` 
+                  parameter of `epispot.models.Model.integrate`.
+        
+        `pos`: The index of the compartment in the `comps` parameter of 
+               `epispot.models.Model`.
+        
+        `minimap`: This compartment's connections. Essentially, a slice
+                   of the larger `map` parameter of 
+                   `epispot.models.Model`.
+
+        `slice`: A slice of the `matrix` parameter of 
+                 `epispot.models.Model` specific to this compartment.       
+
+        ## **Returns**
+
+        The compartment derivative
+
+        """
+        output = np.zeros(system.shape)
+        for connection in minimap:
+            
+            # initialize parameters
+            probability = slice[connection][0]
+            rate = slice[connection][1]
+
+            # initialize time-dependent parameters
+            if callable(probability):
+                probability = probability(time)
+            if callable(rate):
+                rate = rate(time)
+
+            # evaluate compartment derivative
+            deriv = probability * rate * system[pos]
+            output[connection] += deriv
+            output[pos] -= deriv
+        
+        return output
+
+
+class Susceptible(Compartment):
+    """
+    The Susceptible class is the 'S' of the 'SIR' Model. This is the 
+    portion of individuals who have not yet been exposed to the 
+    disease. This class can be used as an initial state. Because of 
+    this property, the Susceptible class is a special compartment and 
+    does not use the default parameter matrix.
+
+    Recovered (?) → Susceptible → Exposed, Infected
+    
+    """
+    def __init__(self, R_0, gamma, N):
         """
         Initialize the Susceptible class
+
+        ## **Parameters**
+
+        `R_0`: The 
+               [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number), 
+               indicating how infectious a given disease is. A value of 
+               above 1 indicates a high probability of transmission and 
+               thus an increasing infected population. A value of 1 
+               indicates a low probability of transmission and thus a 
+               constant infected population. A value below 1 indicates 
+               a low probability of transmission and also a decreasing 
+               infected population.
+
+        `gamma`: The total recovery rate of patients. This is **not** a 
+                 measure of how long it takes patients in any given 
+                 compartment to recover but rather a measure of one 
+                 divided by the average time of infectiousness.
+
+        `N`: The initial population size; should be the same as that 
+             passed into the `epispot.models.Model` class.
+
+        """
+        config = {
+            'type': 'Susceptible',
+        }
+        super().__init__('Susceptible', config=config)
+        self.R_0 = R_0
+        self.gamma = gamma
+        self.N = N
+
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Infected compartment"""
+        self._base_check([Exposed, Infected], minimap, compartments)
+        if len(minimap) != 1:  # pragma: no cover
+            raise ValueError(f'The Susceptible compartment must have '
+                             f'exactly one connection to either the '
+                             f'Infected or Exposed compartment.')
+    
+    def diff(self, time, system, pos, minimap, slice, infecteds=[]):
+        """
+        Calculate the derivative of the compartment with respect to 
+        time.
         
-        - layer_index: index of layer in `layers`
-        - R_0: the basic reproductive number--
-            this is the average number of susceptibles infected by one infected\
-            implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-        - gamma: the infectious period--
-            1 / average duration of infectious period\
-            implemented as a function gamma(t):
-            - t: time
-            - return: infectious period
-        - N: the total population\
-            implemented as a function N(t):
-            - t: time
-            - return: total population
-        - p_resusceptibility: =None, probability of re-susceptibility (0 <= x <= 1)--
-           only applicable if individuals can become susceptible again\
-           implemented as a function p_resusceptibility(t):
-            - t: time
-            - return: probability of re-susceptibility
-        - s_rate: =None, 1 / average time to become susceptible again--
-           only applicable if individuals can become susceptible again\
-           implemented as a function s_rate(t):
-            - t: time
-            - return: susceptiblity rate
+        ## **Parameters**
+        
+        `time`: Time to take the derivative at. Similar to `time` 
+                parameter in `epispot.models.Model.diff`.
+        
+        `system`: A list containing the system of compartment values.
+                  Should be of the same shape as the `starting_state` 
+                  parameter of `epispot.models.Model.integrate`.
+        
+        `pos`: The index of the compartment in the `comps` parameter of 
+               `epispot.models.Model`.
+        
+        `minimap`: This compartment's connections. Essentially, a slice 
+                   of the larger `map` parameter of 
+                   `epispot.models.Model`.
+
+        `slice`: A slice of the `matrix` parameter of 
+                 `epispot.models.Model` specific to this compartment.
+        
+        ## **Returns**
+
+        The compartment derivative
+
         """
+        output = np.zeros(system.shape)
 
-        self.layer_index = layer_index
-        self.R_0 = R_0
-        self.gamma = gamma
-        self.N = N
+        # initialize parameters
+        R_0 = self.R_0
+        gamma = self.gamma
+        N = self.N
 
-        self.p_resusceptibility = p_resusceptibility
-        self.s_rate = s_rate
+        # initialize time-dependent parameters
+        if callable(R_0):
+            R_0 = R_0(time)
+        if callable(gamma):
+            gamma = gamma(time)
+        if callable(N):
+            N = N(time)
 
-        self.infected_category_indices = []
-        self.prev_layer_indices = []
-        self.first_layer = True
+        # get total number of infecteds
+        I = 0
+        for i in infecteds:
+            I += system[i]
 
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
-        """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
-
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
-        """
-
-        # setup
-        for i in range(0, len(layer_names)):
-            if layer_names[i] == 'Infected':
-                self.infected_category_indices.append(i)
-
-        for layer_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_no]:
-                if next_layer.get_layer_index() == self.layer_index:
-                    self.first_layer = False
-                    self.prev_layer_indices.append(layer_no)
-
-        # tests
-        if not self.first_layer and not self.s_rate:  # pragma: no cover
-            warnings.warn('The Susceptible layer at %s is not the first layer and there does not seem \n'
-                          'to be any specified susceptibility rate. You can specify this \n'
-                          'by passing `s_rate=Value` into this layer.' % self.layer_index)
-
-        for prev_layer_index in self.prev_layer_indices:
-            if layer_names[prev_layer_index] != 'Removed' and \
-               layer_names[prev_layer_index] != 'Recovered':  # pragma: no cover
-                warnings.warn('Previous layer at %s to the Susceptible layer at %s is neither Removed or \n'
-                              'Recovered. If you want to create a layer which does this, add a custom \n'
-                              'layer through `add_layer`. If not, fix the `layer_map`.' % (prev_layer_index,
-                                                                                           self.layer_index))
-
-    def get_deriv(self, time, system):
-        """
-        Derivative of the Susceptible compartment
-        must be the *only* Susceptible compartment which people from other layers may enter
-
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        total_infecteds = 0
-        for infected_category_index in self.infected_category_indices:
-            total_infecteds += system[infected_category_index]
-
-        derivative = - self.gamma(time) * self.R_0(time) * system[self.layer_index] * \
-                       total_infecteds / self.N(time)
-
-        if self.first_layer:
-            return derivative
-
-        else:
-            possible_new_susceptibles = 0
-            for prev_layer_index in self.prev_layer_indices:
-                possible_new_susceptibles += system[prev_layer_index]
-
-            derivative += self.p_resusceptibility(time) * self.s_rate(time) * possible_new_susceptibles
-            return derivative
+        for connection in minimap:
+            
+            # evaluate compartment derivative
+            deriv = R_0 * gamma * system[pos] * I / N
+            deriv *= slice[connection][0] * slice[connection][1]
+            
+            # apply derivative
+            output[connection] += deriv
+            output[pos] -= deriv
+        
+        return output
 
 
-class Infected(object):
+class Infected(Compartment):
     """
-    The Infected class is the 'I' of the 'SIR' Model.
-    This is the portion of individuals who are actively spreading the disease.
+    The Infected class is the 'I' of the 'SIR' Model. This is the 
+    portion of individuals who are actively spreading the disease. Like
+    the `epispot.comps.Susceptible` class, this is also a special 
+    compartment.
+    
+    Susceptible, Exposed → Infected → Recovered, Hospitalized, Critical, 
+    Dead, Removed
 
-    Susceptible, Exposed --> Infected --> Recovered, Hospitalized, Critical, Dead
-
-    ## Structure:
-
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
     """
+    def __init__(self):
+        """Initialize the Infected class"""
+        config = {
+            'type': 'Infected',
+        }
+        super().__init__('Infected', config=config)
 
-    def __init__(self, layer_index, N, R_0=None, gamma=None, delta=None, p_recovery=None, recovery_rate=None,
-                 p_hospitalized=None, hospital_rate=None, p_critical=None, critical_rate=None,
-                 p_death=None, death_rate=None):
-        """
-        Initialize the Infected class
-
-        - layer_index: index of layer in `layers`
-        - N: the total population\
-          implemented as a function N(t):
-            - t: time
-            - return: total population
-        - R_0: =None, the basic reproductive number (only applicable if previous layer is Susceptible)--
-            this is the average number of Susceptibles infected by one Infected\
-            implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-        - gamma: =None, the infectious period (only applicable if previous layer is Susceptible)--
-          1 / average duration of infectious period\
-          implemented as a function gamma(t):
-            - t: time
-            - return: infectious period
-        - delta: =None, the incubation period (only applicable if previous layer is Exposed)\
-          implemented as a function delta(t)--in most cases this should stay constant
-            - t: time
-            - return: incubation period
-        - p_recovery: =None, probability of recovery--
-          (only applicable if next layer is Recovered)\
-          implemented as a function p_recovery(t):
-            - t: time
-            - return: probability of recovery
-        - recovery_rate: =None, the recovery rate--different from the standard recovery rate `gamma`--
-            measures only 1 / the time it takes to move to the Recovered layer
-            (only applicable if next layer is Recovered)\
-            implemented as a function recovery_rate(t):
-            - t: time
-            - return: recovery rate
-        - p_hospitalized: =None, probability of hospitalization--
-          (only applicable if next layer is Hospitalized)\
-          implemented as a function p_hospitalized(t):
-            - t: time
-            - return: probability of hospitalization
-        - hospital_rate: =None, 1 / average time to hospitalization--
-          (only applicable if next layer is Hospitalized)\
-          implemented as a function hospital_rate(t)
-            - t: time
-            - return: hospitalization rate
-        - p_critical: =None, probability of becoming a critical patient--
-          (only applicable if next layer is Critical)\
-          implemented as a function p_critical(t)
-            - t: time
-            - return: critical probability
-        - critical_rate: =None, 1 / average time to becoming a critical patient--
-          (only applicable if next layer is Critical)\
-          implemented as a function critical_rate(t)
-            - t: time
-            - return: critical rate
-        - p_death: =None, probability of death (only applicable if next layer is Dead)\
-          implemented as a function p_death(t)
-            - t: time
-            - return: death probability
-        - death_rate: =None, 1 / rate of death (only applicable if next layer is Dead)\
-          implemented as a function death_rate(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
-        """
-
-        self.layer_index = layer_index
-        self.R_0 = R_0
-        self.gamma = gamma
-        self.delta = delta
-        self.N = N
-        self.p_recovery = p_recovery
-        self.recovery_rate = recovery_rate
-        self.p_hospitalized = p_hospitalized
-        self.hospital_rate = hospital_rate
-        self.p_critical = p_critical
-        self.critical_rate = critical_rate
-        self.p_death = p_death
-        self.death_rate = death_rate
-
-        self.prev_layer_type = None
-        self.prev_layer_indices = []
-
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
-        """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
-
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
-        """
-
-        # setup
-        for layer_map_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_map_no]:
-                if next_layer.get_layer_index() == self.layer_index:
-                    self.prev_layer_type = layer_names[layer_map_no]
-                    self.prev_layer_indices.append(layer_map_no)
-                # warning if there are different input layer types
-                if self.prev_layer_type is not None and next_layer.get_layer_index() == self.layer_index and \
-                   layer_names[layer_map_no] != self.prev_layer_type:  # pragma: no cover
-                    warnings.warn('Not all input layers to the Infected layer at %s are the same. \n'
-                                  'Input layers to the Infected layer should either all be Susceptible \n'
-                                  'or Exposed. Consider changing the `layer_map`.' %
-                                  self.layer_index)
-
-        # warnings
-        # undefined parameters
-        if self.prev_layer_type == 'Susceptible' and not self.R_0:  # pragma: no cover
-            warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the \n'
-                          'basic reproductive number is not defined. Please define as `R_0=Value`.' %
-                          self.layer_index)
-        if self.prev_layer_type == 'Susceptible' and not self.gamma:  # pragma: no cover
-            warnings.warn('The previous layer type to the Infected layer at %s is Susceptible and the \n'
-                          'recovery rate is not defined. Please define as `gamma=Value.`' % self.layer_index)
-
-        if self.prev_layer_type == 'Exposed' and not self.delta:  # pragma: no cover
-            warnings.warn('The previous layer type to the Infected layer at %s is Exposed and the \n'
-                          'incubation period is not defined. Please define as `delta=Value`.' % self.layer_index)
-
-        # layer structures
-        if self.prev_layer_type != 'Susceptible' and self.prev_layer_type != 'Exposed':  # pragma: no cover
-            warnings.warn('Input layer types to the Infected layer at %s must be either \n'
-                          'Susceptible or Exposed. Consider changing the Input layers in `layer_map` \n'
-                          'or creating a custom Infected layer using `add_layer`.' % self.layer_index)
-
-    def get_deriv(self, time, system):
-        """
-        Derivative of the Infected compartment
-        all layers feeding into the infected layer must be of the same type and either Susceptible or
-        Exposed
-
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        total_prev_layer = 0
-        for prev_layer_index in self.prev_layer_indices:
-            total_prev_layer += system[prev_layer_index]
-
-        if self.prev_layer_type == 'Susceptible':
-            derivative = self.gamma(time) * self.R_0(time) * total_prev_layer * \
-                   system[self.layer_index] / self.N(time)
-        if self.prev_layer_type == 'Exposed':
-            derivative = self.delta(time) * total_prev_layer
-
-        if self.p_recovery:
-            derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
-        if self.p_hospitalized:
-            derivative -= self.p_hospitalized(time) * self.hospital_rate(time) * system[self.layer_index]
-        if self.p_critical:
-            derivative -= self.p_critical(time) * self.critical_rate(time) * system[self.layer_index]
-        if self.p_death:
-            derivative -= self.p_death(time) * self.death_rate(time) * system[self.layer_index]
-
-        return derivative
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Infected compartment"""
+        self._base_check([Recovered, Hospitalized, Critical, Dead, Removed], 
+                         minimap, compartments)
 
 
-class Recovered(object):
+class Removed(Compartment):
     """
-    The Recovered class can act like the 'R' of the 'SIR' Model if the recovery and death rates are the same.
-    This class actually consists of individuals who have had the disease and recovered (i.e. did not die).
-    This class can be used as a terminal state.
+    The 'Removed' class is a special class that acts as the combination
+    of both the 'Recovered' and 'Dead' compartments. This is a useful 
+    construct when the death and recovery rates and probabilities are 
+    the same (or almost the same) or if you want to simplify your 
+    model by decreasing the number of compartments (like the 'R' in the 
+    classic SIR model). This compartment is a *terminal state*, meaning 
+    that it can (only) be used as the last compartment in a model.
+    
+    Infected, Hospitalized, Critical → Removed
 
-    Infected, Critical, Hospitalized --> Recovered --> Susceptible (?)
-
-    ## Structure:
-
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
     """
+    def __init__(self):
+        """Initialize the Removed class"""
+        super().__init__('Removed')
 
-    def __init__(self, layer_index, p_from_inf=None, from_inf_rate=None, p_from_cri=None,
-                 from_cri_rate=None, p_from_hos=None, from_hos_rate=None, p_resusceptibility=None,
-                 s_rate=None):
-        """
-        Initialize the Recovered class
-
-        - layer_index: index of layer in `layers`
-        - p_from_inf: =None, probability of recovery from Infected (only applicable if previous layer is Infected)\
-           implemented as a function p_from_inf(t)
-            - t: time
-            - return: probability of recovery
-        - from_inf_rate: =None, 1 / time to recover from Infected (only applicable if previous layer is Infected)\
-           implemented as a function from_inf_rate(t)
-            - t: time
-            - return: recovery rate
-        - p_from_cri: =None, probability of recovery from Critical (only applicable if previous layer is Critical)\
-           implemented as a function p_from_cri(t)
-            - t: time
-            - return: probability of recovery
-        - from_cri_rate: =None, 1 / time to recover from Critical (only applicable if previous layer is Critical)\
-           implemented as a function from_cri_rate(t)
-            - t: time
-            - return: recovery rate
-        - p_from_hos: =None, probability of recovery from Hospitalized--
-           (only applicable if previous layer is Hospitalized)\
-           implemented as a function p_from_hos(t)
-            - t: time
-            - return: probability of recovery
-        - from_hos_rate: =None, 1 / time to recover from Hospitalized--
-           (only applicable if previous layer is Hospitalized)\
-           implemented as a function from_hos_rate(t)
-            - t: time
-            - return: recovery rate
-        - p_resusceptibility: =None, probability of resusceptibility (only applicable if next layer is Susceptible)\
-           implemented as a function p_resusceptibility(t)
-            - t: time
-            - return: probability of resusceptibility
-        - s_rate: =None, 1 / time to resusceptibility (only applicable if next layer is Susceptible)\
-           implemented as a function s_rate(t)
-            - t: time
-            - return: rate of resusceptibility
-        """
-
-        self.layer_index = layer_index
-        self.p_from_inf = p_from_inf
-        self.from_inf_rate = from_inf_rate
-        self.p_from_cri = p_from_cri
-        self.from_cri_rate = from_cri_rate
-        self.p_from_hos = p_from_hos
-        self.from_hos_rate = from_hos_rate
-        self.p_resusceptibility = p_resusceptibility
-        self.s_rate = s_rate
-
-        self.prev_layer_indices_by_type = [[], [], []]  # in order [infected, critical, hospitalized]
-
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
-        """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
-
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
-        """
-
-        # setup
-        for layer_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_no]:
-                if next_layer.get_layer_index() == self.layer_index:
-                    if layer_names[layer_no] == 'Infected':
-                        self.prev_layer_indices_by_type[0].append(layer_no)
-                    elif layer_names[layer_no] == 'Critical':
-                        self.prev_layer_indices_by_type[1].append(layer_no)
-                    elif layer_names[layer_no] == 'Hospitalized':
-                        self.prev_layer_indices_by_type[2].append(layer_no)
-                    else:  # pragma: no cover
-                        warnings.warn('Previous layer at %s to Recovered layer at %s is not Infected, Critical, or \n'
-                                      'Hospitalized. Consider either correcting the `layer_map` if this is not \n'
-                                      'supposed to happen, or accomodating for this setup by using a custom \n'
-                                      'Recovered layer.' % (layer_no, self.layer_index))
-
-        # warnings
-        for next_layer_index in range(len(layer_map[self.layer_index])):
-            if layer_names[next_layer_index] != 'Susceptible':  # pragma: no cover
-                warnings.warn('The next layer to the Recovered layer at %s must be a Susceptible layer. \n'
-                              'Change the `layer_map` to avoid this complication or use a custom layer.'
-                              % self.layer_index)
-
-    def get_deriv(self, time, system):
-        """
-        Derivative of the Recovered compartment
-
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        derivative = 0
-
-        # previous layers
-        # infected
-        for prev_layer_index in self.prev_layer_indices_by_type[0]:
-            derivative += self.p_from_inf(time) * self.from_inf_rate(time) * system[prev_layer_index]
-
-        # critical
-        for prev_layer_index in self.prev_layer_indices_by_type[1]:
-            derivative += self.p_from_cri(time) * self.from_cri_rate(time) * system[prev_layer_index]
-
-        # hospitalized
-        for prev_layer_index in self.prev_layer_indices_by_type[2]:
-            derivative += self.p_from_hos(time) * self.from_hos_rate(time) * system[prev_layer_index]
-
-        # next layers
-        # susceptible
-        if self.p_resusceptibility:
-            derivative -= self.p_resusceptibility(time) * self.s_rate(time) * system[self.layer_index]
-
-        return derivative
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Removed compartment"""
+        self._base_check([], minimap, compartments)
 
 
-class Exposed(object):
+class Recovered(Compartment):
     """
-    The Exposed class represents the incubation period of the disease.
-    This portion of individuals cannot spread the disease but are bound to become infected after some period of time.
+    The 'Recovered' class represents the portion of the population that 
+    has had the infection and subsequently recovered. In most 
+    epidemiological models and scenarios, the individuals in this class 
+    are assumed to have developed some immunity to the virus. However, 
+    this is not always the case. In rare occassions where 
+    resusceptibility *is* possible, connecting this class to the 
+    `epispot.comps.Susceptible` class is permitted. This class can be 
+    used as a terminal state.
 
-    Susceptible --> Exposed --> Infected
-
-    ## Structure:
-
-    - __init__
-    - get_layer_index
-    - test
-    - get_deriv
+    Infected, Hospitalized, Critical → Removed → Susceptible
+    
     """
+    def __init__(self):
+        """Initialize the Recovered class"""
+        super().__init__('Recovered')
 
-    def __init__(self, layer_index, R_0, gamma, N, delta):
-        """
-        Initialize the Exposed class
-
-        - layer_index: index of layer in `layers`
-        - R_0: the basic reproductive number--
-            this is the average number of Susceptibles infected by one Infected\
-            implemented as a function R_0(t):
-            - t: time
-            - return: R_0 value
-        - gamma: the infectious period--
-          1 / average duration of infectious period\
-          implemented as a function gamma(t):
-            - t: time
-            - return: infectious period
-        - N: the total population\
-          implemented as a function N(t):
-            - t: time
-            - return: total population
-        - delta: the incubation period (only applicable if previous layer is Exposed)\
-          implemented as a function delta(t)--in most cases this should stay constant
-            - t: time
-            - return: incubation period
-        """
-
-        self.layer_index = layer_index
-        self.R_0 = R_0
-        self.gamma = gamma
-        self.N = N
-        self.delta = delta
-
-        self.prev_layer_indices = []
-        self.infected_category_indices = []
-
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
-        """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
-
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
-        """
-
-        # setup
-        for layer_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_no]:
-
-                if next_layer.get_layer_index() == self.layer_index and \
-                        layer_names[layer_no] == 'Susceptible':
-                    self.prev_layer_indices.append(layer_no)
-
-                # warning
-                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                    warnings.warn('It seems like you want to connect the layer at %s to the Exposed layer at %s. \n'
-                                  'However, only Susceptible layers can be fed into an Exposed layer. \n'
-                                  'Consider creating a custom layer to handle this or remove the connection.' %
-                                  (layer_no, self.layer_index))
-
-        for next_layer_index in range(len(layer_map[self.layer_index])):
-
-            if layer_names[layer_map[self.layer_index][next_layer_index].get_layer_index()] == 'Infected':
-                self.infected_category_indices.append(layer_map[self.layer_index][next_layer_index].
-                                                      get_layer_index())
-
-            # warnings
-            else:  # pragma: no cover
-                warnings.warn('It seems like you want to connect Exposed layer at %s to the layer at %s. \n'
-                              'However, only Infected layers can be placed in front of Exposed layers. \n'
-                              'Consider creating a custom layer to handle this or remove the connection.' %
-                              (self.layer_index, next_layer_index))
-
-        # warnings
-        if len(self.prev_layer_indices) == 0:  # pragma: no cover
-            warnings.warn('It seems that the Exposed layer at %s is not in use. Please find a Susceptible \n'
-                          'layer to route through this layer or remove this layer altogether.' %
-                          self.layer_index)
-
-    def get_deriv(self, time, system):
-        """
-        Derivative of the Exposed compartment
-
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        total_susceptibles = 0
-        for prev_layer_index in self.prev_layer_indices:
-            total_susceptibles += system[prev_layer_index]
-
-        total_infecteds = 0
-        for infected_index in self.infected_category_indices:
-            total_infecteds += system[infected_index]
-
-        return self.gamma(time) * self.R_0(time) * total_susceptibles * \
-               total_infecteds / self.N(time) - self.delta(time) * system[self.layer_index]
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Recovered compartment"""
+        self._base_check([Susceptible], minimap, compartments)
 
 
-class Dead(object):
+class Exposed(Compartment):
     """
-    The Dead class is a terminal state\
-    As is convention with the SIR Model, we assume that this portion of individuals does not significantly
-    change the original population ## Structure, and therefore, the total population will remain the same
-    regardless of how many people have been classified as Dead.
+    The Exposed compartment is traditionally used as a way to simulate 
+    an incubation period for a disease. This compartment tracks people
+    who have come into contact with an infected person and are bound to 
+    eventually become infectious themselves, but haven't yet developed 
+    symptoms or a way of spreading the disease to others. These are 
+    also usually the targets of most 
+    [contact tracing](https://en.wikipedia.org/wiki/Contact_tracing)
+    operations.
 
-    Infected, Critical, Hospitalized --> Dead (TERMINAL)
-
-    ## Structure:
-
-    - __init__
-    - get_layer_index
-    - test
-    - get_deriv
+    Susceptible → Exposed → Infected
+    
     """
+    def __init__(self):
+        """Initialize the Exposed class"""
+        super().__init__('Exposed')
 
-    def __init__(self, layer_index, rho_inf=None, alpha_inf=None, rho_hos=None, alpha_hos=None, rho_cri=None,
-                 alpha_cri=None):
-        """
-        Initialize the Dead class
-
-        - layer_index: index of layer in `layers`
-        - rho_inf: =None, 1 / time until death from Infected (only applicable if previous layer is Infected)\
-            implemented as a function rho_inf(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
-        - alpha_inf: =None, probability of death from Infected (only applicable if previous layer is Infected)\
-          implemented as a function alpha_inf(t)
-            - t: time
-            - return: probability of death
-        - rho_hos: =None, 1 / time until death from Hospitalized (only applicable if previous layer is
-            Hospitalized)\
-            implemented as a function rho_hos(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
-        - alpha_hos: =None, probability of death from Hospitalized (only applicable if previous layer is
-          Hospitalized)\
-          implemented as a function alpha_hos(t)
-            - t: time
-            - return: probability of death
-        - rho_cri: =None, 1 / time until death from Critical (only applicable if previous layer is Critical)\
-            implemented as a function rho_cri(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
-        - alpha_cri: =None, probability of death from Critical (only applicable if previous layer is Critical)\
-          implemented as a function alpha_cri(t)
-            - t: time
-            - return: probability of death
-        """
-
-        self.layer_index = layer_index
-        self.rho_inf = rho_inf
-        self.alpha_inf = alpha_inf
-        self.rho_hos = rho_hos
-        self.alpha_hos = alpha_hos
-        self.rho_cri = rho_cri
-        self.alpha_cri = alpha_cri
-
-        self.infected_category_indices = []
-        self.hospitalized_category_indices = []
-        self.critical_category_indices = []
-
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
-        """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
-
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
-        """
-
-        # setup
-        for layer_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_no]:
-
-                if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
-                    self.infected_category_indices.append(layer_no)
-                elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Hospitalized':
-                    self.hospitalized_category_indices.append(layer_no)
-                elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Critical':
-                    self.critical_category_indices.append(layer_no)
-
-                # warnings
-                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                    warnings.warn('You are trying to connect an incorrect layer type at %s to the Dead layer at %s. \n'
-                                  'Previous layers to the Dead layer must be of the Infected, Critical, or \n'
-                                  'Hospitalized type.' % (layer_no, self.layer_index))
-
-        # warnings
-        if not self.rho_inf and len(self.infected_category_indices) > 0:  # pragma: no cover
-            warnings.warn('You have connected an Infected layer to the Dead layer at %s but \n'
-                          'you have not specified a death rate for that layer. Please do this by \n'
-                          'passing in parameters `rho_inf=Float` and `alpha_inf=Float` when \n'
-                          'the Dead layer is initialized.' % self.layer_index)
-
-        if not self.rho_hos and len(self.hospitalized_category_indices) > 0:  # pragma: no cover
-            warnings.warn('You have connected a Hospitalized layer to the Dead layer at %s but \n'
-                          'you have not specified a death rate for that layer. Please do this by \n'
-                          'passing in parameters `rho_hos=Float` and `alpha_hos=Float` when \n'
-                          'the Dead layer is initialized.' % self.layer_index)
-
-        if not self.rho_cri and len(self.critical_category_indices) > 0:  # pragma: no cover
-            warnings.warn('You have connected a Critical layer to the Dead layer at %s but \n'
-                          'you have not specified a death rate for that layer. Please do this by \n'
-                          'passing in parameters `rho_cri=Float` and `alpha_cri=Float` when \n'
-                          'the Dead layer is initialized.' % self.layer_index)
-
-    def get_deriv(self, time, system):
-        """
-        Derivative of the Dead compartment
-
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        derivative = 0
-
-        for infected_category_index in self.infected_category_indices:
-            derivative += self.rho_inf(time) * self.alpha_inf(time) * system[infected_category_index]
-
-        for hospitalized_category_index in self.hospitalized_category_indices:
-            derivative += self.rho_hos(time) * self.alpha_hos(time) * system[hospitalized_category_index]
-
-        for critical_category_index in self.critical_category_indices:
-            derivative += self.rho_cri(time) * self.alpha_cri(time) * system[critical_category_index]
-
-        return derivative
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Exposed compartment"""
+        self._base_check([Infected], minimap, compartments)
 
 
-class Hospitalized(object):
+class Dead(Compartment):
     """
-    The Hospitalized class represents the portion of individuals currently taking up space in the available
-    hospitals. However, this is a distinct category from the Critical portion of individuals, who require
-    more resources (ICU beds, ventilators, etc.). This layer supports triage.
+    The Dead class is a fully terminal state in any compartmental model.
+    It represents the portion of the population that have died because 
+    of *and only because of* the disease being analyzed.
 
-    Infected --> Hospitalized --> Critical, Dead
+    Infected, Critical, Hospitalized, Recovered → Dead
 
-    ## Structure:
-
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
+    .. note::
+       As is convention with compartmental models, we assume that the 
+       dead compartment does not significantly alter the population 
+       structure that we're analyzing. In future versions of epispot, 
+       we do plan to add support for factoring in the deceased 
+       population into predictions, but at this time that is not a 
+       primary concern.
+    
     """
+    def __init__(self):
+        """Initialize the Dead class"""
+        super().__init__('Dead')
 
-    def __init__(self, layer_index, hos_rate, p_hos, cri_rate=None, p_cri=None, recovery_rate=None,
-                 p_recovery=None, rho=None, alpha=None, maxCap=None, dump_to_layer=None):
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Dead compartment"""
+        self._base_check([], minimap, compartments)
+
+
+class Hospitalized(Compartment):
+    """
+    The Hospitalized class represents the portion of individuals 
+    currently taking up space in the available hospitals. However, this 
+    is a distinct category from the `epispot.comps.Critical` portion of 
+    individuals, who require more resources (e.g. ICU beds, 
+    ventilators, etc.). This compartment also features 
+    [triage support](https://en.wikipedia.org/wiki/Triage).
+
+    Infected → Hospitalized → Critical, Recovered, Removed, Dead
+    
+    """
+    def __init__(self, max_cap=None, index=None):
         """
         Initialize the Hospitalized class
 
-        - layer_index: index of layer in `layers`
-        - hos_rate: 1 / time until hospitalization\
-            implemented as a function hos_rate(t)
-            - t: time
-            - return: hospitalization rate
-        - p_hos: probability of hospitalization\
-            implemented as a function p_hos(t)
-            - t: time
-            - return: probability of hospitalization
-        - cri_rate: =None, 1 / time until a patient becomes Critical (only applicable if next layer is Critical)\
-            implemented as a function cri_rate(t)
-            - t: time
-            - return: critical rate
-        - p_cri: =None, probability of becoming a Critical patient (only applicable if next layer is Critical)\
-            implemented as a function p_cri(t)
-            - t: time
-            - return: probability of becoming Critical
-        - recovery_rate: =None, 1 / time to recover (only applicable if next layer is Recovered)\
-            implemented as a function recovery_rate(t)
-            - t: time
-            - return: recovery rate
-        - p_recovery: =None, probability of recovery (only applicable if next layer is Recovered)\
-            implemented as a function p_recovery(t)
-            - t: time
-            - return: probability of recovery
-        - rho: =None, 1 / time in hospital until death (only applicable if next layer is Dead)\
-            implemented as a function rho(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
-        - alpha: =None, probability of death (only applicable if next layer is Dead)\
-            implemented as a function alpha(t)
-            - t: time
-            - return: probability of death
-        - maxCap: =None, maximum hospital capacity to implement triage\
-            implemented as a function maxCap(t)
-            - t: time
-            - return: maximum capacity
-        - dump_to_layer: =None, index of the layer to dump patients which do not make the triage
-            should be of type int()
+        ## **Parameters** 
+
+        `max_cap=None`: The maximum number of individuals that 
+                        available hospitals can hold. Specifying an 
+                        amount will automatically trigger triage 
+                        support, requiring a value for `triage_index`.
+
+        `index=None`: Index of the layer to use for triage. Only 
+                      specify after giving a value for 
+                      `maximum_capacity`.
+
         """
+        super().__init__('Hospitalized')
+        self.maximum_capacity = max_cap
+        self.triage_index = index
 
-        self.layer_index = layer_index
-        self.hos_rate = hos_rate
-        self.p_hos = p_hos
-        self.cri_rate = cri_rate
-        self.p_cri = p_cri
-        self.recovery_rate = recovery_rate
-        self.p_recovery = p_recovery
-        self.rho = rho
-        self.alpha = alpha
-        self.maxCap = maxCap
-        self.dump_to_layer = dump_to_layer
+        if (max_cap, index) != (None, None):  # pragma: no cover
+            if max_cap is None or index is None:
+                raise ValueError('You must specify both a maximum '
+                                 'capacity and an index for triage '
+                                 'support.')
 
-        self.prev_layer_indices = []
-
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
+    def diff(self, time, system, pos, minimap, slice):
         """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
+        Calculate the derivative of the compartment with respect to 
+        time.
+        
+        ## **Parameters**
+        
+        `time`: Time to take the derivative at. Similar to `time` 
+                parameter in `epispot.models.Model.diff`.
+        
+        `system`: A list containing the system of compartment values.
+                  Should be of the same shape as the `starting_state` 
+                  parameter of `epispot.models.Model.integrate`.
+        
+        `pos`: The index of the compartment in the `comps` parameter of 
+               `epispot.models.Model`.
+        
+        `minimap`: This compartment's connections. Essentially, a slice 
+                   of the larger `map` parameter of 
+                   `epispot.models.Model`.
 
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
+        `slice`: A slice of the `matrix` parameter of 
+                 `epispot.models.Model` specific to this compartment.
+        
+        ## **Returns**
+
+        The compartment derivative
+
         """
+        output = np.zeros(system.shape)
+        for connection in minimap:
+            
+            # initialize parameters
+            probability = slice[connection][0]
+            rate = slice[connection][1]
 
-        # setup
-        for layer_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_no]:
-                if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
-                    self.prev_layer_indices.append(layer_no)
-                # warnings
-                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                    warnings.warn('A layer of an unsupported type at %s is being connected to the Infected \n'
-                                  'layer at %s. If this is a mistake, remove the connection. Otherwise, try \n'
-                                  'using a custom layer to do this.' % (layer_no, self.layer_index))
+            # initialize time-dependent parameters
+            if callable(probability):
+                probability = probability(time)
+            if callable(rate):
+                rate = rate(time)
 
-    def get_deriv(self, time, system):
-        """
-        Derivative of the Hospitalized compartment
+            # evaluate compartment derivative
+            deriv = probability * rate * system[pos]
+            output[connection] += deriv
+            output[pos] -= deriv
 
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        derivative = 0
-
-        # no triage
-        for prev_layer_index in self.prev_layer_indices:
-            derivative += self.hos_rate(time) * self.p_hos(time) * system[prev_layer_index]
-
-        if self.p_cri:
-            derivative -= self.p_cri(time) * self.cri_rate(time) * system[self.layer_index]
-        if self.p_recovery:
-            derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
-        if self.alpha:
-            derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
-
-        # implement triage
-        if self.maxCap and system[self.layer_index] > self.maxCap(time):
-            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
-            derivative = self.maxCap(time) - system[self.layer_index]
-
-        # limited triage
-        elif self.maxCap and system[self.layer_index] + derivative > self.maxCap(time):
-            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
-            derivative = self.maxCap(time) - system[self.layer_index]
-
-        return derivative
+        if system[pos] > self.maximum_capacity:
+            output[pos] = self.maximum_capacity - system[pos]
+            output[self.index] = -output[pos]
+        
+        return output
 
 
-class Critical(object):
+class Critical(Compartment):
     """
-    The Critical class represents the portion of individuals currently taking up space in the available
-    hospitals *and* using limited resources. However, this is a distinct category from the Hospitalized portion of
-    individuals, who don't require extra resources (ICU beds, ventilators, etc.). This layer supports triage.
+    The Critical class represents the portion of individuals currently 
+    taking up space in the available hospitals *and* using limited 
+    resources. However, this is a distinct category from the 
+    `epispot.comps.Hospitalized` portion of individuals, who don't 
+    require extra resources (ICU beds, ventilators, etc.). This 
+    compartment also features 
+    [triage support](https://en.wikipedia.org/wiki/Triage).
+    
+    Hospitalized, Infected → Critical → Recovered, Removed, Dead
 
-    Hospitalized, Infected --> Critical --> Dead, Recovered
-
-    ## Structure:
-
-    - __init__
-    - get_layer_index
-    - test
-    - get_deriv
     """
-
-    def __init__(self, layer_index, p_from_hos=None, from_hos_rate=None, p_from_inf=None, from_inf_rate=None, rho=None,
-                 alpha=None, p_recovery=None, recovery_rate=None, maxCap=None, dump_to_layer=None):
+    def __init__(self, max_cap=None, index=None):
         """
         Initialize the Critical class
 
-        - layer_index: index of layer in `layers`
-        - p_from_hos: =None, probability of becoming a Critical patient from Hospitalized
-           (only applicable if previous layer is Hospitalized)\
-           implemented as a function p_from_hos(t)
-            - t: time
-            - return: Critical probability
-        - from_hos_rate: =None, 1 / time to Critical condition from Hospitalized
-           (only applicable if previous layer is Hospitalized)\
-           implemented as a function from_hos_rate(t)
-            - t: time
-            - return: Critical rate
-        - p_from_inf: =None, probability of becoming a Critical patient from Infected
-           (only applicable if previous layer is Infected)\
-           implemented as a function p_from_inf(t)
-            - t: time
-            - return: Critical probability
-        - from_inf_rate: =None, 1 / time to Critical condition from Infected
-           (only applicable if previous layer is Infected)\
-           implemented as a function from_inf_rate(t)
-            - t: time
-            - return: Critical rate
-        - alpha: =None, probability of death (only applicable if next layer is Dead)\
-           implemented as a function alpha(t)
-            - t: time
-            - return: probability of death
-        - rho: =None, 1 / time until death from Critical (only applicable if next layer is Dead)\
-           implemented as a function rho(t)--in most cases this should stay constant
-            - t: time
-            - return: death rate
-        - p_recovery: =None, probability of recovery (only applicable if next layer is Recovered)\
-           implemented as a function p_recovery(t)
-            - t: time
-            - return: probability of recovery
-        - recovery_rate: =None, 1 / time to recover (only applicable if next layer is Recovered)\
-           implemented as a function recovery_rate(t)
-            - t: time
-            - return: recovery rate
-        - maxCap: =None, maximum hospital capacity to implement triage\
-            implemented as a function maxCap(t)
-            - t: time
-            - return: maximum capacity
-        - dump_to_layer: =None, index of the layer to dump patients which do not make the triage
-            should be of type int()
+        ## **Parameters** 
+
+        `max_cap=None`: The maximum number of individuals that 
+                        available hospitals can hold and have limited 
+                        resources for. Specifying an amount will 
+                        automatically trigger triage support, 
+                        requiring a value for `triage_index`.
+
+        `index=None`: Index of the layer to use for triage. Only 
+                      specify after giving a value for 
+                      `maximum_capacity`.
+
         """
+        super().__init__('Critical')
+        self.maximum_capacity = max_cap
+        self.triage_index = index
 
-        self.layer_index = layer_index
-        self.p_from_hos = p_from_hos
-        self.from_hos_rate = from_hos_rate
-        self.p_from_inf = p_from_inf
-        self.from_inf_rate = from_inf_rate
-        self.alpha = alpha
-        self.rho = rho
-        self.p_recovery = p_recovery
-        self.recovery_rate = recovery_rate
-        self.maxCap = maxCap
-        self.dump_to_layer = dump_to_layer
+        if (max_cap, index) != (None, None):  # pragma: no cover
+            if max_cap is None or index is None:
+                raise ValueError('You must specify both a maximum '
+                                 'capacity and an index for triage '
+                                 'support.')
 
-        self.hospitalized_category_indices = []
-        self.infected_category_indices = []
-
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
+    def diff(self, time, system, pos, minimap, slice):
         """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
+        Calculate the derivative of the compartment with respect to 
+        time.
+        
+        ## **Parameters**
+        
+        `time`: Time to take the derivative at. Similar to `time` 
+                parameter in `epispot.models.Model.diff`.
+        
+        `system`: A list containing the system of compartment values.
+                  Should be of the same shape as the `starting_state` 
+                  parameter of `epispot.models.Model.integrate`.
+        
+        `pos`: The index of the compartment in the `comps` parameter of 
+               `epispot.models.Model`.
+        
+        `minimap`: This compartment's connections. Essentially, a slice
+                   of the larger `map` parameter of 
+                   `epispot.models.Model`.
 
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
+        `slice`: A slice of the `matrix` parameter of 
+                 `epispot.models.Model` specific to this compartment.
+        
+        ## **Returns**
+
+        The compartment derivative
+
         """
+        output = np.zeros(system.shape)
+        for connection in minimap:
+            
+            # initialize parameters
+            probability = slice[connection][0]
+            rate = slice[connection][1]
 
-        # setup
-        for layer_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_no]:
-                if next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Hospitalized':
-                    self.hospitalized_category_indices.append(layer_no)
-                elif next_layer.get_layer_index() == self.layer_index and layer_names[layer_no] == 'Infected':
-                    self.infected_category_indices.append(layer_no)
-                # warnings
-                elif next_layer.get_layer_index() == self.layer_index:  # pragma: no cover
-                    warnings.warn('You are trying to connect a layer to the Critical layer at %s that is neither \n'
-                                  'of the Hospitalized or Infected type. Please remove this connection or use a \n'
-                                  'custom layer instead of this one.' % self.layer_index)
+            # initialize time-dependent parameters
+            if callable(probability):
+                probability = probability(time)
+            if callable(rate):
+                rate = rate(time)
 
-        # warnings
-        if not self.p_from_hos and len(self.hospitalized_category_indices) > 0:  # pragma: no cover
-            warnings.warn("You have connected a Hospitalized layer to the Critical layer at %s but \n"
-                          "haven't specified a Critical probability. Please do this by writing \n"
-                          "`p_from_hos=FLOAT` AND `from_hos_rate=FLOAT` so this can be used.")
+            # evaluate compartment derivative
+            deriv = probability * rate * system[pos]
+            output[connection] += deriv
+            output[pos] -= deriv
 
-        if not self.p_from_inf and len(self.infected_category_indices) > 0:  # pragma: no cover
-            warnings.warn("You have connected a Infected layer to the Critical layer at %s but \n"
-                          "haven't specified a Critical probability. Please do this by writing \n"
-                          "`p_from_inf=FLOAT` AND `from_inf_rate=FLOAT` so this can be used.")
-
-    def get_deriv(self, time, system):
-        """
-        Derivative of the Critical compartment
-
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        derivative = 0
-
-        for hospitalized_category_index in self.hospitalized_category_indices:
-            derivative += self.p_from_hos(time) * self.from_hos_rate(time) * system[hospitalized_category_index]
-
-        for infected_category_index in self.infected_category_indices:
-            derivative += self.p_from_inf(time) * self.from_inf_rate(time) * system[infected_category_index]
-
-        if self.alpha:
-            derivative -= self.alpha(time) * self.rho(time) * system[self.layer_index]
-        if self.p_recovery:
-            derivative -= self.p_recovery(time) * self.recovery_rate(time) * system[self.layer_index]
-
-        # implement triage
-        if self.maxCap and system[self.layer_index] > self.maxCap(time):
-            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
-            derivative = self.maxCap(time) - system[self.layer_index]
-
-        # limited triage
-        elif self.maxCap and system[self.layer_index] + derivative > self.maxCap(time):
-            system[self.dump_to_layer] += self.maxCap(time) - system[self.layer_index]
-            derivative = self.maxCap(time) - system[self.layer_index]
-
-        return derivative
-
-
-class Idiom(object):  # pragma: no cover
-    """
-    An idiom used to create custom classes. Feed this into `Model.add_layer` to
-    be used with any class. Make sure to change `get_deriv` file.
-    If you wish, you can change all the other methods as well.
-    Pass all parameters as an array in `param_list`
-
-    ## Structure:
-
-        - __init__
-        - get_layer_index
-        - test
-        - get_deriv
-    """
-
-    def __init__(self, layer_index, param_list=None):
-        """
-        Initialize the class
-
-        - layer_index: index of layer in `layers`
-        - param_list: =[], list of parameters, passed in array format
-        """
-
-        self.layer_index = layer_index
-        self.param_list = param_list
-
-        self.prev_layer_indices = []
-        self.prev_layer_types = []
-        self.next_layer_indices = []
-        self.next_layer_types = []
-        self.test_info = []  # use this to store any test information to be passed on to get_deriv
-
-    def get_layer_index(self):
-        return self.layer_index
-
-    def test(self, layer_map, layer_names):
-        """
-        Test of the `get_deriv` method
-        Used to setup commonly used variables and raise common errors
-
-        - layer_map: next layers (as classes) for every layer in Model
-        - layer_names: layer names in system
-        - return: derivative
-        """
-
-        # setup
-        for layer_no in range(len(layer_map)):
-            for next_layer in layer_map[layer_no]:
-                if next_layer.get_layer_index() == self.layer_index:
-                    self.prev_layer_indices.append(layer_no)
-                    self.prev_layer_types.append(layer_names[layer_no])
-
-        for next_layer_no in range(len(layer_map[self.layer_index])):
-            self.next_layer_indices.append(layer_map[self.layer_index][next_layer_no].get_layer_index())
-            self.next_layer_types.append(layer_names[layer_map[self.layer_index][next_layer_no].
-                                         get_layer_index()])
-
-    def get_deriv(self):
-        """
-        Derivative of this compartment
-        Setup by changing the function--create a new method with parameters time & system:
-
-        - time: time to take derivative at
-        - system: system of all states
-        - return: derivative
-        """
-
-        # warn on no setup
-        warnings.warn("The Idiom layer at %s has not been set up yet. Please replace the `get_deriv` method by \n"
-                      "adding IDIOM_LAYER_NAME.get_deriv = SOME_FUNCTION(self, time, system). Please see this \n"
-                      "function's documentation for more info" % self.layer_index)  # pragma: no cover
-        return None
+        if system[pos] > self.maximum_capacity:
+            output[pos] = self.maximum_capacity - system[pos]
+            output[self.index] = -output[pos]
+        
+        return output

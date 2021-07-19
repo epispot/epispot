@@ -1,160 +1,328 @@
 """
-The `Model` classes help create a model out of various disease compartments.
-For example, the basic SIR model would be a model consisting of the Susceptible, Infected, and Recovered
-compartments. These classes also allow for differentiation and integration to evaluate the model's
-predictions.
-
-## Structure:
-
-- Model(object)
+The `epispot.models` classes store different types of epidemiological 
+models in a compact form useful for integration. Models can be 
+differentiated, integrated, and examined by calling class methods. 
+Additionally, epispot models are portable—they can be used throughout 
+the package to generate plots, run predictions, etc.
 """
+
+from copy import deepcopy
+from . import warnings
+from . import np
 
 
 class Model(object):
     """
-    Helps create a model out of various disease compartments
+    The base model class for 
+    [compartmental models](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology). 
+    Compartmental models are models composed of various sub-models, 
+    known as "compartments." For example, the common SIR model is an 
+    example of a compartmental model with the Susceptible, Infected, 
+    and Removed compartments.
 
-    ## Structure:
+    .. versionadded:: v3.0.0-alpha-2
 
-        - __init__()
-        - get_deriv()
-        - integrate()
-        - add_layer()
     """
-
-    def __init__(self, init_pop, layers=None, layer_names=None, layer_map=None):
+    def __init__(self, initial_population, comps=None, map=None, 
+                 matrix=None):
         """
-        Initialize the `Model` class
-        All optional parameters can be added through the `add_layer` method
+        Initialize the `Model` class; all optional parameters can be 
+        added through the `epispot.models.Model.add` method.
 
-        - init_pop: initial population of the area in question
-        - layers: =[], every layer in Model ( as a class, e.g [ Susceptible(), Infected(), Recovered() ] )
-        - layer_names: =[], names of every layer in Model (e.g ['Susceptible', 'Infected', 'Recovered'])\
-            allowed names are listed below:
-            - Susceptible
-            - Infected
-            - Recovered
-            - Exposed
-            - Removed
-            - Dead
-            - Critical
-            - Hospitalized
-        - layer_map: =[] next layers (as classes) for every layer in Model
-            (e.g. [Infected(), Recovered(), None])--use `[]` to indicate that no other
-            layer succeeds the last layer.
-            - Ex: SIRD Model
-                - [[Infected()], [Recovered(), Dead()], [], []]
+        ## **Parameters**
+
+        `initial_population`: Population at time zero
+
+        `comps=None`: List of compartment classes to create the model
+
+        `map=None`: Map of how all the compartments connect.
+                    The map should consist of a list of lists.
+                    Each sublist represents the connections of the 
+                    corresponding compartment in the `comps` list.
+                    This sublist should contain the indices of each 
+                    of the compartments in `comps` that it connects to.
+                    If the compartment does not connect to any other 
+                    compartments, leave the sublist blank.
+        
+        `matrix=None`: Rate and probability matrix describing the 
+                       exchange rates between compartments. Like `map`,
+                       this is a list of lists. Unlike `map`, however,
+                       this matrix must not skip entries (i.e. no blank
+                       sublists). Each sublist should contain rate and 
+                       probability information in a tuple for every 
+                       compartment. If the information is not 
+                       necessary, use the tuple `(1, 1)` or `None` as a
+                       placeholder.
+
+        ## **Example**
+
+        Let's say we have three compartments `A`, `B`, and `C`.
+        These three compartments connect as shown below:
+
+        ```text
+        ┌───────────────────┐
+        │                   ▼
+        ┌───┐     ┌───┐     ┌───┐
+        │ A │ ──▶ │ C │ ──▶ │ B │
+        └───┘     └───┘     └───┘
+        ```
+
+        To create a compartmental model with these three classes, use:
+
+        ```python
+        comps = [A, B, C], 
+        map = [
+            [1, 2],     # A
+            [],         # B
+            [1]         # C
+        ],
+        matrix = [
+            [None, (1/2, 1/3), (1/2, 1/3)],     # A[A, B, C] 
+            [None, None, None],                 # B[A, B, C]
+            [None, (1/2, 1/3), None]            # C[A, B, C]
+        ]
+        ```
+
+        This creates a compartmental model where all the connections 
+        have a probability of `1/2` and rate of `1/3`.
+        
+        ## **Additional Notes**
+
+        This feature is currently only released to alpha versions of 
+        epispot. This will likely be used (with minor changes) in the 
+        full release of epispot v3. For more information about this 
+        feature, or if you're interested in giving feedback, see the 
+        discussion 
+        [here on GitHub](https://github.com/epispot/epispot/issues/73).
+
+        .. warning::
+           As this is currently an alpha feature, the new compartmental 
+           models in epispot are subject to change.
+
         """
+        self.initial_population = initial_population
+        self.compartments = comps
+        self.map = map
+        self.matrix = matrix
+        self.compiled = False
 
-        self.init_pop = init_pop
-        self.layers = layers
-        self.layer_names = layer_names
-        self.layer_map = layer_map
-
-    def get_deriv(self, time, system):
+    def compile(self, custom=False):
         """
-        Return list of derivatives from each layer.
-        Used by `integrate()` for evaluating model predictions.
+        Run a series of checks of the model and initialize some 
+        class-wide variables.
 
-        - time: Time to take derivative at
-        - system: System of state values (S, I, R, etc.) --> e.g [973, 12, 15]
-        - return: List of derivatives in the order that layers were added
+        ## **Parameters**
+
+        `custom=False`: Flag indicating if the model is using custom
+                        compartments. If this is `False` (the default), 
+                        all compartment compatibility checks will have 
+                        to pass or an error will be raised. If this is 
+                        `True`, those checks are bypassed since the 
+                        model cannot check for custom compartments.
+
+        ## **Additional Notes**
+
+        Adding, removing, or modifying compartments after this step 
+        will automatically de-compile the model, requiring it to be 
+        compiled again after changes have been made.
+
+        .. important:: 
+           Only run after all the compartments have been
+           added to the model.
+
         """
+        if self.compiled:  # pragma: no cover
+            warnings.warn("It looks like you're compiling a model more "
+                          "than once. For clarity, it is recommended "
+                          "that you only compile models once, and then "
+                          "again if (and only if) changes have been "
+                          "made.")
 
-        derivatives = []
-        for layer in range(len(self.layers)):
-            derivatives.append(self.layers[layer].get_deriv(time, system))
+        # run model checks to ensure that the model is valid
+        if not custom:
+            for i, compartment in enumerate(self.compartments):
+                compartment._check(self.map[i], self.compartments)
+        
+        # aggregate all compartments by type
+        self.aggregated = {}
+        for i, compartment in enumerate(self.compartments):
+            if compartment.config['type'] not in self.aggregated:
+                self.aggregated[compartment.config['type']] = []
+            self.aggregated[compartment.config['type']].append(i)
 
-        return derivatives
+        self.compiled = True
+
+    def diff(self, time, system):
+        """
+        Differentiate `epispot.models.Model`. Used by 
+        `epispot.models.Model.integrate` for evaluating model 
+        predictions.
+
+        ## **Parameters**
+
+        `time`: Time to take the derivative at. This is important for 
+                some time-dependent variables like compartment 
+                parameters.
+
+        `system`: System of state values (e.g `[973, 12, 15]`). This is 
+                propagated to each of the individual compartments in 
+                the model.
+
+        ## **Return**
+
+        List of corresponding compartment derivatives.
+        
+        """
+        if not self.compiled:  # pragma: no cover
+            warnings.warn('An epispot model has not been compiled yet. '
+                          'Triggering integration will automatically '
+                          'compile the model.')
+            self.compile()
+
+        derivative = np.zeros((len(self.compartments), ))
+        for num, compartment in enumerate(self.compartments):
+            if num in self.aggregated['Susceptible']:
+                delta = compartment.diff(time, 
+                                         system, 
+                                         num,
+                                         self.map[num], 
+                                         self.matrix[num],
+                                         infecteds=
+                                         self.aggregated['Infected'])
+            else:
+                delta = compartment.diff(time, 
+                                         system, 
+                                         num,
+                                         self.map[num], 
+                                         self.matrix[num])
+            derivative += delta
+        
+        return derivative
 
     def integrate(self, timesteps, starting_state=None):
         """
-        Integrate the model from `get_deriv` to arrive at future predictions using Euler's Method
+        Integrate the model using `epispot.models.Model.diff` to 
+        arrive at future predictions using 
+        [Euler's Method](https://en.wikipedia.org/wiki/Euler_method).
+        By default, the step size (Δ) is set to exactly 1 day, as this 
+        is usually the period for which epidemiological parameters are 
+        estimated for. However, in future versions, we plan to update 
+        this to add support for variable values of Δ.
 
-        - timesteps: range of evenly-spaced times (from start of epidemic to prediction time)\
+        ## **Parameters**
 
-            Note:
-          > The difference between each of the times is used as `delta` in Euler's Method.
-          > The closer this difference is to zero, the more accurate these predictions
-          > become.
-        - starting_state: starting state of the model--the system of values of each layer at time 0--
-            e.g [973, 12, 15]
-        - return: predictions in the form of `timesteps`, each timestep consisting of a list of derivatives--
-            derivative order is the same as the order of the layers passed into Model
+        `timesteps`: range of evenly-spaced times starting at the 
+                     epidemic start time and ending at the time of 
+                     prediction.
+        
+        `starting_state=None`: List of initial values for each 
+                               compartment. This is used as the initial 
+                               vector for the integration process.
+                               If no `starting_state` is provided, it 
+                               will default to the having only 1 person
+                               in the next non-Susceptible compartment.
+        
+        ## **Return**
+
+        A list of lists. Each sublist is a vector representing the 
+        value of each compartment at that specific time. The sublists
+        range according to the `timesteps` parameter.
+
+        ## **Example**
+
+        For example, the following would be an expected return type for 
+        an SIR model with a population of `100`.
+
+        ```python
+        [
+            [99, 1, 0],  # S, I, R on day 1
+            [98, 2, 0],  # S, I, R on day 2
+            [95, 3, 2],  # S, I, R on day 3
+            ...,
+            [23, 24, 53]  # final prediction
+        ]
+        ```
+
+        ## **Additional Notes**
+
+        `delta` is expected to be added as an optional parameter in
+        future releases of epispot v3. For now, however, it is set 
+        to 1 day and cannot be changed.
+
         """
+        # checks to make sure the model has been compiled
+        if not self.compiled:  # pragma: no cover
+            warnings.warn('An epispot model has not been compiled yet. '
+                          'Triggering integration will automatically '
+                          'compile the model.')
+            self.compile()
 
+        # initial parameter setup
         results = []
-        delta = timesteps[1] - timesteps[0]
+        delta = 1
 
         if starting_state:
             system = starting_state
-
         else:
-            system = [self.init_pop - 1, 1]
-            for _ in range(0, len(self.layers) - 2):
-                system.append(0)
-
-        # test the `get_deriv` method for any errors and setup any commonly used variables
-        for layer in range(len(self.layers)):
-            self.layers[layer].test(self.layer_map, self.layer_names)
+            system = np.zeros(len(self.compartments))
+            system[0] = self.initial_population - 1
+            system[1] = 1
 
         for timestep in timesteps:
-            derivatives = self.get_deriv(timestep, system)
-            for state_no in range(0, len(system)):
-                system[state_no] += derivatives[state_no] * delta
-            results.append([system[n] for n in range(len(system))])
+
+            # calculate the derivative for each compartment at this 
+            # timestep and update the system accordingly
+
+            derivatives = self.diff(timestep, system)
+            system += delta * derivatives
+            results.append(deepcopy(system))
 
         return results
 
-    def add_layer(self, layer, layer_name, layer_map):
+    def add(self, comp, map, matrix):
         """
-        Add a custom compartment to Model
+        Add a compartment to the model. This can also be done by 
+        initializing the `epispot.models.Model` class beforehand.
 
-        - layer: the layer class
-          should be an instance of a class with the following structure:
-            - get_layer_index()
-                - return: layer index in `self.layers`
-            - test(time, system, next_layers, layer_names, layer_no)
-                - (to test the `get_deriv` method: output optional)
-                  usually used to save common operations as a class variable
-                - next_layers: a list of the classes of the following layers
-                - layer names: names of each layer in Model
-                - layer_no: index of current layer in `layer_names`
-                - raise: any errors or warnings
-            - get_deriv(time, system, next_layers, layer_names, layer_no)
-                - time: time to take derivative at
-                - system: system of state values (S, I, R, etc.) --> e.g [973, 12, 15]
-                - next_layers: a list of the classes of the following layers
-                - layer names: names of each layer in Model
-                - layer_no: index of current layer in `layer_names`
-                - return: derivative
-        - layer_name: =[], names of every layer in Model (e.g [None, 'Susceptible', 'Infected'])\
-            allowed names are listed below:
-                - Susceptible
-                - Infected
-                - Recovered
-                - Exposed
-                - Removed
-                - Dead
-                - Critical
-                - Hospitalized
-            use `None` to indicate that no other layer precedes the first layer.
-        - layer_map: =[] next layers (as classes) for every layer in Model
-          (e.g. [Infected(), Recovered(), None])--use `None` to indicate that no other
-          layer succeeds the last layer.
+        ## **Parameters**
+
+        `comp`: Compartment class (e.g. `Susceptible()` or `Infected()`)
+
+        `map`: Slice of the larger `map` specified in 
+               `epispot.models.Model`. This should simply include the 
+               compartment connections for this specific compartment.
+
+        `matrix`: Slice of the larger `matrix` specified in 
+                  `epispot.models.Model`. As with `map`, this should 
+                  only include the rates and probabilities for this
+                  compartment's connections.
+
+        ## **Error Handling**
+
+        Initializing some parameters in `epispot.models.Model` without
+        initializing all of them will raise a `ValueError`.
+
+        ## **Additional Notes**
+
+        See the documentation for `epispot.models.Model` for more help
+        and examples.
+
         """
+        if self.compiled:
+            self.compiled = False
 
-        if self.layers is None:
-            self.layers = [layer]
-        else:
-            self.layers.append(layer)
-
-        if self.layer_names is None:
-            self.layer_names = [layer_name]
-        else:
-            self.layer_names.append(layer_name)
-
-        if self.layer_map is None:
-            self.layer_map = [layer_map]
-        else:
-            self.layer_map.append(layer_map)
+        if (self.compartments, self.map, self.matrix) == (None, None, None):
+            self.compartments = [comp]
+            self.map = [map]
+            self.matrix = [matrix]
+        elif self.compartments is not None and self.map is not None and \
+             self.matrix is not None:
+            self.compartments.append(comp)
+            self.map.append(map)
+            self.matrix.append(matrix)
+        else:  # pragma: no cover
+            raise ValueError('Parameters for `epispot.models.Model` '
+                             'have not been specified correctly.\n'
+                             'If either `comps`, `map`, or `matrix` '
+                             'have been initialized, then *all* '
+                             'parameters must be initialized.')

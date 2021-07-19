@@ -1,6 +1,9 @@
 """
 .. include:: ../README.md
-<!-- Documentation available at: https://epispot.github.io/epispot/en/v3.0.0-alpha-1 -->
+<!-- 
+Documentation available at: 
+https://epispot.github.io/epispot/en/v3.0.0-alpha-1 
+-->
 """
 
 
@@ -9,13 +12,17 @@ def _dependency_check():
     try:
         import numpy
     except ImportError:  # pragma: no cover
-        raise ImportError('In order to integrate `epispot` models, `numpy` is a required dependency.\nInstall with either:\n'
+        raise ImportError('In order to integrate `epispot` models, '
+                          '`numpy` is a required dependency.\n'
+                          'Install with either:\n'
                           ' $ pip install epispot\n'
                           ' $ conda install epispot')
     try:
         import matplotlib  # lgtm [py/import-and-import-from]
     except ImportError:  # pragma: no cover
-        raise ImportError('In order to display plots, `matplotlib` is a required dependency.\nInstall with either:\n'
+        raise ImportError('In order to display plots, `matplotlib` is '
+                          'a required dependency.\n'
+                          'Install with either:\n'
                           ' $ pip install matplotlib\n'
                           ' $ conda install matplotlib')
 
