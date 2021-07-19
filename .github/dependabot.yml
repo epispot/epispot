@@ -9,9 +9,8 @@ updates:
     commit-message:
       prefix: "[dep]"
       prefix-development: "[dep/dev]"
-      include: "scope"
     labels:
       - "dependencies"
-      - "low priority :arrow_down_small:"
+      - "low-priority :arrow_down_small:"
       - "unsupported :no_entry:"
     
