@@ -17,5 +17,5 @@ locales/en_GB
 # Ignore the action's configuration data
 ^\.github/action/spelling/
 # Ignore common configuration files
-*config*
-*cache*
+config
+cache
