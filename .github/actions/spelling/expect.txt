@@ -1,10 +1,16 @@
 abspath
+bdist
 borderaxespad
+Cov
+Covsir
+cri
 currentframe
 elif
 getfile
+hos
 len
 ncol
+Phy
 sdist
 SIHCR
 SIHRD

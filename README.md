@@ -182,7 +182,9 @@ Please see our [CODEOWNERS](https://github.com/epispot/epispot/tree/master/.gith
 
 ### Idea & Inspiration
 
-The original idea for epispot came from a [3Blue1Brown video](https://www.youtube.com/watch?v=gxAaO2rsdIs) on basic infectious disease dynamics and an [interactive article](https://www.washingtonpost.com/graphics/2020/world/corona-simulator/) in the Washington Post. This in turn inspired the very basic infectious disease dynamics simulated [here](https://quantum9innovation.github.io/disease/) However, what finally set the package into motion was a series of articles by Henry Froese, available on Medium [here](https://towardsdatascience.com/infectious-disease-modelling-part-i-understanding-sir-28d60e29fdfc), along with their corresponding interactive notebooks.
+The original idea for epispot came from a [3Blue1Brown video](https://www.youtube.com/watch?v=gxAaO2rsdIs) on basic infectious disease dynamics and an [interactive article](https://www.washingtonpost.com/graphics/2020/world/corona-simulator/) in the Washington Post. This in turn inspired the very basic infectious disease dynamics simulated [here](https://quantum9innovation.github.io/disease/). However, what finally set the package into motion was a series of articles by Henry Froese, available on Medium
+[here](https://towardsdatascience.com/infectious-disease-modelling-part-i-understanding-sir-28d60e29fdfc), <!-- spellcheck: disable -->
+along with their corresponding interactive notebooks.
 
 ### Code Development & Maintenance
 

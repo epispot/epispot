@@ -39,6 +39,7 @@ github
 gitignore
 gitlocalize
 GLOBALS
+GPLv
 google
 homepage
 html
@@ -109,6 +110,7 @@ towardsdatascience
 ubuntu
 uncomment
 url
+urls
 username
 usr
 vcs
