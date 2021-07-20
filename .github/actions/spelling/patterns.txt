@@ -2,9 +2,11 @@
 # and is used in the spellcheck workflow. See ../../workflows/spellcheck.yml for more information.
 
 # marker to ignore all code on line
-^.*/\* #no-spell-check-line \*/.*$
+^.*/\* # no-spell-check-line \*/.*$
 # marker for ignoring a comment to the end of the line
-// #no-spell-check.*$
+// # no-spell-check.*$
+# marker for ignoring all lines with disabled spellcheck
+.*spellcheck: disable
 
 # git index header
 index [0-9a-z]{7,40}\.\.[0-9a-z]{7,40}
@@ -14,6 +16,15 @@ index [0-9a-z]{7,40}\.\.[0-9a-z]{7,40}
 data:[-a-zA-Z=;:/0-9+]*,\S*
 
 # Any `http://` or `https://` URL
+https?://.*.com
+https?://.*.org
+https?://.*.gov
+https?://.*.html
+https?://.*.net
+https?://.*.png
+https?://.*.jpg
+https?://.*.php
+https?://.*/
 https?://*
 
 # GitHub SHAs

@@ -90,6 +90,7 @@ repodir
 resusceptibility
 screenshots
 SEIR
+setuptools
 sourced
 Spyder
 sqlite

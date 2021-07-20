@@ -7,8 +7,9 @@
 # Ignore files or directories that case-insensitively have `LICENSE` somewhere in their path
 (?:(?i)LICENSE)
 # Ignore files ending in...
-\.pdf$
+\.jpg$
 \.png$
+\.csv$
 # Ignore Excel files (`.xsl` and `.xslx`)
 \.xslx?$
 # Ignore locales that aren't en / en_GB (roughly: keep en_US and drop everything else)
@@ -19,3 +20,6 @@ locales/en_GB
 # Ignore common configuration files
 config
 cache
+.gitignore
+# Project-specific files
+bin/
