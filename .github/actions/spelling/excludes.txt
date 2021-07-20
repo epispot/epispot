@@ -1,0 +1,25 @@
+# Ignore directories named `third_party`
+(?:^|/)third_party/
+# Ignore npm files
+(?:^|/)package(?:-lock|)\.json$
+# Ignore files named (yarn for Node.js) `yarn.lock`
+(?:^|/)yarn\.lock$
+# Ignore files or directories that case-insensitively have `LICENSE` somewhere in their path
+(?:(?i)LICENSE)
+# Ignore files ending in...
+\.jpg$
+\.png$
+\.csv$
+# Ignore Excel files (`.xsl` and `.xslx`)
+\.xslx?$
+# Ignore locales that aren't en / en_GB (roughly: keep en_US and drop everything else)
+locales/(?!en)
+locales/en_GB
+# Ignore the action's configuration data
+^\.github/actions/spelling/
+# Ignore common configuration files
+config
+cache
+.gitignore
+# Project-specific files
+bin/

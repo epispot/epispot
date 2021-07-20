@@ -26,7 +26,7 @@ The epispot package currently only supports compartmental models, though we plan
   - Creates comparisons between models
 
 Due to its diverse range of features, epispot can be used for both research and experimental modeling. If you would like to add more modeling support, please see the [contributing section](#contributing).
-  
+
 ## Installation
 
 The epispot package can be installed from PyPI, Anaconda, or be built from the source. Before reading this guide, it is important to note that there are actually *two* different versions of the epispot package. The first of which is the `master` package, which will always have a version tag like `v#.#.#`. This package is used to release stable versions of epispot. However, during important events, like the COVID-19 pandemic, the `nightly` package is used to publish new features quickly. However, these versions may be unstable.
@@ -111,11 +111,11 @@ At first, the documentation may seem a bit hard to understand, especially
 if you're new to epidemiology. That's why epispot has put together an entire manual describing some basic concepts you'll need to know to master
 epispot. You can view it [here](https://epispot.gitbook.io/manual/).
 The GitHub source is available [here](https://github.com/epispot/manual).
-  
+
 ## Usage/Examples
 
 The GitHub repository has a vast array of samples using epispot. You can start by checking out the `explorables/` directory. In it, you'll find many programs designed for helping you get started with epispot and some hands-on examples.
-  
+
 ## Badges
 
 ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success)
@@ -152,7 +152,7 @@ contributions. Please see
 
 - [DOCUMENTATION.md](https://github.com/epispot/epispot/tree/master/DOCUMENTATION.md) for documentation additions
 - [SECURITY.md](https://github.com/epispot/epispot/tree/master/SECURITY.md) for epispot's security policy
-  
+
 ## Citation
 
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-green.svg)](https://opensource.org/licenses/)
@@ -160,7 +160,7 @@ contributions. Please see
 If you plan on using epispot in your project, please abide by the GPLv3 license. This requires that any changes you make to epispot must be open-sourced under the GPLv3 license as well and that you give credit to the author, which you can do by citing the project in your research, linking back to the original repository, or mentioning the author @quantum9innovation.
 
 For research, you can also use epispot's DOI to reference the project:
-> [![DOI](https://zenodo.org/badge/280527664.svg)](https://zenodo.org/badge/latestdoi/280527664)
+> [![DOI](https://zenodo.org/badge/280527664.svg)](https://zenodo.org/badge/latestdoi/280527664)  <!-- spellcheck: disable -->
 
 The recommended citation for epispot is:
 > quantum9innovation (2021, April 2). epispot/epispot: (Version 2.1.0).
@@ -168,7 +168,7 @@ The recommended citation for epispot is:
 
 ## Related Work
 
-There are many related projects to epispot, although we believe that epispot has greater extesibility than many of these other projects. Additionally, epispot is quite portable (graphs can be used as web components/displayed as images/etc.). However, below we would like to acknowledge a few projects that may be better suited to certain use cases:
+There are many related projects to epispot, although we believe that epispot has greater extensibility than many of these other projects. Additionally, epispot is quite portable (graphs can be used as web components/displayed as images/etc.). However, below we would like to acknowledge a few projects that may be better suited to certain use cases:
 
 - [EpiJS](https://github.com/Quantalabs/EpiJS) by @Quantalabs is a disease modeling package for Javascript
 - [covasim](https://github.com/institutefordiseasemodeling/covasim) by the [Institute for Disease Modeling](https://www.idmod.org) offers agent-based stochastic models which epispot unfortunately does not support as of yet
@@ -182,7 +182,9 @@ Please see our [CODEOWNERS](https://github.com/epispot/epispot/tree/master/.gith
 
 ### Idea & Inspiration
 
-The original idea for epispot came from a [3Blue1Brown video](https://www.youtube.com/watch?v=gxAaO2rsdIs) on basic infectious disease dynamics and an [interactive article](https://www.washingtonpost.com/graphics/2020/world/corona-simulator/) in the Washington Post. This in turn inspired the very basic infectious disease dynamics simulated [here](https://quantum9innovation.github.io/disease/) However, what finally set the package into motion was a series of articles by Henry Froese, available on Medium [here](https://towardsdatascience.com/infectious-disease-modelling-part-i-understanding-sir-28d60e29fdfc), along with their corresponding interactive notebooks.
+The original idea for epispot came from a [3Blue1Brown video](https://www.youtube.com/watch?v=gxAaO2rsdIs) on basic infectious disease dynamics and an [interactive article](https://www.washingtonpost.com/graphics/2020/world/corona-simulator/) in the Washington Post. This in turn inspired the very basic infectious disease dynamics simulated [here](https://quantum9innovation.github.io/disease/). However, what finally set the package into motion was a series of articles by Henry Froese, available on Medium
+[here](https://towardsdatascience.com/infectious-disease-modelling-part-i-understanding-sir-28d60e29fdfc), <!-- spellcheck: disable -->
+along with their corresponding interactive notebooks.
 
 ### Code Development & Maintenance
 
