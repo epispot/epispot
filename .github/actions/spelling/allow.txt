@@ -23,6 +23,8 @@ csv
 currentdir
 deepcopy
 deepsource
+dep
+deps
 dirname
 Django
 docstring

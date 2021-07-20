@@ -1,6 +1,5 @@
 abspath
 bdist
-borderaxespad
 Cov
 Covsir
 cri
@@ -9,7 +8,6 @@ elif
 getfile
 hos
 len
-ncol
 Phy
 sdist
 SIHCR
