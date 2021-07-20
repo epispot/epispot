@@ -1,5 +1,6 @@
 name: Converted Workflow
-'on':
+
+on:
   push:
     branches:
       - master
@@ -29,8 +30,9 @@ jobs:
           sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended cm-super  # spellcheck: disable
           bash scripts/travis/build.sh
       - name: Run tests
+        run: |
           python -m pytest
-      - name: Upload code coverge reports
+      - name: Upload code coverage reports
         run: |
           python -m coverage run -m pytest
           python -m coverage xml
