@@ -36,7 +36,8 @@ Install with:</p>
 </code></pre>
 <p>Additionally, all functions in this module have a <code>latex</code> flag which determines whether to use LaTeX or not.
 In order to use LaTeX, please follow the installation instructions for your operating system listed on the
-<a href="https://github.com/garrettj403/SciencePlots#faq"><code>SciencePlots</code> project README</a>.</p>
+<a href="https://github.com/garrettj403/SciencePlots#faq"><code>SciencePlots</code> project README</a>.
+<!-- spellcheck: disable --></p>
 <h2 id="structure">Structure:</h2>
 <ul>
 <li>model()</li>
@@ -48,7 +49,7 @@ In order to use LaTeX, please follow the installation instructions for your oper
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 The `native` module contains various plotting mechanisms utilizing `matplotlib`.
-Additionally, in order to display scientifically polished graphs, this module uses the 
+Additionally, in order to display scientifically polished graphs, this module uses the
 [Science-Plots](https://pypi.org/project/SciencePlots/1.0.8/) package.\
 We strongly encourage you to cite the authors of this package as demonstrated below:
 
@@ -62,8 +63,8 @@ pip install SciencePlots
 ```
 
 Additionally, all functions in this module have a `latex` flag which determines whether to use LaTeX or not.
-In order to use LaTeX, please follow the installation instructions for your operating system listed on the 
-[`SciencePlots` project README](https://github.com/garrettj403/SciencePlots#faq).
+In order to use LaTeX, please follow the installation instructions for your operating system listed on the
+[`SciencePlots` project README](https://github.com/garrettj403/SciencePlots#faq).  &lt;!-- spellcheck: disable --&gt;
 
 ## Structure:
 
@@ -75,15 +76,15 @@ from . import plt
 plt.style.use([&#39;science&#39;, &#39;no-latex&#39;])  # default style
 
 
-def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-          starting_state=None, names=None, show_susceptible=False, 
+def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
+          starting_state=None, names=None, show_susceptible=False,
           log=False, latex=True):
     &#34;&#34;&#34;
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window.
     There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed. 
-    Additionally, `matplotlib` allows editing plots even after 
+    the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after
     they have been created to change things like colors, margins, etc.
 
     - Model: An `epispot.models.Model` object
@@ -141,15 +142,15 @@ def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window as a stacked area chart.
     There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed. 
-    Additionally, `matplotlib` allows editing plots even after 
+    the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after
     they have been created to change things like colors, margins, etc.
 
     - Model: An `epispot.models.Model` object
     - time_frame: A `range()` describing the time period to plot
     - title: (`=&#39;Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - compartments: (default:all) The indices of the compartments in the model to plot; 
+    - compartments: (default:all) The indices of the compartments in the model to plot;
                     all other compartments will be hidden
     - names: (default:`Model.layer_names`) A list of names for each of the compartments
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
@@ -192,13 +193,13 @@ def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;
 
     # plotting
     plt.figure(figsize=(9, 5))
-    plt.stackplot(time_frame, *[DataFrame[Model.layer_names[compartment]] for compartment in compartments], 
+    plt.stackplot(time_frame, *[DataFrame[Model.layer_names[compartment]] for compartment in compartments],
                   labels=[names[compartment] for compartment in compartments])
 
     if log:
         plt.yscale(&#39;log&#39;)
     plt.title(title)
-    plt.legend(loc=&#34;lower center&#34;, bbox_to_anchor=(0.5, -0.2), borderaxespad=0, ncol=2)
+    plt.legend(loc=&#34;lower center&#34;, bbox_to_anchor=(0.5, -0.2), borderaxespad=0, ncol=2)  # spellcheck: disable
     plt.tight_layout()
 
     return plt</code></pre>
@@ -241,15 +242,15 @@ Note:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-          starting_state=None, names=None, show_susceptible=False, 
+<pre><code class="python">def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
+          starting_state=None, names=None, show_susceptible=False,
           log=False, latex=True):
     &#34;&#34;&#34;
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window.
     There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed. 
-    Additionally, `matplotlib` allows editing plots even after 
+    the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after
     they have been created to change things like colors, margins, etc.
 
     - Model: An `epispot.models.Model` object
@@ -339,15 +340,15 @@ Note:
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window as a stacked area chart.
     There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed. 
-    Additionally, `matplotlib` allows editing plots even after 
+    the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after
     they have been created to change things like colors, margins, etc.
 
     - Model: An `epispot.models.Model` object
     - time_frame: A `range()` describing the time period to plot
     - title: (`=&#39;Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - compartments: (default:all) The indices of the compartments in the model to plot; 
+    - compartments: (default:all) The indices of the compartments in the model to plot;
                     all other compartments will be hidden
     - names: (default:`Model.layer_names`) A list of names for each of the compartments
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
@@ -390,13 +391,13 @@ Note:
 
     # plotting
     plt.figure(figsize=(9, 5))
-    plt.stackplot(time_frame, *[DataFrame[Model.layer_names[compartment]] for compartment in compartments], 
+    plt.stackplot(time_frame, *[DataFrame[Model.layer_names[compartment]] for compartment in compartments],
                   labels=[names[compartment] for compartment in compartments])
 
     if log:
         plt.yscale(&#39;log&#39;)
     plt.title(title)
-    plt.legend(loc=&#34;lower center&#34;, bbox_to_anchor=(0.5, -0.2), borderaxespad=0, ncol=2)
+    plt.legend(loc=&#34;lower center&#34;, bbox_to_anchor=(0.5, -0.2), borderaxespad=0, ncol=2)  # spellcheck: disable
     plt.tight_layout()
 
     return plt</code></pre>
