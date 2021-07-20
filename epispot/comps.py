@@ -37,7 +37,7 @@ class Susceptible(object):
     def __init__(self, layer_index, R_0, gamma, N, p_resusceptibility=None, s_rate=None):
         """
         Initialize the Susceptible class
-        
+
         - layer_index: index of layer in `layers`
         - R_0: the basic reproductive number--
             this is the average number of susceptibles infected by one infected\
@@ -62,7 +62,7 @@ class Susceptible(object):
            only applicable if individuals can become susceptible again\
            implemented as a function s_rate(t):
             - t: time
-            - return: susceptiblity rate
+            - return: susceptibility rate
         """
 
         self.layer_index = layer_index
@@ -419,7 +419,7 @@ class Recovered(object):
                     else:  # pragma: no cover
                         warnings.warn('Previous layer at %s to Recovered layer at %s is not Infected, Critical, or \n'
                                       'Hospitalized. Consider either correcting the `layer_map` if this is not \n'
-                                      'supposed to happen, or accomodating for this setup by using a custom \n'
+                                      'supposed to happen, or accommodating for this setup by using a custom \n'
                                       'Recovered layer.' % (layer_no, self.layer_index))
 
         # warnings
