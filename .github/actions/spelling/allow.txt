@@ -8,6 +8,7 @@ codebase
 codecov
 codefactor
 codeowner
+CODEOWNERS
 codeql
 conda
 config
@@ -25,6 +26,7 @@ deepsource
 dirname
 Django
 docstring
+docstrings
 doi
 epidemiologists
 epispot
@@ -41,6 +43,7 @@ google
 homepage
 html
 http
+https
 ICU
 img
 infecteds
@@ -99,6 +102,7 @@ sys
 timerange
 timespans
 timestep
+timesteps
 toml
 towardsdatascience
 ubuntu
@@ -112,6 +116,7 @@ versionadded
 vscode
 Website
 workflow
+workflows
 www
 xml
 yml
