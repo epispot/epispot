@@ -160,7 +160,7 @@ contributions. Please see
 If you plan on using epispot in your project, please abide by the GPLv3 license. This requires that any changes you make to epispot must be open-sourced under the GPLv3 license as well and that you give credit to the author, which you can do by citing the project in your research, linking back to the original repository, or mentioning the author @quantum9innovation.
 
 For research, you can also use epispot's DOI to reference the project:
-> [![DOI](https://zenodo.org/badge/280527664.svg)](https://zenodo.org/badge/latestdoi/280527664)
+> [![DOI](https://zenodo.org/badge/280527664.svg)](https://zenodo.org/badge/latestdoi/280527664)  <!-- spellcheck: disable -->
 
 The recommended citation for epispot is:
 > quantum9innovation (2021, April 2). epispot/epispot: (Version 2.1.0).
