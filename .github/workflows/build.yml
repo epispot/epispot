@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -11,21 +12,25 @@ jobs:
           - '3.7'
           - '3.8'
           - '3.9'
+
     steps:
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: (language/python) Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
       - uses: actions/checkout@v2
-      - name: Upgrade pip/Install deps
-        run: | 
+      - name: (before_install) Upgrade environment
+        run: |
           python -m pip install --upgrade pip
+      - name: (install) Run install scripts
+        run: |
+          # install LaTeX requirements for Actions runner
           sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended cm-super  # spellcheck: disable
-          bash scripts/travis/build.sh
-      - name: Run tests
+          bash scripts/runner/build.sh
+      - name: (script) Run tests
         run: |
           python -m pytest
-      - name: Upload code coverage reports
+      - name: (after_success) Report code coverage
         run: |
           python -m coverage run -m pytest
           python -m coverage xml
