@@ -102,6 +102,8 @@ class Model(object):
         """
         self.initial_population = initial_population
         self.compartments = comps
+        if self.compartments:
+            self.names = [comp.name for comp in self.compartments]
         self.map = map
         self.matrix = matrix
         self.compiled = False
@@ -261,7 +263,7 @@ class Model(object):
         results = []
         delta = 1
 
-        if starting_state:
+        if starting_state is not None:
             system = starting_state
         else:
             system = np.zeros(len(self.compartments))
@@ -313,11 +315,13 @@ class Model(object):
 
         if (self.compartments, self.map, self.matrix) == (None, None, None):
             self.compartments = [comp]
+            self.names = [comp.name]
             self.map = [map]
             self.matrix = [matrix]
         elif self.compartments is not None and self.map is not None and \
              self.matrix is not None:
             self.compartments.append(comp)
+            self.names.append(comp.name)
             self.map.append(map)
             self.matrix.append(matrix)
         else:  # pragma: no cover
@@ -326,3 +330,16 @@ class Model(object):
                              'If either `comps`, `map`, or `matrix` '
                              'have been initialized, then *all* '
                              'parameters must be initialized.')
+
+    def rename(self, names):
+        """
+        Assign names to each compartment in the model.
+
+        ## Parameters
+
+        `names`: A list of names corresponding to `comps`
+
+        """
+        self.names = names
+        for i, comp in enumerate(self.compartments):
+            comp.name = names[i]
