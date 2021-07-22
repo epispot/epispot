@@ -16,18 +16,18 @@ import epispot as epi
 # TESTS
 def test_SIR():
     """SIR Pre-Compiled Model Test"""
-    SIR = epi.pre.SIR(2.5, 1/2, 1e6)  # compile model
-    Solution = SIR.integrate(range(100))  # get solutions
+    SIR = epi.pre.SIR(2.5, 1/2, 1e6)
+    Solution = SIR.integrate(range(100))
     return Solution
 
 def test_SEIR():
     """SEIR Pre-Compiled Model Test"""
-    SEIR = epi.pre.SEIR(2.5, 1/2, 1e6, 1/2)  # compile model
-    Solution = SEIR.integrate(range(100))  # get solutions
+    SEIR = epi.pre.SEIR(2.5, 1/2, 1e6, 1/2)
+    Solution = SEIR.integrate(range(100))
     return Solution
 
 def test_SIRD():
     """SIRD Pre-Compiled Model Test"""
-    SIRD = epi.pre.SIRD(2.5, 1/2, 1e6, 1/3, rho=3/4)  # compile model
-    Solution = SIRD.integrate(range(100))  # get solutions
+    SIRD = epi.pre.SIRD(2.5, 1/2, 1e6, 1/3, rho=3/4)
+    Solution = SIRD.integrate(range(100))
     return Solution
