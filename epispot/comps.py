@@ -448,11 +448,11 @@ class Hospitalized(Compartment):
         self.maximum_capacity = max_cap
         self.triage_index = index
 
-        if (max_cap, index) != (None, None):  # pragma: no cover
-            if max_cap is None or index is None:
-                raise ValueError('You must specify both a maximum '
-                                 'capacity and an index for triage '
-                                 'support.')
+        if ((max_cap, index) != (None, None)) and \
+        (max_cap is None or index is None):  # pragma: no cover
+            raise ValueError('You must specify both a maximum '
+                                'capacity and an index for triage '
+                                'support.')
 
     def _check(self, minimap, compartments):
         """Check wrapper for the Hospitalized compartment"""
@@ -514,8 +514,8 @@ class Hospitalized(Compartment):
             output[connection] += deriv
             output[pos] -= deriv
 
-        if self.maximum_capacity is not None:
-            if system[pos] > self.maximum_capacity:
+        if (self.maximum_capacity is not None) and \
+           (system[pos] > self.maximum_capacity):
                 output[pos] = self.maximum_capacity - system[pos]
                 output[self.triage_index] = -output[pos]
             
@@ -559,11 +559,11 @@ class Critical(Compartment):
         self.maximum_capacity = max_cap
         self.triage_index = index
 
-        if (max_cap, index) != (None, None):  # pragma: no cover
-            if max_cap is None or index is None:
+        if ((max_cap, index) != (None, None)) and \
+           (max_cap is None or index is None):  # pragma: no cover
                 raise ValueError('You must specify both a maximum '
-                                 'capacity and an index for triage '
-                                 'support.')
+                                'capacity and an index for triage '
+                                'support.')
 
     def _check(self, minimap, compartments):
         """Check wrapper for the Hospitalized compartment"""
@@ -624,8 +624,8 @@ class Critical(Compartment):
             output[connection] += deriv
             output[pos] -= deriv
 
-        if self.maximum_capacity is not None:
-            if system[pos] > self.maximum_capacity:
+        if (self.maximum_capacity is not None) and \
+           (system[pos] > self.maximum_capacity):
                 output[pos] = self.maximum_capacity - system[pos]
                 output[self.triage_index] = -output[pos]
             
