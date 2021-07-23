@@ -64,6 +64,7 @@ localhost
 matplotlib
 metadata
 minimap
+minimatrix
 mitmproxy
 mkdir
 mkdocs
@@ -100,6 +101,7 @@ Spyder
 sqlite
 src
 stackplot
+staticmethod
 sudo
 susceptibles
 svg
