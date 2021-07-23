@@ -8,7 +8,7 @@ together in a `epispot.models.Model` object, they can be quite powerful.
 from . import np
 
 
-class Compartment(object):
+class Compartment:
     """
     This class represents a compartment, used in compartmental models.
     The base compartmental model that all compartments can be used for 
@@ -16,7 +16,7 @@ class Compartment(object):
     be used with `super().__init__()` to create a custom compartment.
 
     """
-    def __init__(self, name, config={}):
+    def __init__(self, name, config=None):
         """
         Initialize the compartment; invoke with:
 
@@ -52,6 +52,8 @@ class Compartment(object):
         .. versionadded:: v3.0.0-alpha-2
 
         """
+        if config is None:
+            config = {}
         self.name = name
         self.config = config
         self._check_config()
@@ -62,7 +64,7 @@ class Compartment(object):
     
     def _check_config(self):
         """Configuration dictionary checker"""
-        if not 'type' in self.config.keys():
+        if 'type' not in self.config.keys():
             self.config['type'] = None
 
     def _base_check(self, valid_compartments, minimap, compartments):
@@ -111,7 +113,8 @@ class Compartment(object):
 
         return True
 
-    def diff(self, time, system, pos, minimap, slice):
+    @staticmethod
+    def diff(time, system, pos, minimap, slice):
         """
         Calculate the derivative of the compartment with respect to 
         time.
@@ -216,11 +219,11 @@ class Susceptible(Compartment):
         """Check wrapper for the Infected compartment"""
         self._base_check([Exposed, Infected], minimap, compartments)
         if len(minimap) != 1:  # pragma: no cover
-            raise ValueError(f'The Susceptible compartment must have '
+            raise ValueError('The Susceptible compartment must have '
                              f'exactly one connection to either the '
                              f'Infected or Exposed compartment.')
     
-    def diff(self, time, system, pos, minimap, slice, infecteds=[]):
+    def diff(self, time, system, pos, minimap, slice, infecteds=None):
         """
         Calculate the derivative of the compartment with respect to 
         time.
@@ -249,6 +252,8 @@ class Susceptible(Compartment):
         The compartment derivative
 
         """
+        if infecteds is None:
+            infecteds = []
         output = np.zeros(system.shape)
 
         # initialize parameters
