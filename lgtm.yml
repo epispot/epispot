@@ -4,4 +4,3 @@ path_classifiers:
     - "**/*_test.*"           
   old:
     - "/explorables/*"
-    - "/explorables/**"
