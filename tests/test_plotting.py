@@ -40,7 +40,6 @@ def test_plain_web():
     Figure = epi.plots.web.model(SEIR_Model, range(120))
     return Figure
 
-
 def test_full_web():
     """In-browser plotting test (all parameters)"""
     Figure = epi.plots.web.model(SEIR_Model, range(120),
@@ -56,7 +55,6 @@ def test_plain_stacked():
     """In-browser plotting test for stacked area charts (minimal parameters)"""
     Figure = epi.plots.web.stacked(SEIR_Model, range(120))
     return Figure
-
 
 def test_full_stacked():
     """In-browser plotting test for stacked area charts (all parameters)"""
@@ -74,7 +72,6 @@ def test_plain_native():
     Figure = epi.plots.native.model(SEIR_Model, range(120), latex=False)  # `latex=False` flag speeds up testing
     return Figure
 
-
 def test_full_native():
     """Native plotting test (all parameters)"""
     #`latex=True` enabled by default
@@ -90,7 +87,6 @@ def test_plain_native_stack():
     """Native plotting test for stacked area charts (minimal parameters)"""
     Figure = epi.plots.native.stacked(SEIR_Model, range(120), latex=False)  # `latex=False` flag speeds up testing
     return Figure
-
 
 def test_full_native_stack():
     """Native plotting test for stacked area charts (all parameters)"""

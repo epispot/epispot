@@ -155,6 +155,13 @@ class Compartment(object):
 
             # evaluate compartment derivative
             deriv = probability * rate * system[pos]
+            
+            # ensure compartment populations are non-negative
+            min_connection_deriv = -system[connection]
+            max_pos_deriv = system[pos]
+            deriv = max(deriv, min_connection_deriv)
+            deriv = min(deriv, max_pos_deriv)
+
             output[connection] += deriv
             output[pos] -= deriv
         
@@ -267,6 +274,12 @@ class Susceptible(Compartment):
             # evaluate compartment derivative
             deriv = R_0 * gamma * system[pos] * I / N
             deriv *= slice[connection][0] * slice[connection][1]
+
+            # ensure compartment populations are non-negative
+            min_connection_deriv = -system[connection]
+            max_pos_deriv = system[pos]
+            deriv = max(deriv, min_connection_deriv)
+            deriv = min(deriv, max_pos_deriv)
             
             # apply derivative
             output[connection] += deriv
@@ -309,7 +322,7 @@ class Removed(Compartment):
     classic SIR model). This compartment is a *terminal state*, meaning 
     that it can (only) be used as the last compartment in a model.
     
-    Infected, Hospitalized, Critical → Removed
+    Any compartment → Removed → Susceptible
 
     """
     def __init__(self):
@@ -318,7 +331,7 @@ class Removed(Compartment):
 
     def _check(self, minimap, compartments):
         """Check wrapper for the Removed compartment"""
-        self._base_check([], minimap, compartments)
+        self._base_check([Susceptible], minimap, compartments)
 
 
 class Recovered(Compartment):
@@ -332,7 +345,7 @@ class Recovered(Compartment):
     `epispot.comps.Susceptible` class is permitted. This class can be 
     used as a terminal state.
 
-    Infected, Hospitalized, Critical → Removed → Susceptible
+    Infected, Hospitalized, Critical → Recovered → Susceptible
     
     """
     def __init__(self):
@@ -404,6 +417,9 @@ class Hospitalized(Compartment):
 
     Infected → Hospitalized → Critical, Recovered, Removed, Dead
     
+    .. attention::
+       Triage support is still in beta and may not function as expected.
+
     """
     def __init__(self, max_cap=None, index=None):
         """
@@ -430,6 +446,11 @@ class Hospitalized(Compartment):
                 raise ValueError('You must specify both a maximum '
                                  'capacity and an index for triage '
                                  'support.')
+
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Hospitalized compartment"""
+        self._base_check([Critical, Recovered, Removed, Dead], minimap, 
+                         compartments)
 
     def diff(self, time, system, pos, minimap, slice):
         """
@@ -475,13 +496,21 @@ class Hospitalized(Compartment):
 
             # evaluate compartment derivative
             deriv = probability * rate * system[pos]
+
+            # ensure compartment populations are non-negative
+            min_connection_deriv = -system[connection]
+            max_pos_deriv = system[pos]
+            deriv = max(deriv, min_connection_deriv)
+            deriv = min(deriv, max_pos_deriv)
+
             output[connection] += deriv
             output[pos] -= deriv
 
-        if system[pos] > self.maximum_capacity:
-            output[pos] = self.maximum_capacity - system[pos]
-            output[self.index] = -output[pos]
-        
+        if self.maximum_capacity is not None:
+            if system[pos] > self.maximum_capacity:
+                output[pos] = self.maximum_capacity - system[pos]
+                output[self.triage_index] = -output[pos]
+            
         return output
 
 
@@ -496,6 +525,9 @@ class Critical(Compartment):
     [triage support](https://en.wikipedia.org/wiki/Triage).
     
     Hospitalized, Infected → Critical → Recovered, Removed, Dead
+
+    .. attention::
+       Triage support is still in beta and may not function as expected.
 
     """
     def __init__(self, max_cap=None, index=None):
@@ -524,6 +556,10 @@ class Critical(Compartment):
                 raise ValueError('You must specify both a maximum '
                                  'capacity and an index for triage '
                                  'support.')
+
+    def _check(self, minimap, compartments):
+        """Check wrapper for the Hospitalized compartment"""
+        self._base_check([Recovered, Removed, Dead], minimap, compartments)
 
     def diff(self, time, system, pos, minimap, slice):
         """
@@ -569,11 +605,19 @@ class Critical(Compartment):
 
             # evaluate compartment derivative
             deriv = probability * rate * system[pos]
+
+            # ensure compartment populations are non-negative
+            min_connection_deriv = -system[connection]
+            max_pos_deriv = system[pos]
+            deriv = max(deriv, min_connection_deriv)
+            deriv = min(deriv, max_pos_deriv)
+
             output[connection] += deriv
             output[pos] -= deriv
 
-        if system[pos] > self.maximum_capacity:
-            output[pos] = self.maximum_capacity - system[pos]
-            output[self.index] = -output[pos]
-        
+        if self.maximum_capacity is not None:
+            if system[pos] > self.maximum_capacity:
+                output[pos] = self.maximum_capacity - system[pos]
+                output[self.triage_index] = -output[pos]
+            
         return output
