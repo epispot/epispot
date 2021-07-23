@@ -1,0 +1,7 @@
+path_classifiers:
+  test:
+    - "**/test_*.*"
+    - "**/*_test.*"           
+  old:
+    - "/explorables/*"
+    - "/explorables/**"
