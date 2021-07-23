@@ -106,6 +106,7 @@ class Model(object):
             self.names = [comp.name for comp in self.compartments]
         self.map = comp_map
         self.matrix = matrix
+        self.aggregated = None
         self.compiled = False
 
     def compile(self, custom=False):
