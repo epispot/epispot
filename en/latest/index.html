@@ -198,14 +198,20 @@ along with their corresponding interactive notebooks.</p>
 <li>GitLocalize (<a href="https://gitlocalize.com">Website</a>) for localization of documentation</li>
 <li>Zenodo (<a href="https://zenodo.org">Website</a>) for automatic DOI &amp; citations</li>
 </ul>
-<!-- Documentation available at: <https://epispot.github.io/epispot/en/v3.0.0-alpha-1> -->
+<!--
+Documentation available at:
+<https://epispot.github.io/epispot/en/v3.0.0-alpha-1>
+-->
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 .. include:: ../README.md
-&lt;!-- Documentation available at: https://epispot.github.io/epispot/en/v3.0.0-alpha-1 --&gt;
+&lt;!-- 
+Documentation available at: 
+https://epispot.github.io/epispot/en/v3.0.0-alpha-1 
+--&gt;
 &#34;&#34;&#34;
 
 
@@ -214,13 +220,17 @@ def _dependency_check():
     try:
         import numpy
     except ImportError:  # pragma: no cover
-        raise ImportError(&#39;In order to integrate `epispot` models, `numpy` is a required dependency.\nInstall with either:\n&#39;
+        raise ImportError(&#39;In order to integrate `epispot` models, &#39;
+                          &#39;`numpy` is a required dependency.\n&#39;
+                          &#39;Install with either:\n&#39;
                           &#39; $ pip install epispot\n&#39;
                           &#39; $ conda install epispot&#39;)
     try:
         import matplotlib  # lgtm [py/import-and-import-from]
     except ImportError:  # pragma: no cover
-        raise ImportError(&#39;In order to display plots, `matplotlib` is a required dependency.\nInstall with either:\n&#39;
+        raise ImportError(&#39;In order to display plots, `matplotlib` is &#39;
+                          &#39;a required dependency.\n&#39;
+                          &#39;Install with either:\n&#39;
                           &#39; $ pip install matplotlib\n&#39;
                           &#39; $ conda install matplotlib&#39;)
 
@@ -320,8 +330,9 @@ del _sanity_check</code></pre>
 <dl>
 <dt><code class="name"><a title="epispot.comps" href="comps.html">epispot.comps</a></code></dt>
 <dd>
-<div class="desc"><p>The <code>compartments</code> module contains pre-built disease compartments for basic modelling and allows for
-custom user-defined compartments. This module …</p></div>
+<div class="desc"><p>The <code><a title="epispot.comps" href="comps.html">epispot.comps</a></code> module is a collection of compartments used to initialize
+the <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> object to create a compartmental model. Each
+of these …</p></div>
 </dd>
 <dt><code class="name"><a title="epispot.fitters" href="fitters.html">epispot.fitters</a></code></dt>
 <dd>
@@ -330,8 +341,9 @@ These operate separately from the <code>Model</code> class …</p></div>
 </dd>
 <dt><code class="name"><a title="epispot.models" href="models.html">epispot.models</a></code></dt>
 <dd>
-<div class="desc"><p>The <code>Model</code> classes help create a model out of various disease compartments.
-For example, the basic SIR model would be a model consisting of the …</p></div>
+<div class="desc"><p>The <code><a title="epispot.models" href="models.html">epispot.models</a></code> classes store different types of epidemiological
+models in a compact form useful for integration. Models can be
+differentiated, …</p></div>
 </dd>
 <dt><code class="name"><a title="epispot.plots" href="plots/index.html">epispot.plots</a></code></dt>
 <dd>
@@ -340,8 +352,9 @@ This is done independently of any other modules and …</p></div>
 </dd>
 <dt><code class="name"><a title="epispot.pre" href="pre.html">epispot.pre</a></code></dt>
 <dd>
-<div class="desc"><p>The 'pre-compiled' module contains already compiled models which can be put to use immediately.
-Each function returns an epispot Model object and its …</p></div>
+<div class="desc"><p>This module (short for 'pre-compiled') contains models that have
+already been compiled and can be put to use immediately. Each function
+returns an …</p></div>
 </dd>
 </dl>
 </section>

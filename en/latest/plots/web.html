@@ -55,8 +55,8 @@ from . import px
 
 
 def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-          starting_state=None, names=None, show_susceptible=False, 
-          log=False, colors=None):
+          starting_state=None, show_susceptible=False, log=False, 
+          colors=None):
     &#34;&#34;&#34;
     Plots the results of one model using `plotly`.
     The results are displayed in-browser via a `localhost`.
@@ -67,7 +67,6 @@ def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
     - time_frame: A `range()` describing the time period to plot
     - title: (`=&#39;Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - names: (default:`Model.layer_names`) A list of names for each of the compartments (**cannot be `&#39;index&#39;` or `&#39;value&#39;`**)
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
                                    **This assumes that the Susceptible compartment is the first in `Model`**\
                                    Note:\
@@ -82,9 +81,8 @@ def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
     DataFrame = {}
     System = Model.integrate(time_frame, starting_state=starting_state)
     
-    # parameter substitutions
-    if names is None:
-        names = Model.layer_names
+    # variable substitutions
+    names = Model.names
     
     # setup
     for name in names:
@@ -129,8 +127,8 @@ def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
 
 
 def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-            starting_state=None, names=None, show_susceptible=False, 
-            log=False, colors=None):
+            starting_state=None, show_susceptible=False, log=False, 
+            colors=None):
     &#34;&#34;&#34;
     Plots the results of one model using `plotly` as a stacked area chart.
     The results are displayed in-browser via a `localhost`.
@@ -141,7 +139,6 @@ def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;
     - time_frame: A `range()` describing the time period to plot
     - title: (`=&#39;Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - names: (default:`Model.layer_names`) A list of names for each of the compartments (**cannot be `&#39;index&#39;` or `&#39;value&#39;`**)
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
                                    **This assumes that the Susceptible compartment is the first in `Model`**\
                                    Note:\
@@ -156,9 +153,8 @@ def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;
     DataFrame = {}
     System = Model.integrate(time_frame, starting_state=starting_state)
 
-    # parameter substitutions
-    if names is None:
-        names = Model.layer_names
+    # variable substitutions
+    names = Model.names
 
     # setup
     for name in names:
@@ -210,7 +206,7 @@ def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="epispot.plots.web.model"><code class="name flex">
-<span>def <span class="ident">model</span></span>(<span>Model, time_frame, title='Compartment Populations over Time', starting_state=None, names=None, show_susceptible=False, log=False, colors=None)</span>
+<span>def <span class="ident">model</span></span>(<span>Model, time_frame, title='Compartment Populations over Time', starting_state=None, show_susceptible=False, log=False, colors=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plots the results of one model using <code>plotly</code>.
@@ -222,7 +218,6 @@ the time frame or compartments displayed.</p>
 <li>time_frame: A <code>range()</code> describing the time period to plot</li>
 <li>title: (<code>='Compartment Populations over Time</code>) The title of the plot</li>
 <li>starting_state: (default:inherited) Initial model state (see <code><a title="epispot.models.Model.integrate" href="../models.html#epispot.models.Model.integrate">Model.integrate()</a></code> parameter <code>starting_state</code>)</li>
-<li>names: (default:<code>Model.layer_names</code>) A list of names for each of the compartments (<strong>cannot be <code>'index'</code> or <code>'value'</code></strong>)</li>
 <li>show_susceptible: (<code>=False</code>) Boolean value describing whether or not to plot the Susceptible compartment.
 <strong>This assumes that the Susceptible compartment is the first in <code>Model</code></strong>
 Note:
@@ -238,8 +233,8 @@ Note:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-          starting_state=None, names=None, show_susceptible=False, 
-          log=False, colors=None):
+          starting_state=None, show_susceptible=False, log=False, 
+          colors=None):
     &#34;&#34;&#34;
     Plots the results of one model using `plotly`.
     The results are displayed in-browser via a `localhost`.
@@ -250,7 +245,6 @@ Note:
     - time_frame: A `range()` describing the time period to plot
     - title: (`=&#39;Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - names: (default:`Model.layer_names`) A list of names for each of the compartments (**cannot be `&#39;index&#39;` or `&#39;value&#39;`**)
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
                                    **This assumes that the Susceptible compartment is the first in `Model`**\
                                    Note:\
@@ -265,9 +259,8 @@ Note:
     DataFrame = {}
     System = Model.integrate(time_frame, starting_state=starting_state)
     
-    # parameter substitutions
-    if names is None:
-        names = Model.layer_names
+    # variable substitutions
+    names = Model.names
     
     # setup
     for name in names:
@@ -312,7 +305,7 @@ Note:
 </details>
 </dd>
 <dt id="epispot.plots.web.stacked"><code class="name flex">
-<span>def <span class="ident">stacked</span></span>(<span>Model, time_frame, title='Compartment Populations over Time', starting_state=None, names=None, show_susceptible=False, log=False, colors=None)</span>
+<span>def <span class="ident">stacked</span></span>(<span>Model, time_frame, title='Compartment Populations over Time', starting_state=None, show_susceptible=False, log=False, colors=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plots the results of one model using <code>plotly</code> as a stacked area chart.
@@ -324,7 +317,6 @@ the time frame or compartments displayed.</p>
 <li>time_frame: A <code>range()</code> describing the time period to plot</li>
 <li>title: (<code>='Compartment Populations over Time</code>) The title of the plot</li>
 <li>starting_state: (default:inherited) Initial model state (see <code><a title="epispot.models.Model.integrate" href="../models.html#epispot.models.Model.integrate">Model.integrate()</a></code> parameter <code>starting_state</code>)</li>
-<li>names: (default:<code>Model.layer_names</code>) A list of names for each of the compartments (<strong>cannot be <code>'index'</code> or <code>'value'</code></strong>)</li>
 <li>show_susceptible: (<code>=False</code>) Boolean value describing whether or not to plot the Susceptible compartment.
 <strong>This assumes that the Susceptible compartment is the first in <code>Model</code></strong>
 Note:
@@ -340,8 +332,8 @@ Note:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-            starting_state=None, names=None, show_susceptible=False, 
-            log=False, colors=None):
+            starting_state=None, show_susceptible=False, log=False, 
+            colors=None):
     &#34;&#34;&#34;
     Plots the results of one model using `plotly` as a stacked area chart.
     The results are displayed in-browser via a `localhost`.
@@ -352,7 +344,6 @@ Note:
     - time_frame: A `range()` describing the time period to plot
     - title: (`=&#39;Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - names: (default:`Model.layer_names`) A list of names for each of the compartments (**cannot be `&#39;index&#39;` or `&#39;value&#39;`**)
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
                                    **This assumes that the Susceptible compartment is the first in `Model`**\
                                    Note:\
@@ -367,9 +358,8 @@ Note:
     DataFrame = {}
     System = Model.integrate(time_frame, starting_state=starting_state)
 
-    # parameter substitutions
-    if names is None:
-        names = Model.layer_names
+    # variable substitutions
+    names = Model.names
 
     # setup
     for name in names:
