@@ -221,8 +221,8 @@ class Susceptible(Compartment):
         self._base_check([Exposed, Infected], minimap, compartments)
         if len(minimap) != 1:  # pragma: no cover
             raise ValueError('The Susceptible compartment must have '
-                             f'exactly one connection to either the '
-                             f'Infected or Exposed compartment.')
+                             'exactly one connection to either the '
+                             'Infected or Exposed compartment.')
     
     def diff(self, time, system, pos, minimap, minimatrix, infecteds=None):
         """
