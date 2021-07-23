@@ -1,0 +1,5 @@
+matplotlib~=3.4.2
+numpy~=1.21.1
+fire~=0.4.0
+plotly~=5.1.0
+SciencePlots~=1.0.8

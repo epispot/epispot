@@ -48,27 +48,35 @@
 
 *       @quantum9innovation
 
-*.py    @quantum9innovation
-*.yml    @quantum9innovation  # formerly @Quantalabs
-*.sh    @quantum9innovation
-*.md    @quantum9innovation
-*.txt    @quantum9innovation
-*.csv    @quantum9innovation
-*.png    @quantum9innovation
-*.coveragerc    @quantum9innovation  # formerly @Quantalabs
-*.toml    @quantum9innovation  # formerly @Quantalabs
-*.cfg    @quantum9innovation  # formerly @Quantalabs
-*.gitignore    @quantum9innovation  # formerly @Quantalabs
+*.py                @quantum9innovation
+*.yml               @Quantalabs
+*.sh                @quantum9innovation
+*.md                @quantum9innovation
+*.txt               @quantum9innovation
+*.csv               @quantum9innovation
+*.png               @quantum9innovation
+*.coveragerc        @Quantalabs
+*.toml              @Quantalabs
+*.cfg               @Quantalabs
+*.gitignore         @Quantalabs
 
-/.github/    @quantum9innovation  # formerly @Quantalabs
-/.github/ISSUE_TEMPLATE/    @quantum9innovation
-/.github/workflows/*    @quantum9innovation  # formerly @Quantalabs
-/epispot/    @quantum9innovation
-bin/    @quantum9innovation  # formerly @Quantalabs
-/bin/    @quantum9innovation
+bin/                @Quantalabs
+scripts/            @quantum9innovation
+requirements/       @Quantalabs
+travis/             @Quantalabs
 
-LICENSE    @quantum9innovation
-setup.py    @quantum9innovation  # formerly @Quantalabs
-setup-nightly.py    @quantum9innovation  # formerly @Quantalabs
-upload.sh    @quantum9innovation  # formerly @Quantalabs
-requirements.txt    @quantum9innovation  # formerly @Quantalabs
+/.github/                       @Quantalabs
+/.github/ISSUE_TEMPLATE/        @quantum9innovation
+/.github/workflows/*            @Quantalabs
+/epispot/                       @quantum9innovation
+/bin/                           @quantum9innovation
+/scripts/                       @Quantalabs
+
+test_*              @quantum9innovation
+*-nightly           @quantum9innovation
+*-dev               @quantum9innovation
+requirements-*      @Quantalabs
+
+LICENSE                 @quantum9innovation
+setup.py                @Quantalabs
+setup-nightly.py        @Quantalabs

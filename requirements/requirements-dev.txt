@@ -1,0 +1,9 @@
+matplotlib~=3.4.2
+numpy~=1.21.1
+fire~=0.4.0
+plotly~=5.1.0
+pytest~=6.2.4
+coverage~=5.5
+codecov~=2.1.11
+pdoc3~=0.9.2
+SciencePlots~=1.0.8

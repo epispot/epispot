@@ -18,7 +18,7 @@ setuptools.setup(
         "Documentation": "https://epispot.github.io/epispot",
         "Code Coverage": "https://app.codecov.io/gh/epispot/epispot"
     },
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages('epispot/'),
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",

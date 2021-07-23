@@ -1,10 +1,10 @@
 name: Upload Python Package Release
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Normalized Version Tag'     
+        description: 'Normalized Version Tag'
         required: true
 
 jobs:

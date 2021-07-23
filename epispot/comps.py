@@ -166,7 +166,7 @@ class Compartment(object):
             output[pos] -= deriv
         
         return output
-
+      
 
 class Susceptible(Compartment):
     """
