@@ -27,9 +27,9 @@ from . import plt
 plt.style.use(['science', 'no-latex'])  # default style
 
 
-def model(Model, time_frame, title='Compartment Populations over Time',
-          starting_state=None, names=None, show_susceptible=False,
-          log=False, latex=True):
+def model(Model, time_frame, title='Compartment Populations over Time', 
+          starting_state=None, show_susceptible=False, log=False, 
+          latex=True):
     """
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window.
@@ -42,7 +42,6 @@ def model(Model, time_frame, title='Compartment Populations over Time',
     - time_frame: A `range()` describing the time period to plot
     - title: (`='Compartment Populations over Time`) The title of the plot
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - names: (default:`Model.layer_names`) A list of names for each of the compartments
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
                                    **This assumes that the Susceptible compartment is the first in `Model`**\
                                    Note:\
@@ -60,23 +59,22 @@ def model(Model, time_frame, title='Compartment Populations over Time',
     DataFrame = {}
     System = Model.integrate(time_frame, starting_state=starting_state)
 
-    # parameter substitutions
-    if names is None:
-        names = Model.layer_names
+    # variable substitutions
+    names = Model.names
 
     # setup
-    for name in Model.layer_names:
+    for name in Model.names:
         DataFrame[name] = []
 
     for day in System:
         for i, compartment in enumerate(day):
-            DataFrame[Model.layer_names[i]].append(compartment)
+            DataFrame[Model.names[i]].append(compartment)
 
     # plotting
     plt.figure(figsize=(9, 5))
-    for compartment, _ in enumerate(Model.layers):
+    for compartment, _ in enumerate(Model.compartments):
         if (not show_susceptible and compartment != 0) or show_susceptible:
-            plt.plot(time_frame, DataFrame[Model.layer_names[compartment]], label=names[compartment])
+            plt.plot(time_frame, DataFrame[Model.names[compartment]], label=names[compartment])
 
     if log:
         plt.yscale('log')
@@ -87,7 +85,7 @@ def model(Model, time_frame, title='Compartment Populations over Time',
 
 
 def stacked(Model, time_frame, title='Compartment Populations over Time',
-          starting_state=None, compartments=None, names=None, show_susceptible=False,
+          starting_state=None, compartments=None, show_susceptible=False,
           log=False, latex=True):
     """
     Plots the results of one model using `matplotlib`.
@@ -103,7 +101,6 @@ def stacked(Model, time_frame, title='Compartment Populations over Time',
     - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
     - compartments: (default:all) The indices of the compartments in the model to plot;
                     all other compartments will be hidden
-    - names: (default:`Model.layer_names`) A list of names for each of the compartments
     - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
                                    **This assumes that the Susceptible compartment is the first in `Model`**\
                                    Note:\
@@ -121,20 +118,19 @@ def stacked(Model, time_frame, title='Compartment Populations over Time',
     DataFrame = {}
     System = Model.integrate(time_frame, starting_state=starting_state)
 
-    # parameter substitutions
+    # variable substitutions
     if compartments is None:
-        compartments = list(range(len(Model.layers)))
+        compartments = list(range(len(Model.compartments)))
 
-    if names is None:
-        names = Model.layer_names
+    names = Model.names
 
     # setup
-    for name in Model.layer_names:
+    for name in Model.names:
         DataFrame[name] = []
 
     for day in System:
         for i, compartment in enumerate(day):
-            DataFrame[Model.layer_names[i]].append(compartment)
+            DataFrame[Model.names[i]].append(compartment)
 
     if not show_susceptible:
         for i, compartment in enumerate(compartments):
@@ -144,7 +140,7 @@ def stacked(Model, time_frame, title='Compartment Populations over Time',
 
     # plotting
     plt.figure(figsize=(9, 5))
-    plt.stackplot(time_frame, *[DataFrame[Model.layer_names[compartment]] for compartment in compartments],
+    plt.stackplot(time_frame, *[DataFrame[Model.names[compartment]] for compartment in compartments], 
                   labels=[names[compartment] for compartment in compartments])
 
     if log:

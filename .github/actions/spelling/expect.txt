@@ -4,9 +4,11 @@ Cov
 Covsir
 cri
 currentframe
+dtype
 elif
 getfile
 hos
+isinstance
 len
 Phy
 sdist

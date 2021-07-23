@@ -63,6 +63,8 @@ lisphilar
 localhost
 matplotlib
 metadata
+minimap
+minimatrix
 mitmproxy
 mkdir
 mkdocs
@@ -99,6 +101,7 @@ Spyder
 sqlite
 src
 stackplot
+staticmethod
 sudo
 susceptibles
 svg
@@ -120,6 +123,7 @@ venv
 versionadded
 vscode
 Website
+wiki
 workflow
 workflows
 www

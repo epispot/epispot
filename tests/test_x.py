@@ -1,9 +1,11 @@
 """
 Basic packaging checks
-|- base
-   |- sanity
-   |- dependency
-|- integrity
+
+STRUCTURE: 
+├ base
+    ├ sanity
+    └ dependency
+└ integrity
 """
 
 

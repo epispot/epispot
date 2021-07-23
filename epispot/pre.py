@@ -1,240 +1,209 @@
 """
-The 'pre-compiled' module contains already compiled models which can be put to use immediately.
-Each function returns an epispot Model object and its corresponding functions. Models parameters can still be changed
-even after compilation.
+This module (short for 'pre-compiled') contains models that have 
+already been compiled and can be put to use immediately. Each function 
+returns an `epispot.models.Model` object and its corresponding methods. 
+Model parameters can still be changed even after compilation, but this 
+will require recompilation which can be performed with:
 
-## Structure:
-
-- SIR()
-- SEIR()
-- SIRD()
-- SIHRD()
+```python
+Model.compile(custom=False)
+# if adding custom compartments: 
+Model.compile(custom=True)
+```
 """
 
 from . import comps
 from . import models
+from . import np
 
 
-def SIR(R_0, N, p_recovery, recovery_rate):
+def SIR(R_0, gamma, N):
     """
-    The well-known SIR Model; a staple of epidemiology and the most basic tool for modeling infectious diseases
+    The well-known 
+    [SIR Model](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model); 
+    a staple of epidemiology and the most basic tool for modeling 
+    infectious diseases.
 
-    ```
-    Susceptible --> Infected --> Removed
-    ```
+    Susceptible → Infected → Removed
 
-    - R_0: the basic reproductive number--
-         this is the average number of susceptibles infected by one infected\
-         implemented as a function R_0(t):
-        - t: time
-        - return: R_0 value
-    - N: the total population\
-       implemented as a function N(t):
-        - t: time
-        - return: total population
-    - p_recovery: probability of recovery\
-        implemented as a function p_recovery(t):
-        - t: time
-        - return: probability of recovery
-    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
-       measures only 1 / the time it takes to move to the Recovered layer\
-       implemented as a function recovery_rate(t):
-        - t: time
-        - return: recovery rate
+    ## **Parameters**
+
+    `R_0`: The 
+           [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number), 
+           indicating how infectious a given disease is. A value of 
+           above 1 indicates a high probability of transmission and 
+           thus an increasing infected population. A value of 1 
+           indicates a low probability of transmission and thus a 
+           constant infected population. A value below 1 indicates 
+           a low probability of transmission and also a decreasing 
+           infected population.
+
+    `gamma`: The total recovery rate of patients. This is **not** a 
+             measure of how long it takes patients in any given 
+             compartment to recover but rather a measure of one 
+             divided by the average time of infectiousness.
+
+    `N`: The initial population size; should be the same as that 
+         passed into the `epispot.models.Model` class.
+
+    ## **Returns**
+
+    An `epispot.models.Model` object
+
     """
-
-    def gamma(t):
-        return p_recovery(t) * recovery_rate(t)
-
     # compile compartments
-    Susceptible = comps.Susceptible(0, R_0, gamma, N)
-    Infected = comps.Infected(1, N, R_0=R_0, gamma=gamma, p_recovery=p_recovery, recovery_rate=recovery_rate)
-    Removed = comps.Recovered(2, p_from_inf=p_recovery, from_inf_rate=recovery_rate)
+    Susceptible = comps.Susceptible(R_0, gamma, N)
+    Infected = comps.Infected()
+    Removed = comps.Removed()
+
+    # compile parameters
+    if callable(N):
+        N = N(0)
+    matrix = np.empty((3, 3), dtype=tuple)
+    matrix.fill((1.0, 1.0))  # default probability and rate
+    matrix[1][2] = (1.0, gamma)  # I => R
 
     # compile model
-    SIR_Model = models.Model(N(0))
-    SIR_Model.add_layer(Susceptible, 'Susceptible', [Infected])
-    SIR_Model.add_layer(Infected, 'Infected', [Removed])
-    SIR_Model.add_layer(Removed, 'Removed', [])
+    SIR_Model = models.Model(N)
+    SIR_Model.add(Susceptible, [1], matrix[0])
+    SIR_Model.add(Infected, [2], matrix[1])
+    SIR_Model.add(Removed, [], matrix[2])
+    SIR_Model.compile()
 
     return SIR_Model
 
 
-def SEIR(R_0, N, p_recovery, recovery_rate, delta):
+def SEIR(R_0, gamma, N, delta):
     """
-    The SEIR Model; a variant of the SIR Model that investigates people who have been *exposed* to the virus
-    so that they can be tracked down for contact tracing reasons
+    An extension on the basic 
+    [SIR Model](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model)
+    to include an 'exposed' compartment useful for modeling contact 
+    tracing. This is known as the 
+    [SEIR Model](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_model) 
+    and is commonly used for diseases that have long incubation periods.
 
-    ```
-    Susceptible --> Exposed --> Infected --> Removed
-    ```
+    Susceptible → Exposed → Infected → Removed
 
-    - R_0: the basic reproductive number--
-         this is the average number of susceptibles infected by one infected\
-         implemented as a function R_0(t):
-        - t: time
-        - return: R_0 value
-    - N: the total population\
-       implemented as a function N(t):
-        - t: time
-        - return: total population
-    - p_recovery: probability of recovery\
-        implemented as a function p_recovery(t):
-        - t: time
-        - return: probability of recovery
-    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
-       measures only 1 / the time it takes to move to the Recovered layer\
-       implemented as a function recovery_rate(t):
-        - t: time
-        - return: recovery rate
-    - delta: =None, the incubation period\
-      implemented as a function delta(t)--in most cases this should stay constant
-        - t: time
-        - return: incubation period
+    ## **Parameters**
+
+    `R_0`: The 
+           [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number), 
+           indicating how infectious a given disease is. A value of 
+           above 1 indicates a high probability of transmission and 
+           thus an increasing infected population. A value of 1 
+           indicates a low probability of transmission and thus a 
+           constant infected population. A value below 1 indicates 
+           a low probability of transmission and also a decreasing 
+           infected population.
+
+    `gamma`: The total recovery rate of patients. This is **not** a 
+             measure of how long it takes patients in any given 
+             compartment to recover but rather a measure of one 
+             divided by the average time of infectiousness.
+
+    `N`: The initial population size; should be the same as that 
+         passed into the `epispot.models.Model` class.
+
+    `delta`: The reciprocal of the incubation period for the disease. 
+             This is one divided by the time it takes an individual to 
+             transition from the `epispot.comps.Exposed` compartment to 
+             the `epispot.comps.Infected` compartment.
+
+    ## **Returns**
+
+    An `epispot.models.Model` object
+
     """
-
-    def gamma(t):
-        return p_recovery(t) * recovery_rate(t)
-
     # compile compartments
-    Susceptible = comps.Susceptible(0, R_0, gamma, N)
-    Exposed = comps.Exposed(1, R_0, gamma, N, delta)
-    Infected = comps.Infected(2, N, delta=delta, p_recovery=p_recovery, recovery_rate=recovery_rate)
-    Removed = comps.Recovered(3, p_from_inf=p_recovery, from_inf_rate=recovery_rate)
+    Susceptible = comps.Susceptible(R_0, gamma, N)
+    Exposed = comps.Exposed()
+    Infected = comps.Infected()
+    Removed = comps.Removed()
+
+    # compile parameters
+    if callable(N):
+        N = N(0)
+    matrix = np.empty((4, 4), dtype=tuple)
+    matrix.fill((1.0, 1.0))  # default probability and rate
+    matrix[1][2] = (1.0, delta)  # E => I
+    matrix[2][3] = (1.0, gamma)  # I => R
 
     # compile model
-    SEIR_Model = models.Model(N(0))
-    SEIR_Model.add_layer(Susceptible, 'Susceptible', [Exposed])
-    SEIR_Model.add_layer(Exposed, 'Exposed', [Infected])
-    SEIR_Model.add_layer(Infected, 'Infected', [Removed])
-    SEIR_Model.add_layer(Removed, 'Removed', [])
+    SEIR_Model = models.Model(N)
+    SEIR_Model.add(Susceptible, [1], matrix[0])
+    SEIR_Model.add(Exposed, [2], matrix[1])
+    SEIR_Model.add(Infected, [3], matrix[2])
+    SEIR_Model.add(Removed, [], matrix[3])
+    SEIR_Model.compile()
 
     return SEIR_Model
 
 
-def SIRD(R_0, N, p_recovery, recovery_rate, alpha, rho):
+def SIRD(R_0, gamma, N, alpha, rho=1.0):
     """
-    The SIRD Model; a tweak on the SIR Model to separate Recovered & Dead compartments
-    which allows for death predictions as well as herd immunity predictions
+    An addition to the 
+    [SIR Model](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model); 
+    which separates the `epispot.comps.Removed` compartment into the 
+    `epispot.comps.Recovered` compartment and the `epispot.comps.Dead` 
+    compartment.
 
-    ```
-    Susceptible --> Infected --> Recovered
-                    |----------> Dead
-    ```
+    Susceptible → Infected → Recovered, Dead
 
-    - R_0: the basic reproductive number--
-         this is the average number of susceptibles infected by one infected\
-         implemented as a function R_0(t):
-        - t: time
-        - return: R_0 value
-    - N: the total population\
-       implemented as a function N(t):
-        - t: time
-        - return: total population
-    - p_recovery: probability of recovery\
-        implemented as a function p_recovery(t):
-        - t: time
-        - return: probability of recovery
-    - recovery_rate: the recovery rate--different from the standard recovery rate `gamma`--
-       measures only 1 / the time it takes to move to the Recovered layer\
-       implemented as a function recovery_rate(t):
-        - t: time
-        - return: recovery rate
-    - rho: 1 / time until death\
-        implemented as a function rho(t)--in most cases this should stay constant
-        - t: time
-        - return: death rate
-    - alpha: probability of death from Infected\
-       implemented as a function alpha(t)
-        - t: time
-        - return: probability of death
+    ## **Parameters**
+
+    `R_0`: The 
+           [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number), 
+           indicating how infectious a given disease is. A value of 
+           above 1 indicates a high probability of transmission and 
+           thus an increasing infected population. A value of 1 
+           indicates a low probability of transmission and thus a 
+           constant infected population. A value below 1 indicates 
+           a low probability of transmission and also a decreasing 
+           infected population.
+
+    `gamma`: The total recovery rate of patients. This is **not** a 
+             measure of how long it takes patients in any given 
+             compartment to recover but rather a measure of one 
+             divided by the average time of infectiousness.
+
+    `N`: The initial population size; should be the same as that 
+         passed into the `epispot.models.Model` class.
+
+    `alpha`: The probability of death (often referred to as—but not to 
+             be confused with—the 'death rate') for a certain disease.
+             This is the percentage of individuals that are infected 
+             with the disease that will die.
+
+    `rho=1.0`: The reciprocal of the average time before death. This is 
+               the real 'death *rate*' of the disease, which represents 
+               the *time* of death rather than its probability.
+
+    ## **Returns**
+
+    An `epispot.models.Model` object
+
     """
-
-    def gamma(t):
-        return p_recovery(t) * recovery_rate(t) + alpha(t) * rho(t)
-
     # compile compartments
-    Susceptible = comps.Susceptible(0, R_0, gamma, N)
-    Infected = comps.Infected(1, N, R_0=R_0, gamma=gamma, p_recovery=p_recovery, recovery_rate=recovery_rate,
-                              death_rate=rho, p_death=alpha)
-    Recovered = comps.Recovered(2, p_from_inf=p_recovery, from_inf_rate=recovery_rate)
-    Dead = comps.Dead(3, rho_inf=rho, alpha_inf=alpha)
+    Susceptible = comps.Susceptible(R_0, gamma, N)
+    Infected = comps.Infected()
+    Recovered = comps.Recovered()
+    Dead = comps.Dead()
+
+    # compile parameters
+    if callable(N):
+        N = N(0)
+    matrix = np.empty((4, 4), dtype=tuple)
+    matrix.fill((1.0, 1.0))  # default probability and rate
+    recovery_rate = (gamma - alpha * rho) / (1 - alpha) 
+    matrix[1][2] = (1.0 - alpha, recovery_rate)  # I => R
+    matrix[1][3] = (alpha, rho)  # I => D
 
     # compile model
-    SIRD_Model = models.Model(N(0))
-    SIRD_Model.add_layer(Susceptible, 'Susceptible', [Infected])
-    SIRD_Model.add_layer(Infected, 'Infected', [Recovered, Dead])
-    SIRD_Model.add_layer(Recovered, 'Recovered', [])
-    SIRD_Model.add_layer(Dead, 'Dead', [])
+    SIR_Model = models.Model(N)
+    SIR_Model.add(Susceptible, [1], matrix[0])
+    SIR_Model.add(Infected, [2, 3], matrix[1])
+    SIR_Model.add(Recovered, [], matrix[2])
+    SIR_Model.add(Dead, [], matrix[3])
+    SIR_Model.compile()
 
-    return SIRD_Model
-
-
-def SIHRD(R_0, N, p_recovery, recovery_rate, alpha, rho, p_hos, hos_rate, p_hos_to_rec, hos_to_rec_rate):
-    """
-    The SIHRD Model; Tracks patients from hospitalized to recovered to dead
-    which allows for death, herd immunity, and triage predictions
-
-    ```
-    Susceptible --> Infected --> Hospitalized --> Dead
-                    |            |--------------> Recovered
-                    |---------------------------/
-    ```
-
-    - R_0: the basic reproductive number--
-         this is the average number of susceptibles infected by one infected\
-         implemented as a function R_0(t):
-        - t: time
-        - return: R_0 value
-    - N: the total population\
-       implemented as a function N(t):
-        - t: time
-        - return: total population
-    - p_recovery: probability of recovery from Infected\
-        implemented as a function p_recovery(t):
-        - t: time
-        - return: probability of recovery
-    - recovery_rate: the recovery rate from the Infected layer only\
-       implemented as a function recovery_rate(t):
-        - t: time
-        - return: recovery rate
-    - rho: 1 / time until death\
-        implemented as a function rho(t)--in most cases this should stay constant
-        - t: time
-        - return: death rate
-    - alpha: probability of death from Infected\
-       implemented as a function alpha(t)
-        - t: time
-        - return: probability of death
-    - p_hos_to_rec: probability of recovery from Hospitalized\
-        implemented as a function p_hos_to_rec(t):
-        - t: time
-        - return: probability of recovery
-    - hos_to_rec_rate: the recovery rate from the Hospitalized layer only\
-       implemented as a function hos_to_rec_rate(t):
-        - t: time
-        - return: recovery rate
-    """
-
-    def gamma(t):
-        return p_recovery(t) * recovery_rate(t) + p_hos(t) * hos_rate(t)
-
-    # compile compartments
-    Susceptible = comps.Susceptible(0, R_0, gamma, N)
-    Infected = comps.Infected(1, N, R_0=R_0, gamma=gamma, hospital_rate=hos_rate, p_hospitalized=p_hos,
-                              recovery_rate=recovery_rate, p_recovery=p_recovery)
-    Hospitalized = comps.Hospitalized(2, hos_rate=hos_rate, p_hos=p_hos, p_recovery=p_hos_to_rec,
-                                      recovery_rate=hos_to_rec_rate, rho=rho, alpha=alpha)
-    Recovered = comps.Recovered(3, p_from_hos=p_hos_to_rec, from_hos_rate=hos_to_rec_rate,
-                                p_from_inf=p_recovery, from_inf_rate=recovery_rate)
-    Dead = comps.Dead(4, rho_hos=rho, alpha_hos=alpha)
-
-    # compile model
-    SIHRD_Model = models.Model(N(0))
-    SIHRD_Model.add_layer(Susceptible, 'Susceptible', [Infected])
-    SIHRD_Model.add_layer(Infected, 'Infected', [Hospitalized])
-    SIHRD_Model.add_layer(Hospitalized, 'Hospitalized', [Recovered, Dead])
-    SIHRD_Model.add_layer(Recovered, 'Recovered', [])
-    SIHRD_Model.add_layer(Dead, 'Dead', [])
-
-    return SIHRD_Model
+    return SIR_Model
