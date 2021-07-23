@@ -114,7 +114,7 @@ class Compartment:
         return True
 
     @staticmethod
-    def diff(time, system, pos, minimap, slice):
+    def diff(time, system, pos, minimap, minimatrix):
         """
         Calculate the derivative of the compartment with respect to 
         time.
@@ -135,8 +135,9 @@ class Compartment:
                    of the larger `map` parameter of 
                    `epispot.models.Model`.
 
-        `slice`: A slice of the `matrix` parameter of 
-                 `epispot.models.Model` specific to this compartment.       
+        `minimatrix`: A slice of the `matrix` parameter of 
+                      `epispot.models.Model` specific to this 
+                      compartment.       
 
         ## **Returns**
 
@@ -147,8 +148,8 @@ class Compartment:
         for connection in minimap:
             
             # initialize parameters
-            probability = slice[connection][0]
-            rate = slice[connection][1]
+            probability = minimatrix[connection][0]
+            rate = minimatrix[connection][1]
 
             # initialize time-dependent parameters
             if callable(probability):
@@ -223,7 +224,7 @@ class Susceptible(Compartment):
                              f'exactly one connection to either the '
                              f'Infected or Exposed compartment.')
     
-    def diff(self, time, system, pos, minimap, slice, infecteds=None):
+    def diff(self, time, system, pos, minimap, minimatrix, infecteds=None):
         """
         Calculate the derivative of the compartment with respect to 
         time.
@@ -244,8 +245,9 @@ class Susceptible(Compartment):
                    of the larger `map` parameter of 
                    `epispot.models.Model`.
 
-        `slice`: A slice of the `matrix` parameter of 
-                 `epispot.models.Model` specific to this compartment.
+        `minimatrix`: A slice of the `matrix` parameter of 
+                      `epispot.models.Model` specific to this 
+                      compartment.
         
         ## **Returns**
 
@@ -278,7 +280,7 @@ class Susceptible(Compartment):
             
             # evaluate compartment derivative
             deriv = R_0 * gamma * system[pos] * I / N
-            deriv *= slice[connection][0] * slice[connection][1]
+            deriv *= minimatrix[connection][0] * minimatrix[connection][1]
 
             # ensure compartment populations are non-negative
             min_connection_deriv = -system[connection]
@@ -457,7 +459,7 @@ class Hospitalized(Compartment):
         self._base_check([Critical, Recovered, Removed, Dead], minimap, 
                          compartments)
 
-    def diff(self, time, system, pos, minimap, slice):
+    def diff(self, time, system, pos, minimap, minimatrix):
         """
         Calculate the derivative of the compartment with respect to 
         time.
@@ -478,8 +480,9 @@ class Hospitalized(Compartment):
                    of the larger `map` parameter of 
                    `epispot.models.Model`.
 
-        `slice`: A slice of the `matrix` parameter of 
-                 `epispot.models.Model` specific to this compartment.
+        `minimatrix`: A slice of the `matrix` parameter of 
+                      `epispot.models.Model` specific to this 
+                      compartment.
         
         ## **Returns**
 
@@ -490,8 +493,8 @@ class Hospitalized(Compartment):
         for connection in minimap:
             
             # initialize parameters
-            probability = slice[connection][0]
-            rate = slice[connection][1]
+            probability = minimatrix[connection][0]
+            rate = minimatrix[connection][1]
 
             # initialize time-dependent parameters
             if callable(probability):
@@ -566,7 +569,7 @@ class Critical(Compartment):
         """Check wrapper for the Hospitalized compartment"""
         self._base_check([Recovered, Removed, Dead], minimap, compartments)
 
-    def diff(self, time, system, pos, minimap, slice):
+    def diff(self, time, system, pos, minimap, minimatrix):
         """
         Calculate the derivative of the compartment with respect to 
         time.
@@ -587,8 +590,9 @@ class Critical(Compartment):
                    of the larger `map` parameter of 
                    `epispot.models.Model`.
 
-        `slice`: A slice of the `matrix` parameter of 
-                 `epispot.models.Model` specific to this compartment.
+        `minimatrix`: A slice of the `matrix` parameter of 
+                      `epispot.models.Model` specific to this 
+                      compartment.
         
         ## **Returns**
 
@@ -599,8 +603,8 @@ class Critical(Compartment):
         for connection in minimap:
             
             # initialize parameters
-            probability = slice[connection][0]
-            rate = slice[connection][1]
+            probability = minimatrix[connection][0]
+            rate = minimatrix[connection][1]
 
             # initialize time-dependent parameters
             if callable(probability):

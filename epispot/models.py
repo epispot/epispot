@@ -23,7 +23,7 @@ class Model(object):
     .. versionadded:: v3.0.0-alpha-2
 
     """
-    def __init__(self, initial_population, comps=None, map=None, 
+    def __init__(self, initial_population, comps=None, comp_map=None, 
                  matrix=None):
         """
         Initialize the `Model` class; all optional parameters can be 
@@ -35,14 +35,14 @@ class Model(object):
 
         `comps=None`: List of compartment classes to create the model
 
-        `map=None`: Map of how all the compartments connect.
-                    The map should consist of a list of lists.
-                    Each sublist represents the connections of the 
-                    corresponding compartment in the `comps` list.
-                    This sublist should contain the indices of each 
-                    of the compartments in `comps` that it connects to.
-                    If the compartment does not connect to any other 
-                    compartments, leave the sublist blank.
+        `comp_map=None`: Map of how all the compartments connect.
+                         The map should consist of a list of lists.
+                         Each sublist represents the connections of the 
+                         corresponding compartment in the `comps` list.
+                         This sublist should contain the indices of each 
+                         of the compartments in `comps` that it connects to.
+                         If the compartment does not connect to any other 
+                         compartments, leave the sublist blank.
         
         `matrix=None`: Rate and probability matrix describing the 
                        exchange rates between compartments. Like `map`,
@@ -104,7 +104,7 @@ class Model(object):
         self.compartments = comps
         if self.compartments:
             self.names = [comp.name for comp in self.compartments]
-        self.map = map
+        self.map = comp_map
         self.matrix = matrix
         self.compiled = False
 
@@ -281,7 +281,7 @@ class Model(object):
 
         return results
 
-    def add(self, comp, map, matrix):
+    def add(self, comp, comp_map, matrix):
         """
         Add a compartment to the model. This can also be done by 
         initializing the `epispot.models.Model` class beforehand.
@@ -290,9 +290,9 @@ class Model(object):
 
         `comp`: Compartment class (e.g. `Susceptible()` or `Infected()`)
 
-        `map`: Slice of the larger `map` specified in 
-               `epispot.models.Model`. This should simply include the 
-               compartment connections for this specific compartment.
+        `comp_map`: Slice of the larger `map` specified in 
+                    `epispot.models.Model`. This should simply include the 
+                    compartment connections for this specific compartment.
 
         `matrix`: Slice of the larger `matrix` specified in 
                   `epispot.models.Model`. As with `map`, this should 
@@ -316,13 +316,13 @@ class Model(object):
         if (self.compartments, self.map, self.matrix) == (None, None, None):
             self.compartments = [comp]
             self.names = [comp.name]
-            self.map = [map]
+            self.map = [comp_map]
             self.matrix = [matrix]
         elif self.compartments is not None and self.map is not None and \
              self.matrix is not None:
             self.compartments.append(comp)
             self.names.append(comp.name)
-            self.map.append(map)
+            self.map.append(comp_map)
             self.matrix.append(matrix)
         else:  # pragma: no cover
             raise ValueError('Parameters for `epispot.models.Model` '
