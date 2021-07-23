@@ -340,7 +340,7 @@ class Recovered(Compartment):
     has had the infection and subsequently recovered. In most 
     epidemiological models and scenarios, the individuals in this class 
     are assumed to have developed some immunity to the virus. However, 
-    this is not always the case. In rare occassions where 
+    this is not always the case. In rare occasions where 
     resusceptibility *is* possible, connecting this class to the 
     `epispot.comps.Susceptible` class is permitted. This class can be 
     used as a terminal state.

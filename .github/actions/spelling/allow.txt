@@ -63,6 +63,7 @@ lisphilar
 localhost
 matplotlib
 metadata
+minimap
 mitmproxy
 mkdir
 mkdocs
@@ -120,6 +121,7 @@ venv
 versionadded
 vscode
 Website
+wiki
 workflow
 workflows
 www
