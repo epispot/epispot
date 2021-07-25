@@ -2,7 +2,7 @@
 .. include:: ../README.md
 <!-- 
 Documentation available at: 
-https://epispot.github.io/epispot/en/v3.0.0-alpha-1 
+https://epispot.github.io/epispot/en/v3.0.0-alpha-2 
 -->
 """
 
@@ -48,70 +48,72 @@ from . import fitters
 from . import plots
 
 
-def _sanity_check():
-    """Pre-defined sanity check to check for installation errors"""
+# helper funcs
+def _check_versions():
+    """Checks for version conflicts"""
+    pass
 
-    if not version or not source:  # pragma: no cover
-        message = \
-        '''
-        Version information and/or source for your epispot installation could not be found.
-        This likely means
-         (1) this version of epispot is deprecated or dated
-         (2) your installation of epispot is unstable
-        Try reinstalling epispot
-         (1) From PyPI:
-             $ pip install epispot
-         (2) From Anaconda:
-             $ conda config --add channels conda-forge
-             $ conda install -c conda-forge epispot
-         (3) From the GitHub Source:
-             $ git clone https://github.com/epispot/epispot
-             $ cd epispot
-             $ python install setup-nightly.py
-        If this fails or has failed before, then revert to epispot's last stable version.
-        Again, you can do this via
-         (1) PyPI:
-             (a) Go to https://pypi.org/project/epispot
-             (b) Scroll to the last MAJOR release in the form `a.0.0`
-             (c) Install via `$ pip install epispot==a.0.0` -- replace `a` with version #
-         (2) GitHub Source:
-             (a) Go to https://github.com/epispot/epispot
-             (b) Click the 'branches' tab
-             (c) Select the last branch with name `vA.0.0` for some version number A
-             (d) Install as `.zip`
-             (e) Unzip
-             (f) Run `$ python install setup.py`
-        '''
-        raise DeprecationWarning(message)
+def _check_install():  # pragma: no cover
+    """Checks for installation errors"""
+    pass
+
+def _check_updates():
+    """Checks for updates"""
+    pass
+
+def sanity_check():
+    """
+    Sanity check to check for basic installation errors, 
+    version conflicts, upgrades, etc.
+
+    **Run this if you experience any problems with epispot and before 
+    submitting any issues**
+    
+    """
+    # check for installation errors
+    if not source or not version:  # pragma: no cover
+        _check_install()
+
+    # check for version conflicts
+    import sys
+    if (sys.version_info[0] < 3) or \
+           (sys.version_info[0] == 3 and sys.version_info[1] < 7):
+        raise RuntimeError('Epispot requires Python 3.7 or later')  # pragma: no cover
+    _check_versions()
+
+    # check for updates
+    _check_updates()
 
 
 # version info
-version = '3.0.0-alpha-1'
+version = '3.0.0-alpha-2'
 """
-Epispot's version info (updated every nightly release)
-Get with:
+Epispot's version info (updated every release)\n
+Check version information with:
 
 ```
     >>> print(epispot.version)
 ```
+
+Version information is also available through the `__version__` 
+property, included for legacy support.
 """
+__version__ = version  # alias for version
 
 stable = False
 """
 Build stability:
 
-- True → main package (stable)
-- False → nightly package (possibly unstable)
+- True ⇒ main package (stable)
+- False ⇒ nightly package (possibly unstable)
 """
 
 # metadata
 source = 'https://www.github.com/epispot/epispot'
-"""URL to GitHub source"""
-docs = 'https://epispot.github.io/epispot'
-"""Project documentation (not version-specific)"""
+"""URL to VCS source"""
+raw = f'https://raw.githubusercontent.com/epispot/epispot/v{version}/'
+"""URL to raw VCS source (must append file path)"""
+docs = f'https://epispot.github.io/epispot/en/v{version}/'
+"""Project documentation (version-specific)"""
 issues = 'https://www.github.com/epispot/epispot/issues'
-"""Submit new issues or bugs here"""
-
-
-_sanity_check()  # complete installation
-del _sanity_check
+"""Bug tracker"""

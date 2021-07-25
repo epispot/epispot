@@ -1,10 +1,41 @@
 # Release Notes
 
-Latest stable release: 2.1.1
+Latest stable release: 2.1.1\
+Latest nightly release: 2.1.1.15\
+Latest alpha release: 3.0.0-alpha-2
 
 Releases are listed from most recent to least recent. All `alpha` and in-development versions are released to the [epispot-nightly](https://pypi.org/project/epispot-nightly/) project while all other releases are shipped to the [main project](https://pypi.org/project/epispot/).
 
 ---
+
+## Version Support
+
+Below is the official list of epispot versions and their support status. If we plan on deprecating a version, there will be a note next to the version listing a date (or approximate date) for when the version will be officially unsupported.
+
+| Version | Patch | Development | Bugfix | Security | Notes |
+| ------- | ------------ | ----------- | ------ | -------- | ----- |
+| 2.1   | 2.1.1 | :x: | ✔️ | ✔️ | Latest stable release |
+| 2.0   | 2.0.2 | :x: | ✔️ | ✔️ |
+| <= 1.1   | 1.1.0 | :x: | :x: | :x: | **Deprecated** |
+| nightly latest   | 2.1.1.x | :x: | :x: | ✔️ |
+| 3.0.0-alpha | 3.0.0a2 | ✔️ | ✔️ | ✔️ | Supported until stable release of v3 |
+| nightly < latest  | 2.1.1.x | :x: | :x: | :x: | **Deprecated** |
+
+---
+
+## 3.0.0-alpha-2 (standard-params)
+
+This is the second stage of the v3 release rollout, following [v3.0.0-alpha-1](#300-alpha-1-massive-plots). The major change in this release revolves around solving issue [#73](https://github.com/epispot/epispot/issues/73), which completely redesigns epispot's internals.
+
+In deprecations, we are now officially deprecating the entire `epispot.fitters` module. These changes have been reflected in our [updated documentation](https://epispot.github.io/epispot/en/v3.0.0-alpha-2/fitters.html). New alternatives are expected to arrive soon. Additionally, we've made the decision to officially end support for Python 3.6, following its removal from our testing suite and manifest files (including, finally, `setup.cfg`).
+
+The big news here, of course, are the huge changes to epispot's `Model` and `Compartment` objects. In short, `epispot.models` and `epispot.comps` have been completely redesigned so that each compartment in `epispot.comps` is a sub-compartment of a `Compartment` object, allowing you to create your own custom compartments. Additionally, models now accept the parameters and pass them on to compartments, instead of the other way around. This change is huge and is a large deprecation, so there is a lot to cover. We strongly recommend you read more about this change [here](https://github.com/epispot/epispot/issues/73) or read the new docs.
+
+In minor updates, we've [added support for Dependabot](https://github.com/epispot/epispot/issues/79) and [bumped Numpy to 1.21.1](https://github.com/epispot/epispot/commit/2fb5eff59c3b9d77f22b6dd1f95d34a9ac1bce6c#diff-9a3d09936710783b0cc2e50f54f8cc456be41c432647337fcf9a9391a9e81b98), featuring small performance improvements on the 1.21.0 release. In fact, there's now a `pre-requirements.txt` file to aid manual installation of the epispot package. Additionally, we've [added spellcheck as a routine CI/CD procedure](https://github.com/epispot/epispot/pull/92) on epispot and ensured that our new versions are typo-free. Speaking of CI/CD, we've officially [made the switch *back* from Travis CI to GitHub Actions](https://github.com/epispot/epispot/pull/93) which will give us faster build times and greater reliability. After the first v3 alpha release, we have now also [included alpha releases in our security policy](https://github.com/epispot/epispot/commit/43449d362eab94444a808fb6cedf6f04caee6cf0), so be sure to [check out the new security policy](https://github.com/epispot/epispot/blob/master/SECURITY.md).
+
+Finally, epispot now comes with a
+[new built-in sanity check](https://github.com/epispot/epispot/commit/71a70a040b8c60a77e038eb1edee0dda785798ef#diff-3bd065e1fc4a45ad5e94ee148eaf369a81d39db0c3ad4847b0d7323e4fe16a71), <!-- spellcheck: disable -->
+*but it won't run automatically*. This will hopefully increase performance by just a little bit since no checks are being run (unless they are manually invoked).
 
 ## 3.0.0-alpha-1 (massive-plots)
 

@@ -5,7 +5,7 @@ with open("README-nightly.md", "r") as fh:
 
 setuptools.setup(
     name="epispot-nightly",
-    version="3.0.0-alpha-1",
+    version="3.0.0-alpha-2",
     author="quantum9innovation",
     description="The nightly version of the epispot package.",
     long_description=long_description,
@@ -31,5 +31,11 @@ setuptools.setup(
         "Topic :: Scientific/Engineering",
     ],
     python_requires='>=3.7',
-    install_requires=['matplotlib', 'numpy', 'fire', 'plotly'],
+    install_requires=[
+        'matplotlib~=3.4.2', 
+        'numpy~=1.21.1', 
+        'fire~=0.4.0', 
+        'plotly~=5.1.0',
+        'SciencePlots~=1.0.8'
+    ],
 )

@@ -6,8 +6,8 @@
 
 A Python package for the mathematical modeling of infectious diseases via compartmental models. Originally designed for epidemiologists, epispot can be adapted for almost any type of modeling scenario.
 
-> This is a nightly version of epispot and may contain possibly unstable code.\
-> **Please see usage instructions prior to adding this project as a dependency**\
+> This is a nightly version of epispot and may contain possibly unstable code.  
+> **Please see usage instructions prior to adding this project as a dependency**  
 > If you prefer to use the stable version of epispot, please see
 > the [project on PyPI](https://pypi.org/project/epispot)
 
@@ -78,9 +78,10 @@ This is the hardest way to install `epispot-nightly` but it can be particularly 
 Clone the repository with:
 
 ```shell
-git clone https://github.com/epispot/epispot  # clone epispot/epispot
-cd epispot  # open project
-pip install -r requirements-nightly.txt  # install package requirements
+git clone https://github.com/epispot/epispot
+cd epispot/requirements
+pip install -r pre-requirements.txt  # helps avoid version conflicts
+pip install -r requirements-nightly.txt
 ```
 
 If you're planning on helping out in the development process, it will be  helpful to install a few extra requirements with:
@@ -111,16 +112,18 @@ Please also note that security updates are not provided on previous nightly vers
 
 ## Getting Started
 
-Make sure you are already familiar with [epispot](https://www.pypi.org/project/epispot). If not, you can find epispot's auto-generated documentation [here](https://epispot.github.io/epispot/). Additionally, we highly recommend reading the [epispot manual](https://epispot.gitbook.io) to get a better understanding of the documentation and how to use epispot.
+Make sure you are already familiar with [epispot](https://www.pypi.org/project/epispot). If not, continue reading the auto-generated documentation published to this site. Additionally, we highly recommend reading the [epispot manual](https://epispot.gitbook.io) to get a better understanding of the documentation and how to use epispot.
 
-## Statuses
+## Current Statuses
+
+Please note that these statuses reflect the most recent CI checks and are not related to this specific version. The following statuses show the progress of the current development.
 
 | Pipeline | Status |
 | --- | --- |
-| Travis CI | [![Build Status](https://www.travis-ci.com/epispot/epispot.svg?branch=master)](https://www.travis-ci.com/epispot/epispot) |
+| Build (3.7-3.9) | [![Build](https://github.com/epispot/epispot/actions/workflows/build.yml/badge.svg)](https://github.com/epispot/epispot/actions/workflows/build.yml) |
 | CodeCov | [![codecov](https://codecov.io/gh/epispot/epispot/branch/master/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot) |
-| PyPI main | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) |
-| PyPI nightly | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success) |
+| PyPI main (latest) | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) |
+| PyPI nightly (latest) | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success) |
 | Security | ![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/epispot/epispot?color=success&label=known%20vulnerabilities&query=VULNERABILITY%20is:open%20is:issue) |
 
 ## Contributing
