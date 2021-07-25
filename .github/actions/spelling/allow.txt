@@ -36,6 +36,8 @@ exe
 explorables
 figsize
 Froese
+func
+funcs
 gitbook
 github
 gitignore
