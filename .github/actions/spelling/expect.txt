@@ -11,6 +11,7 @@ hos
 isinstance
 len
 Phy
+pletely
 sdist
 SIHCR
 SIHRD
