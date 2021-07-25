@@ -1,6 +1,8 @@
 argv
 autobuild
 backend
+bugfix
+bugfixes
 cfg
 changelog
 CLIs
@@ -24,6 +26,7 @@ currentdir
 deepcopy
 deepsource
 dep
+Dependabot
 deps
 dirname
 Django

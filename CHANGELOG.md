@@ -33,7 +33,9 @@ The big news here, of course, are the huge changes to epispot's `Model` and `Com
 
 In minor updates, we've [added support for Dependabot](https://github.com/epispot/epispot/issues/79) and [bumped Numpy to 1.21.1](https://github.com/epispot/epispot/commit/2fb5eff59c3b9d77f22b6dd1f95d34a9ac1bce6c#diff-9a3d09936710783b0cc2e50f54f8cc456be41c432647337fcf9a9391a9e81b98), featuring small performance improvements on the 1.21.0 release. In fact, there's now a `pre-requirements.txt` file to aid manual installation of the epispot package. Additionally, we've [added spellcheck as a routine CI/CD procedure](https://github.com/epispot/epispot/pull/92) on epispot and ensured that our new versions are typo-free. Speaking of CI/CD, we've officially [made the switch *back* from Travis CI to GitHub Actions](https://github.com/epispot/epispot/pull/93) which will give us faster build times and greater reliability. After the first v3 alpha release, we have now also [included alpha releases in our security policy](https://github.com/epispot/epispot/commit/43449d362eab94444a808fb6cedf6f04caee6cf0), so be sure to [check out the new security policy](https://github.com/epispot/epispot/blob/master/SECURITY.md).
 
-Finally, epispot now comes with a [new built-in sanity check](https://github.com/epispot/epispot/commit/71a70a040b8c60a77e038eb1edee0dda785798ef#diff-3bd065e1fc4a45ad5e94ee148eaf369a81d39db0c3ad4847b0d7323e4fe16a71), *but it won't run automatically*. This will hopefully increase performance by just a little bit since no checks are being run (unless they are manually invoked).
+Finally, epispot now comes with a
+[new built-in sanity check](https://github.com/epispot/epispot/commit/71a70a040b8c60a77e038eb1edee0dda785798ef#diff-3bd065e1fc4a45ad5e94ee148eaf369a81d39db0c3ad4847b0d7323e4fe16a71), <!-- spellcheck: disable -->
+*but it won't run automatically*. This will hopefully increase performance by just a little bit since no checks are being run (unless they are manually invoked).
 
 ## 3.0.0-alpha-1 (massive-plots)
 
