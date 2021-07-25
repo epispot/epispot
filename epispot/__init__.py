@@ -77,10 +77,9 @@ def sanity_check():
     # check for version conflicts
     import sys
     if (sys.version_info[0] < 3) or \
-       (sys.version_info[0] == 3 and sys.version_info[1] < 7):
+           (sys.version_info[0] == 3 and sys.version_info[1] < 7):
         raise RuntimeError('Epispot requires Python 3.7 or later')  # pragma: no cover
-    else:
-        _check_versions()
+    _check_versions()
 
     # check for updates
     _check_updates()
