@@ -15,6 +15,10 @@ def grad_des(get_model_pred, real_data,
              N, samples, delta=0.0001,
              verbose=False):  # pragma: no cover
     """
+    .. warning::
+       This function is currently deprecated.
+       Fixes will be added in future alpha releases.
+
     The gradient descent fitter. This is not stochastic.
     For long timespans, this may take a long time to converge.
 
@@ -98,6 +102,10 @@ def tree_search(get_model_pred, real_data,
                 epochs, N, samples,
                 verbose=False):  # pragma: no cover
     """
+    .. warning::
+       This function is currently deprecated.
+       Fixes will be added in future alpha releases.
+
     Note: This is an experimental fitter
     """
 
