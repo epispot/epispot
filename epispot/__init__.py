@@ -53,7 +53,7 @@ def _check_versions():
     """Checks for version conflicts"""
     pass
 
-def _check_install():
+def _check_install():  # pragma: no cover
     """Checks for installation errors"""
     pass
 
@@ -71,14 +71,14 @@ def sanity_check():
     
     """
     # check for installation errors
-    if not source or not version:
+    if not source or not version:  # pragma: no cover
         _check_install()
 
     # check for version conflicts
     import sys
     if (sys.version_info[0] < 3) or \
        (sys.version_info[0] == 3 and sys.version_info[1] < 7):
-        raise RuntimeError('Epispot requires Python 3.7 or later') # pragma: no cover
+        raise RuntimeError('Epispot requires Python 3.7 or later')  # pragma: no cover
     else:
         _check_versions()
 

@@ -12,6 +12,7 @@ STRUCTURE:
 def test_base():
     """Triggers automatic import checks from within epispot"""
     import epispot
+    epispot.sanity_check()
 
 
 def test_integrity():
