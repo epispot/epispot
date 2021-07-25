@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>epispot API documentation</title>
+<meta name="description" content="![epispot](https://i.ibb.co/m9yS1yh/epispot-nightly.jpg) …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>epispot</code></h1>
+</header>
+<section id="section-intro">
+<p><img alt="epispot" src="https://i.ibb.co/m9yS1yh/epispot-nightly.jpg"></p>
+<hr>
+<h1 id="epispot-nightly">epispot nightly</h1>
+<p>A Python package for the mathematical modeling of infectious diseases via compartmental models. Originally designed for epidemiologists, epispot can be adapted for almost any type of modeling scenario.</p>
+<blockquote>
+<p>This is a nightly version of epispot and may contain possibly unstable code.<br>
+<strong>Please see usage instructions prior to adding this project as a dependency</strong><br>
+If you prefer to use the stable version of epispot, please see
+the <a href="https://pypi.org/project/epispot">project on PyPI</a></p>
+</blockquote>
+<h2 id="installation">Installation</h2>
+<p>The epispot package can be installed from PyPI, Anaconda, or be built from the source. However, as epispot's nightly versions cannot be released per-commit to
+the conda packaging registry, using Anaconda means that epispot will have to be installed via the built-in <code>pip</code> installer. Instructions for each platform are listed below.</p>
+<h3 id="pypi">PyPI</h3>
+<p>This is the easiest way to install epispot nightly. Fire up a terminal and type:</p>
+<pre><code class="language-shell">pip install epispot-nightly
+</code></pre>
+<p>Pip will ask you to install <code>numpy</code> and <code>matplotlib</code> as dependencies if you haven't already. Additionally, it may require you to install <code>fire</code>, <code>plotly</code>, and <code>SciencePlots</code> for some <code>nightly</code> experiments.
+These can be installed beforehand with:</p>
+<pre><code class="language-shell">pip install numpy
+pip install matplotlib
+pip install fire
+pip install plotly
+pip install SciencePlots
+</code></pre>
+<p>Update the package regularly with:</p>
+<pre><code class="language-shell">pip install epispot-nightly --upgrade
+</code></pre>
+<h3 id="anaconda">Anaconda</h3>
+<p>Please note that the <code>nightly</code> version is <strong>not</strong> available on the <code>conda</code> package registry (although we may add it in the future). However, it is still possible to install on <code>conda</code>-based systems with</p>
+<pre><code class="language-shell">pip install epispot-nightly
+</code></pre>
+<p>which uses <code>pip</code> from Anaconda to install it. All dependencies are available on the conda package registry (except <code>SciencePlots</code>), but you may prefer to install them via <code>pip</code> to avoid cross-referencing packages installed on different registries.</p>
+<p><code>SciencePlots</code> can be installed using <code>pip</code> with:</p>
+<pre><code class="language-shell">pip install SciencePlots
+</code></pre>
+<p>Update the package regularly with:</p>
+<pre><code class="language-shell">pip install epispot-nightly --upgrade
+</code></pre>
+<p>If you installed the dependencies on conda instead of <code>pip</code> you may have to update them too after major releases. You can do that with:</p>
+<pre><code class="language-shell">conda update numpy
+conda update matplotlib
+conda update fire
+conda update -c conda-forge plotly
+</code></pre>
+<h3 id="building-from-the-source">Building from the source</h3>
+<p>This is the hardest way to install <code>epispot-nightly</code> but it can be particularly useful if you plan on helping out with the development process. The main downside of this approach is that you will have to continuously run <code>git pull</code> and then rerun the steps listed below to get the latest version.</p>
+<p>Clone the repository with:</p>
+<pre><code class="language-shell">git clone https://github.com/epispot/epispot
+cd epispot/requirements
+pip install -r pre-requirements.txt  # helps avoid version conflicts
+pip install -r requirements-nightly.txt
+</code></pre>
+<p>If you're planning on helping out in the development process, it will be
+helpful to install a few extra requirements with:</p>
+<pre><code class="language-shell">pip install -r requirements-dev.txt
+</code></pre>
+<p>Then, build the nightly version with:</p>
+<pre><code class="language-shell">python setup-nightly.py install
+</code></pre>
+<p>If you're working on a patch, you may find it helpful to use</p>
+<pre><code class="language-shell">python setup-nightly.py develop
+</code></pre>
+<p>instead because it will greatly simplify the constant reinstallation of the package.</p>
+<h2 id="usage">Usage</h2>
+<p>It is important to note that this package was designed specifically for getting releases out as soon as possible when modeling is important. During the COVID-19 pandemic, this strategy allowed epispot to
+distribute versions quickly on PyPI; additionally, this package is used to ship <code>alpha</code> releases and other unstable code that is currently being developed in the epispot repository. <code>beta</code>-tagged releases and release candidates will be published on the <a href="https://pypi.org/project/epispot/">stable package</a>.</p>
+<p>Please also note that security updates are not provided on previous nightly versions. To make sure that your version has no vulnerabilities, upgrade to the latest published version regularly. The latest version of the nightly package is the one that is maintained by our development team.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Make sure you are already familiar with <a href="https://www.pypi.org/project/epispot">epispot</a>. If not, continue reading the auto-generated documentation published to this site. Additionally, we highly recommend reading the <a href="https://epispot.gitbook.io">epispot manual</a> to get a better understanding of the documentation and how to use epispot.</p>
+<h2 id="current-statuses">Current Statuses</h2>
+<p>Please note that these statuses reflect the most recent CI checks and are not related to this specific version. The following statuses show the progress of the current development.</p>
+<table>
+<thead>
+<tr>
+<th>Pipeline</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build (3.7-3.9)</td>
+<td><a href="https://github.com/epispot/epispot/actions/workflows/build.yml"><img alt="Build" src="https://github.com/epispot/epispot/actions/workflows/build.yml/badge.svg"></a></td>
+</tr>
+<tr>
+<td>CodeCov</td>
+<td><a href="https://codecov.io/gh/epispot/epispot"><img alt="codecov" src="https://codecov.io/gh/epispot/epispot/branch/master/graph/badge.svg?token=WGIM127RFY"></a></td>
+</tr>
+<tr>
+<td>PyPI main (latest)</td>
+<td><img alt="latest-release" src="https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success"></td>
+</tr>
+<tr>
+<td>PyPI nightly (latest)</td>
+<td><img alt="latest-release" src="https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success"></td>
+</tr>
+<tr>
+<td>Security</td>
+<td><img alt="GitHub issue custom search in repo" src="https://img.shields.io/github/issues-search/epispot/epispot?color=success&amp;label=known%20vulnerabilities&amp;query=VULNERABILITY%20is:open%20is:issue"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="contributing">Contributing</h2>
+<p>Contributions are always welcome!
+See <a href="https://github.com/epispot/epispot/tree/master/CONTRIBUTING.md">CONTRIBUTING.md</a> for instructions on how to get started, including environment setup and instructions to build from the source. Please note also that epispot has many guides dedicated to certain types of
+contributions. Please see</p>
+<ul>
+<li><a href="https://github.com/epispot/epispot/tree/master/DOCUMENTATION.md">DOCUMENTATION.md</a> for documentation additions</li>
+<li><a href="https://github.com/epispot/epispot/tree/master/SECURITY.md">SECURITY.md</a> for epispot's security policy</li>
+</ul>
+<h3 id="thank-you-to-all-contributors">Thank you to all contributors!</h3>
+<hr>
+<p><img alt="epispot's open-source contributors" src="https://contrib.rocks/image?repo=epispot/epispot"></p>
+<p>Made with <a href="https://contrib.rocks">contributors-img</a>.</p>
+<!--
+Documentation available at:
+<https://epispot.github.io/epispot/en/v3.0.0-alpha-2>
+-->
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+.. include:: ../README-nightly.md
+&lt;!-- 
+Documentation available at: 
+https://epispot.github.io/epispot/en/v3.0.0-alpha-2 
+--&gt;
+&#34;&#34;&#34;
+
+
+def _dependency_check():
+    &#34;&#34;&#34;Checks dependencies&#34;&#34;&#34;
+    try:
+        import numpy
+    except ImportError:  # pragma: no cover
+        raise ImportError(&#39;In order to integrate `epispot` models, &#39;
+                          &#39;`numpy` is a required dependency.\n&#39;
+                          &#39;Install with either:\n&#39;
+                          &#39; $ pip install epispot\n&#39;
+                          &#39; $ conda install epispot&#39;)
+    try:
+        import matplotlib  # lgtm [py/import-and-import-from]
+    except ImportError:  # pragma: no cover
+        raise ImportError(&#39;In order to display plots, `matplotlib` is &#39;
+                          &#39;a required dependency.\n&#39;
+                          &#39;Install with either:\n&#39;
+                          &#39; $ pip install matplotlib\n&#39;
+                          &#39; $ conda install matplotlib&#39;)
+
+
+# imports
+import warnings
+import random
+
+
+# dependencies
+_dependency_check()  # check for uninstalled dependencies
+del _dependency_check
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib import colors
+
+
+# local
+from . import comps
+from . import models
+from . import pre
+from . import fitters
+from . import plots
+
+
+# helper funcs
+def _check_versions():
+    &#34;&#34;&#34;Checks for version conflicts&#34;&#34;&#34;
+    pass
+
+def _check_install():
+    &#34;&#34;&#34;Checks for installation errors&#34;&#34;&#34;
+    pass
+
+def _check_updates():
+    &#34;&#34;&#34;Checks for updates&#34;&#34;&#34;
+    pass
+
+def sanity_check():
+    &#34;&#34;&#34;
+    Sanity check to check for basic installation errors, 
+    version conflicts, upgrades, etc.
+
+    **Run this if you experience any problems with epispot and before 
+    submitting any issues**
+    
+    &#34;&#34;&#34;
+    # check for installation errors
+    if not source or not version:
+        _check_install()
+
+    # check for version conflicts
+    import sys
+    if (sys.version_info[0] &lt; 3) or \
+       (sys.version_info[0] == 3 and sys.version_info[1] &lt; 7):
+        raise RuntimeError(&#39;Epispot requires Python 3.7 or later&#39;) # pragma: no cover
+    else:
+        _check_versions()
+
+    # check for updates
+    _check_updates()
+
+
+# version info
+version = &#39;3.0.0-alpha-1&#39;
+&#34;&#34;&#34;
+Epispot&#39;s version info (updated every release)\n
+Check version information with:
+
+```
+    &gt;&gt;&gt; print(epispot.version)
+```
+
+Version information is also available through the `__version__` 
+property, included for legacy support.
+&#34;&#34;&#34;
+
+stable = False
+&#34;&#34;&#34;
+Build stability:
+
+- True ⇒ main package (stable)
+- False ⇒ nightly package (possibly unstable)
+&#34;&#34;&#34;
+
+# metadata
+source = &#39;https://www.github.com/epispot/epispot&#39;
+&#34;&#34;&#34;URL to VCS source&#34;&#34;&#34;
+raw = f&#39;https://raw.githubusercontent.com/epispot/epispot/v{version}/&#39;
+&#34;&#34;&#34;URL to raw VCS source (must append file path)&#34;&#34;&#34;
+docs = f&#39;https://epispot.github.io/epispot/en/v{version}&#39;
+&#34;&#34;&#34;Project documentation (version-specific)&#34;&#34;&#34;
+issues = &#39;https://www.github.com/epispot/epispot/issues&#39;
+&#34;&#34;&#34;Bug tracker&#34;&#34;&#34;</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="epispot.comps" href="comps.html">epispot.comps</a></code></dt>
+<dd>
+<div class="desc"><p>The <code><a title="epispot.comps" href="comps.html">epispot.comps</a></code> module is a collection of compartments used to initialize
+the <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> object to create a compartmental model. Each
+of these …</p></div>
+</dd>
+<dt><code class="name"><a title="epispot.fitters" href="fitters.html">epispot.fitters</a></code></dt>
+<dd>
+<div class="desc"><p>This module contains all available fitting algorithms.
+These operate separately from the <code>Model</code> class …</p></div>
+</dd>
+<dt><code class="name"><a title="epispot.models" href="models.html">epispot.models</a></code></dt>
+<dd>
+<div class="desc"><p>The <code><a title="epispot.models" href="models.html">epispot.models</a></code> classes store different types of epidemiological
+models in a compact form useful for integration. Models can be
+differentiated, …</p></div>
+</dd>
+<dt><code class="name"><a title="epispot.plots" href="plots/index.html">epispot.plots</a></code></dt>
+<dd>
+<div class="desc"><p>This sub-package is responsible for plotting epispot models of the <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> class.
+This is done independently of any other modules and …</p></div>
+</dd>
+<dt><code class="name"><a title="epispot.pre" href="pre.html">epispot.pre</a></code></dt>
+<dd>
+<div class="desc"><p>This module (short for 'pre-compiled') contains models that have
+already been compiled and can be put to use immediately. Each function
+returns an …</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="epispot.docs"><code class="name">var <span class="ident">docs</span></code></dt>
+<dd>
+<div class="desc"><p>Project documentation (version-specific)</p></div>
+</dd>
+<dt id="epispot.issues"><code class="name">var <span class="ident">issues</span></code></dt>
+<dd>
+<div class="desc"><p>Bug tracker</p></div>
+</dd>
+<dt id="epispot.raw"><code class="name">var <span class="ident">raw</span></code></dt>
+<dd>
+<div class="desc"><p>URL to raw VCS source (must append file path)</p></div>
+</dd>
+<dt id="epispot.source"><code class="name">var <span class="ident">source</span></code></dt>
+<dd>
+<div class="desc"><p>URL to VCS source</p></div>
+</dd>
+<dt id="epispot.stable"><code class="name">var <span class="ident">stable</span></code></dt>
+<dd>
+<div class="desc"><p>Build stability:</p>
+<ul>
+<li>True ⇒ main package (stable)</li>
+<li>False ⇒ nightly package (possibly unstable)</li>
+</ul></div>
+</dd>
+<dt id="epispot.version"><code class="name">var <span class="ident">version</span></code></dt>
+<dd>
+<div class="desc"><p>Epispot's version info (updated every release)</p>
+<p>Check version information with:</p>
+<pre><code>    &gt;&gt;&gt; print(epispot.version)
+</code></pre>
+<p>Version information is also available through the <code>__version__</code>
+property, included for legacy support.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="epispot.sanity_check"><code class="name flex">
+<span>def <span class="ident">sanity_check</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sanity check to check for basic installation errors,
+version conflicts, upgrades, etc.</p>
+<p><strong>Run this if you experience any problems with epispot and before
+submitting any issues</strong></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sanity_check():
+    &#34;&#34;&#34;
+    Sanity check to check for basic installation errors, 
+    version conflicts, upgrades, etc.
+
+    **Run this if you experience any problems with epispot and before 
+    submitting any issues**
+    
+    &#34;&#34;&#34;
+    # check for installation errors
+    if not source or not version:
+        _check_install()
+
+    # check for version conflicts
+    import sys
+    if (sys.version_info[0] &lt; 3) or \
+       (sys.version_info[0] == 3 and sys.version_info[1] &lt; 7):
+        raise RuntimeError(&#39;Epispot requires Python 3.7 or later&#39;) # pragma: no cover
+    else:
+        _check_versions()
+
+    # check for updates
+    _check_updates()</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#epispot-nightly">epispot nightly</a><ul>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#pypi">PyPI</a></li>
+<li><a href="#anaconda">Anaconda</a></li>
+<li><a href="#building-from-the-source">Building from the source</a></li>
+</ul>
+</li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#current-statuses">Current Statuses</a></li>
+<li><a href="#contributing">Contributing</a><ul>
+<li><a href="#thank-you-to-all-contributors">Thank you to all contributors!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="epispot.comps" href="comps.html">epispot.comps</a></code></li>
+<li><code><a title="epispot.fitters" href="fitters.html">epispot.fitters</a></code></li>
+<li><code><a title="epispot.models" href="models.html">epispot.models</a></code></li>
+<li><code><a title="epispot.plots" href="plots/index.html">epispot.plots</a></code></li>
+<li><code><a title="epispot.pre" href="pre.html">epispot.pre</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="two-column">
+<li><code><a title="epispot.docs" href="#epispot.docs">docs</a></code></li>
+<li><code><a title="epispot.issues" href="#epispot.issues">issues</a></code></li>
+<li><code><a title="epispot.raw" href="#epispot.raw">raw</a></code></li>
+<li><code><a title="epispot.source" href="#epispot.source">source</a></code></li>
+<li><code><a title="epispot.stable" href="#epispot.stable">stable</a></code></li>
+<li><code><a title="epispot.version" href="#epispot.version">version</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="epispot.sanity_check" href="#epispot.sanity_check">sanity_check</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
