@@ -35,13 +35,6 @@ The simplest way to report a vulnerability is to email the [epispot package auth
 
 Please note that we will rarely reply to your email using a GPG key unless it poses a threat to other users and/or packages. If you feel that it is necessary to use a GPG key or want to conceal confidential information, our key fingerprint is:
 
-```text
-sec   rsa3072/25B6A3ACE2E9FA1C 2021-07-30 [SC]
-      6B3C84252163F3BF00AB8CC125B6A3ACE2E9FA1C
-uid                 [ultimate] epispot (This is epispot's official GPG key for security vulnerability submissions.) 
-<dev.quantum9innovation@gmail.com>
-ssb   rsa3072/C85634FF0F7A1E8A 2021-07-30 [E]
-```
 
 Encrypt your message with the following GPG key block:
 
