@@ -33,10 +33,9 @@ The simplest way to report a vulnerability is to email the [epispot package auth
 
 #### I want to use a GPG key
 
-Please note that we will rarely reply to your email using a GPG key unless it poses a threat to other users and/or packages. If you feel that it is necessary to use a GPG key or want to conceal confidential information, our key fingerprint is:
+**Note:** Please contact us in a separate email for the passphrase to the key shown below.
 
-
-Encrypt your message with the following GPG key block:
+Please note that we will rarely reply to your email using a GPG key unless it poses a threat to other users and/or packages (this is in line with GitHub's Bug Bounty program, which follows a similar philosophy). If you feel that it is necessary to use a GPG key or want to conceal confidential information, our key fingerprint is:
 
 ```text
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -83,8 +82,6 @@ K0Ou
 =NenA
 -----END PGP PUBLIC KEY BLOCK-----
 ```
-
-Please contact us in a separate email for the passphrase to the above key.
 
 #### I have a GitHub account and ...
 
