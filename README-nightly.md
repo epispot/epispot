@@ -124,7 +124,6 @@ Please note that these statuses reflect the most recent CI checks and are not re
 | CodeCov | [![codecov](https://codecov.io/gh/epispot/epispot/branch/master/graph/badge.svg?token=WGIM127RFY)](https://codecov.io/gh/epispot/epispot) |
 | PyPI main (latest) | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot.svg?color=success) |
 | PyPI nightly (latest) | ![latest-release](https://shields.mitmproxy.org/pypi/v/epispot-nightly.svg?color=success) |
-| Security | ![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/epispot/epispot?color=success&label=known%20vulnerabilities&query=VULNERABILITY%20is:open%20is:issue) |
 
 ## Contributing
 
