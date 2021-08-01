@@ -99,7 +99,7 @@ python setup.py install
 
 ## Quick Demo
 
-Installing epispot from `pip` and then compiling a simple SIR model in less than 40 seconds.
+Using epispot in a Python REPL to create the well-known SIR model (in less than three lines of code):
 
 ![Quick demo GIF](https://epispot.github.io/epispot/assets/demo.gif)
 
