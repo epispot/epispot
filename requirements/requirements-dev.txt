@@ -1,5 +1,5 @@
 matplotlib~=3.4.3
-numpy~=1.21.1
+numpy~=1.21.2
 fire~=0.4.0
 plotly~=5.2.1
 pytest~=6.2.4
