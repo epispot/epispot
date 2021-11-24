@@ -1,2 +1,2 @@
 matplotlib~=3.5.0rc1
-numpy~=1.21.2
+numpy~=1.21.4
