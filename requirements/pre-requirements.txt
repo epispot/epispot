@@ -1,2 +1,2 @@
-matplotlib~=3.5.0rc1
+matplotlib~=3.5.0
 pandas
