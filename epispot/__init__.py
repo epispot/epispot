@@ -2,7 +2,7 @@
 .. include:: ../README.md
 <!-- 
 Documentation available at: 
-https://epispot.github.io/epispot/en/v3.0.0-alpha-2 
+https://epispot.github.io/epispot/en/v3.0.0-alpha-3 
 -->
 """
 
@@ -86,7 +86,7 @@ def sanity_check():
 
 
 # version info
-version = '3.0.0-alpha-2'
+version = '3.0.0-alpha-3'
 """
 Epispot's version info (updated every release)\n
 Check version information with:
