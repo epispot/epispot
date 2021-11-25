@@ -1,0 +1,17 @@
+{
+    "description": "<h1>epispot</h1> <br> <p>Epispot is an epidemiological analysis tool designed for modeling infectious diseases. To read more about epispot, visit the official GitHub repository at <a href=\"https://github.com/epispot/epispot/tree/master/README.md\" >epispot/epispot</a>.</p>", 
+    "license": "GNU General Public License v3 (GPLv3)", 
+    "title": "epispot/epispot",  
+    "upload_type": "software",
+    "creators": [
+        {
+            "affiliation": "@epispot", 
+            "name": "quantum9innovation"
+        }, 
+        {
+            "affiliation": "@epispot", 
+            "name": "Quantalabs"
+        }
+    ], 
+    "access_right": "open"
+}

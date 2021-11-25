@@ -10,16 +10,16 @@ Releases are listed from most recent to least recent. All `alpha` and in-develop
 
 ## Version Support
 
-Below is the official list of epispot versions and their support status. If we plan on deprecating a version, there will be a note next to the version listing a date (or approximate date) for when the version will be officially unsupported.
+Below is the official list of epispot versions and their support status. If we plan on deprecating a version, there will be a note next to the version listing a date (or approximate date) for when the version will be officially unsupported. The current development version is in bold.
 
-| Version | Patch | Development | Bugfix | Security | Notes |
-| ------- | ------------ | ----------- | ------ | -------- | ----- |
-| 2.1   | 2.1.1 | :x: | ✔️ | ✔️ | Latest stable release |
-| 2.0   | 2.0.2 | :x: | ✔️ | ✔️ |
-| <= 1.1   | 1.1.0 | :x: | :x: | :x: | **Deprecated** |
-| nightly latest   | 2.1.1.x | :x: | :x: | ✔️ |
-| 3.0.0-alpha | 3.0.0a2 | ✔️ | ✔️ | ✔️ | Supported until stable release of v3 |
-| nightly < latest  | 2.1.1.x | :x: | :x: | :x: | **Deprecated** |
+| Version | Patch | Bugfix | Security | Notes |
+| ------- | ----- | ------ | -------- | ----- |
+| 2.1   | 2.1.1 | ✔️ | ✔️ | Latest stable release |
+| 2.0   | 2.0.2 | ✔️ | ✔️ |
+| <= 1.1   | 1.1.0 | :x: | :x: | Deprecated |
+| nightly latest   | 2.1.1.15 | :x: | ✔️ |
+| **3.0.0-alpha** | **3.0.0a2** | **✔️** | **✔️** | **Supported until beta release of v3** |
+| nightly < latest  | 2.1.1.x | :x: | :x: | Deprecated |
 
 ---
 

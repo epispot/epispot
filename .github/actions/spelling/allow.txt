@@ -49,6 +49,7 @@ GLOBALS
 GPLv
 google
 homepage
+href
 html
 http
 https

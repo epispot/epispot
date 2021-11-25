@@ -78,5 +78,6 @@ test_*              @quantum9innovation
 requirements-*      @Quantalabs
 
 LICENSE                 @quantum9innovation
+SECURITY.md             @quantum9innovation @Quantalabs
 setup.py                @Quantalabs
 setup-nightly.py        @Quantalabs

@@ -11,7 +11,7 @@ from . import warnings
 from . import np
 
 
-class Model(object):
+class Model:
     """
     The base model class for 
     [compartmental models](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology). 
