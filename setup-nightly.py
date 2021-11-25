@@ -5,7 +5,7 @@ with open('README-nightly.md', 'r') as fh:
 
 setuptools.setup(
     name='epispot-nightly',
-    version='3.0.0-alpha-2',
+    version='3.0.0-alpha-3',
     author='quantum9innovation',
     author_email = 'dev.quantum9innovation@gmail.com',
     description='The nightly version of the epispot package.',
