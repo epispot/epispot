@@ -2,9 +2,9 @@
 
 Latest stable release: 2.1.1\
 Latest nightly release: 2.1.1.15\
-Latest alpha release: 3.0.0-alpha-2
+Latest alpha release: 3.0.0-alpha-3
 
-Releases are listed from most recent to least recent. All `alpha` and in-development versions are released to the [epispot-nightly](https://pypi.org/project/epispot-nightly/) project while all other releases are shipped to the [main project](https://pypi.org/project/epispot/).
+Releases are listed from most recent to least recent. All alpha and in-development versions are released to the [epispot-nightly](https://pypi.org/project/epispot-nightly/) project while all other releases are shipped to the [main project](https://pypi.org/project/epispot/).
 
 ---
 
@@ -15,13 +15,37 @@ Below is the official list of epispot versions and their support status. If we p
 | Version | Patch | Bugfix | Security | Notes |
 | ------- | ----- | ------ | -------- | ----- |
 | 2.1   | 2.1.1 | ✔️ | ✔️ | Latest stable release |
-| 2.0   | 2.0.2 | ✔️ | ✔️ |
+| 2.0   | 2.0.2 | :x: | ✔️ |
 | <= 1.1   | 1.1.0 | :x: | :x: | Deprecated |
 | nightly latest   | 2.1.1.15 | :x: | ✔️ |
-| **3.0.0-alpha** | **3.0.0a2** | **✔️** | **✔️** | **Supported until beta release of v3** |
+| **3.0.0-alpha** | **3.0.0a3** | **✔️** | **✔️** | **Supported until beta release of v3** |
 | nightly < latest  | 2.1.1.x | :x: | :x: | Deprecated |
 
 ---
+
+## Release Schedule
+
+For epispot v3.0.0:
+
+| Release | Deadline | End of life |
+| ------- | ------- | ----------- |
+| v3.0.0-alpha-1 | N/A | 12/31/21 |
+| v3.0.0-alpha-2 | N/A | 12/31/21 |
+| v3.0.0-alpha-3 | 10/18/21 | 12/31/21 |
+| v3.0.0-beta | 12/31/21 | 1/7/22 |
+| v3.0.0 | 1/7/22 | LTS |
+
+---
+
+## 3.0.0-alpha-3
+
+As the third release in the v3-alpha series, this version updates all dependencies and brings Python 3.10 support to epispot.
+
+Epispot will now support all Python versions from 3.7 to 3.10, with our focus being on Python 3.10. [All dependencies have also  been updated](https://github.com/epispot/epispot/pull/113) to ensure compatibility with Python 3.10 and to catch up on missed dependency updates from last release.
+
+Additionally, in minor updates, epispot will be removing unnecessary CI checks (e.g. [DeepSource](https://github.com/epispot/epispot/commit/6119238737e088aceecb99c9bcfc57644f5c322f)) from analyzing non-package files and adding more [detailed summaries for Zenodo uploads](https://github.com/epispot/epispot/commit/95c99a82050e3ed20bdd73567e1d36b6c38bc766).
+
+Finally, with this release comes a major update to epispot's security policy, which you can view [here](https://github.com/epispot/epispot/blob/master/SECURITY.md). This means that our entire organization will now follow the [Google OSS Vulnerability Guide](https://github.com/google/oss-vulnerability-guide), which will be applied for any security vulnerabilities we find in any epispot versions.
 
 ## 3.0.0-alpha-2 (standard-params)
 
