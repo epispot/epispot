@@ -22,4 +22,6 @@ config
 cache
 .gitignore
 # Project-specific files
+# for some reason key block is not recognized (on SECURITY.md)
 bin/
+SECURITY.md

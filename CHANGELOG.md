@@ -43,7 +43,7 @@ As the third release in the v3-alpha series, this version updates all dependenci
 
 Epispot will now support all Python versions from 3.7 to 3.10, with our focus being on Python 3.10. [All dependencies have also  been updated](https://github.com/epispot/epispot/pull/113) to ensure compatibility with Python 3.10 and to catch up on missed dependency updates from last release.
 
-Additionally, in minor updates, epispot will be removing unnecessary CI checks (e.g. [DeepSource](https://github.com/epispot/epispot/commit/6119238737e088aceecb99c9bcfc57644f5c322f)) from analyzing non-package files and adding more [detailed summaries for Zenodo uploads](https://github.com/epispot/epispot/commit/95c99a82050e3ed20bdd73567e1d36b6c38bc766).
+Additionally, in minor updates, epispot will be removing unnecessary CI checks (e.g. [DeepSource](https://github.com/epispot/epispot/commit/6119238737e088aceecb99c9bcfc57644f5c322f)) from analyzing non-package files and adding more [detailed summaries for Zenodo uploads](https://github.com/epispot/epispot/commit/95c99a82050e3ed20bdd73567e1d36b6c38bc766/).
 
 Finally, with this release comes a major update to epispot's security policy, which you can view [here](https://github.com/epispot/epispot/blob/master/SECURITY.md). This means that our entire organization will now follow the [Google OSS Vulnerability Guide](https://github.com/google/oss-vulnerability-guide), which will be applied for any security vulnerabilities we find in any epispot versions.
 

@@ -8,6 +8,7 @@ dtype
 elif
 getfile
 hos
+idmod
 isinstance
 len
 Phy

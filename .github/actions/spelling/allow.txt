@@ -78,6 +78,7 @@ mypy
 nosetests
 numpy
 nums
+oss
 params
 pdoc
 pepy
