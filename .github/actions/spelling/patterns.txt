@@ -22,15 +22,15 @@ data:[-a-zA-Z=;:/0-9+]*,\S*
 @.*
 
 # Any `http://` or `https://` URL
-https?://.*.com
-https?://.*.org
-https?://.*.gov
-https?://.*.html
-https?://.*.net
-https?://.*.png
-https?://.*.jpg
-https?://.*.php
 https?://.*/
+https?://.*\.com
+https?://.*\.org
+https?://.*\.gov
+https?://.*\.html
+https?://.*\.net
+https?://.*\.png
+https?://.*\.jpg
+https?://.*\.php
 https?://*
 
 # GitHub SHAs
