@@ -8,6 +8,7 @@
 # marker for ignoring all lines with disabled spellcheck
 .*spellcheck: disable
 spellcheck: stop(.|\n)*spellcheck: start
+<!--- spellcheck: stop(.|\n)*spellcheck: start
 # ignore key blocks
 -----BEGIN PGP PUBLIC KEY BLOCK-----(.|\n)*-----END PGP PUBLIC KEY BLOCK-----
 

@@ -1,3 +1,4 @@
+args
 argv
 autobuild
 backend
@@ -38,6 +39,7 @@ epispot
 exe
 explorables
 figsize
+frac
 Froese
 func
 funcs
@@ -63,6 +65,7 @@ javascript
 jpg
 json
 Jupyter
+kwargs
 lgtm
 linspace
 lisphilar
@@ -104,6 +107,7 @@ screenshots
 SEIR
 setuptools
 sourced
+spellcheck
 Spyder
 sqlite
 src
@@ -117,6 +121,7 @@ timerange
 timespans
 timestep
 timesteps
+TODO
 toml
 towardsdatascience
 ubuntu
