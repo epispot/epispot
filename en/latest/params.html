@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>epispot.params API documentation</title>
+<meta name="description" content="The `epispot.params` module stores various parameter distributions and
+estimations, many of which have been pulled from the literature. These
+…" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>epispot.params</code></h1>
+</header>
+<section id="section-intro">
+<p>The <code><a title="epispot.params" href="#epispot.params">epispot.params</a></code> module stores various parameter distributions and
+estimations, many of which have been pulled from the literature. These
+parameter distributions are divided into two classes: those useful for
+general epidemiological analysis and those useful for the analysis of a
+specific disease or variant of that disease.</p>
+<p>All estimates from literature can be accessed by their corresponding
+in-text citations. For full citations, use the <code>.__cite__()</code> method.</p>
+<div class="admonition versionadded">
+<p class="admonition-title">Added in version:&ensp;v3.0.0-beta</p>
+</div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+The `epispot.params` module stores various parameter distributions and 
+estimations, many of which have been pulled from the literature. These 
+parameter distributions are divided into two classes: those useful for 
+general epidemiological analysis and those useful for the analysis of a 
+specific disease or variant of that disease.
+
+All estimates from literature can be accessed by their corresponding 
+in-text citations. For full citations, use the `.__cite__()` method.
+
+.. versionadded:: v3.0.0-beta
+
+&#34;&#34;&#34;
+
+from . import np
+
+
+class Distribution:
+    &#34;&#34;&#34;The base class for all parameter distributions.&#34;&#34;&#34;
+    def __init__(
+        self, 
+        name=None, 
+        dist=lambda c: c, 
+        description=None, 
+        citation=None, 
+        in_text=None
+    ):
+        &#34;&#34;&#34;
+        Create a distribution to use in place of parameters.
+
+        ## **Usage**
+
+        `z=0`: Amount of random noise to add to the distribution.
+               *Magnitude of a uniform distribution*
+               *(added to final result)*
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the 
+                    distribution.
+
+        ## **Parameters**
+
+        `name`: Distribution name
+        `dist`: Function to generate the distribution
+        `description`: Description of the distribution
+        `citation`: Full citation of the distribution
+        `in_text`: In-text citation of the distribution
+
+        ## **Example**
+
+        &lt;!--- spellcheck: stop --&gt;
+        ```python
+        &gt;&gt;&gt; from epispot.params import Distribution
+        &gt;&gt;&gt; dist = Distribution(
+        ...     name=&#39;Logistic&#39;,
+        ...     dist=lambda t: 1 / (1 + np.exp(-t)),
+        ...     description=&#39;A logistic distribution&#39;,
+        ...     citation=&#39;@book{garnier1838correspondance,\n&#39;   \
+                         &#39;title={Correspondance math{\&#39;e}matique et physique},\n&#39;   \
+                         &#39;author={Garnier, J.G. and Quetelet, A.}\n&#39;    \
+                         &#39;number={v. 10}\n&#39; \
+                         &#39;lccn={03003361}\n&#39;    \
+                         &#39;url={https://books.google.com/books?id=8GsEAAAAYAAJ}\n&#39;   \
+                         &#39;year={1838}\n&#39;    \
+                         &#39;publisher={Impr. d&#39;H. Vandekerckhove}\n&#39;  \
+                         &#39;}&#39;,
+        ...     in_text=&#39;Verhulst 1838&#39;
+        ... )
+        &gt;&gt;&gt; dist(0)
+        0.5
+        ```
+        &lt;!--- spellcheck: start --&gt;
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.dist = dist
+        self.description = description
+        self.citation = citation
+        self.in_text = in_text
+    
+    def __repr__(self):
+        return self.dist
+    def __str__(self):
+        return self.name
+    def __about__(self):
+        return self.description
+    def __call__(self, z=0, *args, **kwargs):
+        return self.dist(*args, **kwargs) + z * np.random.random()
+    def __cite__(self, type=&#39;full&#39;):
+        match type:
+            case &#39;full&#39;: return self.citation
+            case &#39;short&#39;: return self.in_text
+            case &#39;both&#39;: return f&#39;{self.citation} ({self.in_text})&#39;
+
+
+class Gamma(Distribution):
+    &#34;&#34;&#34;Models γ in the SIR model.&#34;&#34;&#34;
+    def __init__(self, type=&#39;rel-beta&#39;, *args, **kwargs):
+        &#34;&#34;&#34;
+        Create a distribution for γ.
+
+        ## **Parameters**
+
+        `type=&#39;rel_beta&#39;`: Type of distribution to use.
+                Options:
+                    * `&#39;rel-beta&#39;`: Relative β distribution
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the
+                    distribution.
+
+        &#34;&#34;&#34;
+        match type:
+            case &#39;rel-beta&#39;:
+                self.name = &#39;Relative-β Distribution&#39;
+                self.description = &#39;Distribution of γ relative to β&#39;
+                self.dist = lambda t: Gamma.rel_beta(t, *args, **kwargs)
+    
+    @staticmethod
+    def rel_beta(t, R_0, beta):
+        &#34;&#34;&#34;
+        Distribution of γ relative to β.
+
+        ## **Usage**
+
+        `R_0`: Reproduction number
+        `beta`: Transmission rate
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import Gamma
+        &gt;&gt;&gt; gamma = lambda t: Gamma.rel_beta(t, R_0=1, beta=0.5)
+        &gt;&gt;&gt; gamma(0)
+        0.5
+        ```
+
+        &#34;&#34;&#34;
+        if callable(beta): beta = beta(t)
+        if callable(R_0): R_0 = R_0(t)
+        return beta / R_0
+
+
+class R_0(Distribution):
+    &#34;&#34;&#34;Models R_0 in the SIR model.&#34;&#34;&#34;
+    def __init__(self, type=&#39;rel-beta&#39;, *args, **kwargs):
+        &#34;&#34;&#34;
+        Create a distribution for R_0.
+
+        ## **Parameters**
+
+        `type=&#39;rel-beta&#39;`: Type of distribution to use.
+                Options:
+                    * `&#39;rel-beta&#39;`: Relative β distribution
+                    * `&#39;logistic&#39;`: Logistic distribution
+                    * `&#39;bell&#39;`: Bell curve distribution
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the
+                    distribution.
+
+        &#34;&#34;&#34;
+        match type:
+            case &#39;rel-beta&#39;:
+                self.name = &#39;Relative-β Distribution&#39;
+                self.description = &#39;Distribution of γ relative to β&#39;
+                self.dist = lambda t: R_0.rel_beta(t, *args, **kwargs)
+            case &#39;logistic&#39;:
+                self.name = &#39;Reverse Logistic Distribution&#39;
+                self.description = &#39;A reverse logistic distribution &#39; \
+                                   &#39;(starts high and then drops)&#39;
+                self.dist = lambda t: R_0.logistic(t, *args, **kwargs)
+            case &#39;bell&#39;:
+                self.name = &#39;Bell Curve&#39;
+                self.description = &#39;Follows the equation of a normal &#39; \
+                                   &#39;distribution (peaks near the center)&#39;
+                self.dist = lambda t: R_0.bell(t, *args, **kwargs)
+    
+    @staticmethod
+    def rel_beta(t, gamma, beta):
+        &#34;&#34;&#34;
+        Distribution of R_0 relative to β.
+
+        ## **Usage**
+
+        `gamma`: Total recovery rate
+        `beta`: Transmission rate
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import R_0
+        &gt;&gt;&gt; R_0 = lambda t: R_0.rel_beta(t, gamma=1, beta=0.5)
+        &gt;&gt;&gt; R_0(0)
+        0.5
+        ```
+
+        &#34;&#34;&#34;
+        if callable(beta): beta = beta(t)
+        if callable(gamma): gamma = gamma(t)
+        return beta / gamma
+
+    @staticmethod
+    def logistic(t, c=1, k=1, x_0=0, y_0=1):
+        &#34;&#34;&#34;
+        Reverse logistic distribution of R_0:
+        ..math:: \frac{c}{1 + e^{k(x-x_0)}} + y_0
+
+        ## **Usage**
+
+        `c=1`: Maximum variation
+               ..note:: With `y_0=0`, this gives the maximum *value* of 
+                        the distribution.
+        `k=1`: Rate of decline
+        `x_0=0`: Center of the distribution
+        `y_0=1`: Minimum value
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import R_0
+        &gt;&gt;&gt; R_0 = lambda t: R_0.logistic(t)
+        &gt;&gt;&gt; R_0(0)
+        1.5
+        ```
+
+        &#34;&#34;&#34;
+        return c / (1 + np.exp(k * (t - x_0))) + y_0
+
+    @staticmethod
+    def bell(t, k=1/10, x_0=10, y_0=1):
+        &#34;&#34;&#34;
+        Bell curve distribution of R_0:
+        ..math:: e^{-k(x-x_0)^2}
+
+        ## **Usage**
+
+        `k=1/10`: Variance (rate of decline)
+        `x_0=0`: Center of the distribution
+        `y_0=1`: Minimum value
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import R_0
+        &gt;&gt;&gt; R_0 = lambda t: R_0.bell(t)
+        &gt;&gt;&gt; R_0(0)
+        1
+        ```
+
+        &#34;&#34;&#34;
+        return np.exp(-k * (t - x_0)**2) + y_0
+
+
+class N(Distribution):
+    &#34;&#34;&#34;Models N (population) in the SIR model.&#34;&#34;&#34;
+    def __init__(self, type=&#39;constant&#39;, *args, **kwargs):
+        &#34;&#34;&#34;
+        Create a distribution for N.
+
+        ## **Parameters**
+
+        `type=&#39;constant&#39;`: Type of distribution to use.
+                Options:
+                    * `&#39;constant&#39;`: Constant population
+                    * `&#39;linear&#39;`: Linear population increase/decline
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the
+                    distribution.
+
+        &#34;&#34;&#34;
+        match type:
+            case &#39;constant&#39;:
+                self.name = &#39;Constant-valued Population&#39;
+                self.description = &#39;Constant population size, where &#39; \
+                                   &#39;death and birth rates are identical&#39;
+                self.dist = lambda t: N.constant(t, *args, **kwargs)
+            case &#39;linear&#39;:
+                self.name = &#39;Linear Population Trend&#39;
+                self.description = &#39;Linear population trend, &#39; \
+                                   &#39;accounting for birth and death &#39; \
+                                   &#39;rates&#39;
+                self.dist = lambda t: N.linear(t, *args, **kwargs)
+
+    @staticmethod
+    def constant(t, N_0):
+        &#34;&#34;&#34;
+        Constant-valued population.
+
+        ## **Usage**
+
+        `N_0`: Initial population size
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import N
+        &gt;&gt;&gt; population = lambda t: N.constant(t, N_0=10)
+        &gt;&gt;&gt; population(0)
+        10
+        ```
+
+        &#34;&#34;&#34;
+        return N_0
+
+    @staticmethod
+    def linear(t, N_0, birth=0, death=0):
+        &#34;&#34;&#34;
+        Linear population trend.
+
+        ## **Usage**
+
+        `N_0`: Initial population size
+        `birth`: Birth rate
+        `death`: Death rate
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import N
+        &gt;&gt;&gt; population = lambda t: N.linear(t, N_0=10, birth=0.2, death=0.1)
+        &gt;&gt;&gt; population(0)
+        10
+        ```
+
+        ..note:: Callable arguments accepted for `birth` and `death`, 
+                 but they must give *cumulative* values for estimates to
+                 be correct.
+
+        &#34;&#34;&#34;
+        if callable(birth): birth = birth(t)
+        if callable(death): death = death(t)
+        return N_0 * (1 + birth * t - death * t)
+                
+
+class Estimate(Distribution):
+    &#34;&#34;&#34;
+    TODO: Tracked in [#135](https://github.com/epispot/epispot/issues/135)
+    &#34;&#34;&#34;
+    pass
+ </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="epispot.params.Distribution"><code class="flex name class">
+<span>class <span class="ident">Distribution</span></span>
+<span>(</span><span>name=None, dist=&lt;function Distribution.&lt;lambda&gt;&gt;, description=None, citation=None, in_text=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base class for all parameter distributions.</p>
+<pre><code>    Create a distribution to use in place of parameters.
+
+    ## **Usage**
+
+    `z=0`: Amount of random noise to add to the distribution.
+           *Magnitude of a uniform distribution*
+           *(added to final result)*
+
+    `*args`: Additional arguments to pass to the distribution.
+    `**kwargs`: Additional keyword arguments to pass to the 
+                distribution.
+
+    ## **Parameters**
+
+    &lt;code&gt;name&lt;/code&gt;: Distribution name
+    &lt;code&gt;dist&lt;/code&gt;: Function to generate the distribution
+    &lt;code&gt;description&lt;/code&gt;: Description of the distribution
+    &lt;code&gt;citation&lt;/code&gt;: Full citation of the distribution
+    &lt;code&gt;in\_text&lt;/code&gt;: In-text citation of the distribution
+
+    ## **Example**
+
+    &lt;!--- spellcheck: stop --&gt;
+    ```python
+    &gt;&gt;&gt; from epispot.params import Distribution
+    &gt;&gt;&gt; dist = Distribution(
+    ...     name='Logistic',
+    ...     dist=lambda t: 1 / (1 + np.exp(-t)),
+    ...     description='A logistic distribution',
+    ...     citation='@book{garnier1838correspondance,
+</code></pre>
+<p>'
+'title={Correspondance math{'e}matique et physique},
+'
+'author={Garnier, J.G. and Quetelet, A.}
+'
+'number={v. 10}
+'
+'lccn={03003361}
+'
+'url={<a href="https://books.google.com/books?id=8GsEAAAAYAAJ}">https://books.google.com/books?id=8GsEAAAAYAAJ}</a>
+'
+'year={1838}
+'
+'publisher={Impr. d'H. Vandekerckhove}
+'
+'}',
+&hellip;
+in_text='Verhulst 1838'
+&hellip; )
+&gt;&gt;&gt; dist(0)
+0.5
+```
+<!--- spellcheck: start --></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Distribution:
+    &#34;&#34;&#34;The base class for all parameter distributions.&#34;&#34;&#34;
+    def __init__(
+        self, 
+        name=None, 
+        dist=lambda c: c, 
+        description=None, 
+        citation=None, 
+        in_text=None
+    ):
+        &#34;&#34;&#34;
+        Create a distribution to use in place of parameters.
+
+        ## **Usage**
+
+        `z=0`: Amount of random noise to add to the distribution.
+               *Magnitude of a uniform distribution*
+               *(added to final result)*
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the 
+                    distribution.
+
+        ## **Parameters**
+
+        `name`: Distribution name
+        `dist`: Function to generate the distribution
+        `description`: Description of the distribution
+        `citation`: Full citation of the distribution
+        `in_text`: In-text citation of the distribution
+
+        ## **Example**
+
+        &lt;!--- spellcheck: stop --&gt;
+        ```python
+        &gt;&gt;&gt; from epispot.params import Distribution
+        &gt;&gt;&gt; dist = Distribution(
+        ...     name=&#39;Logistic&#39;,
+        ...     dist=lambda t: 1 / (1 + np.exp(-t)),
+        ...     description=&#39;A logistic distribution&#39;,
+        ...     citation=&#39;@book{garnier1838correspondance,\n&#39;   \
+                         &#39;title={Correspondance math{\&#39;e}matique et physique},\n&#39;   \
+                         &#39;author={Garnier, J.G. and Quetelet, A.}\n&#39;    \
+                         &#39;number={v. 10}\n&#39; \
+                         &#39;lccn={03003361}\n&#39;    \
+                         &#39;url={https://books.google.com/books?id=8GsEAAAAYAAJ}\n&#39;   \
+                         &#39;year={1838}\n&#39;    \
+                         &#39;publisher={Impr. d&#39;H. Vandekerckhove}\n&#39;  \
+                         &#39;}&#39;,
+        ...     in_text=&#39;Verhulst 1838&#39;
+        ... )
+        &gt;&gt;&gt; dist(0)
+        0.5
+        ```
+        &lt;!--- spellcheck: start --&gt;
+
+        &#34;&#34;&#34;
+        self.name = name
+        self.dist = dist
+        self.description = description
+        self.citation = citation
+        self.in_text = in_text
+    
+    def __repr__(self):
+        return self.dist
+    def __str__(self):
+        return self.name
+    def __about__(self):
+        return self.description
+    def __call__(self, z=0, *args, **kwargs):
+        return self.dist(*args, **kwargs) + z * np.random.random()
+    def __cite__(self, type=&#39;full&#39;):
+        match type:
+            case &#39;full&#39;: return self.citation
+            case &#39;short&#39;: return self.in_text
+            case &#39;both&#39;: return f&#39;{self.citation} ({self.in_text})&#39;</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="epispot.params.Estimate" href="#epispot.params.Estimate">Estimate</a></li>
+<li><a title="epispot.params.Gamma" href="#epispot.params.Gamma">Gamma</a></li>
+<li><a title="epispot.params.N" href="#epispot.params.N">N</a></li>
+<li><a title="epispot.params.R_0" href="#epispot.params.R_0">R_0</a></li>
+</ul>
+</dd>
+<dt id="epispot.params.Estimate"><code class="flex name class">
+<span>class <span class="ident">Estimate</span></span>
+<span>(</span><span>name=None, dist=&lt;function Distribution.&lt;lambda&gt;&gt;, description=None, citation=None, in_text=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO: Tracked in <a href="https://github.com/epispot/epispot/issues/135">#135</a></p>
+<pre><code>    Create a distribution to use in place of parameters.
+
+    ## **Usage**
+
+    `z=0`: Amount of random noise to add to the distribution.
+           *Magnitude of a uniform distribution*
+           *(added to final result)*
+
+    `*args`: Additional arguments to pass to the distribution.
+    `**kwargs`: Additional keyword arguments to pass to the 
+                distribution.
+
+    ## **Parameters**
+
+    &lt;code&gt;name&lt;/code&gt;: Distribution name
+    &lt;code&gt;dist&lt;/code&gt;: Function to generate the distribution
+    &lt;code&gt;description&lt;/code&gt;: Description of the distribution
+    &lt;code&gt;citation&lt;/code&gt;: Full citation of the distribution
+    &lt;code&gt;in\_text&lt;/code&gt;: In-text citation of the distribution
+
+    ## **Example**
+
+    &lt;!--- spellcheck: stop --&gt;
+    ```python
+    &gt;&gt;&gt; from epispot.params import Distribution
+    &gt;&gt;&gt; dist = Distribution(
+    ...     name='Logistic',
+    ...     dist=lambda t: 1 / (1 + np.exp(-t)),
+    ...     description='A logistic distribution',
+    ...     citation='@book{garnier1838correspondance,
+</code></pre>
+<p>'
+'title={Correspondance math{'e}matique et physique},
+'
+'author={Garnier, J.G. and Quetelet, A.}
+'
+'number={v. 10}
+'
+'lccn={03003361}
+'
+'url={<a href="https://books.google.com/books?id=8GsEAAAAYAAJ}">https://books.google.com/books?id=8GsEAAAAYAAJ}</a>
+'
+'year={1838}
+'
+'publisher={Impr. d'H. Vandekerckhove}
+'
+'}',
+&hellip;
+in_text='Verhulst 1838'
+&hellip; )
+&gt;&gt;&gt; dist(0)
+0.5
+```
+<!--- spellcheck: start --></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Estimate(Distribution):
+    &#34;&#34;&#34;
+    TODO: Tracked in [#135](https://github.com/epispot/epispot/issues/135)
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="epispot.params.Distribution" href="#epispot.params.Distribution">Distribution</a></li>
+</ul>
+</dd>
+<dt id="epispot.params.Gamma"><code class="flex name class">
+<span>class <span class="ident">Gamma</span></span>
+<span>(</span><span>type='rel-beta', *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Models γ in the SIR model.</p>
+<p>Create a distribution for γ.</p>
+<h2 id="parameters"><strong>Parameters</strong></h2>
+<p><code>type='rel_beta'</code>: Type of distribution to use.
+Options:
+* <code>'rel-beta'</code>: Relative β distribution</p>
+<p><code>*args</code>: Additional arguments to pass to the distribution.
+<code>**kwargs</code>: Additional keyword arguments to pass to the
+distribution.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Gamma(Distribution):
+    &#34;&#34;&#34;Models γ in the SIR model.&#34;&#34;&#34;
+    def __init__(self, type=&#39;rel-beta&#39;, *args, **kwargs):
+        &#34;&#34;&#34;
+        Create a distribution for γ.
+
+        ## **Parameters**
+
+        `type=&#39;rel_beta&#39;`: Type of distribution to use.
+                Options:
+                    * `&#39;rel-beta&#39;`: Relative β distribution
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the
+                    distribution.
+
+        &#34;&#34;&#34;
+        match type:
+            case &#39;rel-beta&#39;:
+                self.name = &#39;Relative-β Distribution&#39;
+                self.description = &#39;Distribution of γ relative to β&#39;
+                self.dist = lambda t: Gamma.rel_beta(t, *args, **kwargs)
+    
+    @staticmethod
+    def rel_beta(t, R_0, beta):
+        &#34;&#34;&#34;
+        Distribution of γ relative to β.
+
+        ## **Usage**
+
+        `R_0`: Reproduction number
+        `beta`: Transmission rate
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import Gamma
+        &gt;&gt;&gt; gamma = lambda t: Gamma.rel_beta(t, R_0=1, beta=0.5)
+        &gt;&gt;&gt; gamma(0)
+        0.5
+        ```
+
+        &#34;&#34;&#34;
+        if callable(beta): beta = beta(t)
+        if callable(R_0): R_0 = R_0(t)
+        return beta / R_0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="epispot.params.Distribution" href="#epispot.params.Distribution">Distribution</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="epispot.params.Gamma.rel_beta"><code class="name flex">
+<span>def <span class="ident">rel_beta</span></span>(<span>t, R_0, beta)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Distribution of γ relative to β.</p>
+<h2 id="usage"><strong>Usage</strong></h2>
+<p><code><a title="epispot.params.R_0" href="#epispot.params.R_0">R_0</a></code>: Reproduction number
+<code>beta</code>: Transmission rate</p>
+<h2 id="example"><strong>Example</strong></h2>
+<pre><code class="language-python">&gt;&gt;&gt; from epispot.params import Gamma
+&gt;&gt;&gt; gamma = lambda t: Gamma.rel_beta(t, R_0=1, beta=0.5)
+&gt;&gt;&gt; gamma(0)
+0.5
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def rel_beta(t, R_0, beta):
+    &#34;&#34;&#34;
+    Distribution of γ relative to β.
+
+    ## **Usage**
+
+    `R_0`: Reproduction number
+    `beta`: Transmission rate
+
+    ## **Example**
+
+    ```python
+    &gt;&gt;&gt; from epispot.params import Gamma
+    &gt;&gt;&gt; gamma = lambda t: Gamma.rel_beta(t, R_0=1, beta=0.5)
+    &gt;&gt;&gt; gamma(0)
+    0.5
+    ```
+
+    &#34;&#34;&#34;
+    if callable(beta): beta = beta(t)
+    if callable(R_0): R_0 = R_0(t)
+    return beta / R_0</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="epispot.params.N"><code class="flex name class">
+<span>class <span class="ident">N</span></span>
+<span>(</span><span>type='constant', *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Models N (population) in the SIR model.</p>
+<p>Create a distribution for N.</p>
+<h2 id="parameters"><strong>Parameters</strong></h2>
+<p><code>type='constant'</code>: Type of distribution to use.
+Options:
+* <code>'constant'</code>: Constant population
+* <code>'linear'</code>: Linear population increase/decline</p>
+<p><code>*args</code>: Additional arguments to pass to the distribution.
+<code>**kwargs</code>: Additional keyword arguments to pass to the
+distribution.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class N(Distribution):
+    &#34;&#34;&#34;Models N (population) in the SIR model.&#34;&#34;&#34;
+    def __init__(self, type=&#39;constant&#39;, *args, **kwargs):
+        &#34;&#34;&#34;
+        Create a distribution for N.
+
+        ## **Parameters**
+
+        `type=&#39;constant&#39;`: Type of distribution to use.
+                Options:
+                    * `&#39;constant&#39;`: Constant population
+                    * `&#39;linear&#39;`: Linear population increase/decline
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the
+                    distribution.
+
+        &#34;&#34;&#34;
+        match type:
+            case &#39;constant&#39;:
+                self.name = &#39;Constant-valued Population&#39;
+                self.description = &#39;Constant population size, where &#39; \
+                                   &#39;death and birth rates are identical&#39;
+                self.dist = lambda t: N.constant(t, *args, **kwargs)
+            case &#39;linear&#39;:
+                self.name = &#39;Linear Population Trend&#39;
+                self.description = &#39;Linear population trend, &#39; \
+                                   &#39;accounting for birth and death &#39; \
+                                   &#39;rates&#39;
+                self.dist = lambda t: N.linear(t, *args, **kwargs)
+
+    @staticmethod
+    def constant(t, N_0):
+        &#34;&#34;&#34;
+        Constant-valued population.
+
+        ## **Usage**
+
+        `N_0`: Initial population size
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import N
+        &gt;&gt;&gt; population = lambda t: N.constant(t, N_0=10)
+        &gt;&gt;&gt; population(0)
+        10
+        ```
+
+        &#34;&#34;&#34;
+        return N_0
+
+    @staticmethod
+    def linear(t, N_0, birth=0, death=0):
+        &#34;&#34;&#34;
+        Linear population trend.
+
+        ## **Usage**
+
+        `N_0`: Initial population size
+        `birth`: Birth rate
+        `death`: Death rate
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import N
+        &gt;&gt;&gt; population = lambda t: N.linear(t, N_0=10, birth=0.2, death=0.1)
+        &gt;&gt;&gt; population(0)
+        10
+        ```
+
+        ..note:: Callable arguments accepted for `birth` and `death`, 
+                 but they must give *cumulative* values for estimates to
+                 be correct.
+
+        &#34;&#34;&#34;
+        if callable(birth): birth = birth(t)
+        if callable(death): death = death(t)
+        return N_0 * (1 + birth * t - death * t)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="epispot.params.Distribution" href="#epispot.params.Distribution">Distribution</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="epispot.params.N.constant"><code class="name flex">
+<span>def <span class="ident">constant</span></span>(<span>t, N_0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Constant-valued population.</p>
+<h2 id="usage"><strong>Usage</strong></h2>
+<p><code>N_0</code>: Initial population size</p>
+<h2 id="example"><strong>Example</strong></h2>
+<pre><code class="language-python">&gt;&gt;&gt; from epispot.params import N
+&gt;&gt;&gt; population = lambda t: N.constant(t, N_0=10)
+&gt;&gt;&gt; population(0)
+10
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def constant(t, N_0):
+    &#34;&#34;&#34;
+    Constant-valued population.
+
+    ## **Usage**
+
+    `N_0`: Initial population size
+
+    ## **Example**
+
+    ```python
+    &gt;&gt;&gt; from epispot.params import N
+    &gt;&gt;&gt; population = lambda t: N.constant(t, N_0=10)
+    &gt;&gt;&gt; population(0)
+    10
+    ```
+
+    &#34;&#34;&#34;
+    return N_0</code></pre>
+</details>
+</dd>
+<dt id="epispot.params.N.linear"><code class="name flex">
+<span>def <span class="ident">linear</span></span>(<span>t, N_0, birth=0, death=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Linear population trend.</p>
+<h2 id="usage"><strong>Usage</strong></h2>
+<p><code>N_0</code>: Initial population size
+<code>birth</code>: Birth rate
+<code>death</code>: Death rate</p>
+<h2 id="example"><strong>Example</strong></h2>
+<pre><code class="language-python">&gt;&gt;&gt; from epispot.params import N
+&gt;&gt;&gt; population = lambda t: N.linear(t, N_0=10, birth=0.2, death=0.1)
+&gt;&gt;&gt; population(0)
+10
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note:&ensp;Callable arguments accepted for <code>birth</code> and <code>death</code>, </p>
+<p>but they must give <em>cumulative</em> values for estimates to
+be correct.</p>
+</div></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def linear(t, N_0, birth=0, death=0):
+    &#34;&#34;&#34;
+    Linear population trend.
+
+    ## **Usage**
+
+    `N_0`: Initial population size
+    `birth`: Birth rate
+    `death`: Death rate
+
+    ## **Example**
+
+    ```python
+    &gt;&gt;&gt; from epispot.params import N
+    &gt;&gt;&gt; population = lambda t: N.linear(t, N_0=10, birth=0.2, death=0.1)
+    &gt;&gt;&gt; population(0)
+    10
+    ```
+
+    ..note:: Callable arguments accepted for `birth` and `death`, 
+             but they must give *cumulative* values for estimates to
+             be correct.
+
+    &#34;&#34;&#34;
+    if callable(birth): birth = birth(t)
+    if callable(death): death = death(t)
+    return N_0 * (1 + birth * t - death * t)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="epispot.params.R_0"><code class="flex name class">
+<span>class <span class="ident">R_0</span></span>
+<span>(</span><span>type='rel-beta', *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Models R_0 in the SIR model.</p>
+<p>Create a distribution for R_0.</p>
+<h2 id="parameters"><strong>Parameters</strong></h2>
+<p><code>type='rel-beta'</code>: Type of distribution to use.
+Options:
+* <code>'rel-beta'</code>: Relative β distribution
+* <code>'logistic'</code>: Logistic distribution
+* <code>'bell'</code>: Bell curve distribution</p>
+<p><code>*args</code>: Additional arguments to pass to the distribution.
+<code>**kwargs</code>: Additional keyword arguments to pass to the
+distribution.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class R_0(Distribution):
+    &#34;&#34;&#34;Models R_0 in the SIR model.&#34;&#34;&#34;
+    def __init__(self, type=&#39;rel-beta&#39;, *args, **kwargs):
+        &#34;&#34;&#34;
+        Create a distribution for R_0.
+
+        ## **Parameters**
+
+        `type=&#39;rel-beta&#39;`: Type of distribution to use.
+                Options:
+                    * `&#39;rel-beta&#39;`: Relative β distribution
+                    * `&#39;logistic&#39;`: Logistic distribution
+                    * `&#39;bell&#39;`: Bell curve distribution
+
+        `*args`: Additional arguments to pass to the distribution.
+        `**kwargs`: Additional keyword arguments to pass to the
+                    distribution.
+
+        &#34;&#34;&#34;
+        match type:
+            case &#39;rel-beta&#39;:
+                self.name = &#39;Relative-β Distribution&#39;
+                self.description = &#39;Distribution of γ relative to β&#39;
+                self.dist = lambda t: R_0.rel_beta(t, *args, **kwargs)
+            case &#39;logistic&#39;:
+                self.name = &#39;Reverse Logistic Distribution&#39;
+                self.description = &#39;A reverse logistic distribution &#39; \
+                                   &#39;(starts high and then drops)&#39;
+                self.dist = lambda t: R_0.logistic(t, *args, **kwargs)
+            case &#39;bell&#39;:
+                self.name = &#39;Bell Curve&#39;
+                self.description = &#39;Follows the equation of a normal &#39; \
+                                   &#39;distribution (peaks near the center)&#39;
+                self.dist = lambda t: R_0.bell(t, *args, **kwargs)
+    
+    @staticmethod
+    def rel_beta(t, gamma, beta):
+        &#34;&#34;&#34;
+        Distribution of R_0 relative to β.
+
+        ## **Usage**
+
+        `gamma`: Total recovery rate
+        `beta`: Transmission rate
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import R_0
+        &gt;&gt;&gt; R_0 = lambda t: R_0.rel_beta(t, gamma=1, beta=0.5)
+        &gt;&gt;&gt; R_0(0)
+        0.5
+        ```
+
+        &#34;&#34;&#34;
+        if callable(beta): beta = beta(t)
+        if callable(gamma): gamma = gamma(t)
+        return beta / gamma
+
+    @staticmethod
+    def logistic(t, c=1, k=1, x_0=0, y_0=1):
+        &#34;&#34;&#34;
+        Reverse logistic distribution of R_0:
+        ..math:: \frac{c}{1 + e^{k(x-x_0)}} + y_0
+
+        ## **Usage**
+
+        `c=1`: Maximum variation
+               ..note:: With `y_0=0`, this gives the maximum *value* of 
+                        the distribution.
+        `k=1`: Rate of decline
+        `x_0=0`: Center of the distribution
+        `y_0=1`: Minimum value
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import R_0
+        &gt;&gt;&gt; R_0 = lambda t: R_0.logistic(t)
+        &gt;&gt;&gt; R_0(0)
+        1.5
+        ```
+
+        &#34;&#34;&#34;
+        return c / (1 + np.exp(k * (t - x_0))) + y_0
+
+    @staticmethod
+    def bell(t, k=1/10, x_0=10, y_0=1):
+        &#34;&#34;&#34;
+        Bell curve distribution of R_0:
+        ..math:: e^{-k(x-x_0)^2}
+
+        ## **Usage**
+
+        `k=1/10`: Variance (rate of decline)
+        `x_0=0`: Center of the distribution
+        `y_0=1`: Minimum value
+
+        ## **Example**
+
+        ```python
+        &gt;&gt;&gt; from epispot.params import R_0
+        &gt;&gt;&gt; R_0 = lambda t: R_0.bell(t)
+        &gt;&gt;&gt; R_0(0)
+        1
+        ```
+
+        &#34;&#34;&#34;
+        return np.exp(-k * (t - x_0)**2) + y_0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="epispot.params.Distribution" href="#epispot.params.Distribution">Distribution</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="epispot.params.R_0.bell"><code class="name flex">
+<span>def <span class="ident">bell</span></span>(<span>t, k=0.1, x_0=10, y_0=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Bell curve distribution of R_0:
+[
+]</p>
+<h2 id="usage"><strong>Usage</strong></h2>
+<p><code>k=1/10</code>: Variance (rate of decline)
+<code>x_0=0</code>: Center of the distribution
+<code>y_0=1</code>: Minimum value</p>
+<h2 id="example"><strong>Example</strong></h2>
+<pre><code class="language-python">&gt;&gt;&gt; from epispot.params import R_0
+&gt;&gt;&gt; R_0 = lambda t: R_0.bell(t)
+&gt;&gt;&gt; R_0(0)
+1
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def bell(t, k=1/10, x_0=10, y_0=1):
+    &#34;&#34;&#34;
+    Bell curve distribution of R_0:
+    ..math:: e^{-k(x-x_0)^2}
+
+    ## **Usage**
+
+    `k=1/10`: Variance (rate of decline)
+    `x_0=0`: Center of the distribution
+    `y_0=1`: Minimum value
+
+    ## **Example**
+
+    ```python
+    &gt;&gt;&gt; from epispot.params import R_0
+    &gt;&gt;&gt; R_0 = lambda t: R_0.bell(t)
+    &gt;&gt;&gt; R_0(0)
+    1
+    ```
+
+    &#34;&#34;&#34;
+    return np.exp(-k * (t - x_0)**2) + y_0</code></pre>
+</details>
+</dd>
+<dt id="epispot.params.R_0.logistic"><code class="name flex">
+<span>def <span class="ident">logistic</span></span>(<span>t, c=1, k=1, x_0=0, y_0=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reverse logistic distribution of R_0:
+[
+]</p>
+<h2 id="usage"><strong>Usage</strong></h2>
+<p><code>c=1</code>: Maximum variation
+!!! note "Note:&ensp;With <code>y_0=0</code>, this gives the maximum <em>value</em> of "
+the distribution.</p>
+<p><code>k=1</code>: Rate of decline
+<code>x_0=0</code>: Center of the distribution
+<code>y_0=1</code>: Minimum value</p>
+<h2 id="example"><strong>Example</strong></h2>
+<pre><code class="language-python">&gt;&gt;&gt; from epispot.params import R_0
+&gt;&gt;&gt; R_0 = lambda t: R_0.logistic(t)
+&gt;&gt;&gt; R_0(0)
+1.5
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def logistic(t, c=1, k=1, x_0=0, y_0=1):
+    &#34;&#34;&#34;
+    Reverse logistic distribution of R_0:
+    ..math:: \frac{c}{1 + e^{k(x-x_0)}} + y_0
+
+    ## **Usage**
+
+    `c=1`: Maximum variation
+           ..note:: With `y_0=0`, this gives the maximum *value* of 
+                    the distribution.
+    `k=1`: Rate of decline
+    `x_0=0`: Center of the distribution
+    `y_0=1`: Minimum value
+
+    ## **Example**
+
+    ```python
+    &gt;&gt;&gt; from epispot.params import R_0
+    &gt;&gt;&gt; R_0 = lambda t: R_0.logistic(t)
+    &gt;&gt;&gt; R_0(0)
+    1.5
+    ```
+
+    &#34;&#34;&#34;
+    return c / (1 + np.exp(k * (t - x_0))) + y_0</code></pre>
+</details>
+</dd>
+<dt id="epispot.params.R_0.rel_beta"><code class="name flex">
+<span>def <span class="ident">rel_beta</span></span>(<span>t, gamma, beta)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Distribution of R_0 relative to β.</p>
+<h2 id="usage"><strong>Usage</strong></h2>
+<p><code>gamma</code>: Total recovery rate
+<code>beta</code>: Transmission rate</p>
+<h2 id="example"><strong>Example</strong></h2>
+<pre><code class="language-python">&gt;&gt;&gt; from epispot.params import R_0
+&gt;&gt;&gt; R_0 = lambda t: R_0.rel_beta(t, gamma=1, beta=0.5)
+&gt;&gt;&gt; R_0(0)
+0.5
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def rel_beta(t, gamma, beta):
+    &#34;&#34;&#34;
+    Distribution of R_0 relative to β.
+
+    ## **Usage**
+
+    `gamma`: Total recovery rate
+    `beta`: Transmission rate
+
+    ## **Example**
+
+    ```python
+    &gt;&gt;&gt; from epispot.params import R_0
+    &gt;&gt;&gt; R_0 = lambda t: R_0.rel_beta(t, gamma=1, beta=0.5)
+    &gt;&gt;&gt; R_0(0)
+    0.5
+    ```
+
+    &#34;&#34;&#34;
+    if callable(beta): beta = beta(t)
+    if callable(gamma): gamma = gamma(t)
+    return beta / gamma</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="epispot" href="index.html">epispot</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="epispot.params.Distribution" href="#epispot.params.Distribution">Distribution</a></code></h4>
+</li>
+<li>
+<h4><code><a title="epispot.params.Estimate" href="#epispot.params.Estimate">Estimate</a></code></h4>
+</li>
+<li>
+<h4><code><a title="epispot.params.Gamma" href="#epispot.params.Gamma">Gamma</a></code></h4>
+<ul class="">
+<li><code><a title="epispot.params.Gamma.rel_beta" href="#epispot.params.Gamma.rel_beta">rel_beta</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="epispot.params.N" href="#epispot.params.N">N</a></code></h4>
+<ul class="">
+<li><code><a title="epispot.params.N.constant" href="#epispot.params.N.constant">constant</a></code></li>
+<li><code><a title="epispot.params.N.linear" href="#epispot.params.N.linear">linear</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="epispot.params.R_0" href="#epispot.params.R_0">R_0</a></code></h4>
+<ul class="">
+<li><code><a title="epispot.params.R_0.bell" href="#epispot.params.R_0.bell">bell</a></code></li>
+<li><code><a title="epispot.params.R_0.logistic" href="#epispot.params.R_0.logistic">logistic</a></code></li>
+<li><code><a title="epispot.params.R_0.rel_beta" href="#epispot.params.R_0.rel_beta">rel_beta</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
