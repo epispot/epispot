@@ -87,10 +87,9 @@ class Distribution:
     def __call__(self, z=0, *args, **kwargs):
         return self.dist(*args, **kwargs) + z * np.random.random()
     def __cite__(self, type='full'):
-        match type:
-            case 'full': return self.citation
-            case 'short': return self.in_text
-            case 'both': return f'{self.citation} ({self.in_text})'
+        if type == 'full': return self.citation
+        elif type == 'short': return self.in_text
+        elif type == 'both': return f'{self.citation} ({self.in_text})'
 
 
 class Gamma(Distribution):
@@ -110,8 +109,7 @@ class Gamma(Distribution):
                     distribution.
 
         """
-        match type:
-            case 'rel-beta':
+        if type == 'rel-beta':
                 self.name = 'Relative-β Distribution'
                 self.description = 'Distribution of γ relative to β'
                 self.dist = lambda t: Gamma.rel_beta(t, *args, **kwargs)
@@ -160,17 +158,16 @@ class R_0(Distribution):
                     distribution.
 
         """
-        match type:
-            case 'rel-beta':
+        if type == 'rel-beta':
                 self.name = 'Relative-β Distribution'
                 self.description = 'Distribution of γ relative to β'
                 self.dist = lambda t: R_0.rel_beta(t, *args, **kwargs)
-            case 'logistic':
+        elif type == 'logistic':
                 self.name = 'Reverse Logistic Distribution'
                 self.description = 'A reverse logistic distribution ' \
                                    '(starts high and then drops)'
                 self.dist = lambda t: R_0.logistic(t, *args, **kwargs)
-            case 'bell':
+        elif type == 'bell':
                 self.name = 'Bell Curve'
                 self.description = 'Follows the equation of a normal ' \
                                    'distribution (peaks near the center)'
@@ -270,13 +267,12 @@ class N(Distribution):
                     distribution.
 
         """
-        match type:
-            case 'constant':
+        if type == 'constant':
                 self.name = 'Constant-valued Population'
                 self.description = 'Constant population size, where ' \
                                    'death and birth rates are identical'
                 self.dist = lambda t: N.constant(t, *args, **kwargs)
-            case 'linear':
+        elif type == 'linear':
                 self.name = 'Linear Population Trend'
                 self.description = 'Linear population trend, ' \
                                    'accounting for birth and death ' \
