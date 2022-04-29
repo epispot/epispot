@@ -127,10 +127,9 @@ class Distribution:
     def __call__(self, z=0, *args, **kwargs):
         return self.dist(*args, **kwargs) + z * np.random.random()
     def __cite__(self, type=&#39;full&#39;):
-        match type:
-            case &#39;full&#39;: return self.citation
-            case &#39;short&#39;: return self.in_text
-            case &#39;both&#39;: return f&#39;{self.citation} ({self.in_text})&#39;
+        if type == &#39;full&#39;: return self.citation
+        elif type == &#39;short&#39;: return self.in_text
+        elif type == &#39;both&#39;: return f&#39;{self.citation} ({self.in_text})&#39;
 
 
 class Gamma(Distribution):
@@ -150,8 +149,7 @@ class Gamma(Distribution):
                     distribution.
 
         &#34;&#34;&#34;
-        match type:
-            case &#39;rel-beta&#39;:
+        if type == &#39;rel-beta&#39;:
                 self.name = &#39;Relative-β Distribution&#39;
                 self.description = &#39;Distribution of γ relative to β&#39;
                 self.dist = lambda t: Gamma.rel_beta(t, *args, **kwargs)
@@ -200,17 +198,16 @@ class R_0(Distribution):
                     distribution.
 
         &#34;&#34;&#34;
-        match type:
-            case &#39;rel-beta&#39;:
+        if type == &#39;rel-beta&#39;:
                 self.name = &#39;Relative-β Distribution&#39;
                 self.description = &#39;Distribution of γ relative to β&#39;
                 self.dist = lambda t: R_0.rel_beta(t, *args, **kwargs)
-            case &#39;logistic&#39;:
+        elif type == &#39;logistic&#39;:
                 self.name = &#39;Reverse Logistic Distribution&#39;
                 self.description = &#39;A reverse logistic distribution &#39; \
                                    &#39;(starts high and then drops)&#39;
                 self.dist = lambda t: R_0.logistic(t, *args, **kwargs)
-            case &#39;bell&#39;:
+        elif type == &#39;bell&#39;:
                 self.name = &#39;Bell Curve&#39;
                 self.description = &#39;Follows the equation of a normal &#39; \
                                    &#39;distribution (peaks near the center)&#39;
@@ -310,13 +307,12 @@ class N(Distribution):
                     distribution.
 
         &#34;&#34;&#34;
-        match type:
-            case &#39;constant&#39;:
+        if type == &#39;constant&#39;:
                 self.name = &#39;Constant-valued Population&#39;
                 self.description = &#39;Constant population size, where &#39; \
                                    &#39;death and birth rates are identical&#39;
                 self.dist = lambda t: N.constant(t, *args, **kwargs)
-            case &#39;linear&#39;:
+        elif type == &#39;linear&#39;:
                 self.name = &#39;Linear Population Trend&#39;
                 self.description = &#39;Linear population trend, &#39; \
                                    &#39;accounting for birth and death &#39; \
@@ -527,10 +523,9 @@ in_text='Verhulst 1838'
     def __call__(self, z=0, *args, **kwargs):
         return self.dist(*args, **kwargs) + z * np.random.random()
     def __cite__(self, type=&#39;full&#39;):
-        match type:
-            case &#39;full&#39;: return self.citation
-            case &#39;short&#39;: return self.in_text
-            case &#39;both&#39;: return f&#39;{self.citation} ({self.in_text})&#39;</code></pre>
+        if type == &#39;full&#39;: return self.citation
+        elif type == &#39;short&#39;: return self.in_text
+        elif type == &#39;both&#39;: return f&#39;{self.citation} ({self.in_text})&#39;</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -650,8 +645,7 @@ distribution.</p></div>
                     distribution.
 
         &#34;&#34;&#34;
-        match type:
-            case &#39;rel-beta&#39;:
+        if type == &#39;rel-beta&#39;:
                 self.name = &#39;Relative-β Distribution&#39;
                 self.description = &#39;Distribution of γ relative to β&#39;
                 self.dist = lambda t: Gamma.rel_beta(t, *args, **kwargs)
@@ -768,13 +762,12 @@ distribution.</p></div>
                     distribution.
 
         &#34;&#34;&#34;
-        match type:
-            case &#39;constant&#39;:
+        if type == &#39;constant&#39;:
                 self.name = &#39;Constant-valued Population&#39;
                 self.description = &#39;Constant population size, where &#39; \
                                    &#39;death and birth rates are identical&#39;
                 self.dist = lambda t: N.constant(t, *args, **kwargs)
-            case &#39;linear&#39;:
+        elif type == &#39;linear&#39;:
                 self.name = &#39;Linear Population Trend&#39;
                 self.description = &#39;Linear population trend, &#39; \
                                    &#39;accounting for birth and death &#39; \
@@ -971,17 +964,16 @@ distribution.</p></div>
                     distribution.
 
         &#34;&#34;&#34;
-        match type:
-            case &#39;rel-beta&#39;:
+        if type == &#39;rel-beta&#39;:
                 self.name = &#39;Relative-β Distribution&#39;
                 self.description = &#39;Distribution of γ relative to β&#39;
                 self.dist = lambda t: R_0.rel_beta(t, *args, **kwargs)
-            case &#39;logistic&#39;:
+        elif type == &#39;logistic&#39;:
                 self.name = &#39;Reverse Logistic Distribution&#39;
                 self.description = &#39;A reverse logistic distribution &#39; \
                                    &#39;(starts high and then drops)&#39;
                 self.dist = lambda t: R_0.logistic(t, *args, **kwargs)
-            case &#39;bell&#39;:
+        elif type == &#39;bell&#39;:
                 self.name = &#39;Bell Curve&#39;
                 self.description = &#39;Follows the equation of a normal &#39; \
                                    &#39;distribution (peaks near the center)&#39;
