@@ -1,0 +1,49 @@
+name: Code QA
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        bash scripts/runner/build.sh
+    - name: Configure Git
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git pull
+    - name: Show problems
+      continue-on-error: true
+      run: |
+        flake8
+    - name: Run QA Tests
+      run: |
+        isort .
+        autopep8 --in-place **/*.py
+        ttws .
+    - name: Show unresolved problems
+      run: |
+        flake8
+    - name: Commit changes
+      continue-on-error: true
+      run: |
+        git add .
+        git commit -m "[auto]: Fix code style"
+        git push

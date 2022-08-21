@@ -1,0 +1,52 @@
+name: Auto-Generate Documentation
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - epispot/*
+  #     - README.md  # documentation uses README via `.. include`
+  #     - .github/workflows/*
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        bash scripts/runner/build.sh
+    - name: Configure Git
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git pull
+    - name: Generate documentation
+      run: |
+        pdoc --html --output-dir stash1 epispot
+    - name: Stash changes
+      continue-on-error: true
+      run: |
+        git add .
+        git commit -m "Stashed Documentation Changes"
+    - name: Set up gh-pages  # See #34 for directory structure information
+      run: |
+        git checkout gh-pages
+        rm -rf en/latest/  # -rf to delete all subdirectories
+    - name: Push docs to gh-pages
+      continue-on-error: true  # Git will return an error if the working tree is clean (i.e. no modifications to the current documentation exist)
+      run: |
+        git checkout main stash1/
+        mkdir -p en/latest/  # recreate empty directory after being deleted in previous step
+        mv stash1/epispot/* en/latest/
+        git add .
+        git commit -m "[docs]: Update documentation"
+        git push

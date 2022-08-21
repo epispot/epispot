@@ -1,0 +1,81 @@
+
+# PURPOSE OF THIS FILE:
+
+# epispot's code is licensed under the GNU v3.0 General Public License,
+# meaning you can use any code on the repository and package for your own projects
+# provided,
+#    (1) you give credit to the authors (as described within this file)
+#    (2) you also use the GNU v3.0 General Public License for your project
+# This file provides the authoring information for (1)
+
+# WHAT THIS MEANS FOR CONTRIBUTIONS:
+
+# Every time a CODEOWNER's code is modified in a new PR,
+# GitHub will automatically ping them for review.
+# Epispot will rarely merge PRs without author approval,
+# which means that in order for a PR to be merged into the `master` branch,
+# it will need to receive approving reviews from all authors whose code has been modified.
+# In the event that a CODEOWNER is unreachable or does not review the PR within a suitable amount of time,
+# the PR will be merged regardless.
+# However, it may be rejected if it fails in beta trials.
+
+# CODEOWNER GUIDELINES:
+
+# To become a CODEOWNER, you must:
+#    (1) Directly contribute to a file in this repository
+#    (2) License your code to epispot under the condition that it will be kept with a GNU v3.0 General Public License
+#    (3) Submit a PR describing your changes
+#           (a) If your PR modifies someone else's code,
+#               you must receive an approving review from them;
+#               however you will take over as CODEOWNER of the code
+#               you modified once approved
+#    (4) Have your PR approved and merged into the latest release of epispot
+#    (5) Wait until your feature passes beta trials and is released into the main package
+# If you believe that you have followed these steps but are not properly attributed to your code within this file,
+# please contact an existing CODEOWNER or a repository maintainer to have your GitHub username registered in this
+# document.
+# Additionally, if you would like your username *removed* from this document,
+# follow the same steps listed above.
+
+# IMPORTANT NOTES:
+
+# Please note that due to current GitHub processes, if you do not have write access to the repository,
+# many of the features of CODEOWNERS will not work for your account. However, you will be manually pinged after
+# your code is touched.
+
+# Please see the official GitHub document on CODEOWNERS at:
+# https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+
+*       @quantum9innovation
+
+*.py                @quantum9innovation
+*.yml               @Quantalabs
+*.sh                @quantum9innovation
+*.md                @quantum9innovation
+*.txt               @quantum9innovation
+*.csv               @quantum9innovation
+*.png               @quantum9innovation
+*.coveragerc        @Quantalabs
+*.toml              @Quantalabs
+*.cfg               @Quantalabs
+*.gitignore         @Quantalabs
+
+bin/                @Quantalabs
+scripts/            @quantum9innovation
+requirements/       @Quantalabs
+
+/.github/                       @Quantalabs
+/.github/ISSUE_TEMPLATE/        @quantum9innovation
+/.github/workflows/*            @Quantalabs
+/epispot/                       @quantum9innovation
+/bin/                           @quantum9innovation
+/scripts/                       @Quantalabs
+
+test_*              @quantum9innovation
+*-nightly           @quantum9innovation
+*-dev               @quantum9innovation
+requirements-*      @Quantalabs
+
+LICENSE                 @quantum9innovation
+SECURITY.md             @quantum9innovation @Quantalabs
+setup.py                @Quantalabs

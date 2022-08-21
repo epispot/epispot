@@ -1,0 +1,17 @@
+matplotlib~=3.5.3
+numpy~=1.23.2
+dill~=0.3.5.1
+plotly~=5.9.0
+pytest~=7.1.2
+coverage~=6.4.4
+codecov~=2.1.12
+pdoc3~=0.10.0
+SciencePlots~=1.0.9
+lock-requirements~=0.1.1
+isort~=5.10.1
+pycodestyle~=2.9.1
+pep8-naming~=0.13.2
+flake8-noqa~=1.2.9
+flake8~=5.0.4
+ttws~=0.8.3
+autopep8~=1.7.0
