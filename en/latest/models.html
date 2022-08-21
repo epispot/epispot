@@ -34,105 +34,96 @@ the package to generate plots, run predictions, etc.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-The `epispot.models` classes store different types of epidemiological 
-models in a compact form useful for integration. Models can be 
-differentiated, integrated, and examined by calling class methods. 
-Additionally, epispot models are portable—they can be used throughout 
+The `epispot.models` classes store different types of epidemiological
+models in a compact form useful for integration. Models can be
+differentiated, integrated, and examined by calling class methods.
+Additionally, epispot models are portable—they can be used throughout
 the package to generate plots, run predictions, etc.
 &#34;&#34;&#34;
 
 from copy import deepcopy
-from . import warnings
-from . import np
+
+from . import dill, np, version, warnings
 
 
 class Model:
     &#34;&#34;&#34;
-    The base model class for 
-    [compartmental models](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology). 
-    Compartmental models are models composed of various sub-models, 
-    known as &#34;compartments.&#34; For example, the common SIR model is an 
-    example of a compartmental model with the Susceptible, Infected, 
-    and Removed compartments.
+    The base model class for
+    [compartmental models](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology).
+    Compartmental models are models composed of various sub-models,
+    known as &#34;compartments.&#34;
+    For example, the common SIR model is an example of a compartmental model with the Susceptible,
+    Infected, and Removed compartments.
 
     .. versionadded:: v3.0.0-alpha-2
-
     &#34;&#34;&#34;
-    def __init__(self, initial_population, comps=None, comp_map=None, 
+
+    def __init__(self, initial_population, comps=None, comp_map=None,
                  matrix=None):
         &#34;&#34;&#34;
-        Initialize the `Model` class; all optional parameters can be 
-        added through the `epispot.models.Model.add` method.
+        Initialize the `Model` class; all optional parameters can be added through the `epispot.models.Model.add` method.
 
-        ## **Parameters**
+        ## Parameters
 
-        `initial_population`: Population at time zero
+        `initial_population (int)`: Population at time zero
 
-        `comps=None`: List of compartment classes to create the model
+        `comps=None (|list[epispot.comps.Compartment])`: List of compartment classes to create the model
 
-        `comp_map=None`: Map of how all the compartments connect.
-                         The map should consist of a list of lists.
-                         Each sublist represents the connections of the 
-                         corresponding compartment in the `comps` list.
-                         This sublist should contain the indices of each 
-                         of the compartments in `comps` that it connects to.
-                         If the compartment does not connect to any other 
-                         compartments, leave the sublist blank.
-        
-        `matrix=None`: Rate and probability matrix describing the 
-                       exchange rates between compartments. Like `map`,
-                       this is a list of lists. Unlike `map`, however,
-                       this matrix must not skip entries (i.e. no blank
-                       sublists). Each sublist should contain rate and 
-                       probability information in a tuple for every 
-                       compartment. If the information is not 
-                       necessary, use the tuple `(1, 1)` or `None` as a
-                       placeholder.
+        `comp_map=None (|list[list[int]])`: Map of how all the compartments connect.
+            The map should consist of a list of lists.
+            Each sublist represents the connections of the corresponding compartment in the `comps` list.
+            This sublist should contain the indices of each of the compartments in `comps` that it connects to.
+            If the compartment does not connect to any other compartments,
+            leave the sublist blank.
 
-        ## **Example**
+        `matrix=None (|list[list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)]])`:
+            Rate and probability matrix describing the exchange rates between compartments.
+            Like `map`, this is a list of lists.
+            Unlike `map`, however, this matrix must not skip entries
+            (i.e. no blank sublists).
+            Each sublist should contain rate and probability information
+            in a tuple for every compartment.
+            If the information is not necessary, use the tuple `(1, 1)`
+            as a placeholder.
+
+        ## Example
 
         Let&#39;s say we have three compartments `A`, `B`, and `C`.
         These three compartments connect as shown below:
 
-        ```text
-        ┌───────────────────┐
-        │                   ▼
-        ┌───┐     ┌───┐     ┌───┐
-        │ A │ ──▶ │ C │ ──▶ │ B │
-        └───┘     └───┘     └───┘
-        ```
+            ┌─────────────────────┐
+            │                     ▼
+            ┌───┐     ┌───┐     ┌───┐
+            │ A │ ──&gt; │ C │ ──&gt; │ B │
+            └───┘     └───┘     └───┘
 
         To create a compartmental model with these three classes, use:
 
         ```python
-        comps = [A, B, C], 
+        comps = [A, B, C],
         map = [
             [1, 2],     # A
             [],         # B
             [1]         # C
         ],
         matrix = [
-            [None, (1/2, 1/3), (1/2, 1/3)],     # A[A, B, C] 
-            [None, None, None],                 # B[A, B, C]
-            [None, (1/2, 1/3), None]            # C[A, B, C]
+            [(1, 1), (1/2, 1/3), (1/2, 1/3)],     # A[A, B, C]
+            [(1, 1), (1, 1), (1, 1)],                 # B[A, B, C]
+            [(1, 1), (1/2, 1/3), (1, 1)]            # C[A, B, C]
         ]
         ```
 
-        This creates a compartmental model where all the connections 
+        This creates a compartmental model where all the connections
         have a probability of `1/2` and rate of `1/3`.
-        
+
         ## **Additional Notes**
 
-        This feature is currently only released to alpha versions of 
-        epispot. This will likely be used (with minor changes) in the 
-        full release of epispot v3. For more information about this 
-        feature, or if you&#39;re interested in giving feedback, see the 
-        discussion 
+        For more information about this
+        feature, or if you&#39;re interested in giving feedback, see the
+        discussion
         [here on GitHub](https://github.com/epispot/epispot/issues/73).
 
-        .. warning::
-           As this is currently an alpha feature, the new compartmental 
-           models in epispot are subject to change.
+        ..versionadded:: v3.0.0-alpha-2
 
         &#34;&#34;&#34;
         self.initial_population = initial_population
@@ -143,28 +134,24 @@ class Model:
         self.matrix = matrix
         self.aggregated = None
         self.compiled = False
+        self.version = version
 
     def compile(self, custom=False):
         &#34;&#34;&#34;
-        Run a series of checks of the model and initialize some 
-        class-wide variables.
+        Run a series of checks of the model and initialize some class-wide variables.
 
-        ## **Parameters**
+        ## Parameters
 
-        `custom=False`: Flag indicating if the model is using custom
-                        compartments. If this is `False` (the default), 
-                        all compartment compatibility checks will have 
-                        to pass or an error will be raised. If this is 
-                        `True`, those checks are bypassed since the 
-                        model cannot check for custom compartments.
+        `custom=False (bool)`: Flag indicating if the model is using custom compartments.
+            If this is `False` (the default), all compartment compatibility checks will have to pass or an error will be raised.
+            If this is `True`, those checks are bypassed since the model cannot check for custom compartments.
 
-        ## **Additional Notes**
+        ## Additional Notes
 
-        Adding, removing, or modifying compartments after this step 
-        will automatically de-compile the model, requiring it to be 
-        compiled again after changes have been made.
+        Adding, removing, or modifying compartments after this step will automatically de-compile the model,
+        requiring it to be compiled again after changes have been made.
 
-        .. important:: 
+        .. important::
            Only run after all the compartments have been
            added to the model.
 
@@ -180,7 +167,7 @@ class Model:
         if not custom:
             for i, compartment in enumerate(self.compartments):
                 compartment._check(self.map[i], self.compartments)
-        
+
         # aggregate all compartments by type
         self.aggregated = {}
         for i, compartment in enumerate(self.compartments):
@@ -192,24 +179,20 @@ class Model:
 
     def diff(self, time, system):
         &#34;&#34;&#34;
-        Differentiate `epispot.models.Model`. Used by 
-        `epispot.models.Model.integrate` for evaluating model 
-        predictions.
+        Differentiate `epispot.models.Model`; used by `epispot.models.Model.integrate` for evaluating model predictions.
 
-        ## **Parameters**
+        ## Parameters
 
-        `time`: Time to take the derivative at. This is important for 
-                some time-dependent variables like compartment 
-                parameters.
+        `time (float)`: Time to take the derivative at.
+            This is important for some time-dependent variables like compartment parameters.
 
-        `system`: System of state values (e.g `[973, 12, 15]`). This is 
-                propagated to each of the individual compartments in 
-                the model.
+        `system (list[float])`: System of state values (e.g `[973, 12, 15]`).
+            This is propagated to each of the individual compartments in the model.
 
-        ## **Return**
+        ## Returns
 
-        List of corresponding compartment derivatives.
-        
+        List of corresponding compartment derivatives (`list[float]`)
+
         &#34;&#34;&#34;
         if not self.compiled:  # pragma: no cover
             warnings.warn(&#39;An epispot model has not been compiled yet. &#39;
@@ -220,56 +203,50 @@ class Model:
         derivative = np.zeros((len(self.compartments), ))
         for num, compartment in enumerate(self.compartments):
             if num in self.aggregated[&#39;Susceptible&#39;]:
-                delta = compartment.diff(time, 
-                                         system, 
-                                         num,
-                                         self.map[num], 
-                                         self.matrix[num],
-                                         infecteds=
-                                         self.aggregated[&#39;Infected&#39;])
+                delta = compartment.diff(
+                    time, system, num,
+                    self.map[num], self.matrix[num],
+                    infecteds=self.aggregated[&#39;Infected&#39;]
+                )
             else:
-                delta = compartment.diff(time, 
-                                         system, 
+                delta = compartment.diff(time,
+                                         system,
                                          num,
-                                         self.map[num], 
+                                         self.map[num],
                                          self.matrix[num])
             derivative += delta
-        
+
         return derivative
 
     def integrate(self, timesteps, starting_state=None):
         &#34;&#34;&#34;
-        Integrate the model using `epispot.models.Model.diff` to 
-        arrive at future predictions using 
+        Integrate the model using `epispot.models.Model.diff` to arrive at future predictions using
         [Euler&#39;s Method](https://en.wikipedia.org/wiki/Euler_method).
-        By default, the step size (Δ) is set to exactly 1 day, as this 
-        is usually the period for which epidemiological parameters are 
-        estimated for. However, in future versions, we plan to update 
-        this to add support for variable values of Δ.
+        By default, the step size (Δ) is set to exactly 1 day, as this is usually the period for which epidemiological parameters are estimated for.
+        However, this can be changed if necessary.
 
-        ## **Parameters**
+        ## Parameters
 
-        `timesteps`: range of evenly-spaced times starting at the 
-                     epidemic start time and ending at the time of 
-                     prediction.
-        
-        `starting_state=None`: List of initial values for each 
-                               compartment. This is used as the initial 
-                               vector for the integration process.
-                               If no `starting_state` is provided, it 
-                               will default to the having only 1 person
-                               in the next non-Susceptible compartment.
-        
-        ## **Return**
+        `timesteps (range)`: range of evenly-spaced times starting at the epidemic start time and ending at the time of prediction.
 
-        A list of lists. Each sublist is a vector representing the 
-        value of each compartment at that specific time. The sublists
-        range according to the `timesteps` parameter.
+        `starting_state=None (|list[int])`: List of initial values for each compartment.
+            This is used as the initial vector for the integration process.
+            If no `starting_state` is provided, it will default to the having only 1 person in the next non-Susceptible compartment.
 
-        ## **Example**
+        `delta=1 (|float)`: Δ, the step size for the integration process.
+            Smaller values will result in more accurate predictions,
+            but will be more costly.
 
-        For example, the following would be an expected return type for 
-        an SIR model with a population of `100`.
+        ## Returns
+
+        A list of lists; each sublist is a vector representing the value of each compartment at that specific time.
+        The sublists range according to the `timesteps` parameter.
+        (`list[list[float]]`)
+
+        ## Example
+
+        For example, the following would be an expected return type for
+        an SIR model with a population of `100`:
 
         ```python
         [
@@ -281,12 +258,6 @@ class Model:
         ]
         ```
 
-        ## **Additional Notes**
-
-        `delta` is expected to be added as an optional parameter in
-        future releases of epispot v3. For now, however, it is set 
-        to 1 day and cannot be changed.
-
         &#34;&#34;&#34;
         # checks to make sure the model has been compiled
         if not self.compiled:  # pragma: no cover
@@ -297,7 +268,6 @@ class Model:
 
         # initial parameter setup
         results = []
-        delta = 1
 
         if starting_state is not None:
             system = starting_state
@@ -306,9 +276,11 @@ class Model:
             system[0] = self.initial_population - 1
             system[1] = 1
 
+        delta = timesteps[1] - timesteps[0]
+
         for timestep in timesteps:
 
-            # calculate the derivative for each compartment at this 
+            # calculate the derivative for each compartment at this
             # timestep and update the system accordingly
 
             derivatives = self.diff(timestep, system)
@@ -319,31 +291,28 @@ class Model:
 
     def add(self, comp, comp_map, matrix):
         &#34;&#34;&#34;
-        Add a compartment to the model. This can also be done by 
-        initializing the `epispot.models.Model` class beforehand.
+        Add a compartment to the model.
+        This can also be done by initializing the `epispot.models.Model` class beforehand.
 
-        ## **Parameters**
+        ## Parameters
 
-        `comp`: Compartment class (e.g. `Susceptible()` or `Infected()`)
+        `comp (epispot.comps.Compartment)`: Compartment class (e.g. `epispot.comps.Susceptible` or `epispot.comps.Infected`)
 
-        `comp_map`: Slice of the larger `map` specified in 
-                    `epispot.models.Model`. This should simply include the 
-                    compartment connections for this specific compartment.
+        `comp_map (list[int])`: Slice of the larger `map` specified in `epispot.models.Model`.
+            This should simply include the compartment connections for this specific compartment.
 
-        `matrix`: Slice of the larger `matrix` specified in 
-                  `epispot.models.Model`. As with `map`, this should 
+        `matrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: Slice of the larger `matrix` specified in
+                  `epispot.models.Model`. As with `map`, this should
                   only include the rates and probabilities for this
                   compartment&#39;s connections.
 
-        ## **Error Handling**
+        ## Error Handling
 
-        Initializing some parameters in `epispot.models.Model` without
-        initializing all of them will raise a `ValueError`.
+        Initializing some parameters in `epispot.models.Model` without initializing all of them will raise a `ValueError`.
 
-        ## **Additional Notes**
+        ## Additional Notes
 
-        See the documentation for `epispot.models.Model` for more help
-        and examples.
+        See the documentation for `epispot.models.Model` for more help and examples.
 
         &#34;&#34;&#34;
         if self.compiled:
@@ -354,8 +323,9 @@ class Model:
             self.names = [comp.name]
             self.map = [comp_map]
             self.matrix = [matrix]
-        elif self.compartments is not None and self.map is not None and \
-             self.matrix is not None:
+        elif self.compartments is not None \
+            and self.map is not None \
+            and self.matrix is not None:
             self.compartments.append(comp)
             self.names.append(comp.name)
             self.map.append(comp_map)
@@ -373,12 +343,69 @@ class Model:
 
         ## Parameters
 
-        `names`: A list of names corresponding to `comps`
+        `names (list[str])`: A list of names corresponding to `comps`
 
         &#34;&#34;&#34;
         self.names = names
         for i, comp in enumerate(self.compartments):
-            comp.name = names[i]</code></pre>
+            comp.name = names[i]
+
+    def save(self, filename):
+        &#34;&#34;&#34;
+        Save the model to a file.
+        This can be used to load the model later.
+        Standard file ending is `.epi`.
+
+        ## Parameters
+
+        `filename (str)`: Name of the file to save the model to
+
+        ## Error Handling
+
+        - If the file already exists, it will be overwritten.
+        - If the model is not compiled, it will raise a `ValueError`.
+
+        &#34;&#34;&#34;
+        if not self.compiled:  # pragma: no cover
+            raise ValueError(&#39;Model has not been compiled yet. &#39;
+                             &#39;Cannot save model.&#39;)
+
+        with open(filename, &#39;wb&#39;) as f:
+            dill.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        &#34;&#34;&#34;
+        Load a model from a file.
+
+        ## Parameters
+
+        `filename (str)`: Name of the file to load the model from
+
+        ## Security
+
+        ..warning::
+            Be careful when loading a model from a file. Untrusted sources
+            could potentially embed malicious code into various parts of the
+            model which can lead to arbitrary code execution.
+
+        ## Error Handling
+
+        - If the file does not exist, it will raise a
+          `FileNotFoundError`.
+
+        &#34;&#34;&#34;
+        with open(filename, &#39;rb&#39;) as f:
+            loaded = dill.load(f)
+            if not loaded.compiled:  # pragma: no cover
+                loaded.compile()
+            if loaded.version != version:  # pragma: no cover
+                warnings.warn(
+                    &#39;This model has been imported from an &#39;
+                    f&#39;older version of epispot v{loaded.version}. &#39;
+                    f&#39;You have epispot v{version}.&#39;
+                )
+            return loaded</code></pre>
 </details>
 </section>
 <section>
@@ -398,69 +425,62 @@ class Model:
 <div class="desc"><p>The base model class for
 <a href="https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology">compartmental models</a>.
 Compartmental models are models composed of various sub-models,
-known as "compartments." For example, the common SIR model is an
-example of a compartmental model with the Susceptible, Infected,
-and Removed compartments.</p>
+known as "compartments."
+For example, the common SIR model is an example of a compartmental model with the Susceptible,
+Infected, and Removed compartments.</p>
 <div class="admonition versionadded">
 <p class="admonition-title">Added in version:&ensp;v3.0.0-alpha-2</p>
 </div>
-<p>Initialize the <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> class; all optional parameters can be
-added through the <code><a title="epispot.models.Model.add" href="#epispot.models.Model.add">Model.add()</a></code> method.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>initial_population</code>: Population at time zero</p>
-<p><code>comps=None</code>: List of compartment classes to create the model</p>
-<p><code>comp_map=None</code>: Map of how all the compartments connect.
+<p>Initialize the <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> class; all optional parameters can be added through the <code><a title="epispot.models.Model.add" href="#epispot.models.Model.add">Model.add()</a></code> method.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>initial_population (int)</code>: Population at time zero</p>
+<p><code>comps=None (|list[epispot.comps.Compartment])</code>: List of compartment classes to create the model</p>
+<p><code>comp_map=None (|list[list[int]])</code>: Map of how all the compartments connect.
 The map should consist of a list of lists.
-Each sublist represents the connections of the
-corresponding compartment in the <code>comps</code> list.
-This sublist should contain the indices of each
-of the compartments in <code>comps</code> that it connects to.
-If the compartment does not connect to any other
-compartments, leave the sublist blank.</p>
-<p><code>matrix=None</code>: Rate and probability matrix describing the
-exchange rates between compartments. Like <code>map</code>,
-this is a list of lists. Unlike <code>map</code>, however,
-this matrix must not skip entries (i.e. no blank
-sublists). Each sublist should contain rate and
-probability information in a tuple for every
-compartment. If the information is not
-necessary, use the tuple <code>(1, 1)</code> or <code>None</code> as a
-placeholder.</p>
-<h2 id="example"><strong>Example</strong></h2>
+Each sublist represents the connections of the corresponding compartment in the <code>comps</code> list.
+This sublist should contain the indices of each of the compartments in <code>comps</code> that it connects to.
+If the compartment does not connect to any other compartments,
+leave the sublist blank.</p>
+<p><code>matrix=None (|list[list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)]])</code>:
+Rate and probability matrix describing the exchange rates between compartments.
+Like <code>map</code>, this is a list of lists.
+Unlike <code>map</code>, however, this matrix must not skip entries
+(i.e. no blank sublists).
+Each sublist should contain rate and probability information
+in a tuple for every compartment.
+If the information is not necessary, use the tuple <code>(1, 1)</code>
+as a placeholder.</p>
+<h2 id="example">Example</h2>
 <p>Let's say we have three compartments <code>A</code>, <code>B</code>, and <code>C</code>.
 These three compartments connect as shown below:</p>
-<pre><code class="language-text">┌───────────────────┐
-│                   ▼
+<pre><code>┌─────────────────────┐
+│                     ▼
 ┌───┐     ┌───┐     ┌───┐
-│ A │ ──▶ │ C │ ──▶ │ B │
+│ A │ ──&gt; │ C │ ──&gt; │ B │
 └───┘     └───┘     └───┘
 </code></pre>
 <p>To create a compartmental model with these three classes, use:</p>
-<pre><code class="language-python">comps = [A, B, C], 
+<pre><code class="language-python">comps = [A, B, C],
 map = [
     [1, 2],     # A
     [],         # B
     [1]         # C
 ],
 matrix = [
-    [None, (1/2, 1/3), (1/2, 1/3)],     # A[A, B, C] 
-    [None, None, None],                 # B[A, B, C]
-    [None, (1/2, 1/3), None]            # C[A, B, C]
+    [(1, 1), (1/2, 1/3), (1/2, 1/3)],     # A[A, B, C]
+    [(1, 1), (1, 1), (1, 1)],                 # B[A, B, C]
+    [(1, 1), (1/2, 1/3), (1, 1)]            # C[A, B, C]
 ]
 </code></pre>
 <p>This creates a compartmental model where all the connections
 have a probability of <code>1/2</code> and rate of <code>1/3</code>.</p>
 <h2 id="additional-notes"><strong>Additional Notes</strong></h2>
-<p>This feature is currently only released to alpha versions of
-epispot. This will likely be used (with minor changes) in the
-full release of epispot v3. For more information about this
+<p>For more information about this
 feature, or if you're interested in giving feedback, see the
 discussion
 <a href="https://github.com/epispot/epispot/issues/73">here on GitHub</a>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>As this is currently an alpha feature, the new compartmental
-models in epispot are subject to change.</p>
+<div class="admonition versionadded">
+<p class="admonition-title">Added in version:&ensp;v3.0.0-alpha-2</p>
 </div></div>
 <details class="source">
 <summary>
@@ -468,91 +488,82 @@ models in epispot are subject to change.</p>
 </summary>
 <pre><code class="python">class Model:
     &#34;&#34;&#34;
-    The base model class for 
-    [compartmental models](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology). 
-    Compartmental models are models composed of various sub-models, 
-    known as &#34;compartments.&#34; For example, the common SIR model is an 
-    example of a compartmental model with the Susceptible, Infected, 
-    and Removed compartments.
+    The base model class for
+    [compartmental models](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology).
+    Compartmental models are models composed of various sub-models,
+    known as &#34;compartments.&#34;
+    For example, the common SIR model is an example of a compartmental model with the Susceptible,
+    Infected, and Removed compartments.
 
     .. versionadded:: v3.0.0-alpha-2
-
     &#34;&#34;&#34;
-    def __init__(self, initial_population, comps=None, comp_map=None, 
+
+    def __init__(self, initial_population, comps=None, comp_map=None,
                  matrix=None):
         &#34;&#34;&#34;
-        Initialize the `Model` class; all optional parameters can be 
-        added through the `epispot.models.Model.add` method.
+        Initialize the `Model` class; all optional parameters can be added through the `epispot.models.Model.add` method.
 
-        ## **Parameters**
+        ## Parameters
 
-        `initial_population`: Population at time zero
+        `initial_population (int)`: Population at time zero
 
-        `comps=None`: List of compartment classes to create the model
+        `comps=None (|list[epispot.comps.Compartment])`: List of compartment classes to create the model
 
-        `comp_map=None`: Map of how all the compartments connect.
-                         The map should consist of a list of lists.
-                         Each sublist represents the connections of the 
-                         corresponding compartment in the `comps` list.
-                         This sublist should contain the indices of each 
-                         of the compartments in `comps` that it connects to.
-                         If the compartment does not connect to any other 
-                         compartments, leave the sublist blank.
-        
-        `matrix=None`: Rate and probability matrix describing the 
-                       exchange rates between compartments. Like `map`,
-                       this is a list of lists. Unlike `map`, however,
-                       this matrix must not skip entries (i.e. no blank
-                       sublists). Each sublist should contain rate and 
-                       probability information in a tuple for every 
-                       compartment. If the information is not 
-                       necessary, use the tuple `(1, 1)` or `None` as a
-                       placeholder.
+        `comp_map=None (|list[list[int]])`: Map of how all the compartments connect.
+            The map should consist of a list of lists.
+            Each sublist represents the connections of the corresponding compartment in the `comps` list.
+            This sublist should contain the indices of each of the compartments in `comps` that it connects to.
+            If the compartment does not connect to any other compartments,
+            leave the sublist blank.
 
-        ## **Example**
+        `matrix=None (|list[list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)]])`:
+            Rate and probability matrix describing the exchange rates between compartments.
+            Like `map`, this is a list of lists.
+            Unlike `map`, however, this matrix must not skip entries
+            (i.e. no blank sublists).
+            Each sublist should contain rate and probability information
+            in a tuple for every compartment.
+            If the information is not necessary, use the tuple `(1, 1)`
+            as a placeholder.
+
+        ## Example
 
         Let&#39;s say we have three compartments `A`, `B`, and `C`.
         These three compartments connect as shown below:
 
-        ```text
-        ┌───────────────────┐
-        │                   ▼
-        ┌───┐     ┌───┐     ┌───┐
-        │ A │ ──▶ │ C │ ──▶ │ B │
-        └───┘     └───┘     └───┘
-        ```
+            ┌─────────────────────┐
+            │                     ▼
+            ┌───┐     ┌───┐     ┌───┐
+            │ A │ ──&gt; │ C │ ──&gt; │ B │
+            └───┘     └───┘     └───┘
 
         To create a compartmental model with these three classes, use:
 
         ```python
-        comps = [A, B, C], 
+        comps = [A, B, C],
         map = [
             [1, 2],     # A
             [],         # B
             [1]         # C
         ],
         matrix = [
-            [None, (1/2, 1/3), (1/2, 1/3)],     # A[A, B, C] 
-            [None, None, None],                 # B[A, B, C]
-            [None, (1/2, 1/3), None]            # C[A, B, C]
+            [(1, 1), (1/2, 1/3), (1/2, 1/3)],     # A[A, B, C]
+            [(1, 1), (1, 1), (1, 1)],                 # B[A, B, C]
+            [(1, 1), (1/2, 1/3), (1, 1)]            # C[A, B, C]
         ]
         ```
 
-        This creates a compartmental model where all the connections 
+        This creates a compartmental model where all the connections
         have a probability of `1/2` and rate of `1/3`.
-        
+
         ## **Additional Notes**
 
-        This feature is currently only released to alpha versions of 
-        epispot. This will likely be used (with minor changes) in the 
-        full release of epispot v3. For more information about this 
-        feature, or if you&#39;re interested in giving feedback, see the 
-        discussion 
+        For more information about this
+        feature, or if you&#39;re interested in giving feedback, see the
+        discussion
         [here on GitHub](https://github.com/epispot/epispot/issues/73).
 
-        .. warning::
-           As this is currently an alpha feature, the new compartmental 
-           models in epispot are subject to change.
+        ..versionadded:: v3.0.0-alpha-2
 
         &#34;&#34;&#34;
         self.initial_population = initial_population
@@ -563,28 +574,24 @@ models in epispot are subject to change.</p>
         self.matrix = matrix
         self.aggregated = None
         self.compiled = False
+        self.version = version
 
     def compile(self, custom=False):
         &#34;&#34;&#34;
-        Run a series of checks of the model and initialize some 
-        class-wide variables.
+        Run a series of checks of the model and initialize some class-wide variables.
 
-        ## **Parameters**
+        ## Parameters
 
-        `custom=False`: Flag indicating if the model is using custom
-                        compartments. If this is `False` (the default), 
-                        all compartment compatibility checks will have 
-                        to pass or an error will be raised. If this is 
-                        `True`, those checks are bypassed since the 
-                        model cannot check for custom compartments.
+        `custom=False (bool)`: Flag indicating if the model is using custom compartments.
+            If this is `False` (the default), all compartment compatibility checks will have to pass or an error will be raised.
+            If this is `True`, those checks are bypassed since the model cannot check for custom compartments.
 
-        ## **Additional Notes**
+        ## Additional Notes
 
-        Adding, removing, or modifying compartments after this step 
-        will automatically de-compile the model, requiring it to be 
-        compiled again after changes have been made.
+        Adding, removing, or modifying compartments after this step will automatically de-compile the model,
+        requiring it to be compiled again after changes have been made.
 
-        .. important:: 
+        .. important::
            Only run after all the compartments have been
            added to the model.
 
@@ -600,7 +607,7 @@ models in epispot are subject to change.</p>
         if not custom:
             for i, compartment in enumerate(self.compartments):
                 compartment._check(self.map[i], self.compartments)
-        
+
         # aggregate all compartments by type
         self.aggregated = {}
         for i, compartment in enumerate(self.compartments):
@@ -612,24 +619,20 @@ models in epispot are subject to change.</p>
 
     def diff(self, time, system):
         &#34;&#34;&#34;
-        Differentiate `epispot.models.Model`. Used by 
-        `epispot.models.Model.integrate` for evaluating model 
-        predictions.
+        Differentiate `epispot.models.Model`; used by `epispot.models.Model.integrate` for evaluating model predictions.
 
-        ## **Parameters**
+        ## Parameters
 
-        `time`: Time to take the derivative at. This is important for 
-                some time-dependent variables like compartment 
-                parameters.
+        `time (float)`: Time to take the derivative at.
+            This is important for some time-dependent variables like compartment parameters.
 
-        `system`: System of state values (e.g `[973, 12, 15]`). This is 
-                propagated to each of the individual compartments in 
-                the model.
+        `system (list[float])`: System of state values (e.g `[973, 12, 15]`).
+            This is propagated to each of the individual compartments in the model.
 
-        ## **Return**
+        ## Returns
 
-        List of corresponding compartment derivatives.
-        
+        List of corresponding compartment derivatives (`list[float]`)
+
         &#34;&#34;&#34;
         if not self.compiled:  # pragma: no cover
             warnings.warn(&#39;An epispot model has not been compiled yet. &#39;
@@ -640,56 +643,50 @@ models in epispot are subject to change.</p>
         derivative = np.zeros((len(self.compartments), ))
         for num, compartment in enumerate(self.compartments):
             if num in self.aggregated[&#39;Susceptible&#39;]:
-                delta = compartment.diff(time, 
-                                         system, 
-                                         num,
-                                         self.map[num], 
-                                         self.matrix[num],
-                                         infecteds=
-                                         self.aggregated[&#39;Infected&#39;])
+                delta = compartment.diff(
+                    time, system, num,
+                    self.map[num], self.matrix[num],
+                    infecteds=self.aggregated[&#39;Infected&#39;]
+                )
             else:
-                delta = compartment.diff(time, 
-                                         system, 
+                delta = compartment.diff(time,
+                                         system,
                                          num,
-                                         self.map[num], 
+                                         self.map[num],
                                          self.matrix[num])
             derivative += delta
-        
+
         return derivative
 
     def integrate(self, timesteps, starting_state=None):
         &#34;&#34;&#34;
-        Integrate the model using `epispot.models.Model.diff` to 
-        arrive at future predictions using 
+        Integrate the model using `epispot.models.Model.diff` to arrive at future predictions using
         [Euler&#39;s Method](https://en.wikipedia.org/wiki/Euler_method).
-        By default, the step size (Δ) is set to exactly 1 day, as this 
-        is usually the period for which epidemiological parameters are 
-        estimated for. However, in future versions, we plan to update 
-        this to add support for variable values of Δ.
+        By default, the step size (Δ) is set to exactly 1 day, as this is usually the period for which epidemiological parameters are estimated for.
+        However, this can be changed if necessary.
 
-        ## **Parameters**
+        ## Parameters
 
-        `timesteps`: range of evenly-spaced times starting at the 
-                     epidemic start time and ending at the time of 
-                     prediction.
-        
-        `starting_state=None`: List of initial values for each 
-                               compartment. This is used as the initial 
-                               vector for the integration process.
-                               If no `starting_state` is provided, it 
-                               will default to the having only 1 person
-                               in the next non-Susceptible compartment.
-        
-        ## **Return**
+        `timesteps (range)`: range of evenly-spaced times starting at the epidemic start time and ending at the time of prediction.
 
-        A list of lists. Each sublist is a vector representing the 
-        value of each compartment at that specific time. The sublists
-        range according to the `timesteps` parameter.
+        `starting_state=None (|list[int])`: List of initial values for each compartment.
+            This is used as the initial vector for the integration process.
+            If no `starting_state` is provided, it will default to the having only 1 person in the next non-Susceptible compartment.
 
-        ## **Example**
+        `delta=1 (|float)`: Δ, the step size for the integration process.
+            Smaller values will result in more accurate predictions,
+            but will be more costly.
 
-        For example, the following would be an expected return type for 
-        an SIR model with a population of `100`.
+        ## Returns
+
+        A list of lists; each sublist is a vector representing the value of each compartment at that specific time.
+        The sublists range according to the `timesteps` parameter.
+        (`list[list[float]]`)
+
+        ## Example
+
+        For example, the following would be an expected return type for
+        an SIR model with a population of `100`:
 
         ```python
         [
@@ -701,12 +698,6 @@ models in epispot are subject to change.</p>
         ]
         ```
 
-        ## **Additional Notes**
-
-        `delta` is expected to be added as an optional parameter in
-        future releases of epispot v3. For now, however, it is set 
-        to 1 day and cannot be changed.
-
         &#34;&#34;&#34;
         # checks to make sure the model has been compiled
         if not self.compiled:  # pragma: no cover
@@ -717,7 +708,6 @@ models in epispot are subject to change.</p>
 
         # initial parameter setup
         results = []
-        delta = 1
 
         if starting_state is not None:
             system = starting_state
@@ -726,9 +716,11 @@ models in epispot are subject to change.</p>
             system[0] = self.initial_population - 1
             system[1] = 1
 
+        delta = timesteps[1] - timesteps[0]
+
         for timestep in timesteps:
 
-            # calculate the derivative for each compartment at this 
+            # calculate the derivative for each compartment at this
             # timestep and update the system accordingly
 
             derivatives = self.diff(timestep, system)
@@ -739,31 +731,28 @@ models in epispot are subject to change.</p>
 
     def add(self, comp, comp_map, matrix):
         &#34;&#34;&#34;
-        Add a compartment to the model. This can also be done by 
-        initializing the `epispot.models.Model` class beforehand.
+        Add a compartment to the model.
+        This can also be done by initializing the `epispot.models.Model` class beforehand.
 
-        ## **Parameters**
+        ## Parameters
 
-        `comp`: Compartment class (e.g. `Susceptible()` or `Infected()`)
+        `comp (epispot.comps.Compartment)`: Compartment class (e.g. `epispot.comps.Susceptible` or `epispot.comps.Infected`)
 
-        `comp_map`: Slice of the larger `map` specified in 
-                    `epispot.models.Model`. This should simply include the 
-                    compartment connections for this specific compartment.
+        `comp_map (list[int])`: Slice of the larger `map` specified in `epispot.models.Model`.
+            This should simply include the compartment connections for this specific compartment.
 
-        `matrix`: Slice of the larger `matrix` specified in 
-                  `epispot.models.Model`. As with `map`, this should 
+        `matrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: Slice of the larger `matrix` specified in
+                  `epispot.models.Model`. As with `map`, this should
                   only include the rates and probabilities for this
                   compartment&#39;s connections.
 
-        ## **Error Handling**
+        ## Error Handling
 
-        Initializing some parameters in `epispot.models.Model` without
-        initializing all of them will raise a `ValueError`.
+        Initializing some parameters in `epispot.models.Model` without initializing all of them will raise a `ValueError`.
 
-        ## **Additional Notes**
+        ## Additional Notes
 
-        See the documentation for `epispot.models.Model` for more help
-        and examples.
+        See the documentation for `epispot.models.Model` for more help and examples.
 
         &#34;&#34;&#34;
         if self.compiled:
@@ -774,8 +763,9 @@ models in epispot are subject to change.</p>
             self.names = [comp.name]
             self.map = [comp_map]
             self.matrix = [matrix]
-        elif self.compartments is not None and self.map is not None and \
-             self.matrix is not None:
+        elif self.compartments is not None \
+            and self.map is not None \
+            and self.matrix is not None:
             self.compartments.append(comp)
             self.names.append(comp.name)
             self.map.append(comp_map)
@@ -793,67 +783,179 @@ models in epispot are subject to change.</p>
 
         ## Parameters
 
-        `names`: A list of names corresponding to `comps`
+        `names (list[str])`: A list of names corresponding to `comps`
 
         &#34;&#34;&#34;
         self.names = names
         for i, comp in enumerate(self.compartments):
-            comp.name = names[i]</code></pre>
+            comp.name = names[i]
+
+    def save(self, filename):
+        &#34;&#34;&#34;
+        Save the model to a file.
+        This can be used to load the model later.
+        Standard file ending is `.epi`.
+
+        ## Parameters
+
+        `filename (str)`: Name of the file to save the model to
+
+        ## Error Handling
+
+        - If the file already exists, it will be overwritten.
+        - If the model is not compiled, it will raise a `ValueError`.
+
+        &#34;&#34;&#34;
+        if not self.compiled:  # pragma: no cover
+            raise ValueError(&#39;Model has not been compiled yet. &#39;
+                             &#39;Cannot save model.&#39;)
+
+        with open(filename, &#39;wb&#39;) as f:
+            dill.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        &#34;&#34;&#34;
+        Load a model from a file.
+
+        ## Parameters
+
+        `filename (str)`: Name of the file to load the model from
+
+        ## Security
+
+        ..warning::
+            Be careful when loading a model from a file. Untrusted sources
+            could potentially embed malicious code into various parts of the
+            model which can lead to arbitrary code execution.
+
+        ## Error Handling
+
+        - If the file does not exist, it will raise a
+          `FileNotFoundError`.
+
+        &#34;&#34;&#34;
+        with open(filename, &#39;rb&#39;) as f:
+            loaded = dill.load(f)
+            if not loaded.compiled:  # pragma: no cover
+                loaded.compile()
+            if loaded.version != version:  # pragma: no cover
+                warnings.warn(
+                    &#39;This model has been imported from an &#39;
+                    f&#39;older version of epispot v{loaded.version}. &#39;
+                    f&#39;You have epispot v{version}.&#39;
+                )
+            return loaded</code></pre>
 </details>
+<h3>Static methods</h3>
+<dl>
+<dt id="epispot.models.Model.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load a model from a file.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>filename (str)</code>: Name of the file to load the model from</p>
+<h2 id="security">Security</h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be careful when loading a model from a file. Untrusted sources
+could potentially embed malicious code into various parts of the
+model which can lead to arbitrary code execution.</p>
+</div>
+<h2 id="error-handling">Error Handling</h2>
+<ul>
+<li>If the file does not exist, it will raise a
+<code>FileNotFoundError</code>.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def load(cls, filename):
+    &#34;&#34;&#34;
+    Load a model from a file.
+
+    ## Parameters
+
+    `filename (str)`: Name of the file to load the model from
+
+    ## Security
+
+    ..warning::
+        Be careful when loading a model from a file. Untrusted sources
+        could potentially embed malicious code into various parts of the
+        model which can lead to arbitrary code execution.
+
+    ## Error Handling
+
+    - If the file does not exist, it will raise a
+      `FileNotFoundError`.
+
+    &#34;&#34;&#34;
+    with open(filename, &#39;rb&#39;) as f:
+        loaded = dill.load(f)
+        if not loaded.compiled:  # pragma: no cover
+            loaded.compile()
+        if loaded.version != version:  # pragma: no cover
+            warnings.warn(
+                &#39;This model has been imported from an &#39;
+                f&#39;older version of epispot v{loaded.version}. &#39;
+                f&#39;You have epispot v{version}.&#39;
+            )
+        return loaded</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="epispot.models.Model.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>self, comp, comp_map, matrix)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Add a compartment to the model. This can also be done by
-initializing the <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> class beforehand.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>comp</code>: Compartment class (e.g. <code>Susceptible()</code> or <code>Infected()</code>)</p>
-<p><code>comp_map</code>: Slice of the larger <code>map</code> specified in
-<code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code>. This should simply include the
-compartment connections for this specific compartment.</p>
-<p><code>matrix</code>: Slice of the larger <code>matrix</code> specified in
+<div class="desc"><p>Add a compartment to the model.
+This can also be done by initializing the <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> class beforehand.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>comp (<a title="epispot.comps.Compartment" href="comps.html#epispot.comps.Compartment">Compartment</a>)</code>: Compartment class (e.g. <code><a title="epispot.comps.Susceptible" href="comps.html#epispot.comps.Susceptible">Susceptible</a></code> or <code><a title="epispot.comps.Infected" href="comps.html#epispot.comps.Infected">Infected</a></code>)</p>
+<p><code>comp_map (list[int])</code>: Slice of the larger <code>map</code> specified in <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code>.
+This should simply include the compartment connections for this specific compartment.</p>
+<p><code>matrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])</code>: Slice of the larger <code>matrix</code> specified in
 <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code>. As with <code>map</code>, this should
 only include the rates and probabilities for this
 compartment's connections.</p>
-<h2 id="error-handling"><strong>Error Handling</strong></h2>
-<p>Initializing some parameters in <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> without
-initializing all of them will raise a <code>ValueError</code>.</p>
-<h2 id="additional-notes"><strong>Additional Notes</strong></h2>
-<p>See the documentation for <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> for more help
-and examples.</p></div>
+<h2 id="error-handling">Error Handling</h2>
+<p>Initializing some parameters in <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> without initializing all of them will raise a <code>ValueError</code>.</p>
+<h2 id="additional-notes">Additional Notes</h2>
+<p>See the documentation for <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code> for more help and examples.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add(self, comp, comp_map, matrix):
     &#34;&#34;&#34;
-    Add a compartment to the model. This can also be done by 
-    initializing the `epispot.models.Model` class beforehand.
+    Add a compartment to the model.
+    This can also be done by initializing the `epispot.models.Model` class beforehand.
 
-    ## **Parameters**
+    ## Parameters
 
-    `comp`: Compartment class (e.g. `Susceptible()` or `Infected()`)
+    `comp (epispot.comps.Compartment)`: Compartment class (e.g. `epispot.comps.Susceptible` or `epispot.comps.Infected`)
 
-    `comp_map`: Slice of the larger `map` specified in 
-                `epispot.models.Model`. This should simply include the 
-                compartment connections for this specific compartment.
+    `comp_map (list[int])`: Slice of the larger `map` specified in `epispot.models.Model`.
+        This should simply include the compartment connections for this specific compartment.
 
-    `matrix`: Slice of the larger `matrix` specified in 
-              `epispot.models.Model`. As with `map`, this should 
+    `matrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: Slice of the larger `matrix` specified in
+              `epispot.models.Model`. As with `map`, this should
               only include the rates and probabilities for this
               compartment&#39;s connections.
 
-    ## **Error Handling**
+    ## Error Handling
 
-    Initializing some parameters in `epispot.models.Model` without
-    initializing all of them will raise a `ValueError`.
+    Initializing some parameters in `epispot.models.Model` without initializing all of them will raise a `ValueError`.
 
-    ## **Additional Notes**
+    ## Additional Notes
 
-    See the documentation for `epispot.models.Model` for more help
-    and examples.
+    See the documentation for `epispot.models.Model` for more help and examples.
 
     &#34;&#34;&#34;
     if self.compiled:
@@ -864,8 +966,9 @@ and examples.</p></div>
         self.names = [comp.name]
         self.map = [comp_map]
         self.matrix = [matrix]
-    elif self.compartments is not None and self.map is not None and \
-         self.matrix is not None:
+    elif self.compartments is not None \
+        and self.map is not None \
+        and self.matrix is not None:
         self.compartments.append(comp)
         self.names.append(comp.name)
         self.map.append(comp_map)
@@ -882,19 +985,14 @@ and examples.</p></div>
 <span>def <span class="ident">compile</span></span>(<span>self, custom=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Run a series of checks of the model and initialize some
-class-wide variables.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>custom=False</code>: Flag indicating if the model is using custom
-compartments. If this is <code>False</code> (the default),
-all compartment compatibility checks will have
-to pass or an error will be raised. If this is
-<code>True</code>, those checks are bypassed since the
-model cannot check for custom compartments.</p>
-<h2 id="additional-notes"><strong>Additional Notes</strong></h2>
-<p>Adding, removing, or modifying compartments after this step
-will automatically de-compile the model, requiring it to be
-compiled again after changes have been made.</p>
+<div class="desc"><p>Run a series of checks of the model and initialize some class-wide variables.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>custom=False (bool)</code>: Flag indicating if the model is using custom compartments.
+If this is <code>False</code> (the default), all compartment compatibility checks will have to pass or an error will be raised.
+If this is <code>True</code>, those checks are bypassed since the model cannot check for custom compartments.</p>
+<h2 id="additional-notes">Additional Notes</h2>
+<p>Adding, removing, or modifying compartments after this step will automatically de-compile the model,
+requiring it to be compiled again after changes have been made.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Only run after all the compartments have been
@@ -906,25 +1004,20 @@ added to the model.</p>
 </summary>
 <pre><code class="python">def compile(self, custom=False):
     &#34;&#34;&#34;
-    Run a series of checks of the model and initialize some 
-    class-wide variables.
+    Run a series of checks of the model and initialize some class-wide variables.
 
-    ## **Parameters**
+    ## Parameters
 
-    `custom=False`: Flag indicating if the model is using custom
-                    compartments. If this is `False` (the default), 
-                    all compartment compatibility checks will have 
-                    to pass or an error will be raised. If this is 
-                    `True`, those checks are bypassed since the 
-                    model cannot check for custom compartments.
+    `custom=False (bool)`: Flag indicating if the model is using custom compartments.
+        If this is `False` (the default), all compartment compatibility checks will have to pass or an error will be raised.
+        If this is `True`, those checks are bypassed since the model cannot check for custom compartments.
 
-    ## **Additional Notes**
+    ## Additional Notes
 
-    Adding, removing, or modifying compartments after this step 
-    will automatically de-compile the model, requiring it to be 
-    compiled again after changes have been made.
+    Adding, removing, or modifying compartments after this step will automatically de-compile the model,
+    requiring it to be compiled again after changes have been made.
 
-    .. important:: 
+    .. important::
        Only run after all the compartments have been
        added to the model.
 
@@ -940,7 +1033,7 @@ added to the model.</p>
     if not custom:
         for i, compartment in enumerate(self.compartments):
             compartment._check(self.map[i], self.compartments)
-    
+
     # aggregate all compartments by type
     self.aggregated = {}
     for i, compartment in enumerate(self.compartments):
@@ -955,42 +1048,34 @@ added to the model.</p>
 <span>def <span class="ident">diff</span></span>(<span>self, time, system)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Differentiate <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code>. Used by
-<code><a title="epispot.models.Model.integrate" href="#epispot.models.Model.integrate">Model.integrate()</a></code> for evaluating model
-predictions.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>time</code>: Time to take the derivative at. This is important for
-some time-dependent variables like compartment
-parameters.</p>
-<p><code>system</code>: System of state values (e.g <code>[973, 12, 15]</code>). This is
-propagated to each of the individual compartments in
-the model.</p>
-<h2 id="return"><strong>Return</strong></h2>
-<p>List of corresponding compartment derivatives.</p></div>
+<div class="desc"><p>Differentiate <code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code>; used by <code><a title="epispot.models.Model.integrate" href="#epispot.models.Model.integrate">Model.integrate()</a></code> for evaluating model predictions.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>time (float)</code>: Time to take the derivative at.
+This is important for some time-dependent variables like compartment parameters.</p>
+<p><code>system (list[float])</code>: System of state values (e.g <code>[973, 12, 15]</code>).
+This is propagated to each of the individual compartments in the model.</p>
+<h2 id="returns">Returns</h2>
+<p>List of corresponding compartment derivatives (<code>list[float]</code>)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def diff(self, time, system):
     &#34;&#34;&#34;
-    Differentiate `epispot.models.Model`. Used by 
-    `epispot.models.Model.integrate` for evaluating model 
-    predictions.
+    Differentiate `epispot.models.Model`; used by `epispot.models.Model.integrate` for evaluating model predictions.
 
-    ## **Parameters**
+    ## Parameters
 
-    `time`: Time to take the derivative at. This is important for 
-            some time-dependent variables like compartment 
-            parameters.
+    `time (float)`: Time to take the derivative at.
+        This is important for some time-dependent variables like compartment parameters.
 
-    `system`: System of state values (e.g `[973, 12, 15]`). This is 
-            propagated to each of the individual compartments in 
-            the model.
+    `system (list[float])`: System of state values (e.g `[973, 12, 15]`).
+        This is propagated to each of the individual compartments in the model.
 
-    ## **Return**
+    ## Returns
 
-    List of corresponding compartment derivatives.
-    
+    List of corresponding compartment derivatives (`list[float]`)
+
     &#34;&#34;&#34;
     if not self.compiled:  # pragma: no cover
         warnings.warn(&#39;An epispot model has not been compiled yet. &#39;
@@ -1001,21 +1086,19 @@ the model.</p>
     derivative = np.zeros((len(self.compartments), ))
     for num, compartment in enumerate(self.compartments):
         if num in self.aggregated[&#39;Susceptible&#39;]:
-            delta = compartment.diff(time, 
-                                     system, 
-                                     num,
-                                     self.map[num], 
-                                     self.matrix[num],
-                                     infecteds=
-                                     self.aggregated[&#39;Infected&#39;])
+            delta = compartment.diff(
+                time, system, num,
+                self.map[num], self.matrix[num],
+                infecteds=self.aggregated[&#39;Infected&#39;]
+            )
         else:
-            delta = compartment.diff(time, 
-                                     system, 
+            delta = compartment.diff(time,
+                                     system,
                                      num,
-                                     self.map[num], 
+                                     self.map[num],
                                      self.matrix[num])
         derivative += delta
-    
+
     return derivative</code></pre>
 </details>
 </dd>
@@ -1023,30 +1106,25 @@ the model.</p>
 <span>def <span class="ident">integrate</span></span>(<span>self, timesteps, starting_state=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Integrate the model using <code><a title="epispot.models.Model.diff" href="#epispot.models.Model.diff">Model.diff()</a></code> to
-arrive at future predictions using
+<div class="desc"><p>Integrate the model using <code><a title="epispot.models.Model.diff" href="#epispot.models.Model.diff">Model.diff()</a></code> to arrive at future predictions using
 <a href="https://en.wikipedia.org/wiki/Euler_method">Euler's Method</a>.
-By default, the step size (Δ) is set to exactly 1 day, as this
-is usually the period for which epidemiological parameters are
-estimated for. However, in future versions, we plan to update
-this to add support for variable values of Δ.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>timesteps</code>: range of evenly-spaced times starting at the
-epidemic start time and ending at the time of
-prediction.</p>
-<p><code>starting_state=None</code>: List of initial values for each
-compartment. This is used as the initial
-vector for the integration process.
-If no <code>starting_state</code> is provided, it
-will default to the having only 1 person
-in the next non-Susceptible compartment.</p>
-<h2 id="return"><strong>Return</strong></h2>
-<p>A list of lists. Each sublist is a vector representing the
-value of each compartment at that specific time. The sublists
-range according to the <code>timesteps</code> parameter.</p>
-<h2 id="example"><strong>Example</strong></h2>
+By default, the step size (Δ) is set to exactly 1 day, as this is usually the period for which epidemiological parameters are estimated for.
+However, this can be changed if necessary.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>timesteps (range)</code>: range of evenly-spaced times starting at the epidemic start time and ending at the time of prediction.</p>
+<p><code>starting_state=None (|list[int])</code>: List of initial values for each compartment.
+This is used as the initial vector for the integration process.
+If no <code>starting_state</code> is provided, it will default to the having only 1 person in the next non-Susceptible compartment.</p>
+<p><code>delta=1 (|float)</code>: Δ, the step size for the integration process.
+Smaller values will result in more accurate predictions,
+but will be more costly.</p>
+<h2 id="returns">Returns</h2>
+<p>A list of lists; each sublist is a vector representing the value of each compartment at that specific time.
+The sublists range according to the <code>timesteps</code> parameter.
+(<code>list[list[float]]</code>)</p>
+<h2 id="example">Example</h2>
 <p>For example, the following would be an expected return type for
-an SIR model with a population of <code>100</code>.</p>
+an SIR model with a population of <code>100</code>:</p>
 <pre><code class="language-python">[
     [99, 1, 0],  # S, I, R on day 1
     [98, 2, 0],  # S, I, R on day 2
@@ -1054,48 +1132,40 @@ an SIR model with a population of <code>100</code>.</p>
     ...,
     [23, 24, 53]  # final prediction
 ]
-</code></pre>
-<h2 id="additional-notes"><strong>Additional Notes</strong></h2>
-<p><code>delta</code> is expected to be added as an optional parameter in
-future releases of epispot v3. For now, however, it is set
-to 1 day and cannot be changed.</p></div>
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def integrate(self, timesteps, starting_state=None):
     &#34;&#34;&#34;
-    Integrate the model using `epispot.models.Model.diff` to 
-    arrive at future predictions using 
+    Integrate the model using `epispot.models.Model.diff` to arrive at future predictions using
     [Euler&#39;s Method](https://en.wikipedia.org/wiki/Euler_method).
-    By default, the step size (Δ) is set to exactly 1 day, as this 
-    is usually the period for which epidemiological parameters are 
-    estimated for. However, in future versions, we plan to update 
-    this to add support for variable values of Δ.
+    By default, the step size (Δ) is set to exactly 1 day, as this is usually the period for which epidemiological parameters are estimated for.
+    However, this can be changed if necessary.
 
-    ## **Parameters**
+    ## Parameters
 
-    `timesteps`: range of evenly-spaced times starting at the 
-                 epidemic start time and ending at the time of 
-                 prediction.
-    
-    `starting_state=None`: List of initial values for each 
-                           compartment. This is used as the initial 
-                           vector for the integration process.
-                           If no `starting_state` is provided, it 
-                           will default to the having only 1 person
-                           in the next non-Susceptible compartment.
-    
-    ## **Return**
+    `timesteps (range)`: range of evenly-spaced times starting at the epidemic start time and ending at the time of prediction.
 
-    A list of lists. Each sublist is a vector representing the 
-    value of each compartment at that specific time. The sublists
-    range according to the `timesteps` parameter.
+    `starting_state=None (|list[int])`: List of initial values for each compartment.
+        This is used as the initial vector for the integration process.
+        If no `starting_state` is provided, it will default to the having only 1 person in the next non-Susceptible compartment.
 
-    ## **Example**
+    `delta=1 (|float)`: Δ, the step size for the integration process.
+        Smaller values will result in more accurate predictions,
+        but will be more costly.
 
-    For example, the following would be an expected return type for 
-    an SIR model with a population of `100`.
+    ## Returns
+
+    A list of lists; each sublist is a vector representing the value of each compartment at that specific time.
+    The sublists range according to the `timesteps` parameter.
+    (`list[list[float]]`)
+
+    ## Example
+
+    For example, the following would be an expected return type for
+    an SIR model with a population of `100`:
 
     ```python
     [
@@ -1107,12 +1177,6 @@ to 1 day and cannot be changed.</p></div>
     ]
     ```
 
-    ## **Additional Notes**
-
-    `delta` is expected to be added as an optional parameter in
-    future releases of epispot v3. For now, however, it is set 
-    to 1 day and cannot be changed.
-
     &#34;&#34;&#34;
     # checks to make sure the model has been compiled
     if not self.compiled:  # pragma: no cover
@@ -1123,7 +1187,6 @@ to 1 day and cannot be changed.</p></div>
 
     # initial parameter setup
     results = []
-    delta = 1
 
     if starting_state is not None:
         system = starting_state
@@ -1132,9 +1195,11 @@ to 1 day and cannot be changed.</p></div>
         system[0] = self.initial_population - 1
         system[1] = 1
 
+    delta = timesteps[1] - timesteps[0]
+
     for timestep in timesteps:
 
-        # calculate the derivative for each compartment at this 
+        # calculate the derivative for each compartment at this
         # timestep and update the system accordingly
 
         derivatives = self.diff(timestep, system)
@@ -1150,7 +1215,7 @@ to 1 day and cannot be changed.</p></div>
 <dd>
 <div class="desc"><p>Assign names to each compartment in the model.</p>
 <h2 id="parameters">Parameters</h2>
-<p><code>names</code>: A list of names corresponding to <code>comps</code></p></div>
+<p><code>names (list[str])</code>: A list of names corresponding to <code>comps</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1161,12 +1226,54 @@ to 1 day and cannot be changed.</p></div>
 
     ## Parameters
 
-    `names`: A list of names corresponding to `comps`
+    `names (list[str])`: A list of names corresponding to `comps`
 
     &#34;&#34;&#34;
     self.names = names
     for i, comp in enumerate(self.compartments):
         comp.name = names[i]</code></pre>
+</details>
+</dd>
+<dt id="epispot.models.Model.save"><code class="name flex">
+<span>def <span class="ident">save</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Save the model to a file.
+This can be used to load the model later.
+Standard file ending is <code>.epi</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>filename (str)</code>: Name of the file to save the model to</p>
+<h2 id="error-handling">Error Handling</h2>
+<ul>
+<li>If the file already exists, it will be overwritten.</li>
+<li>If the model is not compiled, it will raise a <code>ValueError</code>.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save(self, filename):
+    &#34;&#34;&#34;
+    Save the model to a file.
+    This can be used to load the model later.
+    Standard file ending is `.epi`.
+
+    ## Parameters
+
+    `filename (str)`: Name of the file to save the model to
+
+    ## Error Handling
+
+    - If the file already exists, it will be overwritten.
+    - If the model is not compiled, it will raise a `ValueError`.
+
+    &#34;&#34;&#34;
+    if not self.compiled:  # pragma: no cover
+        raise ValueError(&#39;Model has not been compiled yet. &#39;
+                         &#39;Cannot save model.&#39;)
+
+    with open(filename, &#39;wb&#39;) as f:
+        dill.dump(self, f)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1189,12 +1296,14 @@ to 1 day and cannot be changed.</p></div>
 <ul>
 <li>
 <h4><code><a title="epispot.models.Model" href="#epispot.models.Model">Model</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="epispot.models.Model.add" href="#epispot.models.Model.add">add</a></code></li>
 <li><code><a title="epispot.models.Model.compile" href="#epispot.models.Model.compile">compile</a></code></li>
 <li><code><a title="epispot.models.Model.diff" href="#epispot.models.Model.diff">diff</a></code></li>
 <li><code><a title="epispot.models.Model.integrate" href="#epispot.models.Model.integrate">integrate</a></code></li>
+<li><code><a title="epispot.models.Model.load" href="#epispot.models.Model.load">load</a></code></li>
 <li><code><a title="epispot.models.Model.rename" href="#epispot.models.Model.rename">rename</a></code></li>
+<li><code><a title="epispot.models.Model.save" href="#epispot.models.Model.save">save</a></code></li>
 </ul>
 </li>
 </ul>

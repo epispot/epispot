@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>epispot.analysis.normalize API documentation</title>
+<meta name="description" content="The `epispot.analysis.normalize` module contains various functions intended for cleaning and normalizing raw epidemiological data.
+Raw data must …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>epispot.analysis.normalize</code></h1>
+</header>
+<section id="section-intro">
+<p>The <code><a title="epispot.analysis.normalize" href="#epispot.analysis.normalize">epispot.analysis.normalize</a></code> module contains various functions intended for cleaning and normalizing raw epidemiological data.
+Raw data must usually be sanitized through one or more of these functions before it can be used for forecasting.
+This is also useful for processing data even without a forecasting model.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+The `epispot.analysis.normalize` module contains various functions intended for cleaning and normalizing raw epidemiological data.
+Raw data must usually be sanitized through one or more of these functions before it can be used for forecasting.
+This is also useful for processing data even without a forecasting model.
+
+&#34;&#34;&#34;
+
+def count(cases, percent):
+    &#34;&#34;&#34;
+    Under or overcount the number of cases to account for data inaccuracies.
+    For example, if cases are being undercounted by around 20%, overcounting by that amount will correct the data.
+    This is only useful if cases are consistently under or overcounted by a given amount.
+
+    ## Parameters
+
+    `cases (list[int])`: The list of cases to be normalized.
+
+    `percent (float)`: The percent by which to overcount or undercount the cases.
+        Negative values will result in an undercount and positive values will overcount.
+        Overcounting will correct undercounted data and vice versa.
+        `percent` should always be a value within the range `[-1, 1]`.
+        If `percent` is zero, no correction will be made.
+
+    ## Returns
+
+    Normalized cases (`list[float]`)
+
+    &#34;&#34;&#34;
+    return [case * (1 + percent) for case in cases]
+
+def active(deltas, period, delay=0):
+    &#34;&#34;&#34;
+    Extract the number of *active* cases from a list of new confirmed cases per day.
+    This works by taking a trailing sum over the number of days that infection usually lasts of all the new cases.
+    There is also support for taking into account testing delay.
+
+    ## Parameters
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    `period (int)`: The average period of infectiousness.
+
+    `delay=0 (int)`: The average delay before tests are administered to those infected with the disease.
+
+    .. note::
+        If `delay` is changed to any value other than `0`, the resulting list will be shorter than the original list by exactly `delay` timesteps.
+        This is because there is no data to remedy the testing delay during these days.
+
+    ## Returns
+
+    A list of active cases at any given time (`list[int]`)
+
+    &#34;&#34;&#34;
+    active = []
+    for i in range(len(deltas) - delay):
+        if i &lt; period - delay:
+            active.append(sum(deltas[:i + delay + 1]))
+        else:
+            active.append(sum(deltas[i - period + delay:i + delay + 1]))
+
+    return active
+
+def cumulative(deltas):
+    &#34;&#34;&#34;
+    Convert a list of new cases per day to a list of cumulative cases.
+    This is useful for plotting the cumulative cases over time.
+
+    ## Parameters
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    ## Returns
+
+    A list of cumulative cases (`list[int]`)
+
+    &#34;&#34;&#34;
+    return [sum(deltas[:i + 1]) for i, _ in enumerate(deltas)]
+
+def deltas(cumulative):
+    &#34;&#34;&#34;
+    Convert a list of cumulative cases to a list of new cases per day.
+    This is useful for plotting the new cases over time.
+
+    ## Parameters
+
+    `cumulative (list[int])`: The list of cumulative cases.
+
+    ## Returns
+
+    A list of new cases per day (`list[int]`)
+
+    &#34;&#34;&#34;
+    out = [cumulative[0]]
+    for i in range(1, len(cumulative)):
+        out.append(cumulative[i] - cumulative[i - 1])
+
+    return out
+
+def shift(count, delay):
+    &#34;&#34;&#34;
+    Shift counts by a given amount.
+    This is useful for shifting the data by a given amount to account for testing or other reporting delays.
+
+    ## Parameters
+
+    `count (list[int])`: The list of counts to be shifted.
+
+    `delay (int)`: The number of days by which reporting was delayed.
+
+    .. note::
+        If `delay` is changed to any value other than `0`, the resulting list will be shorter than the original list by exactly `delay` timesteps.
+
+    ## Returns
+
+    A list of shifted counts (`list[int]`)
+
+    &#34;&#34;&#34;
+    return count[delay:]
+
+def bound(active, deltas, deaths):
+    &#34;&#34;&#34;
+    Bound the number of deaths at any given timestep to the greatest number of people that could have died,
+    calculated using the list of active cases and the change in cases each day.
+
+    .. important::
+        Ensure that all `active`, `deltas`, and `deaths` were calculated with the same `delay` parameter,
+        otherwise you risk inaccurate results.
+        They must also all be of the same length.
+
+    ## Parameters
+
+    `active (list[int])`: The list of active cases at any given time.
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    `deaths (list[int])`: The list of new deaths per day.
+
+    ## Returns
+
+    A list of bounded new deaths per day (`list[int]`)
+
+    &#34;&#34;&#34;
+    bounded = []
+    for i, death in enumerate(deaths):
+        if i == 0:
+            bounded.append(death)
+        else:
+            bounded.append(min(
+                death,
+                -(active[i] - active[i - 1] - deltas[i])
+            ))
+
+    return bounded
+
+def recovered(active, deltas, deaths):
+    &#34;&#34;&#34;
+    Calculate the number of people that have recovered from the disease.
+    This is calculated by subtracting the number of deaths from the net change in active cases.
+
+    .. important::
+        To avoid negative numbers, use `epispot.analysis.bound` to bound the number of deaths at any given timestep.
+        Without this, small errors in fatality reporting can result in negative numbers of recovered individuals.
+
+    ## Parameters
+
+    `active (list[int])`: The list of active cases at any given time.
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    `deaths (list[int])`: The list of new deaths per day.
+
+    ## Returns
+
+    A list of new recovered cases per day (`list[int]`)
+
+    .. note::
+        The first element of the returned list will be `0`, because it is impossible to calculate the net change in active cases at time `0`,
+        and thus the number of recovering individuals.
+
+    &#34;&#34;&#34;
+    recovered = [0]
+    for i in range(1, len(active)):
+        recovered.append(-(active[i] - active[i - 1] - deltas[i]) - deaths[i])
+
+    return recovered</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="epispot.analysis.normalize.active"><code class="name flex">
+<span>def <span class="ident">active</span></span>(<span>deltas, period, delay=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extract the number of <em>active</em> cases from a list of new confirmed cases per day.
+This works by taking a trailing sum over the number of days that infection usually lasts of all the new cases.
+There is also support for taking into account testing delay.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.analysis.normalize.deltas" href="#epispot.analysis.normalize.deltas">deltas()</a> (list[int])</code>: The list of new cases per day.</p>
+<p><code>period (int)</code>: The average period of infectiousness.</p>
+<p><code>delay=0 (int)</code>: The average delay before tests are administered to those infected with the disease.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code>delay</code> is changed to any value other than <code>0</code>, the resulting list will be shorter than the original list by exactly <code>delay</code> timesteps.
+This is because there is no data to remedy the testing delay during these days.</p>
+</div>
+<h2 id="returns">Returns</h2>
+<p>A list of active cases at any given time (<code>list[int]</code>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def active(deltas, period, delay=0):
+    &#34;&#34;&#34;
+    Extract the number of *active* cases from a list of new confirmed cases per day.
+    This works by taking a trailing sum over the number of days that infection usually lasts of all the new cases.
+    There is also support for taking into account testing delay.
+
+    ## Parameters
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    `period (int)`: The average period of infectiousness.
+
+    `delay=0 (int)`: The average delay before tests are administered to those infected with the disease.
+
+    .. note::
+        If `delay` is changed to any value other than `0`, the resulting list will be shorter than the original list by exactly `delay` timesteps.
+        This is because there is no data to remedy the testing delay during these days.
+
+    ## Returns
+
+    A list of active cases at any given time (`list[int]`)
+
+    &#34;&#34;&#34;
+    active = []
+    for i in range(len(deltas) - delay):
+        if i &lt; period - delay:
+            active.append(sum(deltas[:i + delay + 1]))
+        else:
+            active.append(sum(deltas[i - period + delay:i + delay + 1]))
+
+    return active</code></pre>
+</details>
+</dd>
+<dt id="epispot.analysis.normalize.bound"><code class="name flex">
+<span>def <span class="ident">bound</span></span>(<span>active, deltas, deaths)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Bound the number of deaths at any given timestep to the greatest number of people that could have died,
+calculated using the list of active cases and the change in cases each day.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Ensure that all <code><a title="epispot.analysis.normalize.active" href="#epispot.analysis.normalize.active">active()</a></code>, <code><a title="epispot.analysis.normalize.deltas" href="#epispot.analysis.normalize.deltas">deltas()</a></code>, and <code>deaths</code> were calculated with the same <code>delay</code> parameter,
+otherwise you risk inaccurate results.
+They must also all be of the same length.</p>
+</div>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.analysis.normalize.active" href="#epispot.analysis.normalize.active">active()</a> (list[int])</code>: The list of active cases at any given time.</p>
+<p><code><a title="epispot.analysis.normalize.deltas" href="#epispot.analysis.normalize.deltas">deltas()</a> (list[int])</code>: The list of new cases per day.</p>
+<p><code>deaths (list[int])</code>: The list of new deaths per day.</p>
+<h2 id="returns">Returns</h2>
+<p>A list of bounded new deaths per day (<code>list[int]</code>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bound(active, deltas, deaths):
+    &#34;&#34;&#34;
+    Bound the number of deaths at any given timestep to the greatest number of people that could have died,
+    calculated using the list of active cases and the change in cases each day.
+
+    .. important::
+        Ensure that all `active`, `deltas`, and `deaths` were calculated with the same `delay` parameter,
+        otherwise you risk inaccurate results.
+        They must also all be of the same length.
+
+    ## Parameters
+
+    `active (list[int])`: The list of active cases at any given time.
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    `deaths (list[int])`: The list of new deaths per day.
+
+    ## Returns
+
+    A list of bounded new deaths per day (`list[int]`)
+
+    &#34;&#34;&#34;
+    bounded = []
+    for i, death in enumerate(deaths):
+        if i == 0:
+            bounded.append(death)
+        else:
+            bounded.append(min(
+                death,
+                -(active[i] - active[i - 1] - deltas[i])
+            ))
+
+    return bounded</code></pre>
+</details>
+</dd>
+<dt id="epispot.analysis.normalize.count"><code class="name flex">
+<span>def <span class="ident">count</span></span>(<span>cases, percent)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Under or overcount the number of cases to account for data inaccuracies.
+For example, if cases are being undercounted by around 20%, overcounting by that amount will correct the data.
+This is only useful if cases are consistently under or overcounted by a given amount.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>cases (list[int])</code>: The list of cases to be normalized.</p>
+<p><code>percent (float)</code>: The percent by which to overcount or undercount the cases.
+Negative values will result in an undercount and positive values will overcount.
+Overcounting will correct undercounted data and vice versa.
+<code>percent</code> should always be a value within the range <code>[-1, 1]</code>.
+If <code>percent</code> is zero, no correction will be made.</p>
+<h2 id="returns">Returns</h2>
+<p>Normalized cases (<code>list[float]</code>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def count(cases, percent):
+    &#34;&#34;&#34;
+    Under or overcount the number of cases to account for data inaccuracies.
+    For example, if cases are being undercounted by around 20%, overcounting by that amount will correct the data.
+    This is only useful if cases are consistently under or overcounted by a given amount.
+
+    ## Parameters
+
+    `cases (list[int])`: The list of cases to be normalized.
+
+    `percent (float)`: The percent by which to overcount or undercount the cases.
+        Negative values will result in an undercount and positive values will overcount.
+        Overcounting will correct undercounted data and vice versa.
+        `percent` should always be a value within the range `[-1, 1]`.
+        If `percent` is zero, no correction will be made.
+
+    ## Returns
+
+    Normalized cases (`list[float]`)
+
+    &#34;&#34;&#34;
+    return [case * (1 + percent) for case in cases]</code></pre>
+</details>
+</dd>
+<dt id="epispot.analysis.normalize.cumulative"><code class="name flex">
+<span>def <span class="ident">cumulative</span></span>(<span>deltas)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert a list of new cases per day to a list of cumulative cases.
+This is useful for plotting the cumulative cases over time.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.analysis.normalize.deltas" href="#epispot.analysis.normalize.deltas">deltas()</a> (list[int])</code>: The list of new cases per day.</p>
+<h2 id="returns">Returns</h2>
+<p>A list of cumulative cases (<code>list[int]</code>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cumulative(deltas):
+    &#34;&#34;&#34;
+    Convert a list of new cases per day to a list of cumulative cases.
+    This is useful for plotting the cumulative cases over time.
+
+    ## Parameters
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    ## Returns
+
+    A list of cumulative cases (`list[int]`)
+
+    &#34;&#34;&#34;
+    return [sum(deltas[:i + 1]) for i, _ in enumerate(deltas)]</code></pre>
+</details>
+</dd>
+<dt id="epispot.analysis.normalize.deltas"><code class="name flex">
+<span>def <span class="ident">deltas</span></span>(<span>cumulative)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert a list of cumulative cases to a list of new cases per day.
+This is useful for plotting the new cases over time.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.analysis.normalize.cumulative" href="#epispot.analysis.normalize.cumulative">cumulative()</a> (list[int])</code>: The list of cumulative cases.</p>
+<h2 id="returns">Returns</h2>
+<p>A list of new cases per day (<code>list[int]</code>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deltas(cumulative):
+    &#34;&#34;&#34;
+    Convert a list of cumulative cases to a list of new cases per day.
+    This is useful for plotting the new cases over time.
+
+    ## Parameters
+
+    `cumulative (list[int])`: The list of cumulative cases.
+
+    ## Returns
+
+    A list of new cases per day (`list[int]`)
+
+    &#34;&#34;&#34;
+    out = [cumulative[0]]
+    for i in range(1, len(cumulative)):
+        out.append(cumulative[i] - cumulative[i - 1])
+
+    return out</code></pre>
+</details>
+</dd>
+<dt id="epispot.analysis.normalize.recovered"><code class="name flex">
+<span>def <span class="ident">recovered</span></span>(<span>active, deltas, deaths)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate the number of people that have recovered from the disease.
+This is calculated by subtracting the number of deaths from the net change in active cases.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>To avoid negative numbers, use <code>epispot.analysis.bound</code> to bound the number of deaths at any given timestep.
+Without this, small errors in fatality reporting can result in negative numbers of recovered individuals.</p>
+</div>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.analysis.normalize.active" href="#epispot.analysis.normalize.active">active()</a> (list[int])</code>: The list of active cases at any given time.</p>
+<p><code><a title="epispot.analysis.normalize.deltas" href="#epispot.analysis.normalize.deltas">deltas()</a> (list[int])</code>: The list of new cases per day.</p>
+<p><code>deaths (list[int])</code>: The list of new deaths per day.</p>
+<h2 id="returns">Returns</h2>
+<p>A list of new recovered cases per day (<code>list[int]</code>)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first element of the returned list will be <code>0</code>, because it is impossible to calculate the net change in active cases at time <code>0</code>,
+and thus the number of recovering individuals.</p>
+</div></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def recovered(active, deltas, deaths):
+    &#34;&#34;&#34;
+    Calculate the number of people that have recovered from the disease.
+    This is calculated by subtracting the number of deaths from the net change in active cases.
+
+    .. important::
+        To avoid negative numbers, use `epispot.analysis.bound` to bound the number of deaths at any given timestep.
+        Without this, small errors in fatality reporting can result in negative numbers of recovered individuals.
+
+    ## Parameters
+
+    `active (list[int])`: The list of active cases at any given time.
+
+    `deltas (list[int])`: The list of new cases per day.
+
+    `deaths (list[int])`: The list of new deaths per day.
+
+    ## Returns
+
+    A list of new recovered cases per day (`list[int]`)
+
+    .. note::
+        The first element of the returned list will be `0`, because it is impossible to calculate the net change in active cases at time `0`,
+        and thus the number of recovering individuals.
+
+    &#34;&#34;&#34;
+    recovered = [0]
+    for i in range(1, len(active)):
+        recovered.append(-(active[i] - active[i - 1] - deltas[i]) - deaths[i])
+
+    return recovered</code></pre>
+</details>
+</dd>
+<dt id="epispot.analysis.normalize.shift"><code class="name flex">
+<span>def <span class="ident">shift</span></span>(<span>count, delay)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Shift counts by a given amount.
+This is useful for shifting the data by a given amount to account for testing or other reporting delays.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.analysis.normalize.count" href="#epispot.analysis.normalize.count">count()</a> (list[int])</code>: The list of counts to be shifted.</p>
+<p><code>delay (int)</code>: The number of days by which reporting was delayed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code>delay</code> is changed to any value other than <code>0</code>, the resulting list will be shorter than the original list by exactly <code>delay</code> timesteps.</p>
+</div>
+<h2 id="returns">Returns</h2>
+<p>A list of shifted counts (<code>list[int]</code>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def shift(count, delay):
+    &#34;&#34;&#34;
+    Shift counts by a given amount.
+    This is useful for shifting the data by a given amount to account for testing or other reporting delays.
+
+    ## Parameters
+
+    `count (list[int])`: The list of counts to be shifted.
+
+    `delay (int)`: The number of days by which reporting was delayed.
+
+    .. note::
+        If `delay` is changed to any value other than `0`, the resulting list will be shorter than the original list by exactly `delay` timesteps.
+
+    ## Returns
+
+    A list of shifted counts (`list[int]`)
+
+    &#34;&#34;&#34;
+    return count[delay:]</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="epispot.analysis" href="index.html">epispot.analysis</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="two-column">
+<li><code><a title="epispot.analysis.normalize.active" href="#epispot.analysis.normalize.active">active</a></code></li>
+<li><code><a title="epispot.analysis.normalize.bound" href="#epispot.analysis.normalize.bound">bound</a></code></li>
+<li><code><a title="epispot.analysis.normalize.count" href="#epispot.analysis.normalize.count">count</a></code></li>
+<li><code><a title="epispot.analysis.normalize.cumulative" href="#epispot.analysis.normalize.cumulative">cumulative</a></code></li>
+<li><code><a title="epispot.analysis.normalize.deltas" href="#epispot.analysis.normalize.deltas">deltas</a></code></li>
+<li><code><a title="epispot.analysis.normalize.recovered" href="#epispot.analysis.normalize.recovered">recovered</a></code></li>
+<li><code><a title="epispot.analysis.normalize.shift" href="#epispot.analysis.normalize.shift">shift</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

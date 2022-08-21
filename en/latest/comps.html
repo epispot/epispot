@@ -41,15 +41,17 @@ together in a `epispot.models.Model` object, they can be quite powerful.
 
 from . import np
 
+__pdoc__ = {}
+__pdoc__[&#39;Compartment._base_check&#39;] = True
+
 
 class Compartment:
     &#34;&#34;&#34;
     This class represents a compartment, used in compartmental models.
-    The base compartmental model that all compartments can be used for 
-    is the `epispot.models.Model` class. Additionally, this class can 
-    be used with `super().__init__()` to create a custom compartment.
-
+    The base compartmental model that all compartments can be used for is the `epispot.models.Model` class.
+    Additionally, this class can be used with `super().__init__()` to create a custom compartment.
     &#34;&#34;&#34;
+
     def __init__(self, name, config=None):
         &#34;&#34;&#34;
         Initialize the compartment; invoke with:
@@ -60,14 +62,15 @@ class Compartment:
                 super().__init__(name=&#39;Custom Compartment&#39;, config={})
         ```
 
-        ## **Parameters**
+        ## Parameters
 
-        `name`: Name of the compartment (used in error messages)
+        `name (str)`: Name of the compartment (used in error messages)
 
-        `config`: Configuration dictionary for the compartment* (see 
-                  examples for more details).
+        `config (dict{&#39;type&#39;:&#39;Susceptible&#39;|&#39;Infected&#39;|None})`*: Configuration dictionary for the compartment.
+            This allows epispot to identify special compartments.
+            Currently, it should look like the dictionary shown in the example section.
 
-        ## **Example**
+        ## Example
 
         Example `config` dictionary:
 
@@ -78,10 +81,29 @@ class Compartment:
         }
         ```
 
-        ## **Additional Notes**
+        ## Usage
 
-        *The `config` dictionary is currently in beta and may vary 
-        drastically in future releases.
+        Here is an example of the simplest compartment that can be implemented as a subclass:
+
+        ```python
+        class Container(Compartment):
+            def __init__(self):
+                super().__init__(&#39;Container&#39;)
+            def _check(self, minimap, compartments):
+                self._base_check([], minimap, compartments)
+        ```
+
+        This creates a container compartment that can be used to hold portions of the population.
+        Since it does not connect to any other compartments (indicated by the empty array `[]` passed into the `epispot.comps.Compartment._base_check()` function),
+        it acts as a terminal state.
+
+        ## Error Handling
+
+        See the `epispot.comps.Compartment._base_check()` function for more information.
+
+        ## Additional Notes
+
+        *The `config` dictionary is likely to change in future releases.
 
         .. versionadded:: v3.0.0-alpha-2
 
@@ -95,7 +117,7 @@ class Compartment:
     def __repr__(self):
         &#34;&#34;&#34;A string representation of the compartment.&#34;&#34;&#34;
         return f&#39;&lt;{self.name} Compartment @ epispot.comps.Compartment&gt;&#39;
-    
+
     def _check_config(self):
         &#34;&#34;&#34;Configuration dictionary checker&#34;&#34;&#34;
         if &#39;type&#39; not in self.config.keys():
@@ -103,36 +125,37 @@ class Compartment:
 
     def _base_check(self, valid_compartments, minimap, compartments):
         &#34;&#34;&#34;
-        A helper function to check model integrity. Implement this in 
-        child classes through a `_check()` function.
+        A helper function to check model integrity.
+        Implement this in child classes through a `_check()` function.
 
-        ## **Parameters**
+        ## Parameters
 
-        `valid_compartments`: A list of valid compartments that the 
-                              model can connect to. If any compartments 
-                              not specified in this list are found, 
-                              they will raise an error.
-        
-        `minimap`: A slice of the larger connections list given in the 
-                   `map` parameter of `epispot.models.Model` specific to 
-                   this compartment.
+        `valid_compartments (list[epispot.comps.Compartment])`: A list of valid compartments that the model can connect to.
+            If any compartments not specified in this list are found, a `ValueError` will be raised
+            (see &#34;Error Handling&#34;).
 
-        `compartments`: A copy of the `compartments` parameter in 
-                        `epispot.models.Model`; used to check against
-                        `valid_compartments`. 
-        
-        ## **Error Handling**
+        `minimap (list[int])`: A slice of the larger connections list given in the `map` parameter of `epispot.models.Model` specific to this compartment.
 
-        If any extraneous compartments are found in the `compartments` 
-        list, this method will automatically raise a `ValueError`
+        `compartments (list[epispot.comps.Compartment])`: A copy of the `compartments` parameter in `epispot.models.Model`; used to check against `valid_compartments`.
 
-        ## **Returns**
-        
+        .. note::
+            These last two parameters (`minimap` and `compartments`) should also be parameters in the `_check()` function.
+            See the usage section of `epispot.comps.Compartment` for more information.
+
+        ## Error Handling
+
+        ### `ValueError`
+
+        If any extraneous compartments are found in the `compartments` list,
+        this method will automatically raise a `ValueError`.
+
+        ## Returns
+
         `True` if no errors have been raised.
-        
+
         &#34;&#34;&#34;
         for compartment_no in minimap:
-            
+
             compartment = compartments[compartment_no]
             valid = False
 
@@ -150,37 +173,32 @@ class Compartment:
     @staticmethod
     def diff(time, system, pos, minimap, minimatrix):
         &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
+        Calculate the derivative of the compartment with respect to
         time.
-        
-        ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
-                parameter in `epispot.models.Model.diff`.
-        
-        `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
-                  parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
-               `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice
-                   of the larger `map` parameter of 
-                   `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
-                      compartment.       
+        ## Parameters
 
-        ## **Returns**
+        `time (float)`: Time to take the derivative at.
+            Similar to `time` parameter in `epispot.models.Model.diff`.
 
-        The compartment derivative
+        `system (list[float])`: A list containing the system of compartment values.
+            Should be of the same shape as the `starting_state` parameter of `epispot.models.Model.integrate`.
+
+        `pos (int)`: The index of the compartment in the `comps` parameter of `epispot.models.Model`.
+
+        `minimap (list[int])`: This compartment&#39;s connections.
+            Essentially, a slice of the larger `map` parameter of `epispot.models.Model`.
+
+        `minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: A slice of the `matrix` parameter of `epispot.models.Model` specific to this compartment.
+
+        ## Returns
+
+        Derivative of the entire system calculated by the compartment (`list[float]`)
 
         &#34;&#34;&#34;
         output = np.zeros(system.shape)
         for connection in minimap:
-            
+
             # initialize parameters
             probability = minimatrix[connection][0]
             rate = minimatrix[connection][1]
@@ -193,7 +211,7 @@ class Compartment:
 
             # evaluate compartment derivative
             deriv = probability * rate * system[pos]
-            
+
             # ensure compartment populations are non-negative
             min_connection_deriv = -system[connection]
             max_pos_deriv = system[pos]
@@ -202,53 +220,48 @@ class Compartment:
 
             output[connection] += deriv
             output[pos] -= deriv
-        
+
         return output
-      
+
 
 class Susceptible(Compartment):
     &#34;&#34;&#34;
-    The Susceptible class is the &#39;S&#39; of the &#39;SIR&#39; Model. This is the 
-    portion of individuals who have not yet been exposed to the 
-    disease. This class can be used as an initial state. Because of 
-    this property, the Susceptible class is a special compartment and 
-    does not use the default parameter matrix.
+    The Susceptible class is the &#39;S&#39; of the &#39;SIR&#39; Model.
+    This is the portion of individuals who have not yet been exposed to the disease.
+    This class can be used as an initial state.
+    Because of this property, the Susceptible class is a special compartment and does not use the default parameter matrix.
 
-    Recovered (?) → Susceptible → Exposed, Infected
-    
+    ## Structure
+
+    `epispot.comps.Recovered` → `epispot.comps.Susceptible` → `epispot.comps.Exposed`, `epispot.comps.Infected`
     &#34;&#34;&#34;
-    def __init__(self, R_0, gamma, N):
+
+    def __init__(self, r_0, gamma, n):
         &#34;&#34;&#34;
-        Initialize the Susceptible class
+        Initialize the Susceptible class:
 
-        ## **Parameters**
+        ## Parameters
 
-        `R_0`: The 
-               [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number), 
-               indicating how infectious a given disease is. A value of 
-               above 1 indicates a high probability of transmission and 
-               thus an increasing infected population. A value of 1 
-               indicates a low probability of transmission and thus a 
-               constant infected population. A value below 1 indicates 
-               a low probability of transmission and also a decreasing 
-               infected population.
+        `r_0 (float|func(t: float)-&gt;float)`: The
+            [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number),
+            indicating how infectious a given disease is.
+            A value of above 1 indicates a high probability of transmission and thus an increasing infected population.
+            A value of 1 indicates a constant infected population.
+            A value below 1 indicates a low probability of transmission and also a decreasing infected population.
 
-        `gamma`: The total recovery rate of patients. This is **not** a 
-                 measure of how long it takes patients in any given 
-                 compartment to recover but rather a measure of one 
-                 divided by the average time of infectiousness.
+        `gamma (float|func(t: float)-&gt;float)`: The total recovery rate of patients.
+            This is **not** a measure of how long it takes patients in any given compartment to recover but rather the reciprocal of the average time (in days) of infectiousness.
 
-        `N`: The initial population size; should be the same as that 
-             passed into the `epispot.models.Model` class.
+        `N (float|func(t: float)-&gt;float)`: The initial population size; should be the same as that passed into the `epispot.models.Model` class.
 
         &#34;&#34;&#34;
         config = {
             &#39;type&#39;: &#39;Susceptible&#39;,
         }
         super().__init__(&#39;Susceptible&#39;, config=config)
-        self.R_0 = R_0
+        self.r_0 = r_0
         self.gamma = gamma
-        self.N = N
+        self.n = n
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Infected compartment&#34;&#34;&#34;
@@ -257,35 +270,33 @@ class Susceptible(Compartment):
             raise ValueError(&#39;The Susceptible compartment must have &#39;
                              &#39;exactly one connection to either the &#39;
                              &#39;Infected or Exposed compartment.&#39;)
-    
+
     def diff(self, time, system, pos, minimap, minimatrix, infecteds=None):
         &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
+        Calculate the derivative of the compartment with respect to
         time.
-        
-        ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
-                parameter in `epispot.models.Model.diff`.
-        
-        `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
-                  parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
-               `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice 
-                   of the larger `map` parameter of 
-                   `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
-                      compartment.
-        
-        ## **Returns**
+        ## Parameters
 
-        The compartment derivative
+        `time (float)`: Time to take the derivative at.
+            Similar to `time` parameter in `epispot.models.Model.diff`.
+
+        `system (list[float])`: A list containing the system of compartment values.
+            Should be of the same shape as the `starting_state` parameter of `epispot.models.Model.integrate`.
+
+        `pos (int)`: The index of the compartment in the `comps` parameter of `epispot.models.Model`.
+
+        `minimap (list[int])`: This compartment&#39;s connections.
+            Essentially, a slice of the larger `map` parameter of `epispot.models.Model`.
+
+        `minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: A slice of the `matrix` parameter of `epispot.models.Model` specific to this compartment.
+
+        `infecteds (list[int])`: A list of the indices of the Infected compartments
+            (those with `&#39;type&#39;=&#39;Infected&#39;`) in the `config` parameter of `epispot.comps.Compartment`).
+
+        ## Returns
+
+        Derivative of the entire system calculated by the compartment (`list[float]`)
 
         &#34;&#34;&#34;
         if infecteds is None:
@@ -293,27 +304,27 @@ class Susceptible(Compartment):
         output = np.zeros(system.shape)
 
         # initialize parameters
-        R_0 = self.R_0
+        r_0 = self.r_0
         gamma = self.gamma
-        N = self.N
+        n = self.n
 
         # initialize time-dependent parameters
-        if callable(R_0):
-            R_0 = R_0(time)
+        if callable(r_0):
+            r_0 = r_0(time)
         if callable(gamma):
             gamma = gamma(time)
-        if callable(N):
-            N = N(time)
+        if callable(n):
+            n = n(time)
 
         # get total number of infecteds
-        I = 0
+        total_infecteds = 0
         for i in infecteds:
-            I += system[i]
+            total_infecteds += system[i]
 
         for connection in minimap:
-            
+
             # evaluate compartment derivative
-            deriv = R_0 * gamma * system[pos] * I / N
+            deriv = r_0 * gamma * system[pos] * total_infecteds / n
             deriv *= minimatrix[connection][0] * minimatrix[connection][1]
 
             # ensure compartment populations are non-negative
@@ -321,25 +332,25 @@ class Susceptible(Compartment):
             max_pos_deriv = system[pos]
             deriv = max(deriv, min_connection_deriv)
             deriv = min(deriv, max_pos_deriv)
-            
+
             # apply derivative
             output[connection] += deriv
             output[pos] -= deriv
-        
+
         return output
 
 
 class Infected(Compartment):
     &#34;&#34;&#34;
-    The Infected class is the &#39;I&#39; of the &#39;SIR&#39; Model. This is the 
-    portion of individuals who are actively spreading the disease. Like
-    the `epispot.comps.Susceptible` class, this is also a special 
-    compartment.
-    
-    Susceptible, Exposed → Infected → Recovered, Hospitalized, Critical, 
-    Dead, Removed
+    The Infected class is the &#39;I&#39; of the &#39;SIR&#39; Model.
+    This is the portion of individuals who are actively spreading the disease.
+    Like the `epispot.comps.Susceptible` class, this is also a special compartment.
 
+    ## Structure
+
+    `epispot.comps.Susceptible`, `epispot.comps.Exposed` → `epispot.comps.Infected` → `epispot.comps.Recovered`, `epispot.comps.Hospitalized`, `epispot.comps.Critical`, `epispot.comps.Dead`, `epispot.comps.Removed`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Infected class&#34;&#34;&#34;
         config = {
@@ -349,23 +360,23 @@ class Infected(Compartment):
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Infected compartment&#34;&#34;&#34;
-        self._base_check([Recovered, Hospitalized, Critical, Dead, Removed], 
+        self._base_check([Recovered, Hospitalized, Critical, Dead, Removed],
                          minimap, compartments)
 
 
 class Removed(Compartment):
     &#34;&#34;&#34;
-    The &#39;Removed&#39; class is a special class that acts as the combination
-    of both the &#39;Recovered&#39; and &#39;Dead&#39; compartments. This is a useful 
-    construct when the death and recovery rates and probabilities are 
-    the same (or almost the same) or if you want to simplify your 
-    model by decreasing the number of compartments (like the &#39;R&#39; in the 
-    classic SIR model). This compartment is a *terminal state*, meaning 
-    that it can (only) be used as the last compartment in a model.
-    
-    Any compartment → Removed → Susceptible
+    The &#39;Removed&#39; class is a special class that acts as the combination of both the `epispot.comps.Recovered` and `epispot.comps.Dead` compartments.
+    This is a useful construct when the fatality and recovery rates are the same (or almost the same),
+    or if you want to simplify your model by decreasing the number of compartments
+    (like the &#39;R&#39; in the classic SIR model).
+    This compartment is a *terminal state*, meaning that it can (only) be used as the last compartment in a model.
 
+    ##
+
+    Any `epispot.comps.Compartment` → `epispot.comps.Removed` → `epispot.comps.Susceptible`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Removed class&#34;&#34;&#34;
         super().__init__(&#39;Removed&#39;)
@@ -377,18 +388,17 @@ class Removed(Compartment):
 
 class Recovered(Compartment):
     &#34;&#34;&#34;
-    The &#39;Recovered&#39; class represents the portion of the population that 
-    has had the infection and subsequently recovered. In most 
-    epidemiological models and scenarios, the individuals in this class 
-    are assumed to have developed some immunity to the virus. However, 
-    this is not always the case. In rare occasions where 
-    resusceptibility *is* possible, connecting this class to the 
-    `epispot.comps.Susceptible` class is permitted. This class can be 
-    used as a terminal state.
+    The &#39;Recovered&#39; class represents the portion of the population that has had the infection and subsequently recovered.
+    In most epidemiological models and scenarios, the individuals in this class are assumed to have developed some immunity to the virus.
+    However, this is not always the case.
+    In rare occasions where resusceptibility *is* possible, connecting this class to the `epispot.comps.Susceptible` class is possible.
+    This class can alternatively be used as a terminal state.
 
-    Infected, Hospitalized, Critical → Recovered → Susceptible
-    
+    ## Structure
+
+    `epispot.comps.Infected`, `epispot.comps.Hospitalized`, `epispot.comps.Critical` → `epispot.comps.Recovered` → `epispot.comps.Susceptible`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Recovered class&#34;&#34;&#34;
         super().__init__(&#39;Recovered&#39;)
@@ -400,18 +410,16 @@ class Recovered(Compartment):
 
 class Exposed(Compartment):
     &#34;&#34;&#34;
-    The Exposed compartment is traditionally used as a way to simulate 
-    an incubation period for a disease. This compartment tracks people
-    who have come into contact with an infected person and are bound to 
-    eventually become infectious themselves, but haven&#39;t yet developed 
-    symptoms or a way of spreading the disease to others. These are 
-    also usually the targets of most 
+    The Exposed compartment is traditionally used as a way to simulate an incubation period for a disease.
+    This compartment tracks people who have come into contact with an infected person and are bound to eventually become infectious themselves,
+    but haven&#39;t yet developed symptoms or a way of spreading the disease to others.
+    These are also usually the targets of most
     [contact tracing](https://en.wikipedia.org/wiki/Contact_tracing)
-    operations.
+    efforts.
 
-    Susceptible → Exposed → Infected
-    
+    `epispot.comps.Susceptible` → `epispot.comps.Exposed` → `epispot.comps.Infected`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Exposed class&#34;&#34;&#34;
         super().__init__(&#39;Exposed&#39;)
@@ -424,20 +432,18 @@ class Exposed(Compartment):
 class Dead(Compartment):
     &#34;&#34;&#34;
     The Dead class is a fully terminal state in any compartmental model.
-    It represents the portion of the population that have died because 
-    of *and only because of* the disease being analyzed.
+    It represents the portion of the population that have died because of *and only because of* the disease being analyzed.
 
-    Infected, Critical, Hospitalized, Recovered → Dead
+    ## Structure
+
+    `epispot.comps.Infected`, `epispot.comps.Critical`, `epispot.comps.Hospitalized`, `epispot.comps.Recovered` → `epispot.comps.Dead`
 
     .. note::
-       As is convention with compartmental models, we assume that the 
-       dead compartment does not significantly alter the population 
-       structure that we&#39;re analyzing. In future versions of epispot, 
-       we do plan to add support for factoring in the deceased 
-       population into predictions, but at this time that is not a 
-       primary concern.
-    
+       As is convention with compartmental models, we assume that the dead compartment does not significantly alter the population structure that we&#39;re analyzing.
+       In future versions of epispot, we do plan to add support for factoring in the deceased population into predictions,
+       but at this time that is not a primary concern.
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Dead class&#34;&#34;&#34;
         super().__init__(&#39;Dead&#39;)
@@ -449,75 +455,77 @@ class Dead(Compartment):
 
 class Hospitalized(Compartment):
     &#34;&#34;&#34;
-    The Hospitalized class represents the portion of individuals 
-    currently taking up space in the available hospitals. However, this 
-    is a distinct category from the `epispot.comps.Critical` portion of 
-    individuals, who require more resources (e.g. ICU beds, 
-    ventilators, etc.). This compartment also features 
+    The Hospitalized class represents the portion of individuals currently taking up space in the available hospitals.
+    However, this is a distinct category from the `epispot.comps.Critical` portion of individuals,
+    who require more resources (e.g. ICU beds, ventilators, etc.).
+    This compartment also features
     [triage support](https://en.wikipedia.org/wiki/Triage).
 
-    Infected → Hospitalized → Critical, Recovered, Removed, Dead
-    
-    .. attention::
-       Triage support is still in beta and may not function as expected.
+    ## Structure
 
+    `epispot.comps.Infected` → `epispot.comps.Hospitalized` → `epispot.comps.Critical`, `epispot.comps.Recovered`, `epispot.comps.Removed`, `epispot.comps.Dead`
     &#34;&#34;&#34;
+
     def __init__(self, max_cap=None, index=None):
         &#34;&#34;&#34;
-        Initialize the Hospitalized class
+        Initialize the Critical class:
 
-        ## **Parameters** 
+        ## Parameters
 
-        `max_cap=None`: The maximum number of individuals that 
-                        available hospitals can hold. Specifying an 
-                        amount will automatically trigger triage 
-                        support, requiring a value for `triage_index`.
+        `max_cap=None (|int)`: The maximum number of individuals that available hospitals can hold.
+            Specifying an amount will automatically trigger triage support,
+            requiring a value for `index`.
 
-        `index=None`: Index of the layer to use for triage. Only 
-                      specify after giving a value for 
-                      `maximum_capacity`.
+        `index=None (|int)`: Index of the layer to use for triage.
+            Only specify after giving a value for `max_cap`.
+
+        ## Error Handling
+
+        ### `ValueError`
+
+        Failing to specify both a maximum capacity and an index when triage is enabled will raise a `ValueError`.
 
         &#34;&#34;&#34;
         super().__init__(&#39;Hospitalized&#39;)
         self.maximum_capacity = max_cap
         self.triage_index = index
 
-        if ((max_cap, index) != (None, None)) and \
-        (max_cap is None or index is None):  # pragma: no cover
+        if ((max_cap, index) != (None, None)) \
+            and (max_cap is None or index is None):  # pragma: no cover
             raise ValueError(&#39;You must specify both a maximum &#39;
-                                &#39;capacity and an index for triage &#39;
-                                &#39;support.&#39;)
+                             &#39;capacity and an index for triage &#39;
+                             &#39;support.&#39;)
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Hospitalized compartment&#34;&#34;&#34;
-        self._base_check([Critical, Recovered, Removed, Dead], minimap, 
+        self._base_check([Critical, Recovered, Removed, Dead], minimap,
                          compartments)
 
     def diff(self, time, system, pos, minimap, minimatrix):
         &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
+        Calculate the derivative of the compartment with respect to
         time.
-        
+
         ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
+
+        `time`: Time to take the derivative at. Similar to `time`
                 parameter in `epispot.models.Model.diff`.
-        
+
         `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
+                  Should be of the same shape as the `starting_state`
                   parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
+
+        `pos`: The index of the compartment in the `comps` parameter of
                `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice 
-                   of the larger `map` parameter of 
+
+        `minimap`: This compartment&#39;s connections. Essentially, a slice
+                   of the larger `map` parameter of
                    `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
+        `minimatrix`: A slice of the `matrix` parameter of
+                      `epispot.models.Model` specific to this
                       compartment.
-        
+
         ## **Returns**
 
         The compartment derivative
@@ -525,7 +533,7 @@ class Hospitalized(Compartment):
         &#34;&#34;&#34;
         output = np.zeros(system.shape)
         for connection in minimap:
-            
+
             # initialize parameters
             probability = minimatrix[connection][0]
             rate = minimatrix[connection][1]
@@ -550,43 +558,42 @@ class Hospitalized(Compartment):
 
         if (self.maximum_capacity is not None) and \
            (system[pos] &gt; self.maximum_capacity):
-                output[pos] = self.maximum_capacity - system[pos]
-                output[self.triage_index] = -output[pos]
-            
+            output[pos] = self.maximum_capacity - system[pos]
+            output[self.triage_index] = -output[pos]
+
         return output
 
 
 class Critical(Compartment):
     &#34;&#34;&#34;
-    The Critical class represents the portion of individuals currently 
-    taking up space in the available hospitals *and* using limited 
-    resources. However, this is a distinct category from the 
-    `epispot.comps.Hospitalized` portion of individuals, who don&#39;t 
-    require extra resources (ICU beds, ventilators, etc.). This 
-    compartment also features 
+    The Critical class represents the portion of individuals currently taking up space in the available hospitals *and* using limited resources.
+    Thus, this is a distinct category from the `epispot.comps.Hospitalized` portion of individuals, who don&#39;t require extra resources (ICU beds, ventilators, etc.).
+    This compartment also features
     [triage support](https://en.wikipedia.org/wiki/Triage).
-    
-    Hospitalized, Infected → Critical → Recovered, Removed, Dead
 
-    .. attention::
-       Triage support is still in beta and may not function as expected.
+    ## Structure
 
+    `epispot.comps.Hospitalized`, `epispot.comps.Infected` → `epispot.comps.Critical` → `epispot.comps.Recovered`, `epispot.comps.Removed`, `epispot.comps.Dead`
     &#34;&#34;&#34;
+
     def __init__(self, max_cap=None, index=None):
         &#34;&#34;&#34;
-        Initialize the Critical class
+        Initialize the Critical class:
 
-        ## **Parameters** 
+        ## Parameters
 
-        `max_cap=None`: The maximum number of individuals that 
-                        available hospitals can hold and have limited 
-                        resources for. Specifying an amount will 
-                        automatically trigger triage support, 
-                        requiring a value for `triage_index`.
+        `max_cap=None (|int)`: The maximum number of individuals that available hospitals can hold and have limited resources for.
+            Specifying an amount will automatically trigger triage support,
+            requiring a value for `index`.
 
-        `index=None`: Index of the layer to use for triage. Only 
-                      specify after giving a value for 
-                      `maximum_capacity`.
+        `index=None (|int)`: Index of the layer to use for triage.
+            Only specify after giving a value for `max_cap`.
+
+        ## Error Handling
+
+        ### `ValueError`
+
+        Failing to specify both a maximum capacity and an index when triage is enabled will raise a `ValueError`.
 
         &#34;&#34;&#34;
         super().__init__(&#39;Critical&#39;)
@@ -595,47 +602,19 @@ class Critical(Compartment):
 
         if ((max_cap, index) != (None, None)) and \
            (max_cap is None or index is None):  # pragma: no cover
-                raise ValueError(&#39;You must specify both a maximum &#39;
-                                &#39;capacity and an index for triage &#39;
-                                &#39;support.&#39;)
+            raise ValueError(&#39;You must specify both a maximum &#39;
+                             &#39;capacity and an index for triage &#39;
+                             &#39;support.&#39;)
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Hospitalized compartment&#34;&#34;&#34;
         self._base_check([Recovered, Removed, Dead], minimap, compartments)
 
     def diff(self, time, system, pos, minimap, minimatrix):
-        &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
-        time.
-        
-        ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
-                parameter in `epispot.models.Model.diff`.
-        
-        `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
-                  parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
-               `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice
-                   of the larger `map` parameter of 
-                   `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
-                      compartment.
-        
-        ## **Returns**
-
-        The compartment derivative
-
-        &#34;&#34;&#34;
         output = np.zeros(system.shape)
         for connection in minimap:
-            
+
             # initialize parameters
             probability = minimatrix[connection][0]
             rate = minimatrix[connection][1]
@@ -660,9 +639,9 @@ class Critical(Compartment):
 
         if (self.maximum_capacity is not None) and \
            (system[pos] &gt; self.maximum_capacity):
-                output[pos] = self.maximum_capacity - system[pos]
-                output[self.triage_index] = -output[pos]
-            
+            output[pos] = self.maximum_capacity - system[pos]
+            output[self.triage_index] = -output[pos]
+
         return output</code></pre>
 </details>
 </section>
@@ -681,28 +660,40 @@ class Critical(Compartment):
 </code></dt>
 <dd>
 <div class="desc"><p>This class represents a compartment, used in compartmental models.
-The base compartmental model that all compartments can be used for
-is the <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> class. Additionally, this class can
-be used with <code>super().__init__()</code> to create a custom compartment.</p>
+The base compartmental model that all compartments can be used for is the <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> class.
+Additionally, this class can be used with <code>super().__init__()</code> to create a custom compartment.</p>
 <p>Initialize the compartment; invoke with:</p>
 <pre><code class="language-python">class CustomCompartment(Compartment):
     def __init__():
         super().__init__(name='Custom Compartment', config={})
 </code></pre>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>name</code>: Name of the compartment (used in error messages)</p>
-<p><code>config</code>: Configuration dictionary for the compartment* (see
-examples for more details).</p>
-<h2 id="example"><strong>Example</strong></h2>
+<h2 id="parameters">Parameters</h2>
+<p><code>name (str)</code>: Name of the compartment (used in error messages)</p>
+<p><code>config (dict{'type':'Susceptible'|'Infected'|None})</code>*: Configuration dictionary for the compartment.
+This allows epispot to identify special compartments.
+Currently, it should look like the dictionary shown in the example section.</p>
+<h2 id="example">Example</h2>
 <p>Example <code>config</code> dictionary:</p>
 <pre><code class="language-python">valid_types = ['Susceptible', 'Infected', None]
 config = {
     'type': '',  # should be one of `valid_types`
 }
 </code></pre>
-<h2 id="additional-notes"><strong>Additional Notes</strong></h2>
-<p>*The <code>config</code> dictionary is currently in beta and may vary
-drastically in future releases.</p>
+<h2 id="usage">Usage</h2>
+<p>Here is an example of the simplest compartment that can be implemented as a subclass:</p>
+<pre><code class="language-python">class Container(Compartment):
+    def __init__(self):
+        super().__init__('Container')
+    def _check(self, minimap, compartments):
+        self._base_check([], minimap, compartments)
+</code></pre>
+<p>This creates a container compartment that can be used to hold portions of the population.
+Since it does not connect to any other compartments (indicated by the empty array <code>[]</code> passed into the <code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">Compartment._base_check()</a></code> function),
+it acts as a terminal state.</p>
+<h2 id="error-handling">Error Handling</h2>
+<p>See the <code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">Compartment._base_check()</a></code> function for more information.</p>
+<h2 id="additional-notes">Additional Notes</h2>
+<p>*The <code>config</code> dictionary is likely to change in future releases.</p>
 <div class="admonition versionadded">
 <p class="admonition-title">Added in version:&ensp;v3.0.0-alpha-2</p>
 </div></div>
@@ -713,11 +704,10 @@ drastically in future releases.</p>
 <pre><code class="python">class Compartment:
     &#34;&#34;&#34;
     This class represents a compartment, used in compartmental models.
-    The base compartmental model that all compartments can be used for 
-    is the `epispot.models.Model` class. Additionally, this class can 
-    be used with `super().__init__()` to create a custom compartment.
-
+    The base compartmental model that all compartments can be used for is the `epispot.models.Model` class.
+    Additionally, this class can be used with `super().__init__()` to create a custom compartment.
     &#34;&#34;&#34;
+
     def __init__(self, name, config=None):
         &#34;&#34;&#34;
         Initialize the compartment; invoke with:
@@ -728,14 +718,15 @@ drastically in future releases.</p>
                 super().__init__(name=&#39;Custom Compartment&#39;, config={})
         ```
 
-        ## **Parameters**
+        ## Parameters
 
-        `name`: Name of the compartment (used in error messages)
+        `name (str)`: Name of the compartment (used in error messages)
 
-        `config`: Configuration dictionary for the compartment* (see 
-                  examples for more details).
+        `config (dict{&#39;type&#39;:&#39;Susceptible&#39;|&#39;Infected&#39;|None})`*: Configuration dictionary for the compartment.
+            This allows epispot to identify special compartments.
+            Currently, it should look like the dictionary shown in the example section.
 
-        ## **Example**
+        ## Example
 
         Example `config` dictionary:
 
@@ -746,10 +737,29 @@ drastically in future releases.</p>
         }
         ```
 
-        ## **Additional Notes**
+        ## Usage
 
-        *The `config` dictionary is currently in beta and may vary 
-        drastically in future releases.
+        Here is an example of the simplest compartment that can be implemented as a subclass:
+
+        ```python
+        class Container(Compartment):
+            def __init__(self):
+                super().__init__(&#39;Container&#39;)
+            def _check(self, minimap, compartments):
+                self._base_check([], minimap, compartments)
+        ```
+
+        This creates a container compartment that can be used to hold portions of the population.
+        Since it does not connect to any other compartments (indicated by the empty array `[]` passed into the `epispot.comps.Compartment._base_check()` function),
+        it acts as a terminal state.
+
+        ## Error Handling
+
+        See the `epispot.comps.Compartment._base_check()` function for more information.
+
+        ## Additional Notes
+
+        *The `config` dictionary is likely to change in future releases.
 
         .. versionadded:: v3.0.0-alpha-2
 
@@ -763,7 +773,7 @@ drastically in future releases.</p>
     def __repr__(self):
         &#34;&#34;&#34;A string representation of the compartment.&#34;&#34;&#34;
         return f&#39;&lt;{self.name} Compartment @ epispot.comps.Compartment&gt;&#39;
-    
+
     def _check_config(self):
         &#34;&#34;&#34;Configuration dictionary checker&#34;&#34;&#34;
         if &#39;type&#39; not in self.config.keys():
@@ -771,36 +781,37 @@ drastically in future releases.</p>
 
     def _base_check(self, valid_compartments, minimap, compartments):
         &#34;&#34;&#34;
-        A helper function to check model integrity. Implement this in 
-        child classes through a `_check()` function.
+        A helper function to check model integrity.
+        Implement this in child classes through a `_check()` function.
 
-        ## **Parameters**
+        ## Parameters
 
-        `valid_compartments`: A list of valid compartments that the 
-                              model can connect to. If any compartments 
-                              not specified in this list are found, 
-                              they will raise an error.
-        
-        `minimap`: A slice of the larger connections list given in the 
-                   `map` parameter of `epispot.models.Model` specific to 
-                   this compartment.
+        `valid_compartments (list[epispot.comps.Compartment])`: A list of valid compartments that the model can connect to.
+            If any compartments not specified in this list are found, a `ValueError` will be raised
+            (see &#34;Error Handling&#34;).
 
-        `compartments`: A copy of the `compartments` parameter in 
-                        `epispot.models.Model`; used to check against
-                        `valid_compartments`. 
-        
-        ## **Error Handling**
+        `minimap (list[int])`: A slice of the larger connections list given in the `map` parameter of `epispot.models.Model` specific to this compartment.
 
-        If any extraneous compartments are found in the `compartments` 
-        list, this method will automatically raise a `ValueError`
+        `compartments (list[epispot.comps.Compartment])`: A copy of the `compartments` parameter in `epispot.models.Model`; used to check against `valid_compartments`.
 
-        ## **Returns**
-        
+        .. note::
+            These last two parameters (`minimap` and `compartments`) should also be parameters in the `_check()` function.
+            See the usage section of `epispot.comps.Compartment` for more information.
+
+        ## Error Handling
+
+        ### `ValueError`
+
+        If any extraneous compartments are found in the `compartments` list,
+        this method will automatically raise a `ValueError`.
+
+        ## Returns
+
         `True` if no errors have been raised.
-        
+
         &#34;&#34;&#34;
         for compartment_no in minimap:
-            
+
             compartment = compartments[compartment_no]
             valid = False
 
@@ -818,37 +829,32 @@ drastically in future releases.</p>
     @staticmethod
     def diff(time, system, pos, minimap, minimatrix):
         &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
+        Calculate the derivative of the compartment with respect to
         time.
-        
-        ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
-                parameter in `epispot.models.Model.diff`.
-        
-        `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
-                  parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
-               `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice
-                   of the larger `map` parameter of 
-                   `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
-                      compartment.       
+        ## Parameters
 
-        ## **Returns**
+        `time (float)`: Time to take the derivative at.
+            Similar to `time` parameter in `epispot.models.Model.diff`.
 
-        The compartment derivative
+        `system (list[float])`: A list containing the system of compartment values.
+            Should be of the same shape as the `starting_state` parameter of `epispot.models.Model.integrate`.
+
+        `pos (int)`: The index of the compartment in the `comps` parameter of `epispot.models.Model`.
+
+        `minimap (list[int])`: This compartment&#39;s connections.
+            Essentially, a slice of the larger `map` parameter of `epispot.models.Model`.
+
+        `minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: A slice of the `matrix` parameter of `epispot.models.Model` specific to this compartment.
+
+        ## Returns
+
+        Derivative of the entire system calculated by the compartment (`list[float]`)
 
         &#34;&#34;&#34;
         output = np.zeros(system.shape)
         for connection in minimap:
-            
+
             # initialize parameters
             probability = minimatrix[connection][0]
             rate = minimatrix[connection][1]
@@ -861,7 +867,7 @@ drastically in future releases.</p>
 
             # evaluate compartment derivative
             deriv = probability * rate * system[pos]
-            
+
             # ensure compartment populations are non-negative
             min_connection_deriv = -system[connection]
             max_pos_deriv = system[pos]
@@ -870,7 +876,7 @@ drastically in future releases.</p>
 
             output[connection] += deriv
             output[pos] -= deriv
-        
+
         return output</code></pre>
 </details>
 <h3>Subclasses</h3>
@@ -892,23 +898,17 @@ drastically in future releases.</p>
 <dd>
 <div class="desc"><p>Calculate the derivative of the compartment with respect to
 time.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>time</code>: Time to take the derivative at. Similar to <code>time</code>
-parameter in <code><a title="epispot.models.Model.diff" href="models.html#epispot.models.Model.diff">Model.diff()</a></code>.</p>
-<p><code>system</code>: A list containing the system of compartment values.
-Should be of the same shape as the <code>starting_state</code>
-parameter of <code><a title="epispot.models.Model.integrate" href="models.html#epispot.models.Model.integrate">Model.integrate()</a></code>.</p>
-<p><code>pos</code>: The index of the compartment in the <code>comps</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
-<p><code>minimap</code>: This compartment's connections. Essentially, a slice
-of the larger <code>map</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
-<p><code>minimatrix</code>: A slice of the <code>matrix</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> specific to this
-compartment.
-</p>
-<h2 id="returns"><strong>Returns</strong></h2>
-<p>The compartment derivative</p></div>
+<h2 id="parameters">Parameters</h2>
+<p><code>time (float)</code>: Time to take the derivative at.
+Similar to <code>time</code> parameter in <code><a title="epispot.models.Model.diff" href="models.html#epispot.models.Model.diff">Model.diff()</a></code>.</p>
+<p><code>system (list[float])</code>: A list containing the system of compartment values.
+Should be of the same shape as the <code>starting_state</code> parameter of <code><a title="epispot.models.Model.integrate" href="models.html#epispot.models.Model.integrate">Model.integrate()</a></code>.</p>
+<p><code>pos (int)</code>: The index of the compartment in the <code>comps</code> parameter of <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
+<p><code>minimap (list[int])</code>: This compartment's connections.
+Essentially, a slice of the larger <code>map</code> parameter of <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
+<p><code>minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])</code>: A slice of the <code>matrix</code> parameter of <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> specific to this compartment.</p>
+<h2 id="returns">Returns</h2>
+<p>Derivative of the entire system calculated by the compartment (<code>list[float]</code>)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -916,37 +916,32 @@ compartment.
 <pre><code class="python">@staticmethod
 def diff(time, system, pos, minimap, minimatrix):
     &#34;&#34;&#34;
-    Calculate the derivative of the compartment with respect to 
+    Calculate the derivative of the compartment with respect to
     time.
-    
-    ## **Parameters**
-    
-    `time`: Time to take the derivative at. Similar to `time` 
-            parameter in `epispot.models.Model.diff`.
-    
-    `system`: A list containing the system of compartment values.
-              Should be of the same shape as the `starting_state` 
-              parameter of `epispot.models.Model.integrate`.
-    
-    `pos`: The index of the compartment in the `comps` parameter of 
-           `epispot.models.Model`.
-    
-    `minimap`: This compartment&#39;s connections. Essentially, a slice
-               of the larger `map` parameter of 
-               `epispot.models.Model`.
 
-    `minimatrix`: A slice of the `matrix` parameter of 
-                  `epispot.models.Model` specific to this 
-                  compartment.       
+    ## Parameters
 
-    ## **Returns**
+    `time (float)`: Time to take the derivative at.
+        Similar to `time` parameter in `epispot.models.Model.diff`.
 
-    The compartment derivative
+    `system (list[float])`: A list containing the system of compartment values.
+        Should be of the same shape as the `starting_state` parameter of `epispot.models.Model.integrate`.
+
+    `pos (int)`: The index of the compartment in the `comps` parameter of `epispot.models.Model`.
+
+    `minimap (list[int])`: This compartment&#39;s connections.
+        Essentially, a slice of the larger `map` parameter of `epispot.models.Model`.
+
+    `minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: A slice of the `matrix` parameter of `epispot.models.Model` specific to this compartment.
+
+    ## Returns
+
+    Derivative of the entire system calculated by the compartment (`list[float]`)
 
     &#34;&#34;&#34;
     output = np.zeros(system.shape)
     for connection in minimap:
-        
+
         # initialize parameters
         probability = minimatrix[connection][0]
         rate = minimatrix[connection][1]
@@ -959,7 +954,7 @@ def diff(time, system, pos, minimap, minimatrix):
 
         # evaluate compartment derivative
         deriv = probability * rate * system[pos]
-        
+
         # ensure compartment populations are non-negative
         min_connection_deriv = -system[connection]
         max_pos_deriv = system[pos]
@@ -968,8 +963,86 @@ def diff(time, system, pos, minimap, minimatrix):
 
         output[connection] += deriv
         output[pos] -= deriv
-    
+
     return output</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="epispot.comps.Compartment._base_check"><code class="name flex">
+<span>def <span class="ident">_base_check</span></span>(<span>self, valid_compartments, minimap, compartments)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A helper function to check model integrity.
+Implement this in child classes through a <code>_check()</code> function.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>valid_compartments (list[<a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a>])</code>: A list of valid compartments that the model can connect to.
+If any compartments not specified in this list are found, a <code>ValueError</code> will be raised
+(see "Error Handling").</p>
+<p><code>minimap (list[int])</code>: A slice of the larger connections list given in the <code>map</code> parameter of <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> specific to this compartment.</p>
+<p><code>compartments (list[<a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a>])</code>: A copy of the <code>compartments</code> parameter in <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>; used to check against <code>valid_compartments</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These last two parameters (<code>minimap</code> and <code>compartments</code>) should also be parameters in the <code>_check()</code> function.
+See the usage section of <code><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></code> for more information.</p>
+</div>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="valueerror"><code>ValueError</code></h3>
+<p>If any extraneous compartments are found in the <code>compartments</code> list,
+this method will automatically raise a <code>ValueError</code>.</p>
+<h2 id="returns">Returns</h2>
+<p><code>True</code> if no errors have been raised.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _base_check(self, valid_compartments, minimap, compartments):
+    &#34;&#34;&#34;
+    A helper function to check model integrity.
+    Implement this in child classes through a `_check()` function.
+
+    ## Parameters
+
+    `valid_compartments (list[epispot.comps.Compartment])`: A list of valid compartments that the model can connect to.
+        If any compartments not specified in this list are found, a `ValueError` will be raised
+        (see &#34;Error Handling&#34;).
+
+    `minimap (list[int])`: A slice of the larger connections list given in the `map` parameter of `epispot.models.Model` specific to this compartment.
+
+    `compartments (list[epispot.comps.Compartment])`: A copy of the `compartments` parameter in `epispot.models.Model`; used to check against `valid_compartments`.
+
+    .. note::
+        These last two parameters (`minimap` and `compartments`) should also be parameters in the `_check()` function.
+        See the usage section of `epispot.comps.Compartment` for more information.
+
+    ## Error Handling
+
+    ### `ValueError`
+
+    If any extraneous compartments are found in the `compartments` list,
+    this method will automatically raise a `ValueError`.
+
+    ## Returns
+
+    `True` if no errors have been raised.
+
+    &#34;&#34;&#34;
+    for compartment_no in minimap:
+
+        compartment = compartments[compartment_no]
+        valid = False
+
+        for valid_compartment in valid_compartments:
+            if isinstance(compartment, valid_compartment):
+                valid = True
+
+        if not valid:  # pragma: no cover
+            raise ValueError(f&#39;Invalid compartment {compartment} &#39;
+                             f&#39;found connected to compartment &#39;
+                             f&#39;{self.name}.&#39;)
+
+    return True</code></pre>
 </details>
 </dd>
 </dl>
@@ -979,63 +1052,56 @@ def diff(time, system, pos, minimap, minimatrix):
 <span>(</span><span>max_cap=None, index=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The Critical class represents the portion of individuals currently
-taking up space in the available hospitals <em>and</em> using limited
-resources. However, this is a distinct category from the
-<code><a title="epispot.comps.Hospitalized" href="#epispot.comps.Hospitalized">Hospitalized</a></code> portion of individuals, who don't
-require extra resources (ICU beds, ventilators, etc.). This
-compartment also features
+<div class="desc"><p>The Critical class represents the portion of individuals currently taking up space in the available hospitals <em>and</em> using limited resources.
+Thus, this is a distinct category from the <code><a title="epispot.comps.Hospitalized" href="#epispot.comps.Hospitalized">Hospitalized</a></code> portion of individuals, who don't require extra resources (ICU beds, ventilators, etc.).
+This compartment also features
 <a href="https://en.wikipedia.org/wiki/Triage">triage support</a>.</p>
-<p>Hospitalized, Infected → Critical → Recovered, Removed, Dead</p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>Triage support is still in beta and may not function as expected.</p>
-</div>
-<p>Initialize the Critical class</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>max_cap=None</code>: The maximum number of individuals that
-available hospitals can hold and have limited
-resources for. Specifying an amount will
-automatically trigger triage support,
-requiring a value for <code>triage_index</code>.</p>
-<p><code>index=None</code>: Index of the layer to use for triage. Only
-specify after giving a value for
-<code>maximum_capacity</code>.</p></div>
+<h2 id="structure">Structure</h2>
+<p><code><a title="epispot.comps.Hospitalized" href="#epispot.comps.Hospitalized">Hospitalized</a></code>, <code><a title="epispot.comps.Infected" href="#epispot.comps.Infected">Infected</a></code> → <code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code> → <code><a title="epispot.comps.Recovered" href="#epispot.comps.Recovered">Recovered</a></code>, <code><a title="epispot.comps.Removed" href="#epispot.comps.Removed">Removed</a></code>, <code><a title="epispot.comps.Dead" href="#epispot.comps.Dead">Dead</a></code></p>
+<p>Initialize the Critical class:</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>max_cap=None (|int)</code>: The maximum number of individuals that available hospitals can hold and have limited resources for.
+Specifying an amount will automatically trigger triage support,
+requiring a value for <code>index</code>.</p>
+<p><code>index=None (|int)</code>: Index of the layer to use for triage.
+Only specify after giving a value for <code>max_cap</code>.</p>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="valueerror"><code>ValueError</code></h3>
+<p>Failing to specify both a maximum capacity and an index when triage is enabled will raise a <code>ValueError</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Critical(Compartment):
     &#34;&#34;&#34;
-    The Critical class represents the portion of individuals currently 
-    taking up space in the available hospitals *and* using limited 
-    resources. However, this is a distinct category from the 
-    `epispot.comps.Hospitalized` portion of individuals, who don&#39;t 
-    require extra resources (ICU beds, ventilators, etc.). This 
-    compartment also features 
+    The Critical class represents the portion of individuals currently taking up space in the available hospitals *and* using limited resources.
+    Thus, this is a distinct category from the `epispot.comps.Hospitalized` portion of individuals, who don&#39;t require extra resources (ICU beds, ventilators, etc.).
+    This compartment also features
     [triage support](https://en.wikipedia.org/wiki/Triage).
-    
-    Hospitalized, Infected → Critical → Recovered, Removed, Dead
 
-    .. attention::
-       Triage support is still in beta and may not function as expected.
+    ## Structure
 
+    `epispot.comps.Hospitalized`, `epispot.comps.Infected` → `epispot.comps.Critical` → `epispot.comps.Recovered`, `epispot.comps.Removed`, `epispot.comps.Dead`
     &#34;&#34;&#34;
+
     def __init__(self, max_cap=None, index=None):
         &#34;&#34;&#34;
-        Initialize the Critical class
+        Initialize the Critical class:
 
-        ## **Parameters** 
+        ## Parameters
 
-        `max_cap=None`: The maximum number of individuals that 
-                        available hospitals can hold and have limited 
-                        resources for. Specifying an amount will 
-                        automatically trigger triage support, 
-                        requiring a value for `triage_index`.
+        `max_cap=None (|int)`: The maximum number of individuals that available hospitals can hold and have limited resources for.
+            Specifying an amount will automatically trigger triage support,
+            requiring a value for `index`.
 
-        `index=None`: Index of the layer to use for triage. Only 
-                      specify after giving a value for 
-                      `maximum_capacity`.
+        `index=None (|int)`: Index of the layer to use for triage.
+            Only specify after giving a value for `max_cap`.
+
+        ## Error Handling
+
+        ### `ValueError`
+
+        Failing to specify both a maximum capacity and an index when triage is enabled will raise a `ValueError`.
 
         &#34;&#34;&#34;
         super().__init__(&#39;Critical&#39;)
@@ -1044,47 +1110,19 @@ specify after giving a value for
 
         if ((max_cap, index) != (None, None)) and \
            (max_cap is None or index is None):  # pragma: no cover
-                raise ValueError(&#39;You must specify both a maximum &#39;
-                                &#39;capacity and an index for triage &#39;
-                                &#39;support.&#39;)
+            raise ValueError(&#39;You must specify both a maximum &#39;
+                             &#39;capacity and an index for triage &#39;
+                             &#39;support.&#39;)
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Hospitalized compartment&#34;&#34;&#34;
         self._base_check([Recovered, Removed, Dead], minimap, compartments)
 
     def diff(self, time, system, pos, minimap, minimatrix):
-        &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
-        time.
-        
-        ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
-                parameter in `epispot.models.Model.diff`.
-        
-        `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
-                  parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
-               `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice
-                   of the larger `map` parameter of 
-                   `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
-                      compartment.
-        
-        ## **Returns**
-
-        The compartment derivative
-
-        &#34;&#34;&#34;
         output = np.zeros(system.shape)
         for connection in minimap:
-            
+
             # initialize parameters
             probability = minimatrix[connection][0]
             rate = minimatrix[connection][1]
@@ -1109,124 +1147,38 @@ specify after giving a value for
 
         if (self.maximum_capacity is not None) and \
            (system[pos] &gt; self.maximum_capacity):
-                output[pos] = self.maximum_capacity - system[pos]
-                output[self.triage_index] = -output[pos]
-            
+            output[pos] = self.maximum_capacity - system[pos]
+            output[self.triage_index] = -output[pos]
+
         return output</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></li>
 </ul>
-<h3>Methods</h3>
-<dl>
-<dt id="epispot.comps.Critical.diff"><code class="name flex">
-<span>def <span class="ident">diff</span></span>(<span>self, time, system, pos, minimap, minimatrix)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Calculate the derivative of the compartment with respect to
-time.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>time</code>: Time to take the derivative at. Similar to <code>time</code>
-parameter in <code><a title="epispot.models.Model.diff" href="models.html#epispot.models.Model.diff">Model.diff()</a></code>.</p>
-<p><code>system</code>: A list containing the system of compartment values.
-Should be of the same shape as the <code>starting_state</code>
-parameter of <code><a title="epispot.models.Model.integrate" href="models.html#epispot.models.Model.integrate">Model.integrate()</a></code>.</p>
-<p><code>pos</code>: The index of the compartment in the <code>comps</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
-<p><code>minimap</code>: This compartment's connections. Essentially, a slice
-of the larger <code>map</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
-<p><code>minimatrix</code>: A slice of the <code>matrix</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> specific to this
-compartment.</p>
-<h2 id="returns"><strong>Returns</strong></h2>
-<p>The compartment derivative</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def diff(self, time, system, pos, minimap, minimatrix):
-    &#34;&#34;&#34;
-    Calculate the derivative of the compartment with respect to 
-    time.
-    
-    ## **Parameters**
-    
-    `time`: Time to take the derivative at. Similar to `time` 
-            parameter in `epispot.models.Model.diff`.
-    
-    `system`: A list containing the system of compartment values.
-              Should be of the same shape as the `starting_state` 
-              parameter of `epispot.models.Model.integrate`.
-    
-    `pos`: The index of the compartment in the `comps` parameter of 
-           `epispot.models.Model`.
-    
-    `minimap`: This compartment&#39;s connections. Essentially, a slice
-               of the larger `map` parameter of 
-               `epispot.models.Model`.
-
-    `minimatrix`: A slice of the `matrix` parameter of 
-                  `epispot.models.Model` specific to this 
-                  compartment.
-    
-    ## **Returns**
-
-    The compartment derivative
-
-    &#34;&#34;&#34;
-    output = np.zeros(system.shape)
-    for connection in minimap:
-        
-        # initialize parameters
-        probability = minimatrix[connection][0]
-        rate = minimatrix[connection][1]
-
-        # initialize time-dependent parameters
-        if callable(probability):
-            probability = probability(time)
-        if callable(rate):
-            rate = rate(time)
-
-        # evaluate compartment derivative
-        deriv = probability * rate * system[pos]
-
-        # ensure compartment populations are non-negative
-        min_connection_deriv = -system[connection]
-        max_pos_deriv = system[pos]
-        deriv = max(deriv, min_connection_deriv)
-        deriv = min(deriv, max_pos_deriv)
-
-        output[connection] += deriv
-        output[pos] -= deriv
-
-    if (self.maximum_capacity is not None) and \
-       (system[pos] &gt; self.maximum_capacity):
-            output[pos] = self.maximum_capacity - system[pos]
-            output[self.triage_index] = -output[pos]
-        
-    return output</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
+<ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
+<li><code><a title="epispot.comps.Compartment.diff" href="#epispot.comps.Compartment.diff">diff</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="epispot.comps.Dead"><code class="flex name class">
 <span>class <span class="ident">Dead</span></span>
 </code></dt>
 <dd>
 <div class="desc"><p>The Dead class is a fully terminal state in any compartmental model.
-It represents the portion of the population that have died because
-of <em>and only because of</em> the disease being analyzed.</p>
-<p>Infected, Critical, Hospitalized, Recovered → Dead</p>
+It represents the portion of the population that have died because of <em>and only because of</em> the disease being analyzed.</p>
+<h2 id="structure">Structure</h2>
+<p><code><a title="epispot.comps.Infected" href="#epispot.comps.Infected">Infected</a></code>, <code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code>, <code><a title="epispot.comps.Hospitalized" href="#epispot.comps.Hospitalized">Hospitalized</a></code>, <code><a title="epispot.comps.Recovered" href="#epispot.comps.Recovered">Recovered</a></code> → <code><a title="epispot.comps.Dead" href="#epispot.comps.Dead">Dead</a></code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>As is convention with compartmental models, we assume that the
-dead compartment does not significantly alter the population
-structure that we're analyzing. In future versions of epispot,
-we do plan to add support for factoring in the deceased
-population into predictions, but at this time that is not a
-primary concern.</p>
+<p>As is convention with compartmental models, we assume that the dead compartment does not significantly alter the population structure that we're analyzing.
+In future versions of epispot, we do plan to add support for factoring in the deceased population into predictions,
+but at this time that is not a primary concern.</p>
 </div>
 <p>Initialize the Dead class</p></div>
 <details class="source">
@@ -1236,20 +1188,18 @@ primary concern.</p>
 <pre><code class="python">class Dead(Compartment):
     &#34;&#34;&#34;
     The Dead class is a fully terminal state in any compartmental model.
-    It represents the portion of the population that have died because 
-    of *and only because of* the disease being analyzed.
+    It represents the portion of the population that have died because of *and only because of* the disease being analyzed.
 
-    Infected, Critical, Hospitalized, Recovered → Dead
+    ## Structure
+
+    `epispot.comps.Infected`, `epispot.comps.Critical`, `epispot.comps.Hospitalized`, `epispot.comps.Recovered` → `epispot.comps.Dead`
 
     .. note::
-       As is convention with compartmental models, we assume that the 
-       dead compartment does not significantly alter the population 
-       structure that we&#39;re analyzing. In future versions of epispot, 
-       we do plan to add support for factoring in the deceased 
-       population into predictions, but at this time that is not a 
-       primary concern.
-    
+       As is convention with compartmental models, we assume that the dead compartment does not significantly alter the population structure that we&#39;re analyzing.
+       In future versions of epispot, we do plan to add support for factoring in the deceased population into predictions,
+       but at this time that is not a primary concern.
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Dead class&#34;&#34;&#34;
         super().__init__(&#39;Dead&#39;)
@@ -1266,6 +1216,7 @@ primary concern.</p>
 <ul class="hlist">
 <li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
 <ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
 <li><code><a title="epispot.comps.Compartment.diff" href="#epispot.comps.Compartment.diff">diff</a></code></li>
 </ul>
 </li>
@@ -1275,15 +1226,13 @@ primary concern.</p>
 <span>class <span class="ident">Exposed</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>The Exposed compartment is traditionally used as a way to simulate
-an incubation period for a disease. This compartment tracks people
-who have come into contact with an infected person and are bound to
-eventually become infectious themselves, but haven't yet developed
-symptoms or a way of spreading the disease to others. These are
-also usually the targets of most
+<div class="desc"><p>The Exposed compartment is traditionally used as a way to simulate an incubation period for a disease.
+This compartment tracks people who have come into contact with an infected person and are bound to eventually become infectious themselves,
+but haven't yet developed symptoms or a way of spreading the disease to others.
+These are also usually the targets of most
 <a href="https://en.wikipedia.org/wiki/Contact_tracing">contact tracing</a>
-operations.</p>
-<p>Susceptible → Exposed → Infected</p>
+efforts.</p>
+<p><code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code> → <code><a title="epispot.comps.Exposed" href="#epispot.comps.Exposed">Exposed</a></code> → <code><a title="epispot.comps.Infected" href="#epispot.comps.Infected">Infected</a></code></p>
 <p>Initialize the Exposed class</p></div>
 <details class="source">
 <summary>
@@ -1291,18 +1240,16 @@ operations.</p>
 </summary>
 <pre><code class="python">class Exposed(Compartment):
     &#34;&#34;&#34;
-    The Exposed compartment is traditionally used as a way to simulate 
-    an incubation period for a disease. This compartment tracks people
-    who have come into contact with an infected person and are bound to 
-    eventually become infectious themselves, but haven&#39;t yet developed 
-    symptoms or a way of spreading the disease to others. These are 
-    also usually the targets of most 
+    The Exposed compartment is traditionally used as a way to simulate an incubation period for a disease.
+    This compartment tracks people who have come into contact with an infected person and are bound to eventually become infectious themselves,
+    but haven&#39;t yet developed symptoms or a way of spreading the disease to others.
+    These are also usually the targets of most
     [contact tracing](https://en.wikipedia.org/wiki/Contact_tracing)
-    operations.
+    efforts.
 
-    Susceptible → Exposed → Infected
-    
+    `epispot.comps.Susceptible` → `epispot.comps.Exposed` → `epispot.comps.Infected`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Exposed class&#34;&#34;&#34;
         super().__init__(&#39;Exposed&#39;)
@@ -1319,6 +1266,7 @@ operations.</p>
 <ul class="hlist">
 <li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
 <ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
 <li><code><a title="epispot.comps.Compartment.diff" href="#epispot.comps.Compartment.diff">diff</a></code></li>
 </ul>
 </li>
@@ -1329,101 +1277,100 @@ operations.</p>
 <span>(</span><span>max_cap=None, index=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The Hospitalized class represents the portion of individuals
-currently taking up space in the available hospitals. However, this
-is a distinct category from the <code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code> portion of
-individuals, who require more resources (e.g. ICU beds,
-ventilators, etc.). This compartment also features
+<div class="desc"><p>The Hospitalized class represents the portion of individuals currently taking up space in the available hospitals.
+However, this is a distinct category from the <code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code> portion of individuals,
+who require more resources (e.g. ICU beds, ventilators, etc.).
+This compartment also features
 <a href="https://en.wikipedia.org/wiki/Triage">triage support</a>.</p>
-<p>Infected → Hospitalized → Critical, Recovered, Removed, Dead</p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>Triage support is still in beta and may not function as expected.</p>
-</div>
-<p>Initialize the Hospitalized class</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>max_cap=None</code>: The maximum number of individuals that
-available hospitals can hold. Specifying an
-amount will automatically trigger triage
-support, requiring a value for <code>triage_index</code>.</p>
-<p><code>index=None</code>: Index of the layer to use for triage. Only
-specify after giving a value for
-<code>maximum_capacity</code>.</p></div>
+<h2 id="structure">Structure</h2>
+<p><code><a title="epispot.comps.Infected" href="#epispot.comps.Infected">Infected</a></code> → <code><a title="epispot.comps.Hospitalized" href="#epispot.comps.Hospitalized">Hospitalized</a></code> → <code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code>, <code><a title="epispot.comps.Recovered" href="#epispot.comps.Recovered">Recovered</a></code>, <code><a title="epispot.comps.Removed" href="#epispot.comps.Removed">Removed</a></code>, <code><a title="epispot.comps.Dead" href="#epispot.comps.Dead">Dead</a></code></p>
+<p>Initialize the Critical class:</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>max_cap=None (|int)</code>: The maximum number of individuals that available hospitals can hold.
+Specifying an amount will automatically trigger triage support,
+requiring a value for <code>index</code>.</p>
+<p><code>index=None (|int)</code>: Index of the layer to use for triage.
+Only specify after giving a value for <code>max_cap</code>.</p>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="valueerror"><code>ValueError</code></h3>
+<p>Failing to specify both a maximum capacity and an index when triage is enabled will raise a <code>ValueError</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Hospitalized(Compartment):
     &#34;&#34;&#34;
-    The Hospitalized class represents the portion of individuals 
-    currently taking up space in the available hospitals. However, this 
-    is a distinct category from the `epispot.comps.Critical` portion of 
-    individuals, who require more resources (e.g. ICU beds, 
-    ventilators, etc.). This compartment also features 
+    The Hospitalized class represents the portion of individuals currently taking up space in the available hospitals.
+    However, this is a distinct category from the `epispot.comps.Critical` portion of individuals,
+    who require more resources (e.g. ICU beds, ventilators, etc.).
+    This compartment also features
     [triage support](https://en.wikipedia.org/wiki/Triage).
 
-    Infected → Hospitalized → Critical, Recovered, Removed, Dead
-    
-    .. attention::
-       Triage support is still in beta and may not function as expected.
+    ## Structure
 
+    `epispot.comps.Infected` → `epispot.comps.Hospitalized` → `epispot.comps.Critical`, `epispot.comps.Recovered`, `epispot.comps.Removed`, `epispot.comps.Dead`
     &#34;&#34;&#34;
+
     def __init__(self, max_cap=None, index=None):
         &#34;&#34;&#34;
-        Initialize the Hospitalized class
+        Initialize the Critical class:
 
-        ## **Parameters** 
+        ## Parameters
 
-        `max_cap=None`: The maximum number of individuals that 
-                        available hospitals can hold. Specifying an 
-                        amount will automatically trigger triage 
-                        support, requiring a value for `triage_index`.
+        `max_cap=None (|int)`: The maximum number of individuals that available hospitals can hold.
+            Specifying an amount will automatically trigger triage support,
+            requiring a value for `index`.
 
-        `index=None`: Index of the layer to use for triage. Only 
-                      specify after giving a value for 
-                      `maximum_capacity`.
+        `index=None (|int)`: Index of the layer to use for triage.
+            Only specify after giving a value for `max_cap`.
+
+        ## Error Handling
+
+        ### `ValueError`
+
+        Failing to specify both a maximum capacity and an index when triage is enabled will raise a `ValueError`.
 
         &#34;&#34;&#34;
         super().__init__(&#39;Hospitalized&#39;)
         self.maximum_capacity = max_cap
         self.triage_index = index
 
-        if ((max_cap, index) != (None, None)) and \
-        (max_cap is None or index is None):  # pragma: no cover
+        if ((max_cap, index) != (None, None)) \
+            and (max_cap is None or index is None):  # pragma: no cover
             raise ValueError(&#39;You must specify both a maximum &#39;
-                                &#39;capacity and an index for triage &#39;
-                                &#39;support.&#39;)
+                             &#39;capacity and an index for triage &#39;
+                             &#39;support.&#39;)
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Hospitalized compartment&#34;&#34;&#34;
-        self._base_check([Critical, Recovered, Removed, Dead], minimap, 
+        self._base_check([Critical, Recovered, Removed, Dead], minimap,
                          compartments)
 
     def diff(self, time, system, pos, minimap, minimatrix):
         &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
+        Calculate the derivative of the compartment with respect to
         time.
-        
+
         ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
+
+        `time`: Time to take the derivative at. Similar to `time`
                 parameter in `epispot.models.Model.diff`.
-        
+
         `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
+                  Should be of the same shape as the `starting_state`
                   parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
+
+        `pos`: The index of the compartment in the `comps` parameter of
                `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice 
-                   of the larger `map` parameter of 
+
+        `minimap`: This compartment&#39;s connections. Essentially, a slice
+                   of the larger `map` parameter of
                    `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
+        `minimatrix`: A slice of the `matrix` parameter of
+                      `epispot.models.Model` specific to this
                       compartment.
-        
+
         ## **Returns**
 
         The compartment derivative
@@ -1431,7 +1378,7 @@ specify after giving a value for
         &#34;&#34;&#34;
         output = np.zeros(system.shape)
         for connection in minimap:
-            
+
             # initialize parameters
             probability = minimatrix[connection][0]
             rate = minimatrix[connection][1]
@@ -1456,9 +1403,9 @@ specify after giving a value for
 
         if (self.maximum_capacity is not None) and \
            (system[pos] &gt; self.maximum_capacity):
-                output[pos] = self.maximum_capacity - system[pos]
-                output[self.triage_index] = -output[pos]
-            
+            output[pos] = self.maximum_capacity - system[pos]
+            output[self.triage_index] = -output[pos]
+
         return output</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1495,29 +1442,29 @@ compartment.</p>
 </summary>
 <pre><code class="python">def diff(self, time, system, pos, minimap, minimatrix):
     &#34;&#34;&#34;
-    Calculate the derivative of the compartment with respect to 
+    Calculate the derivative of the compartment with respect to
     time.
-    
+
     ## **Parameters**
-    
-    `time`: Time to take the derivative at. Similar to `time` 
+
+    `time`: Time to take the derivative at. Similar to `time`
             parameter in `epispot.models.Model.diff`.
-    
+
     `system`: A list containing the system of compartment values.
-              Should be of the same shape as the `starting_state` 
+              Should be of the same shape as the `starting_state`
               parameter of `epispot.models.Model.integrate`.
-    
-    `pos`: The index of the compartment in the `comps` parameter of 
+
+    `pos`: The index of the compartment in the `comps` parameter of
            `epispot.models.Model`.
-    
-    `minimap`: This compartment&#39;s connections. Essentially, a slice 
-               of the larger `map` parameter of 
+
+    `minimap`: This compartment&#39;s connections. Essentially, a slice
+               of the larger `map` parameter of
                `epispot.models.Model`.
 
-    `minimatrix`: A slice of the `matrix` parameter of 
-                  `epispot.models.Model` specific to this 
+    `minimatrix`: A slice of the `matrix` parameter of
+                  `epispot.models.Model` specific to this
                   compartment.
-    
+
     ## **Returns**
 
     The compartment derivative
@@ -1525,7 +1472,7 @@ compartment.</p>
     &#34;&#34;&#34;
     output = np.zeros(system.shape)
     for connection in minimap:
-        
+
         # initialize parameters
         probability = minimatrix[connection][0]
         rate = minimatrix[connection][1]
@@ -1550,24 +1497,31 @@ compartment.</p>
 
     if (self.maximum_capacity is not None) and \
        (system[pos] &gt; self.maximum_capacity):
-            output[pos] = self.maximum_capacity - system[pos]
-            output[self.triage_index] = -output[pos]
-        
+        output[pos] = self.maximum_capacity - system[pos]
+        output[self.triage_index] = -output[pos]
+
     return output</code></pre>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
+<ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="epispot.comps.Infected"><code class="flex name class">
 <span>class <span class="ident">Infected</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>The Infected class is the 'I' of the 'SIR' Model. This is the
-portion of individuals who are actively spreading the disease. Like
-the <code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code> class, this is also a special
-compartment.</p>
-<p>Susceptible, Exposed → Infected → Recovered, Hospitalized, Critical,
-Dead, Removed</p>
+<div class="desc"><p>The Infected class is the 'I' of the 'SIR' Model.
+This is the portion of individuals who are actively spreading the disease.
+Like the <code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code> class, this is also a special compartment.</p>
+<h2 id="structure">Structure</h2>
+<p><code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code>, <code><a title="epispot.comps.Exposed" href="#epispot.comps.Exposed">Exposed</a></code> → <code><a title="epispot.comps.Infected" href="#epispot.comps.Infected">Infected</a></code> → <code><a title="epispot.comps.Recovered" href="#epispot.comps.Recovered">Recovered</a></code>, <code><a title="epispot.comps.Hospitalized" href="#epispot.comps.Hospitalized">Hospitalized</a></code>, <code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code>, <code><a title="epispot.comps.Dead" href="#epispot.comps.Dead">Dead</a></code>, <code><a title="epispot.comps.Removed" href="#epispot.comps.Removed">Removed</a></code></p>
 <p>Initialize the Infected class</p></div>
 <details class="source">
 <summary>
@@ -1575,15 +1529,15 @@ Dead, Removed</p>
 </summary>
 <pre><code class="python">class Infected(Compartment):
     &#34;&#34;&#34;
-    The Infected class is the &#39;I&#39; of the &#39;SIR&#39; Model. This is the 
-    portion of individuals who are actively spreading the disease. Like
-    the `epispot.comps.Susceptible` class, this is also a special 
-    compartment.
-    
-    Susceptible, Exposed → Infected → Recovered, Hospitalized, Critical, 
-    Dead, Removed
+    The Infected class is the &#39;I&#39; of the &#39;SIR&#39; Model.
+    This is the portion of individuals who are actively spreading the disease.
+    Like the `epispot.comps.Susceptible` class, this is also a special compartment.
 
+    ## Structure
+
+    `epispot.comps.Susceptible`, `epispot.comps.Exposed` → `epispot.comps.Infected` → `epispot.comps.Recovered`, `epispot.comps.Hospitalized`, `epispot.comps.Critical`, `epispot.comps.Dead`, `epispot.comps.Removed`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Infected class&#34;&#34;&#34;
         config = {
@@ -1593,7 +1547,7 @@ Dead, Removed</p>
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Infected compartment&#34;&#34;&#34;
-        self._base_check([Recovered, Hospitalized, Critical, Dead, Removed], 
+        self._base_check([Recovered, Hospitalized, Critical, Dead, Removed],
                          minimap, compartments)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1604,6 +1558,7 @@ Dead, Removed</p>
 <ul class="hlist">
 <li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
 <ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
 <li><code><a title="epispot.comps.Compartment.diff" href="#epispot.comps.Compartment.diff">diff</a></code></li>
 </ul>
 </li>
@@ -1613,15 +1568,13 @@ Dead, Removed</p>
 <span>class <span class="ident">Recovered</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>The 'Recovered' class represents the portion of the population that
-has had the infection and subsequently recovered. In most
-epidemiological models and scenarios, the individuals in this class
-are assumed to have developed some immunity to the virus. However,
-this is not always the case. In rare occasions where
-resusceptibility <em>is</em> possible, connecting this class to the
-<code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code> class is permitted. This class can be
-used as a terminal state.</p>
-<p>Infected, Hospitalized, Critical → Recovered → Susceptible</p>
+<div class="desc"><p>The 'Recovered' class represents the portion of the population that has had the infection and subsequently recovered.
+In most epidemiological models and scenarios, the individuals in this class are assumed to have developed some immunity to the virus.
+However, this is not always the case.
+In rare occasions where resusceptibility <em>is</em> possible, connecting this class to the <code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code> class is possible.
+This class can alternatively be used as a terminal state.</p>
+<h2 id="structure">Structure</h2>
+<p><code><a title="epispot.comps.Infected" href="#epispot.comps.Infected">Infected</a></code>, <code><a title="epispot.comps.Hospitalized" href="#epispot.comps.Hospitalized">Hospitalized</a></code>, <code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code> → <code><a title="epispot.comps.Recovered" href="#epispot.comps.Recovered">Recovered</a></code> → <code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code></p>
 <p>Initialize the Recovered class</p></div>
 <details class="source">
 <summary>
@@ -1629,18 +1582,17 @@ used as a terminal state.</p>
 </summary>
 <pre><code class="python">class Recovered(Compartment):
     &#34;&#34;&#34;
-    The &#39;Recovered&#39; class represents the portion of the population that 
-    has had the infection and subsequently recovered. In most 
-    epidemiological models and scenarios, the individuals in this class 
-    are assumed to have developed some immunity to the virus. However, 
-    this is not always the case. In rare occasions where 
-    resusceptibility *is* possible, connecting this class to the 
-    `epispot.comps.Susceptible` class is permitted. This class can be 
-    used as a terminal state.
+    The &#39;Recovered&#39; class represents the portion of the population that has had the infection and subsequently recovered.
+    In most epidemiological models and scenarios, the individuals in this class are assumed to have developed some immunity to the virus.
+    However, this is not always the case.
+    In rare occasions where resusceptibility *is* possible, connecting this class to the `epispot.comps.Susceptible` class is possible.
+    This class can alternatively be used as a terminal state.
 
-    Infected, Hospitalized, Critical → Recovered → Susceptible
-    
+    ## Structure
+
+    `epispot.comps.Infected`, `epispot.comps.Hospitalized`, `epispot.comps.Critical` → `epispot.comps.Recovered` → `epispot.comps.Susceptible`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Recovered class&#34;&#34;&#34;
         super().__init__(&#39;Recovered&#39;)
@@ -1657,6 +1609,7 @@ used as a terminal state.</p>
 <ul class="hlist">
 <li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
 <ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
 <li><code><a title="epispot.comps.Compartment.diff" href="#epispot.comps.Compartment.diff">diff</a></code></li>
 </ul>
 </li>
@@ -1666,14 +1619,13 @@ used as a terminal state.</p>
 <span>class <span class="ident">Removed</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>The 'Removed' class is a special class that acts as the combination
-of both the 'Recovered' and 'Dead' compartments. This is a useful
-construct when the death and recovery rates and probabilities are
-the same (or almost the same) or if you want to simplify your
-model by decreasing the number of compartments (like the 'R' in the
-classic SIR model). This compartment is a <em>terminal state</em>, meaning
-that it can (only) be used as the last compartment in a model.</p>
-<p>Any compartment → Removed → Susceptible</p>
+<div class="desc"><p>The 'Removed' class is a special class that acts as the combination of both the <code><a title="epispot.comps.Recovered" href="#epispot.comps.Recovered">Recovered</a></code> and <code><a title="epispot.comps.Dead" href="#epispot.comps.Dead">Dead</a></code> compartments.
+This is a useful construct when the fatality and recovery rates are the same (or almost the same),
+or if you want to simplify your model by decreasing the number of compartments
+(like the 'R' in the classic SIR model).
+This compartment is a <em>terminal state</em>, meaning that it can (only) be used as the last compartment in a model.</p>
+<h2 id="_1"></h2>
+<p>Any <code><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></code> → <code><a title="epispot.comps.Removed" href="#epispot.comps.Removed">Removed</a></code> → <code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code></p>
 <p>Initialize the Removed class</p></div>
 <details class="source">
 <summary>
@@ -1681,17 +1633,17 @@ that it can (only) be used as the last compartment in a model.</p>
 </summary>
 <pre><code class="python">class Removed(Compartment):
     &#34;&#34;&#34;
-    The &#39;Removed&#39; class is a special class that acts as the combination
-    of both the &#39;Recovered&#39; and &#39;Dead&#39; compartments. This is a useful 
-    construct when the death and recovery rates and probabilities are 
-    the same (or almost the same) or if you want to simplify your 
-    model by decreasing the number of compartments (like the &#39;R&#39; in the 
-    classic SIR model). This compartment is a *terminal state*, meaning 
-    that it can (only) be used as the last compartment in a model.
-    
-    Any compartment → Removed → Susceptible
+    The &#39;Removed&#39; class is a special class that acts as the combination of both the `epispot.comps.Recovered` and `epispot.comps.Dead` compartments.
+    This is a useful construct when the fatality and recovery rates are the same (or almost the same),
+    or if you want to simplify your model by decreasing the number of compartments
+    (like the &#39;R&#39; in the classic SIR model).
+    This compartment is a *terminal state*, meaning that it can (only) be used as the last compartment in a model.
 
+    ##
+
+    Any `epispot.comps.Compartment` → `epispot.comps.Removed` → `epispot.comps.Susceptible`
     &#34;&#34;&#34;
+
     def __init__(self):
         &#34;&#34;&#34;Initialize the Removed class&#34;&#34;&#34;
         super().__init__(&#39;Removed&#39;)
@@ -1708,6 +1660,7 @@ that it can (only) be used as the last compartment in a model.</p>
 <ul class="hlist">
 <li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
 <ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
 <li><code><a title="epispot.comps.Compartment.diff" href="#epispot.comps.Compartment.diff">diff</a></code></li>
 </ul>
 </li>
@@ -1715,79 +1668,68 @@ that it can (only) be used as the last compartment in a model.</p>
 </dd>
 <dt id="epispot.comps.Susceptible"><code class="flex name class">
 <span>class <span class="ident">Susceptible</span></span>
-<span>(</span><span>R_0, gamma, N)</span>
+<span>(</span><span>r_0, gamma, n)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The Susceptible class is the 'S' of the 'SIR' Model. This is the
-portion of individuals who have not yet been exposed to the
-disease. This class can be used as an initial state. Because of
-this property, the Susceptible class is a special compartment and
-does not use the default parameter matrix.</p>
-<p>Recovered (?) → Susceptible → Exposed, Infected</p>
-<p>Initialize the Susceptible class</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>R_0</code>: The
+<div class="desc"><p>The Susceptible class is the 'S' of the 'SIR' Model.
+This is the portion of individuals who have not yet been exposed to the disease.
+This class can be used as an initial state.
+Because of this property, the Susceptible class is a special compartment and does not use the default parameter matrix.</p>
+<h2 id="structure">Structure</h2>
+<p><code><a title="epispot.comps.Recovered" href="#epispot.comps.Recovered">Recovered</a></code> → <code><a title="epispot.comps.Susceptible" href="#epispot.comps.Susceptible">Susceptible</a></code> → <code><a title="epispot.comps.Exposed" href="#epispot.comps.Exposed">Exposed</a></code>, <code><a title="epispot.comps.Infected" href="#epispot.comps.Infected">Infected</a></code></p>
+<p>Initialize the Susceptible class:</p>
+<h2 id="parameters">Parameters</h2>
+<p><code>r_0 (float|func(t: float)-&gt;float)</code>: The
 <a href="https://en.wikipedia.org/wiki/Basic_reproduction_number">basic reproduction number</a>,
-indicating how infectious a given disease is. A value of
-above 1 indicates a high probability of transmission and
-thus an increasing infected population. A value of 1
-indicates a low probability of transmission and thus a
-constant infected population. A value below 1 indicates
-a low probability of transmission and also a decreasing
-infected population.</p>
-<p><code>gamma</code>: The total recovery rate of patients. This is <strong>not</strong> a
-measure of how long it takes patients in any given
-compartment to recover but rather a measure of one
-divided by the average time of infectiousness.</p>
-<p><code>N</code>: The initial population size; should be the same as that
-passed into the <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> class.</p></div>
+indicating how infectious a given disease is.
+A value of above 1 indicates a high probability of transmission and thus an increasing infected population.
+A value of 1 indicates a constant infected population.
+A value below 1 indicates a low probability of transmission and also a decreasing infected population.</p>
+<p><code>gamma (float|func(t: float)-&gt;float)</code>: The total recovery rate of patients.
+This is <strong>not</strong> a measure of how long it takes patients in any given compartment to recover but rather the reciprocal of the average time (in days) of infectiousness.</p>
+<p><code>N (float|func(t: float)-&gt;float)</code>: The initial population size; should be the same as that passed into the <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> class.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Susceptible(Compartment):
     &#34;&#34;&#34;
-    The Susceptible class is the &#39;S&#39; of the &#39;SIR&#39; Model. This is the 
-    portion of individuals who have not yet been exposed to the 
-    disease. This class can be used as an initial state. Because of 
-    this property, the Susceptible class is a special compartment and 
-    does not use the default parameter matrix.
+    The Susceptible class is the &#39;S&#39; of the &#39;SIR&#39; Model.
+    This is the portion of individuals who have not yet been exposed to the disease.
+    This class can be used as an initial state.
+    Because of this property, the Susceptible class is a special compartment and does not use the default parameter matrix.
 
-    Recovered (?) → Susceptible → Exposed, Infected
-    
+    ## Structure
+
+    `epispot.comps.Recovered` → `epispot.comps.Susceptible` → `epispot.comps.Exposed`, `epispot.comps.Infected`
     &#34;&#34;&#34;
-    def __init__(self, R_0, gamma, N):
+
+    def __init__(self, r_0, gamma, n):
         &#34;&#34;&#34;
-        Initialize the Susceptible class
+        Initialize the Susceptible class:
 
-        ## **Parameters**
+        ## Parameters
 
-        `R_0`: The 
-               [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number), 
-               indicating how infectious a given disease is. A value of 
-               above 1 indicates a high probability of transmission and 
-               thus an increasing infected population. A value of 1 
-               indicates a low probability of transmission and thus a 
-               constant infected population. A value below 1 indicates 
-               a low probability of transmission and also a decreasing 
-               infected population.
+        `r_0 (float|func(t: float)-&gt;float)`: The
+            [basic reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number),
+            indicating how infectious a given disease is.
+            A value of above 1 indicates a high probability of transmission and thus an increasing infected population.
+            A value of 1 indicates a constant infected population.
+            A value below 1 indicates a low probability of transmission and also a decreasing infected population.
 
-        `gamma`: The total recovery rate of patients. This is **not** a 
-                 measure of how long it takes patients in any given 
-                 compartment to recover but rather a measure of one 
-                 divided by the average time of infectiousness.
+        `gamma (float|func(t: float)-&gt;float)`: The total recovery rate of patients.
+            This is **not** a measure of how long it takes patients in any given compartment to recover but rather the reciprocal of the average time (in days) of infectiousness.
 
-        `N`: The initial population size; should be the same as that 
-             passed into the `epispot.models.Model` class.
+        `N (float|func(t: float)-&gt;float)`: The initial population size; should be the same as that passed into the `epispot.models.Model` class.
 
         &#34;&#34;&#34;
         config = {
             &#39;type&#39;: &#39;Susceptible&#39;,
         }
         super().__init__(&#39;Susceptible&#39;, config=config)
-        self.R_0 = R_0
+        self.r_0 = r_0
         self.gamma = gamma
-        self.N = N
+        self.n = n
 
     def _check(self, minimap, compartments):
         &#34;&#34;&#34;Check wrapper for the Infected compartment&#34;&#34;&#34;
@@ -1796,35 +1738,33 @@ passed into the <code><a title="epispot.models.Model" href="models.html#epispot.
             raise ValueError(&#39;The Susceptible compartment must have &#39;
                              &#39;exactly one connection to either the &#39;
                              &#39;Infected or Exposed compartment.&#39;)
-    
+
     def diff(self, time, system, pos, minimap, minimatrix, infecteds=None):
         &#34;&#34;&#34;
-        Calculate the derivative of the compartment with respect to 
+        Calculate the derivative of the compartment with respect to
         time.
-        
-        ## **Parameters**
-        
-        `time`: Time to take the derivative at. Similar to `time` 
-                parameter in `epispot.models.Model.diff`.
-        
-        `system`: A list containing the system of compartment values.
-                  Should be of the same shape as the `starting_state` 
-                  parameter of `epispot.models.Model.integrate`.
-        
-        `pos`: The index of the compartment in the `comps` parameter of 
-               `epispot.models.Model`.
-        
-        `minimap`: This compartment&#39;s connections. Essentially, a slice 
-                   of the larger `map` parameter of 
-                   `epispot.models.Model`.
 
-        `minimatrix`: A slice of the `matrix` parameter of 
-                      `epispot.models.Model` specific to this 
-                      compartment.
-        
-        ## **Returns**
+        ## Parameters
 
-        The compartment derivative
+        `time (float)`: Time to take the derivative at.
+            Similar to `time` parameter in `epispot.models.Model.diff`.
+
+        `system (list[float])`: A list containing the system of compartment values.
+            Should be of the same shape as the `starting_state` parameter of `epispot.models.Model.integrate`.
+
+        `pos (int)`: The index of the compartment in the `comps` parameter of `epispot.models.Model`.
+
+        `minimap (list[int])`: This compartment&#39;s connections.
+            Essentially, a slice of the larger `map` parameter of `epispot.models.Model`.
+
+        `minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: A slice of the `matrix` parameter of `epispot.models.Model` specific to this compartment.
+
+        `infecteds (list[int])`: A list of the indices of the Infected compartments
+            (those with `&#39;type&#39;=&#39;Infected&#39;`) in the `config` parameter of `epispot.comps.Compartment`).
+
+        ## Returns
+
+        Derivative of the entire system calculated by the compartment (`list[float]`)
 
         &#34;&#34;&#34;
         if infecteds is None:
@@ -1832,27 +1772,27 @@ passed into the <code><a title="epispot.models.Model" href="models.html#epispot.
         output = np.zeros(system.shape)
 
         # initialize parameters
-        R_0 = self.R_0
+        r_0 = self.r_0
         gamma = self.gamma
-        N = self.N
+        n = self.n
 
         # initialize time-dependent parameters
-        if callable(R_0):
-            R_0 = R_0(time)
+        if callable(r_0):
+            r_0 = r_0(time)
         if callable(gamma):
             gamma = gamma(time)
-        if callable(N):
-            N = N(time)
+        if callable(n):
+            n = n(time)
 
         # get total number of infecteds
-        I = 0
+        total_infecteds = 0
         for i in infecteds:
-            I += system[i]
+            total_infecteds += system[i]
 
         for connection in minimap:
-            
+
             # evaluate compartment derivative
-            deriv = R_0 * gamma * system[pos] * I / N
+            deriv = r_0 * gamma * system[pos] * total_infecteds / n
             deriv *= minimatrix[connection][0] * minimatrix[connection][1]
 
             # ensure compartment populations are non-negative
@@ -1860,11 +1800,11 @@ passed into the <code><a title="epispot.models.Model" href="models.html#epispot.
             max_pos_deriv = system[pos]
             deriv = max(deriv, min_connection_deriv)
             deriv = min(deriv, max_pos_deriv)
-            
+
             # apply derivative
             output[connection] += deriv
             output[pos] -= deriv
-        
+
         return output</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1879,54 +1819,49 @@ passed into the <code><a title="epispot.models.Model" href="models.html#epispot.
 <dd>
 <div class="desc"><p>Calculate the derivative of the compartment with respect to
 time.</p>
-<h2 id="parameters"><strong>Parameters</strong></h2>
-<p><code>time</code>: Time to take the derivative at. Similar to <code>time</code>
-parameter in <code><a title="epispot.models.Model.diff" href="models.html#epispot.models.Model.diff">Model.diff()</a></code>.</p>
-<p><code>system</code>: A list containing the system of compartment values.
-Should be of the same shape as the <code>starting_state</code>
-parameter of <code><a title="epispot.models.Model.integrate" href="models.html#epispot.models.Model.integrate">Model.integrate()</a></code>.</p>
-<p><code>pos</code>: The index of the compartment in the <code>comps</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
-<p><code>minimap</code>: This compartment's connections. Essentially, a slice
-of the larger <code>map</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
-<p><code>minimatrix</code>: A slice of the <code>matrix</code> parameter of
-<code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> specific to this
-compartment.</p>
-<h2 id="returns"><strong>Returns</strong></h2>
-<p>The compartment derivative</p></div>
+<h2 id="parameters">Parameters</h2>
+<p><code>time (float)</code>: Time to take the derivative at.
+Similar to <code>time</code> parameter in <code><a title="epispot.models.Model.diff" href="models.html#epispot.models.Model.diff">Model.diff()</a></code>.</p>
+<p><code>system (list[float])</code>: A list containing the system of compartment values.
+Should be of the same shape as the <code>starting_state</code> parameter of <code><a title="epispot.models.Model.integrate" href="models.html#epispot.models.Model.integrate">Model.integrate()</a></code>.</p>
+<p><code>pos (int)</code>: The index of the compartment in the <code>comps</code> parameter of <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
+<p><code>minimap (list[int])</code>: This compartment's connections.
+Essentially, a slice of the larger <code>map</code> parameter of <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code>.</p>
+<p><code>minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])</code>: A slice of the <code>matrix</code> parameter of <code><a title="epispot.models.Model" href="models.html#epispot.models.Model">Model</a></code> specific to this compartment.</p>
+<p><code>infecteds (list[int])</code>: A list of the indices of the Infected compartments
+(those with <code>'type'='Infected'</code>) in the <code>config</code> parameter of <code><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></code>).</p>
+<h2 id="returns">Returns</h2>
+<p>Derivative of the entire system calculated by the compartment (<code>list[float]</code>)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def diff(self, time, system, pos, minimap, minimatrix, infecteds=None):
     &#34;&#34;&#34;
-    Calculate the derivative of the compartment with respect to 
+    Calculate the derivative of the compartment with respect to
     time.
-    
-    ## **Parameters**
-    
-    `time`: Time to take the derivative at. Similar to `time` 
-            parameter in `epispot.models.Model.diff`.
-    
-    `system`: A list containing the system of compartment values.
-              Should be of the same shape as the `starting_state` 
-              parameter of `epispot.models.Model.integrate`.
-    
-    `pos`: The index of the compartment in the `comps` parameter of 
-           `epispot.models.Model`.
-    
-    `minimap`: This compartment&#39;s connections. Essentially, a slice 
-               of the larger `map` parameter of 
-               `epispot.models.Model`.
 
-    `minimatrix`: A slice of the `matrix` parameter of 
-                  `epispot.models.Model` specific to this 
-                  compartment.
-    
-    ## **Returns**
+    ## Parameters
 
-    The compartment derivative
+    `time (float)`: Time to take the derivative at.
+        Similar to `time` parameter in `epispot.models.Model.diff`.
+
+    `system (list[float])`: A list containing the system of compartment values.
+        Should be of the same shape as the `starting_state` parameter of `epispot.models.Model.integrate`.
+
+    `pos (int)`: The index of the compartment in the `comps` parameter of `epispot.models.Model`.
+
+    `minimap (list[int])`: This compartment&#39;s connections.
+        Essentially, a slice of the larger `map` parameter of `epispot.models.Model`.
+
+    `minimatrix (list[tuple(float|func(t: float)-&gt;float, float|func(t: float)-&gt;float)])`: A slice of the `matrix` parameter of `epispot.models.Model` specific to this compartment.
+
+    `infecteds (list[int])`: A list of the indices of the Infected compartments
+        (those with `&#39;type&#39;=&#39;Infected&#39;`) in the `config` parameter of `epispot.comps.Compartment`).
+
+    ## Returns
+
+    Derivative of the entire system calculated by the compartment (`list[float]`)
 
     &#34;&#34;&#34;
     if infecteds is None:
@@ -1934,27 +1869,27 @@ compartment.</p>
     output = np.zeros(system.shape)
 
     # initialize parameters
-    R_0 = self.R_0
+    r_0 = self.r_0
     gamma = self.gamma
-    N = self.N
+    n = self.n
 
     # initialize time-dependent parameters
-    if callable(R_0):
-        R_0 = R_0(time)
+    if callable(r_0):
+        r_0 = r_0(time)
     if callable(gamma):
         gamma = gamma(time)
-    if callable(N):
-        N = N(time)
+    if callable(n):
+        n = n(time)
 
     # get total number of infecteds
-    I = 0
+    total_infecteds = 0
     for i in infecteds:
-        I += system[i]
+        total_infecteds += system[i]
 
     for connection in minimap:
-        
+
         # evaluate compartment derivative
-        deriv = R_0 * gamma * system[pos] * I / N
+        deriv = r_0 * gamma * system[pos] * total_infecteds / n
         deriv *= minimatrix[connection][0] * minimatrix[connection][1]
 
         # ensure compartment populations are non-negative
@@ -1962,15 +1897,23 @@ compartment.</p>
         max_pos_deriv = system[pos]
         deriv = max(deriv, min_connection_deriv)
         deriv = min(deriv, max_pos_deriv)
-        
+
         # apply derivative
         output[connection] += deriv
         output[pos] -= deriv
-    
+
     return output</code></pre>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></b></code>:
+<ul class="hlist">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -1991,14 +1934,12 @@ compartment.</p>
 <li>
 <h4><code><a title="epispot.comps.Compartment" href="#epispot.comps.Compartment">Compartment</a></code></h4>
 <ul class="">
+<li><code><a title="epispot.comps.Compartment._base_check" href="#epispot.comps.Compartment._base_check">_base_check</a></code></li>
 <li><code><a title="epispot.comps.Compartment.diff" href="#epispot.comps.Compartment.diff">diff</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="epispot.comps.Critical" href="#epispot.comps.Critical">Critical</a></code></h4>
-<ul class="">
-<li><code><a title="epispot.comps.Critical.diff" href="#epispot.comps.Critical.diff">diff</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="epispot.comps.Dead" href="#epispot.comps.Dead">Dead</a></code></h4>

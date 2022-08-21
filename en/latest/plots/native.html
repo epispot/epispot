@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>epispot.plots.native API documentation</title>
-<meta name="description" content="The `native` module contains various plotting mechanisms utilizing `matplotlib`.
-Additionally, in order to display scientifically polished graphs, …" />
+<meta name="description" content="The `epispot.plots.native` module contains various plotting mechanisms utilizing `matplotlib`.
+Additionally, in order to display scientifically …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -23,7 +23,7 @@ Additionally, in order to display scientifically polished graphs, …" />
 <h1 class="title">Module <code>epispot.plots.native</code></h1>
 </header>
 <section id="section-intro">
-<p>The <code>native</code> module contains various plotting mechanisms utilizing <code>matplotlib</code>.
+<p>The <code><a title="epispot.plots.native" href="#epispot.plots.native">epispot.plots.native</a></code> module contains various plotting mechanisms utilizing <code>matplotlib</code>.
 Additionally, in order to display scientifically polished graphs, this module uses the
 <a href="https://pypi.org/project/SciencePlots/1.0.8/">Science-Plots</a> package.We strongly encourage you to cite the authors of this package as demonstrated below:</p>
 <blockquote>
@@ -36,19 +36,13 @@ Install with:</p>
 </code></pre>
 <p>Additionally, all functions in this module have a <code>latex</code> flag which determines whether to use LaTeX or not.
 In order to use LaTeX, please follow the installation instructions for your operating system listed on the
-<a href="https://github.com/garrettj403/SciencePlots#faq"><code>SciencePlots</code> project README</a>.
-<!-- spellcheck: disable --></p>
-<h2 id="structure">Structure:</h2>
-<ul>
-<li>model()</li>
-<li>stacked()</li>
-</ul>
+<a href="https://github.com/garrettj403/SciencePlots#faq"><code>SciencePlots</code> project README</a>.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-The `native` module contains various plotting mechanisms utilizing `matplotlib`.
+The `epispot.plots.native` module contains various plotting mechanisms utilizing `matplotlib`.
 Additionally, in order to display scientifically polished graphs, this module uses the
 [Science-Plots](https://pypi.org/project/SciencePlots/1.0.8/) package.\
 We strongly encourage you to cite the authors of this package as demonstrated below:
@@ -58,72 +52,87 @@ We strongly encourage you to cite the authors of this package as demonstrated be
 Unfortunately, the `SciencePlots` package is only available on `pip` at this time.
 If you use an Anaconda system, you should still have no problem installing it since `pip` comes pre-installed with most versions.
 Install with:
+
 ```shell
 pip install SciencePlots
 ```
 
 Additionally, all functions in this module have a `latex` flag which determines whether to use LaTeX or not.
 In order to use LaTeX, please follow the installation instructions for your operating system listed on the
-[`SciencePlots` project README](https://github.com/garrettj403/SciencePlots#faq).  &lt;!-- spellcheck: disable --&gt;
+[`SciencePlots` project README](https://github.com/garrettj403/SciencePlots#faq).
 
-## Structure:
-
-- model()
-- stacked()
 &#34;&#34;&#34;
 
 from . import plt
+
 plt.style.use([&#39;science&#39;, &#39;no-latex&#39;])  # default style
 
 
-def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-          starting_state=None, show_susceptible=False, log=False, 
-          latex=True):
+def model(model, time_frame, title=&#39;Compartment Populations over Time&#39;,
+          show_susceptible=False, log=False, latex=True, **kwargs):
     &#34;&#34;&#34;
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window.
-    There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed.
-    Additionally, `matplotlib` allows editing plots even after
-    they have been created to change things like colors, margins, etc.
+    There are various ways to customize the generated plots by modifying the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after they have been created to change things like colors,
+    margins, etc.
 
-    - Model: An `epispot.models.Model` object
-    - time_frame: A `range()` describing the time period to plot
-    - title: (`=&#39;Compartment Populations over Time`) The title of the plot
-    - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
-                                   **This assumes that the Susceptible compartment is the first in `Model`**\
-                                   Note:\
-                                   &gt; This can potentially result in less visibility for other compartments
-                                   &gt; since usually the Susceptible compartment comprises of many, many
-                                   &gt; more individuals than the other compartments combined.
-    - log: (`=False`) Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
-    - latex: (`=True`) Turn off if you do not have LaTeX installed or want quicker loading times
-    - return: `pyplot` figure (display with `.show()`)
+    ## Parameters
+
+    `model (epispot.models.Model)`: A `epispot.models.Model` object
+
+    `time_frame (range)`: A `range()` describing the time period to plot;
+        use `timesteps=` keyword argument to use `np.linspace` as the `time_frame` is simply for the x-axis
+
+    `title=&#39;Compartment Populations over Time&#39; (str)`: The title of the plot
+
+    `show_susceptible=False (bool)`: Boolean value describing whether or not to plot the Susceptible compartment.
+
+    ..important::
+        This assumes that the Susceptible compartment is the first in `Model`
+
+    ..note::
+        This can potentially result in less visibility for other compartments
+        since usually the Susceptible compartment comprises of many, many
+        more individuals than the other compartments combined.
+
+    `log=False (bool)`: Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
+
+    `latex=True (bool)`: Turn off if you do not have LaTeX installed or want quicker loading times
+
+    `**kwargs**`: Keyword arguments to pass into `epispot.models.Model.integrate()`
+
+    ## Returns
+
+    `pyplot` figure (display with `.show()`) containing the graph (`matplotlib.pyplot.figure`)
+
     &#34;&#34;&#34;
-
     if latex:
         plt.style.use(&#39;science&#39;)
 
-    DataFrame = {}
-    System = Model.integrate(time_frame, starting_state=starting_state)
+    data_frame = {}
+    system = model.integrate(time_frame, **kwargs)
 
     # variable substitutions
-    names = Model.names
+    names = model.names
 
     # setup
-    for name in Model.names:
-        DataFrame[name] = []
+    for name in model.names:
+        data_frame[name] = []
 
-    for day in System:
+    for day in system:
         for i, compartment in enumerate(day):
-            DataFrame[Model.names[i]].append(compartment)
+            data_frame[model.names[i]].append(compartment)
 
     # plotting
     plt.figure(figsize=(9, 5))
-    for compartment, _ in enumerate(Model.compartments):
+    for compartment, _ in enumerate(model.compartments):
         if (not show_susceptible and compartment != 0) or show_susceptible:
-            plt.plot(time_frame, DataFrame[Model.names[compartment]], label=names[compartment])
+            plt.plot(
+                time_frame,
+                data_frame[model.names[compartment]],
+                label=names[compartment]
+            )
 
     if log:
         plt.yscale(&#39;log&#39;)
@@ -133,53 +142,68 @@ def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
     return plt
 
 
-def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
-          starting_state=None, compartments=None, show_susceptible=False,
-          log=False, latex=True):
+def stacked(model, time_frame, title=&#39;Compartment Populations over Time&#39;,
+            compartments=None, show_susceptible=False, log=False,
+            latex=True, **kwargs):
     &#34;&#34;&#34;
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window as a stacked area chart.
-    There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed.
-    Additionally, `matplotlib` allows editing plots even after
-    they have been created to change things like colors, margins, etc.
+    There are various ways to customize the generated plots by modifying the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after they have been created to change things like colors,
+    margins, etc.
 
-    - Model: An `epispot.models.Model` object
-    - time_frame: A `range()` describing the time period to plot
-    - title: (`=&#39;Compartment Populations over Time`) The title of the plot
-    - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - compartments: (default:all) The indices of the compartments in the model to plot;
-                    all other compartments will be hidden
-    - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
-                                   **This assumes that the Susceptible compartment is the first in `Model`**\
-                                   Note:\
-                                   &gt; This can potentially result in less visibility for other compartments
-                                   &gt; since usually the Susceptible compartment comprises of many, many
-                                   &gt; more individuals than the other compartments combined.
-    - log: (`=False`) Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
-    - latex: (`=True`) Turn off if you do not have LaTeX installed or want quicker loading times
-    - return: `pyplot` figure (display with `.show()`)
+    ## Parameters
+
+    `model (epispot.models.Model)`: A `epispot.models.Model` object
+
+    `time_frame (range)`: A `range()` describing the time period to plot;
+        use `timesteps=` keyword argument to use `np.linspace` as the `time_frame` is simply for the x-axis
+
+    `title=&#39;Compartment Populations over Time&#39; (str)`: The title of the plot
+
+    `compartments=None (list[int])`: A list of compartment indices to plot.
+
+    `show_susceptible=False (bool)`: Boolean value describing whether or not to plot the Susceptible compartment.
+
+    ..important::
+        This assumes that the Susceptible compartment is the first in `Model`
+
+    ..note::
+        This can potentially result in less visibility for other compartments
+        since usually the Susceptible compartment comprises of many, many
+        more individuals than the other compartments combined.
+
+    `log=False (bool)`: Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
+
+    `latex=True (bool)`: Turn off if you do not have LaTeX installed or want quicker loading times
+
+    `**kwargs**`: Keyword arguments to pass into `epispot.models.Model.integrate()`
+
+    ## Returns
+
+    `pyplot` figure (display with `.show()`) containing the graph (`matplotlib.pyplot.figure`)
+
     &#34;&#34;&#34;
 
     if latex:
         plt.style.use(&#39;science&#39;)
 
-    DataFrame = {}
-    System = Model.integrate(time_frame, starting_state=starting_state)
+    data_frame = {}
+    system = model.integrate(time_frame, **kwargs)
 
     # variable substitutions
     if compartments is None:
-        compartments = list(range(len(Model.compartments)))
+        compartments = list(range(len(model.compartments)))
 
-    names = Model.names
+    names = model.names
 
     # setup
-    for name in Model.names:
-        DataFrame[name] = []
+    for name in model.names:
+        data_frame[name] = []
 
-    for day in System:
+    for day in system:
         for i, compartment in enumerate(day):
-            DataFrame[Model.names[i]].append(compartment)
+            data_frame[model.names[i]].append(compartment)
 
     if not show_susceptible:
         for i, compartment in enumerate(compartments):
@@ -189,13 +213,18 @@ def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;
 
     # plotting
     plt.figure(figsize=(9, 5))
-    plt.stackplot(time_frame, *[DataFrame[Model.names[compartment]] for compartment in compartments], 
+    plt.stackplot(time_frame, *[data_frame[model.names[compartment]] for compartment in compartments],
                   labels=[names[compartment] for compartment in compartments])
 
     if log:
         plt.yscale(&#39;log&#39;)
     plt.title(title)
-    plt.legend(loc=&#34;lower center&#34;, bbox_to_anchor=(0.5, -0.2), borderaxespad=0, ncol=2)  # spellcheck: disable
+    plt.legend(
+        loc=&#34;lower center&#34;,
+        bbox_to_anchor=(0.5, -0.2),
+        borderaxespad=0,
+        ncol=2
+    )
     plt.tight_layout()
 
     return plt</code></pre>
@@ -209,82 +238,104 @@ def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="epispot.plots.native.model"><code class="name flex">
-<span>def <span class="ident">model</span></span>(<span>Model, time_frame, title='Compartment Populations over Time', starting_state=None, show_susceptible=False, log=False, latex=True)</span>
+<span>def <span class="ident">model</span></span>(<span>model, time_frame, title='Compartment Populations over Time', show_susceptible=False, log=False, latex=True, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plots the results of one model using <code>matplotlib</code>.
 The results are displayed natively via a <code>matplotlib</code> window.
-There are various ways to customize the generated plots by modifying
-the time frame or compartments displayed.
-Additionally, <code>matplotlib</code> allows editing plots even after
-they have been created to change things like colors, margins, etc.</p>
-<ul>
-<li>Model: An <code><a title="epispot.models.Model" href="../models.html#epispot.models.Model">Model</a></code> object</li>
-<li>time_frame: A <code>range()</code> describing the time period to plot</li>
-<li>title: (<code>='Compartment Populations over Time</code>) The title of the plot</li>
-<li>starting_state: (default:inherited) Initial model state (see <code><a title="epispot.models.Model.integrate" href="../models.html#epispot.models.Model.integrate">Model.integrate()</a></code> parameter <code>starting_state</code>)</li>
-<li>show_susceptible: (<code>=False</code>) Boolean value describing whether or not to plot the Susceptible compartment.
-<strong>This assumes that the Susceptible compartment is the first in <code>Model</code></strong>
-Note:
-&gt; This can potentially result in less visibility for other compartments
-&gt; since usually the Susceptible compartment comprises of many, many
-&gt; more individuals than the other compartments combined.</li>
-<li>log: (<code>=False</code>) Boolean value indicating whether or not to use a logarithmic scale when plotting <code>Model</code></li>
-<li>latex: (<code>=True</code>) Turn off if you do not have LaTeX installed or want quicker loading times</li>
-<li>return: <code>pyplot</code> figure (display with <code>.show()</code>)</li>
-</ul></div>
+There are various ways to customize the generated plots by modifying the time frame or compartments displayed.
+Additionally, <code>matplotlib</code> allows editing plots even after they have been created to change things like colors,
+margins, etc.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.plots.native.model" href="#epispot.plots.native.model">model()</a> (<a title="epispot.models.Model" href="../models.html#epispot.models.Model">Model</a>)</code>: A <code><a title="epispot.models.Model" href="../models.html#epispot.models.Model">Model</a></code> object</p>
+<p><code>time_frame (range)</code>: A <code>range()</code> describing the time period to plot;
+use <code>timesteps=</code> keyword argument to use <code>np.linspace</code> as the <code>time_frame</code> is simply for the x-axis</p>
+<p><code>title='Compartment Populations over Time' (str)</code>: The title of the plot</p>
+<p><code>show_susceptible=False (bool)</code>: Boolean value describing whether or not to plot the Susceptible compartment.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This assumes that the Susceptible compartment is the first in <code>Model</code></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This can potentially result in less visibility for other compartments
+since usually the Susceptible compartment comprises of many, many
+more individuals than the other compartments combined.</p>
+</div>
+<p><code>log=False (bool)</code>: Boolean value indicating whether or not to use a logarithmic scale when plotting <code>Model</code></p>
+<p><code>latex=True (bool)</code>: Turn off if you do not have LaTeX installed or want quicker loading times</p>
+<p><code>**kwargs**</code>: Keyword arguments to pass into <code><a title="epispot.models.Model.integrate" href="../models.html#epispot.models.Model.integrate">Model.integrate()</a></code></p>
+<h2 id="returns">Returns</h2>
+<p><code>pyplot</code> figure (display with <code>.show()</code>) containing the graph (<code>matplotlib.pyplot.figure</code>)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def model(Model, time_frame, title=&#39;Compartment Populations over Time&#39;, 
-          starting_state=None, show_susceptible=False, log=False, 
-          latex=True):
+<pre><code class="python">def model(model, time_frame, title=&#39;Compartment Populations over Time&#39;,
+          show_susceptible=False, log=False, latex=True, **kwargs):
     &#34;&#34;&#34;
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window.
-    There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed.
-    Additionally, `matplotlib` allows editing plots even after
-    they have been created to change things like colors, margins, etc.
+    There are various ways to customize the generated plots by modifying the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after they have been created to change things like colors,
+    margins, etc.
 
-    - Model: An `epispot.models.Model` object
-    - time_frame: A `range()` describing the time period to plot
-    - title: (`=&#39;Compartment Populations over Time`) The title of the plot
-    - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
-                                   **This assumes that the Susceptible compartment is the first in `Model`**\
-                                   Note:\
-                                   &gt; This can potentially result in less visibility for other compartments
-                                   &gt; since usually the Susceptible compartment comprises of many, many
-                                   &gt; more individuals than the other compartments combined.
-    - log: (`=False`) Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
-    - latex: (`=True`) Turn off if you do not have LaTeX installed or want quicker loading times
-    - return: `pyplot` figure (display with `.show()`)
+    ## Parameters
+
+    `model (epispot.models.Model)`: A `epispot.models.Model` object
+
+    `time_frame (range)`: A `range()` describing the time period to plot;
+        use `timesteps=` keyword argument to use `np.linspace` as the `time_frame` is simply for the x-axis
+
+    `title=&#39;Compartment Populations over Time&#39; (str)`: The title of the plot
+
+    `show_susceptible=False (bool)`: Boolean value describing whether or not to plot the Susceptible compartment.
+
+    ..important::
+        This assumes that the Susceptible compartment is the first in `Model`
+
+    ..note::
+        This can potentially result in less visibility for other compartments
+        since usually the Susceptible compartment comprises of many, many
+        more individuals than the other compartments combined.
+
+    `log=False (bool)`: Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
+
+    `latex=True (bool)`: Turn off if you do not have LaTeX installed or want quicker loading times
+
+    `**kwargs**`: Keyword arguments to pass into `epispot.models.Model.integrate()`
+
+    ## Returns
+
+    `pyplot` figure (display with `.show()`) containing the graph (`matplotlib.pyplot.figure`)
+
     &#34;&#34;&#34;
-
     if latex:
         plt.style.use(&#39;science&#39;)
 
-    DataFrame = {}
-    System = Model.integrate(time_frame, starting_state=starting_state)
+    data_frame = {}
+    system = model.integrate(time_frame, **kwargs)
 
     # variable substitutions
-    names = Model.names
+    names = model.names
 
     # setup
-    for name in Model.names:
-        DataFrame[name] = []
+    for name in model.names:
+        data_frame[name] = []
 
-    for day in System:
+    for day in system:
         for i, compartment in enumerate(day):
-            DataFrame[Model.names[i]].append(compartment)
+            data_frame[model.names[i]].append(compartment)
 
     # plotting
     plt.figure(figsize=(9, 5))
-    for compartment, _ in enumerate(Model.compartments):
+    for compartment, _ in enumerate(model.compartments):
         if (not show_susceptible and compartment != 0) or show_susceptible:
-            plt.plot(time_frame, DataFrame[Model.names[compartment]], label=names[compartment])
+            plt.plot(
+                time_frame,
+                data_frame[model.names[compartment]],
+                label=names[compartment]
+            )
 
     if log:
         plt.yscale(&#39;log&#39;)
@@ -295,83 +346,102 @@ Note:
 </details>
 </dd>
 <dt id="epispot.plots.native.stacked"><code class="name flex">
-<span>def <span class="ident">stacked</span></span>(<span>Model, time_frame, title='Compartment Populations over Time', starting_state=None, compartments=None, show_susceptible=False, log=False, latex=True)</span>
+<span>def <span class="ident">stacked</span></span>(<span>model, time_frame, title='Compartment Populations over Time', compartments=None, show_susceptible=False, log=False, latex=True, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plots the results of one model using <code>matplotlib</code>.
 The results are displayed natively via a <code>matplotlib</code> window as a stacked area chart.
-There are various ways to customize the generated plots by modifying
-the time frame or compartments displayed.
-Additionally, <code>matplotlib</code> allows editing plots even after
-they have been created to change things like colors, margins, etc.</p>
-<ul>
-<li>Model: An <code><a title="epispot.models.Model" href="../models.html#epispot.models.Model">Model</a></code> object</li>
-<li>time_frame: A <code>range()</code> describing the time period to plot</li>
-<li>title: (<code>='Compartment Populations over Time</code>) The title of the plot</li>
-<li>starting_state: (default:inherited) Initial model state (see <code><a title="epispot.models.Model.integrate" href="../models.html#epispot.models.Model.integrate">Model.integrate()</a></code> parameter <code>starting_state</code>)</li>
-<li>compartments: (default:all) The indices of the compartments in the model to plot;
-all other compartments will be hidden</li>
-<li>show_susceptible: (<code>=False</code>) Boolean value describing whether or not to plot the Susceptible compartment.
-<strong>This assumes that the Susceptible compartment is the first in <code>Model</code></strong>
-Note:
-&gt; This can potentially result in less visibility for other compartments
-&gt; since usually the Susceptible compartment comprises of many, many
-&gt; more individuals than the other compartments combined.</li>
-<li>log: (<code>=False</code>) Boolean value indicating whether or not to use a logarithmic scale when plotting <code>Model</code></li>
-<li>latex: (<code>=True</code>) Turn off if you do not have LaTeX installed or want quicker loading times</li>
-<li>return: <code>pyplot</code> figure (display with <code>.show()</code>)</li>
-</ul></div>
+There are various ways to customize the generated plots by modifying the time frame or compartments displayed.
+Additionally, <code>matplotlib</code> allows editing plots even after they have been created to change things like colors,
+margins, etc.</p>
+<h2 id="parameters">Parameters</h2>
+<p><code><a title="epispot.plots.native.model" href="#epispot.plots.native.model">model()</a> (<a title="epispot.models.Model" href="../models.html#epispot.models.Model">Model</a>)</code>: A <code><a title="epispot.models.Model" href="../models.html#epispot.models.Model">Model</a></code> object</p>
+<p><code>time_frame (range)</code>: A <code>range()</code> describing the time period to plot;
+use <code>timesteps=</code> keyword argument to use <code>np.linspace</code> as the <code>time_frame</code> is simply for the x-axis</p>
+<p><code>title='Compartment Populations over Time' (str)</code>: The title of the plot</p>
+<p><code>compartments=None (list[int])</code>: A list of compartment indices to plot.</p>
+<p><code>show_susceptible=False (bool)</code>: Boolean value describing whether or not to plot the Susceptible compartment.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This assumes that the Susceptible compartment is the first in <code>Model</code></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This can potentially result in less visibility for other compartments
+since usually the Susceptible compartment comprises of many, many
+more individuals than the other compartments combined.</p>
+</div>
+<p><code>log=False (bool)</code>: Boolean value indicating whether or not to use a logarithmic scale when plotting <code>Model</code></p>
+<p><code>latex=True (bool)</code>: Turn off if you do not have LaTeX installed or want quicker loading times</p>
+<p><code>**kwargs**</code>: Keyword arguments to pass into <code><a title="epispot.models.Model.integrate" href="../models.html#epispot.models.Model.integrate">Model.integrate()</a></code></p>
+<h2 id="returns">Returns</h2>
+<p><code>pyplot</code> figure (display with <code>.show()</code>) containing the graph (<code>matplotlib.pyplot.figure</code>)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def stacked(Model, time_frame, title=&#39;Compartment Populations over Time&#39;,
-          starting_state=None, compartments=None, show_susceptible=False,
-          log=False, latex=True):
+<pre><code class="python">def stacked(model, time_frame, title=&#39;Compartment Populations over Time&#39;,
+            compartments=None, show_susceptible=False, log=False,
+            latex=True, **kwargs):
     &#34;&#34;&#34;
     Plots the results of one model using `matplotlib`.
     The results are displayed natively via a `matplotlib` window as a stacked area chart.
-    There are various ways to customize the generated plots by modifying
-    the time frame or compartments displayed.
-    Additionally, `matplotlib` allows editing plots even after
-    they have been created to change things like colors, margins, etc.
+    There are various ways to customize the generated plots by modifying the time frame or compartments displayed.
+    Additionally, `matplotlib` allows editing plots even after they have been created to change things like colors,
+    margins, etc.
 
-    - Model: An `epispot.models.Model` object
-    - time_frame: A `range()` describing the time period to plot
-    - title: (`=&#39;Compartment Populations over Time`) The title of the plot
-    - starting_state: (default:inherited) Initial model state (see `epispot.models.Model.integrate` parameter `starting_state`)
-    - compartments: (default:all) The indices of the compartments in the model to plot;
-                    all other compartments will be hidden
-    - show_susceptible: (`=False`) Boolean value describing whether or not to plot the Susceptible compartment.\
-                                   **This assumes that the Susceptible compartment is the first in `Model`**\
-                                   Note:\
-                                   &gt; This can potentially result in less visibility for other compartments
-                                   &gt; since usually the Susceptible compartment comprises of many, many
-                                   &gt; more individuals than the other compartments combined.
-    - log: (`=False`) Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
-    - latex: (`=True`) Turn off if you do not have LaTeX installed or want quicker loading times
-    - return: `pyplot` figure (display with `.show()`)
+    ## Parameters
+
+    `model (epispot.models.Model)`: A `epispot.models.Model` object
+
+    `time_frame (range)`: A `range()` describing the time period to plot;
+        use `timesteps=` keyword argument to use `np.linspace` as the `time_frame` is simply for the x-axis
+
+    `title=&#39;Compartment Populations over Time&#39; (str)`: The title of the plot
+
+    `compartments=None (list[int])`: A list of compartment indices to plot.
+
+    `show_susceptible=False (bool)`: Boolean value describing whether or not to plot the Susceptible compartment.
+
+    ..important::
+        This assumes that the Susceptible compartment is the first in `Model`
+
+    ..note::
+        This can potentially result in less visibility for other compartments
+        since usually the Susceptible compartment comprises of many, many
+        more individuals than the other compartments combined.
+
+    `log=False (bool)`: Boolean value indicating whether or not to use a logarithmic scale when plotting `Model`
+
+    `latex=True (bool)`: Turn off if you do not have LaTeX installed or want quicker loading times
+
+    `**kwargs**`: Keyword arguments to pass into `epispot.models.Model.integrate()`
+
+    ## Returns
+
+    `pyplot` figure (display with `.show()`) containing the graph (`matplotlib.pyplot.figure`)
+
     &#34;&#34;&#34;
 
     if latex:
         plt.style.use(&#39;science&#39;)
 
-    DataFrame = {}
-    System = Model.integrate(time_frame, starting_state=starting_state)
+    data_frame = {}
+    system = model.integrate(time_frame, **kwargs)
 
     # variable substitutions
     if compartments is None:
-        compartments = list(range(len(Model.compartments)))
+        compartments = list(range(len(model.compartments)))
 
-    names = Model.names
+    names = model.names
 
     # setup
-    for name in Model.names:
-        DataFrame[name] = []
+    for name in model.names:
+        data_frame[name] = []
 
-    for day in System:
+    for day in system:
         for i, compartment in enumerate(day):
-            DataFrame[Model.names[i]].append(compartment)
+            data_frame[model.names[i]].append(compartment)
 
     if not show_susceptible:
         for i, compartment in enumerate(compartments):
@@ -381,13 +451,18 @@ Note:
 
     # plotting
     plt.figure(figsize=(9, 5))
-    plt.stackplot(time_frame, *[DataFrame[Model.names[compartment]] for compartment in compartments], 
+    plt.stackplot(time_frame, *[data_frame[model.names[compartment]] for compartment in compartments],
                   labels=[names[compartment] for compartment in compartments])
 
     if log:
         plt.yscale(&#39;log&#39;)
     plt.title(title)
-    plt.legend(loc=&#34;lower center&#34;, bbox_to_anchor=(0.5, -0.2), borderaxespad=0, ncol=2)  # spellcheck: disable
+    plt.legend(
+        loc=&#34;lower center&#34;,
+        bbox_to_anchor=(0.5, -0.2),
+        borderaxespad=0,
+        ncol=2
+    )
     plt.tight_layout()
 
     return plt</code></pre>
@@ -401,9 +476,7 @@ Note:
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul>
-<li><a href="#structure">Structure:</a></li>
-</ul>
+<ul></ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
