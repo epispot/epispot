@@ -49,33 +49,41 @@
 *       @quantum9innovation
 
 *.py                @quantum9innovation
-*.yml               @Quantalabs
 *.sh                @quantum9innovation
 *.md                @quantum9innovation
 *.txt               @quantum9innovation
 *.csv               @quantum9innovation
 *.png               @quantum9innovation
-*.coveragerc        @Quantalabs
-*.toml              @Quantalabs
-*.cfg               @Quantalabs
-*.gitignore         @Quantalabs
 
-bin/                @Quantalabs
+# formerly @Quantalabs ↓
+*.toml              @quantum9innovation
+*.gitignore         @quantum9innovation
+# *.yml               @Quantalabs
+# *.cfg               @Quantalabs
+# *.coveragerc        @Quantalabs
+
 scripts/            @quantum9innovation
-requirements/       @Quantalabs
 
-/.github/                       @Quantalabs
+# formerly @Quantalabs ↓
+requirements/       @quantum9innovation
+requirements-*      @quantum9innovation
+
+# formerly @Quantalabs ↓
+/scripts/                       @quantum9innovation
+# /.github/                       @Quantalabs
+# /.github/workflows/*            @Quantalabs
+
 /.github/ISSUE_TEMPLATE/        @quantum9innovation
-/.github/workflows/*            @Quantalabs
 /epispot/                       @quantum9innovation
-/bin/                           @quantum9innovation
-/scripts/                       @Quantalabs
 
 test_*              @quantum9innovation
 *-nightly           @quantum9innovation
 *-dev               @quantum9innovation
-requirements-*      @Quantalabs
 
 LICENSE                 @quantum9innovation
-SECURITY.md             @quantum9innovation @Quantalabs
-setup.py                @Quantalabs
+
+# formerly @quantum9Innovation @Quantalabs ↓
+SECURITY.md             @quantum9innovation
+
+# formerly @Quantalabs ↓
+setup.py                @quantum9innovation
