@@ -198,7 +198,7 @@ The epispot team also relies on the following open-source projects as dependenci
 
 - NumPy ([GitHub](https://github.com/numpy/numpy)), the fundamental package for scientific computing with Python
 - Matplotlib ([GitHub](https://github.com/matplotlib/matplotlib)), plotting with Python
-- Google Fire ([Github](https://github.com/google/python-fire)), a library for automatically generating command line interfaces (CLIs) from absolutely any Python object.
+- Google Fire ([GitHub](https://github.com/google/python-fire)), a library for automatically generating command line interfaces (CLIs) from absolutely any Python object.
 
 ### External Code Management Tools
 

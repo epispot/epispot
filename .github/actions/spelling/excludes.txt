@@ -1,3 +1,4 @@
+# See https://github.com/check-spelling/check-spelling/wiki/Configuration-Examples:-excludes
 # Ignore directories named `third_party`
 (?:^|/)third_party/
 # Ignore npm files
@@ -23,3 +24,58 @@ cache
 .gitignore
 # Project-specific files
 bin/
+(?:^|/)(?i)COPYRIGHT
+(?:^|/)(?i)LICEN[CS]E
+(?:^|/)go\.sum$
+(?:^|/)package(?:-lock|)\.json$
+(?:^|/)vendor/
+ignore$
+\.a$
+\.ai$
+\.avi$
+\.bmp$
+\.bz2$
+\.crt$
+\.dll$
+\.docx?$
+\.drawio$
+\.DS_Store$
+\.eot$
+\.exe$
+\.gif$
+\.gitattributes$
+\.graffle$
+\.gz$
+\.icns$
+\.ico$
+\.jar$
+\.jks$
+\.jpe?g$
+\.key$
+\.lib$
+\.lock$
+\.map$
+\.min\..
+\.mod$
+\.mp[34]$
+\.o$
+\.ocf$
+\.otf$
+\.pdf$
+\.pem$
+\.png$
+\.psd$
+\.s$
+\.svg$
+\.tar$
+\.tiff?$
+\.ttf$
+\.wav$
+\.webm$
+\.webp$
+\.woff2?$
+\.zip$
+^\.github/actions/spelling/
+^\Q.github/workflows/spelling.yml\E$
+^\Qrequirements/requirements.txt\E$
+^\QSECURITY.md\E$

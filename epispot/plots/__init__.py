@@ -24,7 +24,7 @@ def _dependency_check():
     except ImportError:  # pragma: no cover
         raise ImportError('In order to create scientific plots with `matplotlib`, it is highly recommended that you install `SciencePlots` as an experimental' 
                           'dependency. Please note that `SciencePlots` is only available via `pip` at this time. If using Anaconda, '
-                          'use the pre-existing `pip` installation to add `SciencePlots` to your environment.\n'
+                          'use the preexisting `pip` installation to add `SciencePlots` to your environment.\n'
                           'Install with:\n'
                           ' $ pip install SciencePlots')
 
