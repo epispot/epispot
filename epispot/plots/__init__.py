@@ -19,6 +19,7 @@ def dependency_check():
                           ' $ conda install -c conda-forge plotly')
     try:
         from matplotlib import pyplot as plt  # noqa: F811
+        import scienceplots
         plt.style.use('science')  # `SciencePlots` cannot be imported directly
     except ImportError:  # pragma: no cover
         raise ImportError('In order to create scientific plots with '
