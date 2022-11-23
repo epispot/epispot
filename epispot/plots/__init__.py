@@ -18,7 +18,7 @@ def dependency_check():
                           ' $ pip install plotly\n'
                           ' $ conda install -c conda-forge plotly')
     try:
-        import scienceplots
+        import scienceplots  # noqa: F811
         from matplotlib import pyplot as plt  # noqa: F811
         plt.style.use('science')  # `SciencePlots` cannot be imported directly
     except ImportError:  # pragma: no cover
@@ -40,7 +40,7 @@ import warnings
 
 # dependencies
 import plotly.express as px
-import scienceplots  # noqa: F811
+import scienceplots
 from matplotlib import colors
 from matplotlib import pyplot as plt
 
