@@ -40,7 +40,7 @@ import warnings
 
 # dependencies
 import plotly.express as px
-import scienceplots
+import scienceplots  # noqa: F811
 from matplotlib import colors
 from matplotlib import pyplot as plt
 
