@@ -11,3 +11,6 @@ updates:
       prefix-development: "[dep/dev]"
     labels:
       - "dependabot"
+    ignore:
+     - dependency-name: "*"
+       update-types: ["version-update:semver-patch"]
