@@ -12,6 +12,6 @@ isort~=5.12.0
 pycodestyle~=2.10.0
 pep8-naming~=0.13.3
 flake8-noqa~=1.3.0
-flake8~=6.0.0
+flake8~=6.1.0
 ttws~=0.8.5
 autopep8~=2.0.1
