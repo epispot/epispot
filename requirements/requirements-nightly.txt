@@ -1,5 +1,5 @@
 matplotlib~=3.7.0
-numpy~=1.24.2
+numpy~=1.26.2
 dill~=0.3.6
 plotly~=5.14.1
 SciencePlots~=2.1.0
